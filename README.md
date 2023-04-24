@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![Issues](https://img.shields.io/github/issues/MusheAbdulHakim/Laravel-Smarthr)
 ![Forks](https://img.shields.io/github/forks/MusheAbdulHakim/Laravel-Smarthr)
 ![Stars](https://img.shields.io/github/stars/MusheAbdulHakim/Laravel-Smarthr)
@@ -174,3 +175,6 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 # Laravel-Smarthr
+=======
+# scs-hrm
+>>>>>>> 5d23b2f3ac729eda1d06214f8287f56f5dcb6534
