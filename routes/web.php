@@ -36,6 +36,9 @@ use App\Http\Controllers\Frontend\JobApplicationController;
 use App\Http\Controllers\Admin\EmployeeAttendanceController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\JobController as BackendJobController;
+use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\JobTitleController;
+use App\Http\Controllers\Admin\VisaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +90,23 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('departments',[DepartmentController::class,'store']);
     Route::put('departments',[DepartmentController::class,'update']);
     Route::delete('departments',[DepartmentController::class,'destroy'])->name('department.destroy');
+
+    
+    Route::get('branches',[BranchController::class,'index'])->name('branches');
+    Route::post('branches',[BranchController::class,'store']);
+    Route::put('branches',[BranchController::class,'update']);
+    Route::delete('branches',[BranchController::class,'destroy'])->name('branch.destroy');
+
+    Route::get('visa',[VisaController::class,'index'])->name('visa');
+    Route::post('visa',[VisaController::class,'store']);
+    Route::put('visa',[VisaController::class,'update']);
+    Route::delete('visa',[VisaController::class,'destroy'])->name('visa.destroy');
+
+    Route::get('job-title',[JobTitleController::class,'index'])->name('job-title');
+    Route::post('job-title',[JobTitleController::class,'store']);
+    Route::put('job-title',[JobTitleController::class,'update']);
+    Route::delete('job-title',[JobTitleController::class,'destroy'])->name('job-title.destroy');
+
 
     Route::get('designations',[DesignationController::class,'index'])->name('designations');
     Route::put('designations',[DesignationController::class,'update']);
@@ -212,5 +232,3 @@ Route::group(['middleware'=>['auth']], function (){
 Route::get('',function (){
     return redirect()->route('dashboard');
 });
-
-

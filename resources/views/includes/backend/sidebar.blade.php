@@ -28,6 +28,9 @@
                         <li><a class="{{ route_is('leave-type') ? 'active' : '' }}" href="{{route('leave-type')}}">Leave Type</a></li>
                         <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li>
                         <li><a class="{{ route_is('departments') ? 'active' : '' }}" href="{{route('departments')}}">Departments</a></li>
+                        <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{route('visa')}}">Visa</a></li>
+                        <li><a class="{{ route_is('job-title') ? 'active' : '' }}" href="{{route('job-title')}}">Job Title</a></li>
+                        <li><a class="{{ route_is('branches') ? 'active' : '' }}" href="{{route('branches')}}">Branches</a></li>
                         <li><a class="{{ route_is('designations') ? 'active' : '' }}" href="{{route('designations')}}">Designations</a></li>
                         <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{route('overtime')}}">Overtime</a></li>
                     </ul>
