@@ -58,7 +58,14 @@ class EmployeeController extends Controller
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
             'department'=>'required',
             'designation'=>'required',
-        ]);
+            'nat_insurance_number' =>'nullable|max:15',
+            'passport_number' => 'nullable|max:15',
+            'pass_issue_date' => 'required',
+            'pass_expire_date' => 'required',
+            'nationality' => 'required',
+            'marital_status' => 'required',
+            'record_status' => 'required',
+         ]);
         $imageName = Null;
         if ($request->hasFile('avatar')){
             $imageName = time().'.'.$request->avatar->extension();
@@ -75,8 +82,18 @@ class EmployeeController extends Controller
             'department_id'=>$request->department,
             'designation_id'=>$request->designation,
             'avatar'=>$imageName,
+            'alternate_phone_number' => $request->al_phone_number,
+            'national_insurance_number' => $request->nat_insurance_number,  
+            'nationality' => $request->nationality,
+            'date_of_birth' => $request->date_of_birth,
+            'passport_issue_date' => $request->pass_issue_date,
+            'passport_expiry_date' => $request->pass_expire_date,
+            'marital_status' => $request->marital_status,
+            'record_status' => $request->record_status,
+            'passport_number' => $request->passport_number,
+
         ]);
-        return back()->with('success',"Employee has been added");
+        return redirect()->route('employees-list')->with('success',"Employee has been added");
     }
 
     /**
@@ -99,6 +116,7 @@ class EmployeeController extends Controller
      */
     public function update(Request $request)
     {
+
         $this->validate($request,[
             'firstname'=>'required',
             'lastname'=>'required',
@@ -108,6 +126,13 @@ class EmployeeController extends Controller
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
             'department'=>'required',
             'designation'=>'required',
+            'nat_insurance_number' =>'nullable|max:15',
+            'passport_number' => 'nullable|max:15',
+            'pass_issue_date' => 'required',
+            'pass_expire_date' => 'required',
+            'nationality' => 'required',
+            'marital_status' => 'required',
+            'record_status' => 'required',
         ]);
         if ($request->hasFile('avatar')){
             $imageName = time().'.'.$request->avatar->extension();
@@ -127,8 +152,17 @@ class EmployeeController extends Controller
             'department_id'=>$request->department,
             'designation_id'=>$request->designation,
             'avatar'=>$imageName,
+            'alternate_phone_number' => $request->al_phone_number,
+            'national_insurance_number' => $request->nat_insurance_number,  
+            'nationality' => $request->nationality,
+            'date_of_birth' => $request->date_of_birth,
+            'passport_issue_date' => $request->pass_issue_date,
+            'passport_expiry_date' => $request->pass_expire_date,
+            'marital_status' => $request->marital_status,
+            'record_status' => $request->record_status,
+            'passport_number' => $request->passport_number,
         ]);
-        return back()->with('success',"Employee details has been updated");
+        return redirect()->route('employees-list')->with('success',"Employee details has been updated");
     }
 
     /**

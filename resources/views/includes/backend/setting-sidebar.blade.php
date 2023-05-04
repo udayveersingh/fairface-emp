@@ -16,9 +16,9 @@
                     <a href="{{route('settings.theme')}}"><i class="la la-photo"></i> <span>Theme Settings</span></a>
                 </li>
                 
-                <li class="{{ Request::routeIs('settings.invoice') ? 'active' : '' }}"> 
+                <!-- <li class="{{ Request::routeIs('settings.invoice') ? 'active' : '' }}"> 
                     <a href="{{route('settings.invoice')}}"><i class="la la-pencil-square"></i> <span>Invoice Settings</span></a>
-                </li>
+                </li> -->
 
                 <li class="{{ Request::routeIs('change-password') ? 'active' : '' }}"> 
                     <a href="{{route('change-password')}}"><i class="la la-lock"></i> <span>Change Password</span></a>

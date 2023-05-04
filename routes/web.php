@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\EmployeeAttendanceController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\JobController as BackendJobController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\EmployeeEmergencyContactController;
 use App\Http\Controllers\Admin\JobTitleController;
 use App\Http\Controllers\Admin\VisaController;
 
@@ -97,10 +98,16 @@ Route::group(['middleware'=>['auth']], function (){
     Route::put('branches',[BranchController::class,'update']);
     Route::delete('branches',[BranchController::class,'destroy'])->name('branch.destroy');
 
-    Route::get('visa',[VisaController::class,'index'])->name('visa');
-    Route::post('visa',[VisaController::class,'store']);
-    Route::put('visa',[VisaController::class,'update']);
-    Route::delete('visa',[VisaController::class,'destroy'])->name('visa.destroy');
+    Route::get('visa-type',[VisaController::class,'index'])->name('visa');
+    Route::post('visa-type',[VisaController::class,'store']);
+    Route::put('visa-type',[VisaController::class,'update']);
+    Route::delete('visa-type',[VisaController::class,'destroy'])->name('visa.destroy');
+
+    Route::get('employee/emergency-contact/{id}',[EmployeeEmergencyContactController::class,'index'])->name('emergency-contact');
+    Route::post('employee/emergency-contact',[EmployeeEmergencyContactController::class,'store'])->name('emergency-contact.store');
+    Route::put('employee/emergency-contact',[EmployeeEmergencyContactController::class,'update'])->name('emergency-contact.update');
+    Route::delete('employee/emergency-contact/',[EmployeeEmergencyContactController::class,'destroy'])->name('emergency-contact.destroy');
+
 
     Route::get('job-title',[JobTitleController::class,'index'])->name('job-title');
     Route::post('job-title',[JobTitleController::class,'store']);

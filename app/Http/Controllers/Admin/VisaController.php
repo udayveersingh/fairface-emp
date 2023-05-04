@@ -29,7 +29,7 @@ class VisaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'visa_type' => 'required|max:100',
+            'visa_type' => 'unique:visas,visa_type|required|max:100',
         ]);
 
         Visa::create($request->all());
@@ -57,7 +57,7 @@ class VisaController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'visa_type' => 'required|max:100',
+            'visa_type' => 'required|max:100|unique:visas,visa_type,' . $request->id,
         ]);
         $visa = Visa::find($request->id);
         $visa->update([
