@@ -37,7 +37,13 @@ use App\Http\Controllers\Admin\EmployeeAttendanceController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\JobController as BackendJobController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\EmployeeAddressController;
+use App\Http\Controllers\Admin\EmployeeBankController;
+use App\Http\Controllers\Admin\EmployeeDocumentController;
 use App\Http\Controllers\Admin\EmployeeEmergencyContactController;
+use App\Http\Controllers\Admin\EmployeePayslipController;
+use App\Http\Controllers\Admin\EmployeeProjectController;
+use App\Http\Controllers\Admin\EmployeeVisaController;
 use App\Http\Controllers\Admin\JobTitleController;
 use App\Http\Controllers\Admin\VisaController;
 
@@ -107,6 +113,38 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('employee/emergency-contact',[EmployeeEmergencyContactController::class,'store'])->name('emergency-contact.store');
     Route::put('employee/emergency-contact',[EmployeeEmergencyContactController::class,'update'])->name('emergency-contact.update');
     Route::delete('employee/emergency-contact/',[EmployeeEmergencyContactController::class,'destroy'])->name('emergency-contact.destroy');
+
+    Route::get('employee-address/{id}',[EmployeeAddressController::class,'index'])->name('employee-address');
+    Route::post('employee-address',[EmployeeAddressController::class,'store'])->name('employee-address.store');
+    Route::put('employee-address',[EmployeeAddressController::class,'update'])->name('employee-address.update');
+    Route::delete('employee-address/',[EmployeeAddressController::class,'destroy'])->name('employee-address.destroy');
+
+    Route::get('employee-bank/{id}',[EmployeeBankController::class,'index'])->name('employee-bank');
+    Route::post('employee-bank',[EmployeeBankController::class,'store'])->name('employee-bank.store');
+    Route::put('employee-bank',[EmployeeBankController::class,'update'])->name('employee-bank.update');
+    Route::delete('employee-bank',[EmployeeBankController::class,'destroy'])->name('employee-bank.destroy');
+
+    Route::get('employee-payslip/{id}',[EmployeePayslipController::class,'index'])->name('employee-payslip');
+    Route::post('employee-payslip',[EmployeePayslipController::class,'store'])->name('employee-payslip.store');
+    Route::put('employee-payslip',[EmployeePayslipController::class,'update'])->name('employee-payslip.update');
+    Route::delete('employee-payslip',[EmployeePayslipController::class,'destroy'])->name('employee-payslip.destroy');
+
+    Route::get('employee-document/{id}',[EmployeeDocumentController::class,'index'])->name('employee-document');
+    Route::post('employee-document',[EmployeeDocumentController::class,'store'])->name('employee-document.store');
+    Route::put('employee-document',[EmployeeDocumentController::class,'update'])->name('employee-document.update');
+    Route::delete('employee-document',[EmployeeDocumentController::class,'destroy'])->name('employee-document.destroy');
+
+
+    Route::get('employee-visa/{id}',[EmployeeVisaController::class,'index'])->name('employee-visa');
+    Route::post('employee-visa',[EmployeeVisaController::class,'store'])->name('employee-visa.store');
+    Route::put('employee-visa',[EmployeeVisaController::class,'update'])->name('employee-visa.update');
+    Route::delete('employee-visa',[EmployeeVisaController::class,'destroy'])->name('employee-visa.destroy');
+
+
+    Route::get('employee-project/{id}',[EmployeeProjectController::class,'index'])->name('employee-project');
+    Route::post('employee-project',[EmployeeProjectController::class,'store'])->name('employee-project.store');
+    Route::put('employee-project',[EmployeeProjectController::class,'update'])->name('employee-project.update');
+    Route::delete('employee-project',[EmployeeProjectController::class,'destroy'])->name('employee-project.destroy');
 
 
     Route::get('job-title',[JobTitleController::class,'index'])->name('job-title');
