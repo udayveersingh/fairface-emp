@@ -71,6 +71,7 @@
 									<a class="dropdown-item" href="{{route('employee-document',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Document</a>
 									<a class="dropdown-item" href="{{route('employee-visa',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Visa</a>
 									<a class="dropdown-item" href="{{route('employee-project',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Project</a>
+									<a class="dropdown-item" href="{{route('employee-job',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee job</a>
 								</div>
 							</div>
 						</td>

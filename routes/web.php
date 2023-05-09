@@ -41,6 +41,7 @@ use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\EmployeeBankController;
 use App\Http\Controllers\Admin\EmployeeDocumentController;
 use App\Http\Controllers\Admin\EmployeeEmergencyContactController;
+use App\Http\Controllers\Admin\EmployeeJobController;
 use App\Http\Controllers\Admin\EmployeePayslipController;
 use App\Http\Controllers\Admin\EmployeeProjectController;
 use App\Http\Controllers\Admin\EmployeeVisaController;
@@ -145,6 +146,11 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('employee-project',[EmployeeProjectController::class,'store'])->name('employee-project.store');
     Route::put('employee-project',[EmployeeProjectController::class,'update'])->name('employee-project.update');
     Route::delete('employee-project',[EmployeeProjectController::class,'destroy'])->name('employee-project.destroy');
+
+    Route::get('employee-job/{id}',[EmployeeJobController::class,'index'])->name('employee-job');
+    Route::post('employee-job',[EmployeeJobController::class,'store'])->name('employee-job.store');
+    Route::put('employee-job',[EmployeeJobController::class,'update'])->name('employee-job.update');
+    Route::delete('employee-job',[EmployeeJobController::class,'destroy'])->name('employee-job.destroy');
 
 
     Route::get('job-title',[JobTitleController::class,'index'])->name('job-title');

@@ -73,7 +73,8 @@
                                         <input type="hidden" value="{{$empId}}" id="emp_id" name="emp_id">
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <select name="visa_type" id="visa_type" class="select">
+                                            <label>Visa Type</label>
+                                                <select name="visa_type" id="visa_type" class="select form-control">
                                                     <option value="">Select Visa Type</option>
                                                     @foreach($visa_types as $type)
                                                     <option value="{{$type->id}}">{{$type->visa_type}}</option>
@@ -145,7 +146,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="visa_type" class="select">
+                                <select name="visa_type" id="visa_type" class="select form-control">
                                     <option value="">Select Visa Type</option>
                                     @foreach($visa_types as $type)
                                     <option value="{{$type->id}}">{{$type->visa_type}}</option>

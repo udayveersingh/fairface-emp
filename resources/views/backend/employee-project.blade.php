@@ -54,11 +54,11 @@
                     @endforeach
                     <x-modals.delete :route="'employee-project.destroy'" :title="'Employee Visa'" />
                     <!-- Edit Emergency contact Modal -->
-                    <div id="edit_employee_visa" class="modal custom-modal fade" role="dialog">
+                    <div id="edit_employee_project" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Edit Employee Visa</h5>
+                                    <h5 class="modal-title">Edit Employee Project</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -85,7 +85,7 @@
                                             <div class="col-sm-12">
                                                 <div class="form-group">
                                                     <label>Project<span class="text-danger">*</span></label>
-                                                    <select name="visa_type" id="visa_type" class="select">
+                                                    <select name="project" id="project" class="select form-control">
                                                         <option value="">Select Project</option>
                                                         @foreach($projects as $project)
                                                         <option value="{{$project->id}}">{{$project->name}}</option>
@@ -110,8 +110,8 @@
     </div>
 </div>
 
-<!-- Add Emergency Contact Modal -->
-<div id="add_employee_visa" class="modal custom-modal fade" role="dialog">
+<!-- Add Employee Project Modal -->
+<div id="add_employee_project" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,7 +140,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="project" class="select">
+                                <select name="project" id="project" class="select form-control">
                                     <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                     <option value="{{$project->id}}">{{$project->name}}</option>
@@ -157,7 +157,7 @@
         </div>
     </div>
 </div>
-<!--  Add Emergency Contact Modal -->
+<!--Add Employee Project Modal-->
 @endsection
 
 @section('scripts')
@@ -170,10 +170,12 @@
             $('#edit_employee_project').modal('show');
             var id = $(this).data('id');
             var start_date = $(this).data('start_date');
-            var end_date= $(this).data('end_date');
+            var end_date = $(this).data('end_date');
+            var project = $(this).data('project');
             $('#edit_id').val(id);
-            $('#start_date').val(edit_start_date);
-            $('#end_date').val(edit_end_date);
+            $('#edit_start_date').val(start_date);
+            $('#edit_end_date').val(end_date);
+            $('#project').val(project);
         });
     });
 </script>

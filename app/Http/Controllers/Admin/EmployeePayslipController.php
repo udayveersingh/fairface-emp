@@ -45,6 +45,7 @@ class EmployeePayslipController extends Controller
         ]);
 
         $file = null;
+        $file_name ="";
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
             $file_name = time() . '.' . $file->extension();
@@ -76,6 +77,7 @@ class EmployeePayslipController extends Controller
             'year' => 'required',
         ]);
         $file = null;
+        $file_name ="";
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
             $file_name = time() . '.' . $file->extension();

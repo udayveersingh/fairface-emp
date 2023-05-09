@@ -44,7 +44,7 @@ class EmployeeVisaController extends Controller
     {
         $this->validate($request, [
             'visa_type' => 'nullable|max:80',
-            'cos_number' => 'nullable|max:100',
+            'cos_number' => 'required|max:100',
         ]);
         EmployeeVisa::create([
             'employee_id' => $request->emp_id,
@@ -69,7 +69,7 @@ class EmployeeVisaController extends Controller
     {
         $this->validate($request, [
             'visa_type' => 'nullable|max:80',
-            'cos_number' => 'nullable|max:100',
+            'cos_number' => 'required|max:100',
         ]);
 
         $employee_visa = EmployeeVisa::find($request->id);
