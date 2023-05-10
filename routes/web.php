@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\JobController as BackendJobController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\EmployeeBankController;
+use App\Http\Controllers\Admin\EmployeeDetailController;
 use App\Http\Controllers\Admin\EmployeeDocumentController;
 use App\Http\Controllers\Admin\EmployeeEmergencyContactController;
 use App\Http\Controllers\Admin\EmployeeJobController;
@@ -164,10 +165,11 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('designations',[DesignationController::class,'store']);
     Route::delete('designations',[DesignationController::class,'destroy'])->name('designation.destroy');
 
+
     // settings routes 
     Route::get('settings/theme',[SettingsController::class,'index'])->name('settings.theme');
     Route::post('settings/theme',[SettingsController::class,'updateTheme']);
-    Route::get('settings/company',[SettingsController::class,'company'])->name('settings.company');
+    Route::get('settings/company',[SettingsController::class,'company'])->name('settings.company'); 
     Route::post('settings/company',[SettingsController::class,'updateCompany']);
     Route::get('settings/invoice',[SettingsController::class,'invoice'])->name('settings.invoice');
     Route::post('settings/invoice',[SettingsController::class,'updateInvoice']);
@@ -208,6 +210,15 @@ Route::group(['middleware'=>['auth']], function (){
     Route::put('clients',[ClientController::class,'update'])->name('client.update');
     Route::delete('clients',[ClientController::class,'destroy'])->name('client.destroy');
     Route::get('clients-list',[ClientController::class,'lists'])->name('clients-list');
+
+    Route::get('employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
+    Route::get('employee-contact/{id}',[EmployeeDetailController::class,'EmergencyContact'])->name('employee-contact');
+    Route::get('employee-address/{id}',[EmployeeDetailController::class,'EmployeeAddress'])->name('employee-address');
+    Route::get('employee-bank/{id}',[EmployeeDetailController::class,'EmployeeBank'])->name('employee-bank');
+    Route::get('employee-visa/{id}',[EmployeeDetailController::class,'EmployeeVisa'])->name('employee-visa');
+    Route::get('employee-project-detail/{id}',[EmployeeDetailController::class,'EmployeeProject'])->name('employee-project-detail');
+    Route::get('employee-job-detail/{id}',[EmployeeDetailController::class,'EmployeeJob'])->name('employee-job-detail');
+
 
     Route::get('employees',[EmployeeController::class,'index'])->name('employees');
     Route::post('employees',[EmployeeController::class,'store'])->name('employee.add');

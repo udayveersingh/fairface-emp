@@ -116,7 +116,6 @@ class EmployeeController extends Controller
      */
     public function update(Request $request)
     {
-
         $this->validate($request,[
             'firstname'=>'required',
             'lastname'=>'required',

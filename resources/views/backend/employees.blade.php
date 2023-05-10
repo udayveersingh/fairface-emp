@@ -139,7 +139,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" class="select">
+								<select name="nationality" class="select form-control">
 									    <option value="">Select Nationality</option>
 										<option value="india">India</option>
 										<option value="australia">Australia</option>
@@ -149,7 +149,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" class="select">
+								<select name="marital_status" class="select form-control">
 									    <option value="">Select Marital Status</option>
 										<option value="married">Married</option>
 										<option value="unmarried">Unmarried</option>
@@ -161,7 +161,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" class="select">
+								<select name="record_status" class="select form-control">
 									    <option value="">Select Record Status</option>
 										<option value="active">Active</option>
 										<option value="inactive">Inactive</option>
@@ -171,7 +171,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
-								<select name="department" class="select">
+								<select name="department" class="select form-control">
 									<option value="">Select Department</option>
 									@foreach ($departments as $department)
 									<option value="{{$department->id}}">{{$department->name}}</option>
@@ -182,7 +182,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
-								<select name="designation" class="select">
+								<select name="designation" class="select form-control">
 									<option>Select Designation</option>
 									@foreach ($designations as $designation)
 										<option value="{{$designation->id}}">{{$designation->name}}</option>
@@ -295,7 +295,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" id="nationality" class="select">
+								<select name="nationality" id="nationality" class="select form-control">
 									    <option value="">Select Nationality</option>
 										<option value="india">India</option>
 										<option value="australia">Australia</option>
@@ -305,7 +305,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" id="marital_status" class="select">
+								<select name="marital_status" id="marital_status" class="select form-control">
 									    <option value="">Select Marital Status</option>
 										<option value="married">Married</option>
 										<option value="unmarried">Unmarried</option>
@@ -317,7 +317,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" id="record_status" class="select">
+								<select name="record_status" id="record_status" class="select form-control">
 									    <option>Select Record Status</option>
 										<option value="active">Active</option>
 										<option value="inactive">Inactive</option>
@@ -327,7 +327,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
-								<select name="department" selected="selected" id="edit_department" class="select">
+								<select name="department" selected="selected" id="edit_department" class="select form-control">
 									<option value="">Select Department</option>
 									@foreach ($departments as $department)
 									<option value="{{$department->id}}">{{$department->name}}</option>
@@ -338,7 +338,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
-								<select name="designation" selected="selected" class="select edit_designation">
+								<select name="designation" selected="selected" class="select edit_designation form-control">
 									<option value="">Select Designation</option>
 									@foreach ($designations as $designation)
 										<option value="{{$designation->id}}">{{$designation->name}}</option>
