@@ -52,7 +52,7 @@
                         </td>
                     </tr>
                     @endforeach
-                    <x-modals.delete :route="'employee-project.destroy'" :title="'Employee Visa'" />
+                    <x-modals.delete :route="'employee-project.destroy'" :title="'Employee Project'" />
                     <!-- Edit Emergency contact Modal -->
                     <div id="edit_employee_project" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">

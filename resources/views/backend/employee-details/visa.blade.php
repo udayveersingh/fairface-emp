@@ -1,58 +1,133 @@
 @extends('layouts.backend-detail')
-
+@section('styles')
+<!-- Datatable CSS -->
+<link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
+@endsection
+@section('page-header')
+<div class="row align-items-center">
+    <div class="col">
+        <h3 class="page-title">Visa</h3>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Visa</li>
+        </ul>
+    </div>
+    <div class="col-auto float-right ml-auto">
+        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i> Add Visa</a>
+    </div>
+</div>
+@endsection
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <form method="POST" action="{{route('employee-visa.update')}}">
-            @csrf
-            @method("PUT")
-            <input type="hidden" id="edit_id" value="{{$employee_visa->id}}" name="id">
-            <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
-            <div class="row">
-                <div class="col-sm-6">
-                    <label>Visa Type</label>
-                    <select name="visa_type" id="visa_type" class="select form-control">
-                        <option value="">Select Visa Type</option>
-                        @foreach($visa_types as $type)
-                        <option value="{{$type->id}}"{{$employee_visa->visa_type == $type->id ? 'selected' : ''}}>{{$type->visa_type}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Cos Number</label>
-                        <input class="form-control" value="{{$employee_visa->cos_number}}" name="cos_number" id="edit_cos_number" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Cos Issue Date</label>
-                        <input class="form-control" value="{{$employee_visa->cos_issue_date}}" name="cos_issue_date" id="edit_cos_issue_date" type="date">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Cos Expiry Date</label>
-                        <input class="form-control" value="{{$employee_visa->cos_expiry_date}}" name="cos_expiry_date" id="edit_cos_expiry_date" type="date">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Visa Issue Date</label>
-                        <input class="form-control" name="visa_issue_date" id="edit_visa_issue_date" value="{{$employee_visa->visa_issue_date}}" type="date">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label>Visa Expiry Date</label>
-                        <input class="form-control" name="visa_expiry_date"  value="{{$employee_visa->visa_expiry_date}}" id="edit_visa_expiry_date" type="date">
-                    </div>
-                </div>
-            </div>
-            <div class="submit-section">
-                <button type="submit" class="btn btn-primary submit-btn">Save</button>
-            </div>
-        </form>
+        <div>
+            <table class="table table-striped custom-table mb-0 datatable">
+                <thead>
+                    <tr>
+                        <th style="width: 30px;">#</th>
+                        <th>Visa Type</th>
+                        <th>Cos Number</th>
+                        <th>Visa Issue Date</th>
+                        <th>Visa Expiry Date</th>
+                        <th class="text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(!empty($employee_visas->count()))
+                    @foreach ($employee_visas as $visa)
+                    <tr>
+                        <td>{{$visa->id}}</td>
+                        <td>{{!empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type:''}}</td>
+                        <td>{{$visa->cos_number}}</td>
+                        <td>{{$visa->visa_issue_date}}</td>
+                        <td>{{$visa->visa_expiry_date}}</td>
+                        <td class="text-right">
+                            <div class="dropdown dropdown-action">
+                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a data-id="{{$visa->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    <x-modals.delete :route="'employee-visa.destroy'" :title="'Employee Visa'" />
+                    @endif
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<!-- Add Employee Visa Modal -->
+<div id="add_employee_visa" class="modal custom-modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Employee Visa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('employee-visa.store')}}" method="POST">
+                    @csrf
+                    <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Visa Type<span class="text-danger">*</span></label>
+                                <select name="visa_type" id="visa_type" class="select form-control">
+                                    <option value="">Select Visa Type</option>
+                                    @foreach($visa_types as $type)
+                                    <option value="{{$type->id}}">{{$type->visa_type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Cos Number</label>
+                                <input class="form-control" name="cos_number" id="edit_cos_number" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Cos Issue Date</label>
+                                <input class="form-control" name="cos_issue_date" id="edit_cos_issue_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Cos Expiry Date</label>
+                                <input class="form-control" name="cos_expiry_date" id="edit_cos_expiry_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Visa Issue Date</label>
+                                <input class="form-control" name="visa_issue_date" id="edit_visa_issue_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Visa Expiry Date</label>
+                                <input class="form-control" name="visa_expiry_date" id="edit_visa_expiry_date" type="date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="submit-section">
+                        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Add Employee visa Modal -->
+@endsection
+@section('scripts')
+<!-- Datatable JS -->
+<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 @endsection

@@ -50,8 +50,13 @@
 			
 				<!-- Page Content -->
                 <div class="content container-fluid">
+					<!-- Page Header -->
+					<div class="page-header">
+						@yield('page-header')
+					</div>
+					<!-- /Page Header -->
 					<div class="row">
-						<div class="col-md-8 offset-md-2">
+						<div class="col-md-12">
 						
 							<!-- Page Header -->
 							<div class="page-header">

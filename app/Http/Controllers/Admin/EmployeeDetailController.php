@@ -86,16 +86,16 @@ class EmployeeDetailController extends Controller
         $title = 'Employee Visa';
         $employee = Employee::find($id);
         $visa_types = Visa::get();
-        $employee_visa = EmployeeVisa::where('employee_id', '=', $employee->id)->first();
-        return view('backend.employee-details.visa', compact('title', 'employee', 'employee_visa', 'visa_types'));
+        $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
+        return view('backend.employee-details.visa', compact('title', 'employee', 'employee_visas', 'visa_types'));
     }
     public function EmployeeProject($id)
     {
         $title = 'Employee Project';
         $employee = Employee::find($id);
         $projects = Project::where('status', '=', 1)->get();
-        $employee_project = EmployeeProject::where('employee_id', '=', $employee->id)->first();
-        return view('backend.employee-details.project', compact('title', 'employee', 'employee_project', 'projects'));
+        $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
+        return view('backend.employee-details.project', compact('title', 'employee', 'employee_projects', 'projects'));
     }
 
 
@@ -105,8 +105,8 @@ class EmployeeDetailController extends Controller
         $employees = Employee::get();
         $departments  = Department::get();
         $employee = Employee::find($id);
-        $employee_job = EmployeeJob::where('employee_id', '=', $employee->id)->first();
-        return view('backend.employee-details.job', compact('title', 'employee', 'employee_job', 'employees', 'departments'));
+        $employee_jobs  = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->get();
+        return view('backend.employee-details.job', compact('title', 'employee', 'employee_jobs', 'employees', 'departments'));
     }
 
     public function EmployeePayslip($id)
