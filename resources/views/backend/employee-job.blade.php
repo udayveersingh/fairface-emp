@@ -112,7 +112,7 @@
                                                     <select name="supervisor" id="supervisor" class="select">
                                                         <option value="">Select Supervisor</option>
                                                         @foreach($employees as $employee)
-                                                        <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
+                                                        <option value="{{$employee->id}}"> {{$employee->firstname ."".$employee->lastname }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

@@ -14,7 +14,7 @@
         </ul>
     </div>
     <div class="col-auto float-right ml-auto">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_payslip"><i class="fa fa-plus"></i> Add Employee Document</a>
+        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_document"><i class="fa fa-plus"></i> Add Employee Document</a>
     </div>
 </div>
 @endsection
@@ -99,7 +99,7 @@
 </div>
 
 <!-- Add Employee Document -->
-<div id="add_employee_payslip" class="modal custom-modal fade" role="dialog">
+<div id="add_employee_document" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

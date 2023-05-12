@@ -17,11 +17,11 @@
                 <li class="{{ Request::routeIs('employee-bank',$employee->id) ? 'active' : '' }}"> 
                     <a href="{{route('employee-bank',$employee->id)}}"><span>Employee Bank</span></a>
                 </li>
-                <li class="{{ Request::routeIs('settings.theme') ? 'active' : '' }}"> 
-                    <a href="#"><span>Employee Payslip</span></a>
+                <li class="{{ Request::routeIs('employee-payslip-detail',$employee->id) ? 'active' : '' }}"> 
+                    <a href="{{route('employee-payslip-detail',$employee->id)}}"><span>Employee Payslip</span></a>
                 </li>
-                <li class="{{ Request::routeIs('settings.theme') ? 'active' : '' }}"> 
-                    <a href="#"><span>Employee Document</span></a>
+                <li class="{{ Request::routeIs('employee-document-detail') ? 'active' : '' }}"> 
+                    <a href="{{route('employee-document-detail',$employee->id)}}"><span>Employee Document</span></a>
                 </li>
                 <li class="{{ Request::routeIs('employee-visa',$employee->id) ? 'active' : '' }}"> 
                     <a href="{{route('employee-visa',$employee->id)}}"><span>Employee Visa</span></a>

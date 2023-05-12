@@ -21,8 +21,8 @@ class EmployeeJobController extends Controller
         $title = "Employee Job";
         $employee_jobs = EmployeeJob::get();
         $employees = Employee::get();
-        $departments  = Department::get(); 
-        return view('backend.employee-job', compact('title', 'employee_jobs', 'employees','departments','empId'));
+        $departments  = Department::get();
+        return view('backend.employee-job', compact('title', 'employee_jobs', 'employees', 'departments', 'empId'));
     }
 
     /**
@@ -59,7 +59,7 @@ class EmployeeJobController extends Controller
             'work_email' => $request->work_email,
             'work_phone_number' => $request->work_phone_number,
             'start_date' => $request->start_date,
-            'job_type'=> $request->job_type,
+            'job_type' => $request->job_type,
             'contracted_weekly_hours' => $request->contract_weekly_hours,
         ]);
         return back()->with('success', "Employee Job has been added successfully.");
@@ -73,27 +73,30 @@ class EmployeeJobController extends Controller
      */
     public function update(Request $request)
     {
-
         $request->validate([
             'supervisor' => 'required',
             'job_title' => 'required',
             'department' => 'required',
         ]);
-
-        $employee_job = EmployeeJob::find($request->id);
-        $employee_job->update([
-            'employee_id' => $request->emp_id,
-            'supervisor' => $request->supervisor,
-            'timesheet_approval_incharge' => $request->timesheet_approval_inch,
-            'department_id' => $request->department,
-            'job_title' => $request->job_title,
-            'work_email' => $request->work_email,
-            'work_phone_number' => $request->work_phone_number,
-            'start_date' => $request->start_date,
-            'job_type'=> $request->job_type,
-            'contracted_weekly_hours' => $request->contract_weekly_hours,
-        ]);
-        return back()->with('success', "Employee Job has been Updated successfully.");
+        if (!empty($request->id)) {
+            $employee_job = EmployeeJob::find($request->id);
+            $message = "Employee Job has been Updated successfully.";
+        } else {
+            $employee_job = new EmployeeJob;
+            $message = "Employee Job has been added successfully.";
+        }
+        $employee_job->employee_id =  $request->emp_id;
+        $employee_job->supervisor  =  $request->supervisor;
+        $employee_job->timesheet_approval_incharge =  $request->timesheet_approval_inch;
+        $employee_job->department_id =  $request->department;
+        $employee_job->job_title  =  $request->job_title;
+        $employee_job->work_email =  $request->work_email;
+        $employee_job->work_phone_number =  $request->work_phone_number;
+        $employee_job->start_date =  $request->start_date;
+        $employee_job->job_type =  $request->job_type;
+        $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
+        $employee_job->save();
+        return back()->with('success', $message);
     }
 
     /**
@@ -106,6 +109,6 @@ class EmployeeJobController extends Controller
     {
         $employee_job = EmployeeJob::findOrFail($request->id);
         $employee_job->delete();
-        return back()->with('success',"Employee job has been deleted");
+        return back()->with('success', "Employee job has been deleted");
     }
 }

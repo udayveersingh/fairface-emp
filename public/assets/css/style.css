@@ -8158,3 +8158,11 @@ ul.comment-list li ul.children {
 		min-width: inherit;
 	}
 }
+
+
+/* custom style */
+.dataTables_length > label,.dataTables_filter > label{    display: inline-flex;
+    align-items: center;
+    gap: 10px; margin:0;
+}
+.dataTables_filter{ text-align: right;}
