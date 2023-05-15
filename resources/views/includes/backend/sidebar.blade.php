@@ -22,16 +22,16 @@
                 <li class="submenu">
                     <a href="#" class="{{ route_is(['employees','employees-list']) ? 'active' : '' }} noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
-                        <li><a class="{{ route_is('employees-list') ? 'active' : '' }}" href="{{route('employees-list')}}">All Employees</a></li>
-                        <li><a class="{{ route_is('holidays') ? 'active' : '' }}" href="{{route('holidays')}}">Holidays</a></li>
-                        <li><a class="{{ route_is('employees.attendance') ? 'active' : '' }}" href="{{route('employees.attendance')}}">Attendance</a></li>
+                        <li><a class="{{ route_is('branches') ? 'active' : '' }}" href="{{route('branches')}}">Branch</a></li>
+                        <li><a class="{{ route_is('holidays') ? 'active' : '' }}" href="{{route('holidays')}}">Public Holidays</a></li>
                         <li><a class="{{ route_is('leave-type') ? 'active' : '' }}" href="{{route('leave-type')}}">Leave Type</a></li>
-                        <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li>
-                        <li><a class="{{ route_is('departments') ? 'active' : '' }}" href="{{route('departments')}}">Departments</a></li>
                         <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{route('visa')}}">Visa Type</a></li>
-                        <li><a class="{{ route_is('job-title') ? 'active' : '' }}" href="{{route('job-title')}}">Job Title</a></li>
-                        <li><a class="{{ route_is('branches') ? 'active' : '' }}" href="{{route('branches')}}">Branches</a></li>
+                        <li><a class="{{ route_is('departments') ? 'active' : '' }}" href="{{route('departments')}}">Departments</a></li>
                         <li><a class="{{ route_is('designations') ? 'active' : '' }}" href="{{route('designations')}}">Designations</a></li>
+                        <li><a class="{{ route_is('job-title') ? 'active' : '' }}" href="{{route('job-title')}}">Job Title</a></li>
+                        <li><a class="{{ route_is('employees-list') ? 'active' : '' }}" href="{{route('employees-list')}}">All Employees</a></li>
+                        <li><a class="{{ route_is('employees.attendance') ? 'active' : '' }}" href="{{route('employees.attendance')}}">Attendance</a></li>
+                        <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li>
                         <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{route('overtime')}}">Overtime</a></li>
                     </ul>
                 </li>
