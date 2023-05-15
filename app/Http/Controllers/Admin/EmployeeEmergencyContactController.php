@@ -31,6 +31,7 @@ class EmployeeEmergencyContactController extends Controller
     {
         $this->validate($request,[
             'name'=>'required|max:15',
+            'relationship' => 'required',
             'address' => 'required|max:200', 
             'overseas_name' => 'required|max:15',
             'overseas_address' => 'required|max:200',

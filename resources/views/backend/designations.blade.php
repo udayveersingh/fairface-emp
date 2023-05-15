@@ -78,7 +78,7 @@
                     </div>
                     <div class="form-group">
                         <label>Department <span class="text-danger">*</span></label>
-                        <select class="select" name="department" title="Select Department">
+                        <select class="select form-control" name="department" title="Select Department">
                             @if(!empty($departments->count()))
                             @foreach($departments as $department)
                                 <option value="{{$department->id}}">{{$department->name}}</option>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="form-group">
                         <label>Department <span class="text-danger">*</span></label>
-                        <select class="select" id="department_select" name="department" selected="selected">
+                        <select class="select form-control" id="department_select" name="department" selected="selected">
                             @if(!empty($departments->count()))
                             @foreach($departments as $department)
                                 <option value="{{$department->id}}">{{$department->name}}</option>

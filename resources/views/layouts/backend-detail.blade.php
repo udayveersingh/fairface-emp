@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+		<meta name="_token" content="{{csrf_token()}}" />
         <meta name="robots" content="noindex, nofollow">
         <title>{{ucfirst(config('app.name'))}} - {{ucfirst($title ?? '')}}</title>
 		
@@ -50,8 +50,13 @@
 			
 				<!-- Page Content -->
                 <div class="content container-fluid">
+					<!-- Page Header -->
+					<div class="page-header">
+						@yield('page-header')
+					</div>
+					<!-- /Page Header -->
 					<div class="row">
-						<div class="col-md-8 offset-md-2">
+						<div class="col-md-12">
 						
 							<!-- Page Header -->
 							<div class="page-header">
