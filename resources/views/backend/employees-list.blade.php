@@ -38,7 +38,7 @@
 						<th>Email</th>
 						<th>Mobile</th>
 						<th class="text-nowrap">Join Date</th>
-						<th>Designation</th>
+						<!-- <th>Designation</th> -->
 						<th class="text-right no-sort">Action</th>
 					</tr>
 				</thead>
@@ -55,14 +55,11 @@
 						<td>{{$employee->email}}</td>
 						<td>{{$employee->phone}}</td>
 						<td>{{date_format(date_create($employee->date_created),"d M,Y")}}</td>
-						<td>
-							{{$employee->designation->name}}
-						</td>
 						<td class="text-right">
 							<div class="dropdown dropdown-action">
 								<a href="javascript:void(0)" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 								<div class="dropdown-menu dropdown-menu-right">
-									<a data-id="{{$employee->id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="{{$employee->designation->id}}" data-department="{{$employee->department->id}}" data-alternate_phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+									<a data-id="{{$employee->id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="" data-department="{{$employee->department->id}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 									<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 									<a class="dropdown-item" href="{{route('emergency-contact',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Emergency Contact</a>
 									<a class="dropdown-item" href="{{route('employee-address',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Address</a>
@@ -127,7 +124,7 @@
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="col-form-label">Alternate Phone Number</label>
-								<input class="form-control edit_al_phone_number" name="al_phone_number" type="text">
+								<input class="form-control" name="al_phone_number" type="text">
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -188,7 +185,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
 								<select name="record_status" class="select form-control">
@@ -198,7 +195,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
 								<select name="department" class="select form-control">
@@ -209,7 +206,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
 								<select name="designation" class="select form-control">
@@ -219,7 +216,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> -->
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
@@ -344,17 +341,17 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" id="record_status" class="select form-control">
+								<select name="record_status" selected="selected" id="record_status" class="select form-control">
 									<option>Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="inactive">Inactive</option>
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
 								<select name="department" selected="selected" id="edit_department" class="select form-control">
@@ -365,7 +362,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
 								<select name="designation" selected="selected" class="select edit_designation form-control">
@@ -375,7 +372,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> -->
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
@@ -408,19 +405,19 @@
 			var lastname = $(this).data('lastname');
 			var email = $(this).data('email');
 			var phone = $(this).data('phone');
-			var avatar = $(this).data('avatar');
 			var company = $(this).data('company');
-			var designation = $(this).data('designation');
-			var department = $(this).data('department');
-			var al_phone_number = $(this).data('alternate_phone_number');
-			var national_insurance_number = $(this).data('national_insurance_number');
-			var nationality = $(this).data('nationality');
-			var passport_number = $(this).data('passport_number');
-			var marital_status = $(this).data('marital_status');
-			var record_status = $(this).data('record_status');
+			// var designation = $(this).data('designation');
+			var al_phone_number = $(this).data('phone_number');
 			var date_of_birth = $(this).data('date_of_birth');
+			var national_insurance_number = $(this).data('national_insurance_number');
+			var passport_number = $(this).data('passport_number');
 			var passport_issue_date = $(this).data('passport_issue_date');
 			var passport_expiry_date = $(this).data('passport_expiry_date');
+			var nationality = $(this).data('nationality');
+			var marital_status = $(this).data('marital_status');
+			var record_status = $(this).data('record_status');
+			var department = $(this).data('department');
+			var avatar = $(this).data('avatar');
 
 			$('#edit_id').val(id);
 			$('.edit_firstname').val(firstname);
@@ -428,10 +425,9 @@
 			$('.edit_email').val(email);
 			$('.edit_phone').val(phone);
 			$('.edit_company').val(company);
-			$('.edit_designation').val(designation);
-			$('.edit_department').val(department);
-			$('.edit_avatar').val(avatar);
+			// $('.edit_designation').val(designation);
 			$('.edit_al_phone_number').val(al_phone_number);
+			$('.edit_date_of_birth').val(date_of_birth);
 			$('.edit_insurance_number').val(national_insurance_number);
 			$('.edit_passport_number').val(passport_number);
 			$('.edit_pass_issue_date').val(passport_issue_date);
@@ -439,7 +435,8 @@
 			$('#nationality').val(nationality);
 			$('#marital_status').val(marital_status);
 			$('#record_status').val(record_status);
-			$('.edit_date_of_birth').val(date_of_birth);
+			$('#edit_department').val(department);
+			$('.edit_avatar').val(avatar);
 		})
 	})
 </script>

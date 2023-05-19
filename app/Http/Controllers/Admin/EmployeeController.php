@@ -57,7 +57,6 @@ class EmployeeController extends Controller
             'company'=>'required|max:200',
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
             'department'=>'required',
-            'designation'=>'required',
             'nat_insurance_number' =>'nullable|max:15',
             'passport_number' => 'nullable|max:15',
             'pass_issue_date' => 'required',
@@ -80,7 +79,7 @@ class EmployeeController extends Controller
             'phone'=>$request->phone,
             'company'=>$request->company,
             'department_id'=>$request->department,
-            'designation_id'=>$request->designation,
+            // 'designation_id'=>$request->designation,
             'avatar'=>$imageName,
             'alternate_phone_number' => $request->al_phone_number,
             'national_insurance_number' => $request->nat_insurance_number,  
@@ -124,7 +123,7 @@ class EmployeeController extends Controller
             'company'=>'required|max:200',
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
             'department'=>'required',
-            'designation'=>'required',
+            // 'designation'=>'required',
             'nat_insurance_number' =>'nullable|max:15',
             'passport_number' => 'nullable|max:15',
             'pass_issue_date' => 'required',
@@ -133,14 +132,14 @@ class EmployeeController extends Controller
             'marital_status' => 'required',
             'record_status' => 'required',
         ]);
+        $employee = Employee::find($request->id);
         if ($request->hasFile('avatar')){
             $imageName = time().'.'.$request->avatar->extension();
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }else{
-            $imageName = Null;
+            $imageName = $employee->avatar;
         }
         
-        $employee = Employee::find($request->id);
         $employee->update([
             'uuid' => $employee->uuid,
             'firstname'=>$request->firstname,

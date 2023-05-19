@@ -12,24 +12,22 @@
 
 @section('page-header')
 <div class="row align-items-center">
-	<div class="col">
-		<h3 class="page-title">Projects</h3>
-		<ul class="breadcrumb">
-			<li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-			<li class="breadcrumb-item active">projects</li>
-		</ul>
-	</div>
+    <div class="col">
+        <h3 class="page-title">Projects</h3>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+            <li class="breadcrumb-item active">projects</li>
+        </ul>
+    </div>
     <div class="col-auto float-right ml-auto">
-		<a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i> Add Modal</a>
-		<div class="view-icons">
-			<a href="{{route('projects')}}" class="grid-view btn btn-link {{route_is('projects') ? 'active' : '' }}"><i class="fa fa-th"></i></a>
-			<a href="{{route('project-list')}}" class="list-view btn btn-link {{route_is('project-list') ? 'active' : '' }}" class=><i class="fa fa-bars"></i></a>
-		</div>
-	</div>
+        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i class="fa fa-plus"></i> Add Modal</a>
+        <div class="view-icons">
+            <a href="{{route('projects')}}" class="grid-view btn btn-link {{route_is('projects') ? 'active' : '' }}"><i class="fa fa-th"></i></a>
+            <a href="{{route('project-list')}}" class="list-view btn btn-link {{route_is('project-list') ? 'active' : '' }}" class=><i class="fa fa-bars"></i></a>
+        </div>
+    </div>
 </div>
 @endsection
-
-
 @section('content')
 <div class="row">
     @foreach ($projects as $project)
@@ -39,70 +37,24 @@
                 <div class="dropdown dropdown-action profile-action">
                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$project->id}}" data-name="{{$project->name}}" 
-                            data-client="{{($project->client_id)}}" data-start="{{$project->start_date}}" data-end="{{$project->end_date}}"
-                            data-rate="{{$project->rate}}" data-rtype="{{$project->rate_type}}" data-priority="{{$project->priority}}" 
-                            data-leader="{{$project->leader}}" data-team="{{json_encode($project->team)}}" 
-                            data-description="{{$project->description}}" data-progress="{{$project->progress}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$project->id}}" data-name="{{$project->name}}" data-project_type="{{$project->project_type}}" data-client_name="{{$project->client_name}}" data-client_address="{{$project->client_address}}" data-work_location="{{$project->work_location}}" data-start_date="{{$project->client_cont_start_date}}" data-end_date="{{$project->client_cont_start_date}}" data-contract_id="{{$project->contract_id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                         <a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$project->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                 </div>
-                <h4 class="project-title"><a href="{{route('project.show',$project->name)}}">{{$project->name}}</a></h4>
-                <small class="block text-ellipsis m-b-15">
-                    <span class="text-xs">1</span> <span class="text-muted">open tasks, </span>
-                    <span class="text-xs">9</span> <span class="text-muted">tasks completed</span>
-                </small>
-                <p class="text-muted">
-                    {!! substr($project->description,0,120)!!}
-                </p>
+                <h4 class="project-title"><a href="#">{{$project->name}}</a></h4>
                 <div class="pro-deadline m-b-15">
-                    <div class="sub-title">
-                        Deadline:
-                    </div>
                     <div class="text-muted">
                         {{date_format(date_create($project->end_date),"D M, Y")}}
                     </div>
                 </div>
-                <div class="project-members m-b-15">
-                    <div>Project Leader :</div>
-                    @php
-                        $leader = $project->employee($project->leader);
-                    @endphp
-                    <ul class="team-members">
-                        <li>
-                            <a href="#" data-bs-toggle="tooltip" title="{{$leader->firstname.' '.$leader->lastname}}">
-                                <img alt="avatar"  src="{{ !empty($leader->avatar) ? asset('storage/employees/'.$leader->avatar): asset('assets/img/user.jpg')}}">
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="project-members m-b-15">
-                    <div>Team :</div>
-                   
-                    <ul class="team-members">
-                        @foreach ($project->team as $team_member)
-                        @php
-                            $member = $project->employee($team_member);
-                        @endphp
-                        <li>
-                            <a href="#" data-bs-toggle="tooltip" title="{{$member->firstname.' '.$member->lastname}}"><img  src="{{ !empty($member->avatar) ? asset('storage/employees/'.$member->avatar): asset('assets/img/user.jpg')}}"></a>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-                <p class="m-b-5">Progress <span class="text-success float-end">{{$project->progress}}%</span></p>
-                <div class="progress progress-xs mb-0">
-                    <div class="progress-bar bg-success" role="progressbar" data-bs-toggle="tooltip" title="{{$project->progress}}%" style="width: {{$project->progress}}%"></div>
-                </div>
             </div>
         </div>
     </div>
-    @endforeach            
+@endforeach
 </div>
-</div>
-<!-- /Page Content -->  
+<!-- /Page Content -->
 
-<x-modals.popup />
+<x-modals.popup/>
 <x-modals.delete route="projects" title="Project" />
 @endsection
 
@@ -116,36 +68,29 @@
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 <script>
-    $(document).ready(function(){
-        $('.card').on('click','.editbtn',(function(){
+    $(document).ready(function() {
+        $('.card').on('click', '.editbtn', (function() {
             var id = $(this).data('id');
-            var name = $(this).data('name');
-            var client = $(this).data('client');
-            var startdate = $(this).data('start');
-            var enddate = $(this).data('end');
-            var rate = $(this).data('rate');
-            var rate_type = $(this).data('rtype');
-            var priority = $(this).data('priority');
-            var leader = $(this).data('leader');
-            var team  = $(this).data('team');
-            var description = $(this).data('description');
-            var progress = $(this).data('progress');
+            var edit_name = $(this).data('name');
+            var project_type = $(this).data('project_type');
+            console.log(project_type);
+            var edit_client_name = $(this).data('client_name');
+            var edit_client_address = $(this).data('client_address');
+            var edit_work_location = $(this).data('work_location');
+            var edit_startdate = $(this).data('start_date');
+            var edit_enddate = $(this).data('end_date');
+            var edit_contract_id = $(this).data('contract_id');
             $('#edit_project').modal('show');
             $('#edit_id').val(id);
-            $('#edit_name').val(name);
-            $('#edit_client').val(client).trigger('change');
-            $('#edit_startdate').val(startdate);
-            $('#edit_enddate').val(enddate);
-            $('#edit_rate').val(rate);
-            $('#edit_priority').val(priority);
-            $('#edit_leader').val(leader).trigger('change');
-            $('#edit_team').val(team).trigger('change');
-            $('#edit_description').summernote('code', description);
-            $('#edit_progress').val(progress);
-            $('#progress_result').html("Progress Value: " + progress);
-            $('#edit_progress').change(function(){
-                $('#progress_result').html("Progress Value: " + $(this).val());
-            });
+            $('#edit_name').val(edit_name);
+            $('#edit_project_type').val(project_type);
+            $('#client_name').val(edit_client_name);
+            $('#work_location').val(edit_work_location);
+            $('#client_address').val(edit_client_address);
+            $('#edit_startdate').val(edit_startdate);
+            $('#edit_enddate').val(edit_enddate);
+            $('#client_address').val(edit_client_address);
+            $('#contract_id').val(edit_contract_id);
         }));
     });
 </script>

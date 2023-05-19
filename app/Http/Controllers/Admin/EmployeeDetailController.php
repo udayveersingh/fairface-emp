@@ -44,7 +44,7 @@ class EmployeeDetailController extends Controller
         $title = 'Emergency Contact';
         $employee = Employee::find($id);
         $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
-        return view('backend.employee-details.contact', compact('title', 'employee', 'emergency_contact'));
+        return view('backend.employee-detail', compact('title', 'employee', 'emergency_contact'));
     }
 
     /**

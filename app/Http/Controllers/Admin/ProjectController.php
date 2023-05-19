@@ -17,8 +17,9 @@ class ProjectController extends Controller
     {
         $title = 'projects';
         $projects = Project::latest()->get();
-        return view('backend.projects.index',compact(
-            'title','projects'
+        return view('backend.projects.index', compact(
+            'title',
+            'projects'
         ));
     }
 
@@ -31,8 +32,9 @@ class ProjectController extends Controller
     {
         $title = 'projects';
         $projects = Project::latest()->get();
-        return view('backend.projects.list',compact(
-            'title','projects'
+        return view('backend.projects.list', compact(
+            'title',
+            'projects'
         ));
     }
 
@@ -41,11 +43,13 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function leads(){
+    public function leads()
+    {
         $title = 'project leads';
         $projects = Project::get();
-        return view('backend.projects.leads',compact(
-            'title','projects'
+        return view('backend.projects.leads', compact(
+            'title',
+            'projects'
         ));
     }
 
@@ -58,40 +62,30 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'client' => 'required',
+            'project_name' => 'required',
+            'project_type' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'rate' => 'required',
-            'rate_type' => 'required',
-            'priority' => 'required',
-            'leader' => 'required',
-            'team' => 'required',
-            'description' => 'required',
-            'project_files' => 'nullable'
-        ]); 
-        $files = null;
-        if($request->hasFile('project_files')){
-            $files = array();
-            foreach($request->project_files as $file){
-                $fileName = time().'.'.$file->extension();
-                $file->move(public_path('storage/projects/'.$request->name), $fileName);
-                array_push($files,$fileName);
-            }
-        }
+            'client_name' => 'required',
+        ]);
+        // $files = null;
+        // if($request->hasFile('project_files')){
+        //     $files = array();
+        //     foreach($request->project_files as $file){
+        //         $fileName = time().'.'.$file->extension();
+        //         $file->move(public_path('storage/projects/'.$request->name), $fileName);
+        //         array_push($files,$fileName);
+        //     }
+        // }
         Project::create([
-            'name' => $request->name,
-            'client_id' => $request->client,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'rate' => $request->rate,
-            'rate_type' => $request->rate_type,
-            'priority' => $request->priority,
-            'leader' => $request->leader,
-            'team' => $request->team,
-            'description' => $request->description,
-            'files' => $files,
-            'progress' => $request->progress,
+            'name' => $request->project_name,
+            'project_type' => $request->project_type,
+            'client_cont_start_date' => $request->start_date,
+            'client_cont_end_date' => $request->end_date,
+            'client_name' => $request->client_name,
+            'work_location' => $request->work_location,
+            'contract_id' => $request->contract_id,
+            'client_address' => $request->client_address,
         ]);
         $notification = notify('project has been added');
         return back()->with($notification);
@@ -106,13 +100,14 @@ class ProjectController extends Controller
     public function show($project_name)
     {
         $title = 'view project';
-        $project = Project::where('name','=',$project_name)->firstOrFail();
-        return view('backend.projects.show',compact(
-            'title','project'
+        $project = Project::where('name', '=', $project_name)->firstOrFail();
+        return view('backend.projects.show', compact(
+            'title',
+            'project'
         ));
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -124,41 +119,31 @@ class ProjectController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'client' => 'required',
+            'project_name' => 'required',
+            'project_type' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'rate' => 'required',
-            'rate_type' => 'required',
-            'priority' => 'required',
-            'leader' => 'required',
-            'team' => 'required',
-            'description' => 'required',
-            'project_files' => 'nullable'
-        ]); 
+            'client_name' => 'required',
+        ]);
         $project = Project::findOrfail($request->id);
-        $files = $project->files;
-        if($request->hasFile('project_files')){
-            $files = array();
-            foreach($request->project_files as $file){
-                $fileName = time().'.'.$file->extension();
-                $file->move(public_path('storage/projects/'), $fileName);
-                array_push($files,$fileName);
-            }
-        }
+        // $files = $project->files;
+        // if ($request->hasFile('project_files')) {
+        //     $files = array();
+        //     foreach ($request->project_files as $file) {
+        //         $fileName = time() . '.' . $file->extension();
+        //         $file->move(public_path('storage/projects/'), $fileName);
+        //         array_push($files, $fileName);
+        //     }
+        // }
         $project->update([
-            'name' => $request->name,
-            'client_id' => $request->client,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'rate' => $request->rate,
-            'rate_type' => $request->rate_type,
-            'priority' => $request->priority,
-            'leader' => $request->leader,
-            'team' => $request->team,
-            'description' => $request->description,
-            'files' => $files,
-            'progress' => $request->progress,
+            'name' => $request->project_name,
+            'project_type' => $request->project_type,
+            'client_cont_start_date' => $request->start_date,
+            'client_cont_end_date' => $request->end_date,
+            'client_name' => $request->client_name,
+            'work_location' => $request->work_location,
+            'contract_id' => $request->contract_id,
+            'client_address' => $request->client_address,
         ]);
         $notification = notify('project has been updated');
         return back()->with($notification);

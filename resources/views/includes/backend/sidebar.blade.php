@@ -27,6 +27,9 @@
                         <li><a class="{{ route_is('leave-type') ? 'active' : '' }}" href="{{route('leave-type')}}">Leave Type</a></li>
                         <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{route('visa')}}">Visa Type</a></li>
                         <li><a class="{{ route_is('departments') ? 'active' : '' }}" href="{{route('departments')}}">Departments</a></li>
+                        <li><a class="{{ route_is(['projects','project-list']) ? 'active' : '' }}" href="{{route('project-list')}}">Projects</a></li>
+                        <li><a class="{{ route_is('project-phase') ? 'active' : '' }}" href="{{route('project-phase')}}">Project Phase</a></li>
+                        <li><a class="{{ route_is('timesheet-status') ? 'active' : '' }}" href="{{route('timesheet-status')}}">Timesheet Status</a></li>
                         <li><a class="{{ route_is('designations') ? 'active' : '' }}" href="{{route('designations')}}">Designations</a></li>
                         <li><a class="{{ route_is('job-title') ? 'active' : '' }}" href="{{route('job-title')}}">Job Title</a></li>
                         <li><a class="{{ route_is('employees-list') ? 'active' : '' }}" href="{{route('employees-list')}}">All Employees</a></li>
@@ -35,29 +38,20 @@
                         <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{route('overtime')}}">Overtime</a></li>
                     </ul>
                 </li>
-                
-                <li class="{{ route_is('clients') ? 'active' : '' }}">
-                    <a href="{{route('clients')}}"><i class="la la-users"></i> <span>Clients</span></a>
-                </li>
 
-                <li class="submenu">
-                    <a href="#"><i class="la la-rocket"></i> <span> Projects </span> <span class="menu-arrow"></span></a>
-                    <ul style="display: non;">
-                        <li>
-                            <a class="{{ route_is(['projects','project-list']) ? 'active' : '' }}" href="{{route('projects')}}">Projects</a>
-                        </li>
-                    </ul>
-                </li>
+                <!-- <li class="{{ route_is('clients') ? 'active' : '' }}">
+                    <a href="{{route('clients')}}"><i class="la la-users"></i> <span>Clients</span></a>
+                </li> -->
                 <!--
                 <li class="{{route_is('leads') ? 'active' : '' }}"> 
                     <a href="{{route('leads')}}"><i class="la la-user-secret"></i> <span>Leads</span></a>
                 </li>
                 -->
-                <li class="{{route_is('tickets') ? 'active' : '' }}"> 
+                <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-ticket"></i> <span>Tickets</span></a>
                 </li>
 
-                <li class="menu-title"> 
+                <li class="menu-title">
                     <span>Admin Settings</span>
                 </li>
                 <!-- <li class="submenu">
@@ -73,7 +67,7 @@
                 <li class="{{ route_is('policies') ? 'active' : '' }}">
                     <a href="{{route('policies')}}"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
                 </li> -->
-                
+
                 <li class="submenu">
                     <a href="#"><i class="la la-briefcase"></i> <span> Jobs </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
@@ -97,7 +91,7 @@
                 <li class="{{ route_is('users') ? 'active' : '' }}">
                     <a href="{{route('users')}}"><i class="la la-user-plus"></i> <span>Users</span></a>
                 </li>
-              
+
                 <li>
                     <a class="{{ route_is('settings.theme') ? 'active' : '' }}" href="{{route('settings.theme')}}"><i class="la la-cog"></i> <span>Settings</span></a>
                 </li>
@@ -106,7 +100,7 @@
                         ><i class="la la-cloud-upload"></i> <span>Backups </span>
                     </a>
                 </li> -->
-                
+
             </ul>
         </div>
     </div>

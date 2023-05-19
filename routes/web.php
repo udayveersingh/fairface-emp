@@ -47,6 +47,8 @@ use App\Http\Controllers\Admin\EmployeePayslipController;
 use App\Http\Controllers\Admin\EmployeeProjectController;
 use App\Http\Controllers\Admin\EmployeeVisaController;
 use App\Http\Controllers\Admin\JobTitleController;
+use App\Http\Controllers\Admin\ProjectPhaseController;
+use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
 
 /*
@@ -105,6 +107,18 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('branches',[BranchController::class,'store']);
     Route::put('branches',[BranchController::class,'update']);
     Route::delete('branches',[BranchController::class,'destroy'])->name('branch.destroy');
+
+
+    Route::get('timesheet-status',[TimeSheetController::class,'index'])->name('timesheet-status');
+    Route::post('timesheet-status',[TimeSheetController::class,'store']);
+    Route::put('timesheet-status',[TimeSheetController::class,'update']);
+    Route::delete('timesheet-status',[TimeSheetController::class,'destroy'])->name('timesheet-status.destroy');
+
+    
+    Route::get('project-phase',[ProjectPhaseController::class,'index'])->name('project-phase');
+    Route::post('project-phase',[ProjectPhaseController::class,'store']);
+    Route::put('project-phase',[ProjectPhaseController::class,'update']);
+    Route::delete('project-phase',[ProjectPhaseController::class,'destroy'])->name('project-phase.destroy');
 
     Route::get('visa-type',[VisaController::class,'index'])->name('visa');
     Route::post('visa-type',[VisaController::class,'store']);

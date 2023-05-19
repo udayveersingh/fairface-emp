@@ -37,13 +37,12 @@
 					<div class="dropdown profile-action">
 						<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a data-id="{{$employee->id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="{{$employee->designation->id}}" data-department="{{$employee->department->id}}" data-alternate_phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" 
+						<a data-id="{{$employee->id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="" data-department="{{$employee->department->id}}" data-alternate_phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" 
 						data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}"  class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 						<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" href="javascript:void(0)" data-toggle="modal" ><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 					</div>
 					</div>
 					<h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0)">{{$employee->firstname}} {{$employee->lastname}}</a></h4>
-					<h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="javascript:void(0)">{{$employee->designation->name}}</a></h5>
 				</div>
 			</div>
 		@endforeach
@@ -158,7 +157,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
 								<select name="record_status" class="select form-control">
@@ -168,7 +167,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
 								<select name="department" class="select form-control">
@@ -180,7 +179,7 @@
 							</div>
 						</div>
 						<div class="col-md-4">
-							<div class="form-group">
+							<!-- <div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
 								<select name="designation" class="select form-control">
 									<option>Select Designation</option>
@@ -188,7 +187,7 @@
 										<option value="{{$designation->id}}">{{$designation->name}}</option>
 									@endforeach
 								</select>
-							</div>
+							</div> -->
 						</div>
 						<div class="col-md-12">
 							<div class="form-group">
@@ -314,7 +313,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
 								<select name="record_status" id="record_status" class="select form-control">
@@ -324,7 +323,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="form-group">
 								<label>Department <span class="text-danger">*</span></label>
 								<select name="department" selected="selected" id="edit_department" class="select form-control">
@@ -335,7 +334,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="col-md-4">
+						<!-- <div class="col-md-4">
 							<div class="form-group">
 								<label>Designation <span class="text-danger">*</span></label>
 								<select name="designation" selected="selected" class="select edit_designation form-control">
@@ -345,7 +344,7 @@
 									@endforeach
 								</select>
 							</div>
-						</div>
+						</div> -->
 						<div class="col-md-12">
 							<div class="form-group">
 								<label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
@@ -377,7 +376,7 @@
 			var phone = $(this).data('phone');
 			var avatar = $(this).data('avatar');
 			var company = $(this).data('company');
-			var designation = $(this).data('designation');
+			// var designation = $(this).data('designation');
 			var department = $(this).data('department');
 			var al_phone_number = $(this).data('alternate_phone_number');
 			var national_insurance_number = $(this).data('national_insurance_number');
@@ -394,7 +393,7 @@
 			$('.edit_email').val(email);
 			$('.edit_phone').val(phone);
 			$('.edit_company').val(company);
-			$('.edit_designation').val(designation);
+			// $('.edit_designation').val(designation);
 			$('#edit_department').val(department).attr('selected');
 			$('.edit_avatar').attr('src',avatar);
 			$('.edit_al_phone_number').val(al_phone_number);

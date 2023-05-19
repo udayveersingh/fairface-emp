@@ -10,9 +10,8 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','client_id','start_date','end_date',
-        'rate','rate_type','priority','leader','team',
-        'description','files','progress','status'      
+        'name','project_type','client_name','client_address',
+        'work_location','client_cont_start_date','client_cont_end_date','contract_id','files','status'      
     ];
 
     protected $casts = [

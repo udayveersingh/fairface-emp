@@ -18,7 +18,7 @@ class EmployeeAddressController extends Controller
         $empId = $id;
         $title = "Employee Address";
         $employee_addresses = EmployeeAddress::get();
-        return view('backend.employee-address', compact('title', 'employee_addresses','empId'));
+        return view('backend.employee-address', compact('title', 'employee_addresses', 'empId'));
     }
 
     /**
@@ -39,19 +39,19 @@ class EmployeeAddressController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'address_line_1' => 'required',
-            'from_date'=>'required', 
-         ]);
+            'from_date' => 'required',
+        ]);
         EmployeeAddress::create([
             'employee_id' => $request->emp_id,
-            'home_address_line_1'=>$request->address_line_1,
-            'home_address_line_2'=>$request->address_line_2,
-            'post_code'=>$request->post_code,
-            'from_date'=>$request->from_date,
-            'to_date'=>$request->to_date,
+            'home_address_line_1' => $request->address_line_1,
+            'home_address_line_2' => $request->address_line_2,
+            'post_code' => $request->post_code,
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
         ]);
-        return back()->with('success',"Employee Address has been added successfully.");
+        return back()->with('success', "Employee Address has been added successfully.");
     }
 
     /**
@@ -74,21 +74,25 @@ class EmployeeAddressController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'address_line_1' => 'required',
-            'from_date'=>'required', 
-         ]);
-
-         $Employee_emergency_contact = EmployeeAddress::find($request->id);
-         $Employee_emergency_contact->update([
-            'employee_id' => $request->emp_id,
-            'home_address_line_1'=>$request->address_line_1,
-            'home_address_line_2'=>$request->address_line_2,
-            'post_code'=>$request->post_code,
-            'from_date'=>$request->from_date,
-            'to_date'=>$request->to_date,
+            'from_date' => 'required',
         ]);
-        return back()->with('success',"Employee Address has been updated.");
+        if (!empty($request->id)) {
+            $Employee_emergency_contact = EmployeeAddress::find($request->id);
+            $message = "Employee Address has been updated.";
+        } else {
+            $Employee_emergency_contact = new EmployeeAddress();
+            $message = "Employee Address has been created.";
+        }
+        $Employee_emergency_contact->employee_id = $request->input('emp_id');
+        $Employee_emergency_contact->home_address_line_1 = $request->input('address_line_1');
+        $Employee_emergency_contact->home_address_line_2 = $request->input('address_line_2');
+        $Employee_emergency_contact->post_code = $request->input('post_code');
+        $Employee_emergency_contact->from_date = $request->input('from_date');
+        $Employee_emergency_contact->to_date = $request->input('to_date');
+        $Employee_emergency_contact->save();
+        return back()->with('success', $message);
     }
 
     /**
@@ -101,6 +105,6 @@ class EmployeeAddressController extends Controller
     {
         $employee_address = EmployeeAddress::find($request->id);
         $employee_address->delete();
-        return back()->with('success',"Employee Address has been deleted.");
+        return back()->with('success', "Employee Address has been deleted.");
     }
 }
