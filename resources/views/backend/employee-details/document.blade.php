@@ -1,10 +1,3 @@
-@extends('layouts.backend-detail')
-@section('styles')
-<!-- Datatable CSS -->
-<link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-@endsection
-
-@section('content')
 <div class="row mt-3">
     <div class="col-md-12">
         <form id="documentform" method="POST" action="" enctype="multipart/form-data">
@@ -65,16 +58,11 @@
                     </td>
                 </tr>
                 @endforeach
-                <x-modals.delete :route="'employee-document.destroy'" :title="'Employee Payslip'" />
-
+                 <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'"/>
             </tbody>
         </table>
     </div>
 </div>
-@endsection
-@section('scripts')
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
 <script>
     $(document).ready(function() {
         $('#documentform').on('submit', function(e) {
@@ -99,4 +87,3 @@
         });
     });
 </script>
-@endsection

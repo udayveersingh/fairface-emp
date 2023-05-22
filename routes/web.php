@@ -234,9 +234,9 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('employee-job-detail/{id}',[EmployeeDetailController::class,'EmployeeJob'])->name('employee-job-detail');
     Route::get('employee-payslip-detail/{id}',[EmployeeDetailController::class,'EmployeePayslip'])->name('employee-payslip-detail');
     Route::get('employee-document-detail/{id}',[EmployeeDetailController::class,'EmployeeDocument'])->name('employee-document-detail');
-    Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
-
+    Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
+    Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');
 
     Route::get('employees',[EmployeeController::class,'index'])->name('employees');
     Route::post('employees',[EmployeeController::class,'store'])->name('employee.add');

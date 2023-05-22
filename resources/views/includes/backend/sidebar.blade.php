@@ -17,10 +17,10 @@
                     </ul>
                 </li> -->
                 <li class="menu-title">
-                    <span>Employees</span>
+                    <span>Configurations</span>
                 </li>
                 <li class="submenu">
-                    <a href="#" class="{{ route_is(['employees','employees-list']) ? 'active' : '' }} noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
+                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i class="la la-cog"></i> <span> Master DataSet</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li><a class="{{ route_is('branches') ? 'active' : '' }}" href="{{route('branches')}}">Branch</a></li>
                         <li><a class="{{ route_is('holidays') ? 'active' : '' }}" href="{{route('holidays')}}">Public Holidays</a></li>
@@ -32,13 +32,24 @@
                         <li><a class="{{ route_is('timesheet-status') ? 'active' : '' }}" href="{{route('timesheet-status')}}">Timesheet Status</a></li>
                         <li><a class="{{ route_is('designations') ? 'active' : '' }}" href="{{route('designations')}}">Designations</a></li>
                         <li><a class="{{ route_is('job-title') ? 'active' : '' }}" href="{{route('job-title')}}">Job Title</a></li>
-                        <li><a class="{{ route_is('employees-list') ? 'active' : '' }}" href="{{route('employees-list')}}">All Employees</a></li>
+                        
                         <li><a class="{{ route_is('employees.attendance') ? 'active' : '' }}" href="{{route('employees.attendance')}}">Attendance</a></li>
                         <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li>
                         <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{route('overtime')}}">Overtime</a></li>
                     </ul>
                 </li>
-
+                <li class="{{route_is('employees-list') ? 'active' : '' }}">
+                    <a href="{{route('employees-list')}}"><i class="la la-user"></i> <span>All Employees</span></a>
+                </li>
+                <li class="{{route_is('tickets') ? 'active' : '' }}">
+                    <a href="{{route('tickets')}}"><i class="la la-files-o"></i> <span>Timesheet</span></a>
+                </li>
+                <li class="{{route_is('tickets') ? 'active' : '' }}">
+                    <a href="{{route('tickets')}}"><i class="la la-bell"></i> <span>Leaves</span></a>
+                </li>
+                <li class="{{route_is('tickets') ? 'active' : '' }}">
+                    <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
+                </li>
                 <!-- <li class="{{ route_is('clients') ? 'active' : '' }}">
                     <a href="{{route('clients')}}"><i class="la la-users"></i> <span>Clients</span></a>
                 </li> -->
@@ -46,11 +57,11 @@
                 <li class="{{route_is('leads') ? 'active' : '' }}"> 
                     <a href="{{route('leads')}}"><i class="la la-user-secret"></i> <span>Leads</span></a>
                 </li>
-                -->
+                
                 <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-ticket"></i> <span>Tickets</span></a>
                 </li>
-
+                -->
                 <li class="menu-title">
                     <span>Admin Settings</span>
                 </li>
@@ -66,7 +77,7 @@
                 
                 <li class="{{ route_is('policies') ? 'active' : '' }}">
                     <a href="{{route('policies')}}"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
-                </li> -->
+                </li> 
 
                 <li class="submenu">
                     <a href="#"><i class="la la-briefcase"></i> <span> Jobs </span> <span class="menu-arrow"></span></a>
@@ -75,7 +86,7 @@
                         <li><a class="{{ route_is('job-applicants') ? 'active' : '' }}" href="{{route('job-applicants')}}"> Applied Candidates </a></li>
                     </ul>
                 </li>
-                <!-- <li class="submenu">
+                 <li class="submenu">
                     <a href="#"><i class="la la-crosshairs"></i> <span> Goals </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li><a class="{{ route_is('goal-tracking') ? 'active' : '' }}" href="{{route('goal-tracking')}}"> Goal List </a></li>

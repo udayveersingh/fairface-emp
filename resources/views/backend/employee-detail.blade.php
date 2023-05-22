@@ -3,41 +3,28 @@
 @section('content')
 <?php
 $tabs = [
-    'basic_info' => 'Basic Info',
-    'contact' => 'Contact',
-]
+    'document' => "Document",
+    'job'      => 'job',
+    'visa'     => "Visa",
+    'project'  => "Project",
+    'contact'  => 'Contact',
+    'address'  => "Address",
+    'bank'     => "Bank",
+    'payslip'  => "Payslip",
+];
 ?>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Basic Info</a>
+        <a class="nav-link active" id="basic_info-tab" data-toggle="tab" href="#basic_info" role="tab" aria-controls="basic_info" aria-selected="true">Basic Info</a>
     </li>
+    @foreach($tabs as $index=>$tab)
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+        <a class="nav-link" id="{{$index}}-tab" data-toggle="tab" href="#{{$index}}" role="tab" aria-controls="{{$index}}" aria-selected="true">{{$tab}}</a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="false">Address</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Bank</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Payslip</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Document</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Visa</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Project</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Job</a>
-    </li>
+    @endforeach
 </ul>
 <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+    <div class="tab-pane fade show active" id="basic_info" role="tabpanel" aria-labelledby="basic_info-tab">
         <div class="row">
             <div class="col-md-12">
                 <form method="POST" action="{{route('employee.update')}}" enctype="multipart/form-data">
@@ -147,17 +134,6 @@ $tabs = [
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Department <span class="text-danger">*</span></label>
-                                <select name="department" selected="selected" id="edit_department" class="select form-control">
-                                    <option value="">Select Department</option>
-                                    @foreach($departments as $department)
-                                    <option value="{{$department->id}}" {{$employee->department_id == $department->id ? 'selected' : ''}}>{{$department->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label>Designation <span class="text-danger">*</span></label>
                                 <select name="designation" selected="selected" class="select edit_designation form-control">
                                     <option value="">Select Designation</option>
@@ -183,9 +159,58 @@ $tabs = [
             </div>
         </div>
     </div>
-    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        @include('backend.employee-details.contact');
+    @foreach($tabs as $index=>$tab)
+    <div class="tab-pane fade" id="{{$index}}" role="tabpanel" aria-labelledby="{{$index}}-tab">
+        @include("backend.employee-details.{$index}")
     </div>
-    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    @endforeach
 </div>
+<!-- Delete Modal -->
+<div class="modal custom-modal fade" id="delete_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Delete {{ucfirst($title)}}</h3>
+                    <p>Are you sure want to delete?</p>
+                </div>
+                <form action="" method="post">
+                    @method("DELETE")
+                    @csrf
+                    <input type="hidden" id="delete_id" name="id">
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-primary continue-btn btn-block" type="submit">Delete</button>
+                            </div>
+                            <div class="col-6">
+                                <button data-dismiss="modal" class="btn btn-primary cancel-btn btn-block">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Delete  Modal -->
+
+
+
+
+
+
 @endsection
+<script src="http://127.0.0.1:8000/assets/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+            localStorage.setItem('activeTab', $(this).attr('href'));
+            test = $(this).attr('href');
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('[href="' + activeTab + '"]').tab('show');
+        }
+    });
+</script>

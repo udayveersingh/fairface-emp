@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 
 class EmployeeController extends Controller
@@ -35,10 +36,10 @@ class EmployeeController extends Controller
    {
        $title="employees";
        $designations = Designation::get();
-       $departments = Department::get();
+       $branches = Branch::get();
        $employees = Employee::with('department','designation')->get();
        return view('backend.employees-list',
-       compact('title','designations','departments','employees'));
+       compact('title','designations','employees','branches'));
    }
 
     /**
@@ -122,8 +123,6 @@ class EmployeeController extends Controller
             'phone'=>'nullable|max:15',
             'company'=>'required|max:200',
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
-            'department'=>'required',
-            // 'designation'=>'required',
             'nat_insurance_number' =>'nullable|max:15',
             'passport_number' => 'nullable|max:15',
             'pass_issue_date' => 'required',

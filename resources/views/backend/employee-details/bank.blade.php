@@ -1,6 +1,3 @@
-@extends('layouts.backend-detail')
-
-@section('content')
 <div class="row">
     <div class="col-md-12">
         <form method="POST" action="{{route('employee-bank.update')}}">
@@ -48,4 +45,3 @@
         </form>
     </div>
 </div>
-@endsection

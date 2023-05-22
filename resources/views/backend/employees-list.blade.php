@@ -38,7 +38,6 @@
 						<th>Email</th>
 						<th>Mobile</th>
 						<th class="text-nowrap">Join Date</th>
-						<!-- <th>Designation</th> -->
 						<th class="text-right no-sort">Action</th>
 					</tr>
 				</thead>
@@ -59,7 +58,7 @@
 							<div class="dropdown dropdown-action">
 								<a href="javascript:void(0)" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 								<div class="dropdown-menu dropdown-menu-right">
-									<a data-id="{{$employee->id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="" data-department="{{$employee->department->id}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+									<a data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-designation="" data-department="{{!empty($employee->department->id) ? $employee->department->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 									<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 									<a class="dropdown-item" href="{{route('emergency-contact',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Emergency Contact</a>
 									<a class="dropdown-item" href="{{route('employee-address',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Address</a>
@@ -80,7 +79,6 @@
 		</div>
 	</div>
 </div>
-
 <!-- Add Employee Modal -->
 <div id="add_employee" class="modal custom-modal fade" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-lg">
@@ -95,20 +93,43 @@
 				<form method="POST" action="{{route('employee.add')}}" enctype="multipart/form-data">
 					@csrf
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+								<input class="form-control" name="employee_id" type="text">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Main Work Location<span class="text-danger">*</span></label>
+								<select name="main_work_location" class="select form-control">
+									<option>Select Main Work Location</option>
+									@foreach ($branches as $branch)
+									<option value="{{$branch->id}}">{{$branch->branch_code}}</option>
+									@endforeach
+								</select>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
+								<input class="form-control floating" name="avatar" type="file">
+							</div>
+						</div>
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">First Name <span class="text-danger">*</span></label>
 								<input class="form-control" name="firstname" type="text">
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Last Name</label>
 								<input class="form-control" name="lastname" type="text">
 							</div>
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Email <span class="text-danger">*</span></label>
 								<input class="form-control" name="email" type="email">
@@ -192,17 +213,6 @@
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="inactive">Inactive</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Department <span class="text-danger">*</span></label>
-								<select name="department" class="select form-control">
-									<option value="">Select Department</option>
-									@foreach ($departments as $department)
-									<option value="{{$department->id}}">{{$department->name}}</option>
-									@endforeach
 								</select>
 							</div>
 						</div>
@@ -348,17 +358,6 @@
 									<option>Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="inactive">Inactive</option>
-								</select>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="form-group">
-								<label>Department <span class="text-danger">*</span></label>
-								<select name="department" selected="selected" id="edit_department" class="select form-control">
-									<option value="">Select Department</option>
-									@foreach ($departments as $department)
-									<option value="{{$department->id}}">{{$department->name}}</option>
-									@endforeach
 								</select>
 							</div>
 						</div>

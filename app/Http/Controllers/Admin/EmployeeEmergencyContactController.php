@@ -30,7 +30,7 @@ class EmployeeEmergencyContactController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:15',
+            'name' => 'required',
             'relationship' => 'required',
             'address' => 'required|max:200',
             'overseas_name' => 'required|max:15',
@@ -67,7 +67,7 @@ class EmployeeEmergencyContactController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:15',
+            'name' => 'required',
             'address' => 'required|max:200',
             'overseas_name' => 'required|max:15',
             'overseas_address' => 'required|max:200',

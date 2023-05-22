@@ -1,23 +1,8 @@
-@extends('layouts.backend-detail')
-@section('styles')
-<!-- Datatable CSS -->
-<link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-@endsection
-@section('page-header')
-<div class="row align-items-center">
-    <div class="col">
-        <h3 class="page-title">Employee Project</h3>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="{{route('employees-list')}}">Employee</a></li>
-        </ul>
-    </div>
+<div class="row align-items-center mb-2">
     <div class="col-auto float-right ml-auto">
         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_project"><i class="fa fa-plus"></i> Add Employee Project</a>
     </div>
 </div>
-@endsection
-@section('content')
 <div class="row">
     <div class="col-md-12">
         <table class="table table-striped custom-table mb-0 datatable">
@@ -27,7 +12,6 @@
                     <th>Project</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Priority</th>
                     <th>status</th>
                     <th class="text-right">Action</th>
                 </tr>
@@ -40,7 +24,6 @@
                     <td>{{!empty($project->projects->name) ? $project->projects->name:''}}</td>
                     <td>{{$project->start_date}}</td>
                     <td>{{$project->end_date}}</td>
-                    <td>{{!empty($project->projects->priority) ? $project->projects->priority:'' }}</td>
                     @php
                     $status = "";
                     if(!empty($project->projects->status) && $project->projects->status == 1)
@@ -116,9 +99,3 @@
     </div>
 </div>
 <!--Add Employee Project Modal-->
-@endsection
-@section('scripts')
-<!-- Datatable JS -->
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-@endsection

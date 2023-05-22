@@ -31,7 +31,20 @@ class EmployeeDetailController extends Controller
         $employee = Employee::with('department', 'designation')->find($id);
         $designations = Designation::get();
         $departments = Department::get();
-        return view('backend.employee-detail', compact('employee', 'title', 'departments', 'designations'));
+        $employee = Employee::find($id);
+        $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
+        $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
+        $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
+        $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
+        $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
+        $visa_types = Visa::get();
+        $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
+        $projects = Project::where('status', '=', 1)->get();
+        $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
+        $employees = Employee::get();
+        $employee_jobs  = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->get();
+        return view('backend.employee-detail', compact('employee', 'title', 'departments', 'designations','emergency_contact','employee_address','employee_bank','employee_payslips','employee_documents',
+        'employee_visas','visa_types','projects','employee_projects','employee_jobs','employees'));
     }
 
     /**
@@ -109,13 +122,13 @@ class EmployeeDetailController extends Controller
         return view('backend.employee-details.job', compact('title', 'employee', 'employee_jobs', 'employees', 'departments'));
     }
 
-    public function EmployeePayslip($id)
-    {
-        $title = 'Employee Payslip';
-        $employee = Employee::find($id);
-        $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
-        return view('backend.employee-details.payslip', compact('title', 'employee', 'employee_payslips'));
-    }
+    // public function EmployeePayslip($id)
+    // {
+    //     $title = 'Employee Payslip';
+    //     $employee = Employee::find($id);
+    //     $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
+    //     return view('backend.employee-details.payslip', compact('title', 'employee', 'employee_payslips'));
+    // }
 
 
     public function EmployeePayslipUpload(Request $request)
@@ -144,13 +157,13 @@ class EmployeeDetailController extends Controller
     }
 
 
-    public function EmployeeDocument($id)
-    {
-        $title = 'Employee Document';
-        $employee = Employee::find($id);
-        $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
-        return view('backend.employee-details.document', compact('title', 'employee', 'employee_documents'));
-    }
+    // public function EmployeeDocument($id)
+    // {
+    //     $title = 'Employee Document';
+    //     $employee = Employee::find($id);
+    //     $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
+    //     return view('backend.employee-details.document', compact('title', 'employee', 'employee_documents'));
+    // }
 
 
     public function EmployeeDocumentUpload(Request $request)
@@ -174,5 +187,10 @@ class EmployeeDetailController extends Controller
         return response()->json([
             // 'data' => $getEmployeeSlips,
         ]);
+    }
+
+    public function DeleteResource()
+    {
+
     }
 }

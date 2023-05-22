@@ -6,9 +6,9 @@
                 <li> 
                     <a href="{{route('dashboard')}}"><i class="la la-home"></i> <span>Back to Home</span></a>
                 </li>
-                <li class="menu-title">Employee Detail</li>
+                <!-- <li class="menu-title">Employee Detail</li> -->
 
-                <li class="{{ Request::routeIs('employee-contact',$employee->id) ? 'active' : '' }}"> 
+                <!-- <li class="{{ Request::routeIs('employee-contact',$employee->id) ? 'active' : '' }}"> 
                     <a href="{{route('employee-contact',$employee->id)}}"><span>Emergency Contact</span></a>
                 </li>
                 <li class="{{ Request::routeIs('employee-address',$employee->id) ? 'active' : '' }}"> 
@@ -31,7 +31,7 @@
                 </li>
                 <li class="{{ Request::routeIs('employee-job-detail',$employee->id) ? 'active' : '' }}"> 
                     <a href="{{route('employee-job-detail',$employee->id)}}"><span>Employee Job</span></a>
-                </li>
+                </li> -->
             </ul>
         </div>
     </div>

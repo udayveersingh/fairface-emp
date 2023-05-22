@@ -1,23 +1,8 @@
-@extends('layouts.backend-detail')
-@section('styles')
-<!-- Datatable CSS -->
-<link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
-@endsection
-@section('page-header')
-<div class="row align-items-center">
-    <div class="col">
-        <h3 class="page-title">Visa</h3>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-            <li class="breadcrumb-item active">Visa</li>
-        </ul>
-    </div>
+<div class="row align-items-center mb-2">
     <div class="col-auto float-right ml-auto">
         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i> Add Visa</a>
     </div>
 </div>
-@endsection
-@section('content')
 <div class="row">
     <div class="col-md-12">
         <div>
@@ -125,9 +110,3 @@
     </div>
 </div>
 <!--  Add Employee visa Modal -->
-@endsection
-@section('scripts')
-<!-- Datatable JS -->
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-@endsection

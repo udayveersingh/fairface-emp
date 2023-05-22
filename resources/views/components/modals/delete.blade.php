@@ -1,6 +1,6 @@
 @props(['route'=>$route,'title'=>$title])
 <!-- Delete Modal -->
-<div class="modal custom-modal fade" id="delete_modal" role="dialog">
+<div class="modal custom-modal fade" id="deletebtn" role="dialog">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body">
