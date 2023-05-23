@@ -20,11 +20,10 @@ class EmployeeController extends Controller
     public function index()
     {
         $title="employees";
-        $designations = Designation::get();
-        $departments = Department::get();
-        $employees = Employee::with('department','designation')->get();
+        $branches = Branch::get();
+        $employees = Employee::with('branch')->get();
         return view('backend.employees',
-        compact('title','designations','departments','employees'));
+        compact('title','employees','branches'));
     }
 
     /**
@@ -35,11 +34,10 @@ class EmployeeController extends Controller
    public function list()
    {
        $title="employees";
-       $designations = Designation::get();
        $branches = Branch::get();
-       $employees = Employee::with('department','designation')->get();
+       $employees = Employee::with('branch')->get();
        return view('backend.employees-list',
-       compact('title','designations','employees','branches'));
+       compact('title','employees','branches'));
    }
 
     /**
@@ -55,10 +53,8 @@ class EmployeeController extends Controller
             'lastname'=>'required',
             'email'=>'required|email',
             'phone'=>'nullable|max:15',
-            'company'=>'required|max:200',
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
-            'department'=>'required',
-            'nat_insurance_number' =>'nullable|max:15',
+            'nat_insurance_number' =>'nullable|max:20',
             'passport_number' => 'nullable|max:15',
             'pass_issue_date' => 'required',
             'pass_expire_date' => 'required',
@@ -74,13 +70,11 @@ class EmployeeController extends Controller
         $uuid = IdGenerator::generate(['table' => 'employees','field'=>'uuid', 'length' => 7, 'prefix' =>'EMP-']);
         Employee::create([
             'uuid' =>$uuid,
-            'firstname'=>$request->firstname,
-            'lastname'=>$request->lastname,
-            'email'=>$request->email,
+            'employee_id' => $request->input('employee_id'),
+            'firstname'=>$request->input('firstname'),
+            'lastname'=>$request->input('lastname'),
+            'email'=>$request->input('email'),
             'phone'=>$request->phone,
-            'company'=>$request->company,
-            'department_id'=>$request->department,
-            // 'designation_id'=>$request->designation,
             'avatar'=>$imageName,
             'alternate_phone_number' => $request->al_phone_number,
             'national_insurance_number' => $request->nat_insurance_number,  
@@ -91,6 +85,7 @@ class EmployeeController extends Controller
             'marital_status' => $request->marital_status,
             'record_status' => $request->record_status,
             'passport_number' => $request->passport_number,
+            'branch_id ' => $request->branch_id,
 
         ]);
         return redirect()->route('employees-list')->with('success',"Employee has been added");
@@ -117,13 +112,13 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
         $this->validate($request,[
+            'employee_id' => 'required',
             'firstname'=>'required',
             'lastname'=>'required',
             'email'=>'required|email',
             'phone'=>'nullable|max:15',
-            'company'=>'required|max:200',
             'avatar'=>'file|image|mimes:jpg,jpeg,png,gif',
-            'nat_insurance_number' =>'nullable|max:15',
+            'nat_insurance_number' =>'nullable|max:20',
             'passport_number' => 'nullable|max:15',
             'pass_issue_date' => 'required',
             'pass_expire_date' => 'required',
@@ -141,13 +136,12 @@ class EmployeeController extends Controller
         
         $employee->update([
             'uuid' => $employee->uuid,
+            'employee_id' => $request->employee_id,
+            'branch_id ' => $request->branch_id,
             'firstname'=>$request->firstname,
             'lastname'=>$request->lastname,
             'email'=>$request->email,
             'phone'=>$request->phone,
-            'company'=>$request->company,
-            'department_id'=>$request->department,
-            'designation_id'=>$request->designation,
             'avatar'=>$imageName,
             'alternate_phone_number' => $request->al_phone_number,
             'national_insurance_number' => $request->nat_insurance_number,  

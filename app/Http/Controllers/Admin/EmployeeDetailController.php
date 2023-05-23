@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
@@ -31,6 +32,7 @@ class EmployeeDetailController extends Controller
         $employee = Employee::with('department', 'designation')->find($id);
         $designations = Designation::get();
         $departments = Department::get();
+        $branches = Branch::get();
         $employee = Employee::find($id);
         $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
         $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
@@ -44,7 +46,7 @@ class EmployeeDetailController extends Controller
         $employees = Employee::get();
         $employee_jobs  = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->get();
         return view('backend.employee-detail', compact('employee', 'title', 'departments', 'designations','emergency_contact','employee_address','employee_bank','employee_payslips','employee_documents',
-        'employee_visas','visa_types','projects','employee_projects','employee_jobs','employees'));
+        'employee_visas','visa_types','projects','employee_projects','employee_jobs','employees','branches'));
     }
 
     /**
