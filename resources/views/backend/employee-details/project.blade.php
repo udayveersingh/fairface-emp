@@ -38,19 +38,17 @@
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a data-id="{{$project->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                <a data-id="{{$project->id}}" class="dropdown-item deletebtn" data-resource_data="Employee Project" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
                     </td>
                 </tr>
                 @endforeach
-                <x-modals.delete :route="'employee-project.destroy'" :title="'Employee Project'" />
                 @endif
             </tbody>
         </table>
     </div>
 </div>
-
 <!-- Add Employee Project Modal -->
 <div id="add_employee_project" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -66,6 +64,17 @@
                     @csrf
                     <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
                     <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Project<span class="text-danger">*</span></label>
+                                <select name="project" id="project" class="select form-control">
+                                    <option value="">Select Project</option>
+                                    @foreach($projects as $project)
+                                    <option value="{{$project->id}}">{{$project->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Start Date</label>
@@ -76,17 +85,6 @@
                             <div class="form-group">
                                 <label>End Date</label>
                                 <input class="form-control" name="end_date" id="edit_end_date" type="date">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="project" class="select form-control">
-                                    <option value="">Select Project</option>
-                                    @foreach($projects as $project)
-                                    <option value="{{$project->id}}">{{$project->name}}</option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                     </div>

@@ -58,7 +58,7 @@ class DepartmentController extends Controller
         $department->update([
             'name'=>$request->name,
         ]);
-        return back()->with('success',"Holiday has been updated successfully!!.");
+        return back()->with('success',"Department has been updated successfully!!.");
     }
 
     /**
@@ -71,6 +71,6 @@ class DepartmentController extends Controller
     {
         $department = Department::find($request->id);
         $department->delete();
-        return back()->with('success',"Holiday has been deleted successfully!!.");
+        return back()->with('success',"Department has been deleted successfully!!.");
     }
 }

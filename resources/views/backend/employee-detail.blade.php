@@ -32,6 +32,30 @@ $tabs = [
                     @method('PUT')
                     <div class="row">
                         <input type="hidden" name="id" value="{{$employee->id}}" id="edit_id">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                                <input class="form-control" value="{{$employee->employee_id}}" name="employee_id" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Main Work Location<span class="text-danger">*</span></label>
+                                <select name="branch_id" class="select form-control">
+                                    <option value="">Select Main Work Location</option>
+                                    @foreach ($branches as $branch)
+                                    <option value="{{$branch->id}}" {{ $employee->branch_id == $branch->id ? 'selected' : ''}}>{{$branch->branch_code}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
+                                <input class="form-control floating edit_avatar" name="avatar" type="file">
+                            </div>
+                            <img alt="avatar" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}} @else assets/img/profiles/default.jpg @endif" width="100px"><br>
+                        </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">First Name <span class="text-danger">*</span></label>
@@ -44,6 +68,18 @@ $tabs = [
                                 <input class="form-control edit_lastname" name="lastname" value="{{$employee->lastname}}" type="text">
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone Number Main </label>
+                                <input class="form-control edit_phone" name="phone" value="{{$employee->phone}}" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-form-label">Phone Number Alternate</label>
+                                <input class="form-control edit_al_phone_number" name="al_phone_number" value="{{$employee->alternate_phone_number}}" type="text">
+                            </div>
+                        </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -54,32 +90,24 @@ $tabs = [
 
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Phone </label>
-                                <input class="form-control edit_phone" name="phone" value="{{$employee->phone}}" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="col-form-label">Alternate Phone Number</label>
-                                <input class="form-control edit_al_phone_number" name="al_phone_number" value="{{$employee->alternate_phone_number}}" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label class="col-form-label">Date of Birth</label>
                                 <input class="form-control edit_date_of_birth" name="date_of_birth" value="{{$employee->date_of_birth}}" type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-form-label">Company</label>
-                                <input type="text" class="form-control edit_company" value="{{$employee->company}}" name="company">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
                                 <label class="col-form-label">National Insurance Number</label>
                                 <input class="form-control edit_insurance_number" name="nat_insurance_number" value="{{$employee->national_insurance_number}}" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nationality <span class="text-danger">*</span></label>
+                                <select name="nationality" id="nationality" class="select form-control">
+                                    <option value="">Select Nationality</option>
+                                    <option value="india" {{ $employee->nationality == "india"  ? 'selected' : ''}}>India</option>
+                                    <option value="australia" {{ $employee->nationality == "australia"  ? 'selected' : ''}}>Australia</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -102,16 +130,6 @@ $tabs = [
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Nationality <span class="text-danger">*</span></label>
-                                <select name="nationality" id="nationality" class="select form-control">
-                                    <option value="">Select Nationality</option>
-                                    <option value="india" {{ $employee->nationality == "india"  ? 'selected' : ''}}>India</option>
-                                    <option value="australia" {{ $employee->nationality == "australia"  ? 'selected' : ''}}>Australia</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 <label>Marital Status <span class="text-danger">*</span></label>
                                 <select name="marital_status" id="marital_status" class="select form-control">
                                     <option value="">Select Marital Status</option>
@@ -128,30 +146,12 @@ $tabs = [
                                 <select name="record_status" id="record_status" class="select form-control">
                                     <option>Select Record Status</option>
                                     <option value="active" {{ $employee->record_status == "active"  ? 'selected' : ''}}>Active</option>
-                                    <option value="inactive" {{ $employee->record_status == "inactive"  ? 'selected' : ''}}>Inactive</option>
+                                    <option value="archieve" {{$employee->record_status == "archieve"  ? 'selected' : ''}}>Archieve</option>
+                                    <option value="delete" {{$employee->record_status == "delete" ? 'selected' :''}}>Delete</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Designation <span class="text-danger">*</span></label>
-                                <select name="designation" selected="selected" class="select edit_designation form-control">
-                                    <option value="">Select Designation</option>
-                                    @foreach($designations as $designation)
-                                    <option value="{{$designation->id}}" {{ $employee->designation_id == $designation->id ? 'selected' : ''}}>{{$designation->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
-                                <input class="form-control floating edit_avatar" name="avatar" type="file">
-                            </div>
-                            <img alt="avatar" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}} @else assets/img/profiles/default.jpg @endif" width="100px"><br>
                         </div>
                     </div>
-
                     <div class="submit-section">
                         <button class="btn btn-primary submit-btn">Update</button>
                     </div>
@@ -171,13 +171,14 @@ $tabs = [
         <div class="modal-content">
             <div class="modal-body">
                 <div class="form-header">
-                    <h3>Delete {{ucfirst($title)}}</h3>
+                    <h3>Delete {{ucfirst($title)}} data</h3>
                     <p>Are you sure want to delete?</p>
                 </div>
-                <form action="" method="post">
+                <form action="{{route('employee.detail.delete')}}" method="post">
                     @method("DELETE")
                     @csrf
-                    <input type="hidden" id="delete_id" name="id">
+                    <input type="hidden" id="delete_data" name="id">
+                    <input type="hidden" id="resource_data" name="data_model">
                     <div class="modal-btn delete-action">
                         <div class="row">
                             <div class="col-6">
@@ -194,12 +195,6 @@ $tabs = [
     </div>
 </div>
 <!-- /Delete  Modal -->
-
-
-
-
-
-
 @endsection
 <script src="http://127.0.0.1:8000/assets/js/jquery-3.2.1.min.js"></script>
 <script>

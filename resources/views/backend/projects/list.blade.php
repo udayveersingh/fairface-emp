@@ -57,7 +57,7 @@
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$project->id}}" data-name="{{$project->name}}" data-project_type="{{$project->project_type}}" data-client_name="{{$project->client_name}}" data-client_address="{{$project->client_address}}" data-work_location="{{$project->work_location}}" data-start_date="{{$project->client_cont_start_date}}" data-end_date="{{$project->client_cont_start_date}}" data-contract_id="{{$project->contract_id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$project->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    <a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$project->id}}" data-target="#deletebtn"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -67,7 +67,6 @@
             </table>
         </div>
     </div>
-</div>
 </div>
 <!-- /Page Content -->
 

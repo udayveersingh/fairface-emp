@@ -30,7 +30,7 @@
                             <div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-id="{{$visa->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    <a data-id="{{$visa->id}}" class="dropdown-item deletebtn" data-resource_data="Employee Visa" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
                         </td>
@@ -59,7 +59,7 @@
                     @csrf
                     <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
                                 <select name="visa_type" id="visa_type" class="select form-control">
@@ -70,31 +70,31 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Cos Number</label>
                                 <input class="form-control" name="cos_number" id="edit_cos_number" type="text">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Cos Issue Date</label>
                                 <input class="form-control" name="cos_issue_date" id="edit_cos_issue_date" type="date">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Cos Expiry Date</label>
                                 <input class="form-control" name="cos_expiry_date" id="edit_cos_expiry_date" type="date">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Issue Date</label>
                                 <input class="form-control" name="visa_issue_date" id="edit_visa_issue_date" type="date">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Expiry Date</label>
                                 <input class="form-control" name="visa_expiry_date" id="edit_visa_expiry_date" type="date">

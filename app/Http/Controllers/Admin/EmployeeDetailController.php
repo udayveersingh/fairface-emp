@@ -45,8 +45,24 @@ class EmployeeDetailController extends Controller
         $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
         $employees = Employee::get();
         $employee_jobs  = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->get();
-        return view('backend.employee-detail', compact('employee', 'title', 'departments', 'designations','emergency_contact','employee_address','employee_bank','employee_payslips','employee_documents',
-        'employee_visas','visa_types','projects','employee_projects','employee_jobs','employees','branches'));
+        return view('backend.employee-detail', compact(
+            'employee',
+            'title',
+            'departments',
+            'designations',
+            'emergency_contact',
+            'employee_address',
+            'employee_bank',
+            'employee_payslips',
+            'employee_documents',
+            'employee_visas',
+            'visa_types',
+            'projects',
+            'employee_projects',
+            'employee_jobs',
+            'employees',
+            'branches'
+        ));
     }
 
     /**
@@ -124,15 +140,6 @@ class EmployeeDetailController extends Controller
         return view('backend.employee-details.job', compact('title', 'employee', 'employee_jobs', 'employees', 'departments'));
     }
 
-    // public function EmployeePayslip($id)
-    // {
-    //     $title = 'Employee Payslip';
-    //     $employee = Employee::find($id);
-    //     $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
-    //     return view('backend.employee-details.payslip', compact('title', 'employee', 'employee_payslips'));
-    // }
-
-
     public function EmployeePayslipUpload(Request $request)
     {
         $this->validate($request, [
@@ -159,15 +166,6 @@ class EmployeeDetailController extends Controller
     }
 
 
-    // public function EmployeeDocument($id)
-    // {
-    //     $title = 'Employee Document';
-    //     $employee = Employee::find($id);
-    //     $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
-    //     return view('backend.employee-details.document', compact('title', 'employee', 'employee_documents'));
-    // }
-
-
     public function EmployeeDocumentUpload(Request $request)
     {
         $this->validate($request, [
@@ -191,8 +189,31 @@ class EmployeeDetailController extends Controller
         ]);
     }
 
-    public function DeleteResource()
+    public function DeleteResource(Request $request)
     {
-
+        if ($request->data_model == "Employee Document") {
+            $employee_document = EmployeeDocument::find($request->id);
+            $employee_document->delete();
+            $message = "Employee document has been deleted.";
+        }elseif($request->data_model == "Employee Job") {
+            $employee_job = EmployeeJob::find($request->id);
+            $employee_job->delete();
+            $message = "Employee job has been deleted.";
+        }elseif($request->data_model == "Employee Visa")
+        {
+            $employee_visa = EmployeeVisa::find($request->id);
+            $employee_visa->delete();
+            $message = "Employee Visa has been deleted.";
+        }elseif($request->data_model == "Employee Project"){
+            $employee_project = EmployeeProject::find($request->id);
+            $employee_project->delete();
+            $message = "Employee Project has been deleted.";
+        }elseif($request->data_model == "Employee Payslip")
+        {
+            $employee_payslip = EmployeePayslip::find($request->id);
+            $employee_payslip->delete();
+            $message = "Employee Payslip has been deleted.";
+        }
+        return back()->with('success', $message);
     }
 }

@@ -47,7 +47,7 @@ class EmployeeJobController extends Controller
             'supervisor' => 'required',
             'job_title' => 'required',
             'department' => 'required',
-            'work_phone_number' => 'nullable|max:15'
+            'work_phone_number' => 'nullable|max:20'
         ]);
 
         EmployeeJob::create([
@@ -62,7 +62,7 @@ class EmployeeJobController extends Controller
             'job_type' => $request->job_type,
             'contracted_weekly_hours' => $request->contract_weekly_hours,
         ]);
-        return back()->with('success', "Employee Job has been added successfully.");
+        return back()->with('success', "Your record saved!");
     }
     /**
      * Update the specified resource in storage.
@@ -78,8 +78,8 @@ class EmployeeJobController extends Controller
             'job_title' => 'required',
             'department' => 'required',
         ]);
-        if (!empty($request->id)) {
-            $employee_job = EmployeeJob::find($request->id);
+        if (!empty($request->edit_id)) {
+            $employee_job = EmployeeJob::find($request->edit_id);
             $message = "Employee Job has been Updated successfully.";
         } else {
             $employee_job = new EmployeeJob;

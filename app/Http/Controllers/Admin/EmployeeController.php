@@ -85,7 +85,7 @@ class EmployeeController extends Controller
             'marital_status' => $request->marital_status,
             'record_status' => $request->record_status,
             'passport_number' => $request->passport_number,
-            'branch_id ' => $request->branch_id,
+            'branch_id' => $request->branch_id,
 
         ]);
         return redirect()->route('employees-list')->with('success',"Employee has been added");
@@ -137,7 +137,7 @@ class EmployeeController extends Controller
         $employee->update([
             'uuid' => $employee->uuid,
             'employee_id' => $request->employee_id,
-            'branch_id ' => $request->branch_id,
+            'branch_id' => $request->branch_id,
             'firstname'=>$request->firstname,
             'lastname'=>$request->lastname,
             'email'=>$request->email,
