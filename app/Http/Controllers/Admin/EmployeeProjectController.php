@@ -50,7 +50,7 @@ class EmployeeProjectController extends Controller
             'end_date'   => $request->end_date,
             'project_id'    => $request->project,
         ]);
-        return back()->with('success', "Employee project has been added successfully.");
+        return back()->with('success', "Your record saved!");
     }
 
     /**
@@ -88,14 +88,14 @@ class EmployeeProjectController extends Controller
             'start_date' => 'required',
         ]);
 
-        $employee_project = EmployeeProject::find($request->id);
+        $employee_project = EmployeeProject::find($request->edit_id);
         $employee_project->update([
             'employee_id' => $request->emp_id,
             'start_date' => $request->start_date,
             'end_date'   => $request->end_date,
             'project_id'    => $request->project,
         ]);
-        return back()->with('success', "Employee project has been updated.");
+        return back()->with('success', "Your record updated!");
     }
 
     /**
