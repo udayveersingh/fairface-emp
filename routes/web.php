@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\EmployeeEmergencyContactController;
 use App\Http\Controllers\Admin\EmployeeJobController;
 use App\Http\Controllers\Admin\EmployeePayslipController;
 use App\Http\Controllers\Admin\EmployeeProjectController;
+use App\Http\Controllers\Admin\EmployeeTimeSheetController;
 use App\Http\Controllers\Admin\EmployeeVisaController;
 use App\Http\Controllers\Admin\JobTitleController;
 use App\Http\Controllers\Admin\ProjectPhaseController;
@@ -113,6 +114,10 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('timesheet-status',[TimeSheetController::class,'store']);
     Route::put('timesheet-status',[TimeSheetController::class,'update']);
     Route::delete('timesheet-status',[TimeSheetController::class,'destroy'])->name('timesheet-status.destroy');
+
+    Route::get('employee-timesheet',[EmployeeTimeSheetController::class,'index'])->name('employee-timesheet');
+    Route::post('employee-timesheet',[EmployeeTimeSheetController::class,'store']);
+    Route::delete('employee-timesheet',[EmployeeTimeSheetController::class,'destroy'])->name('employee-timesheet.destroy');
 
     
     Route::get('project-phase',[ProjectPhaseController::class,'index'])->name('project-phase');
@@ -226,14 +231,14 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('clients-list',[ClientController::class,'lists'])->name('clients-list');
 
     Route::get('employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
-    Route::get('employee-contact/{id}',[EmployeeDetailController::class,'EmergencyContact'])->name('employee-contact');
-    Route::get('employee-address/{id}',[EmployeeDetailController::class,'EmployeeAddress'])->name('employee-address');
-    Route::get('employee-bank/{id}',[EmployeeDetailController::class,'EmployeeBank'])->name('employee-bank');
-    Route::get('employee-visa/{id}',[EmployeeDetailController::class,'EmployeeVisa'])->name('employee-visa');
-    Route::get('employee-project-detail/{id}',[EmployeeDetailController::class,'EmployeeProject'])->name('employee-project-detail');
-    Route::get('employee-job-detail/{id}',[EmployeeDetailController::class,'EmployeeJob'])->name('employee-job-detail');
-    Route::get('employee-payslip-detail/{id}',[EmployeeDetailController::class,'EmployeePayslip'])->name('employee-payslip-detail');
-    Route::get('employee-document-detail/{id}',[EmployeeDetailController::class,'EmployeeDocument'])->name('employee-document-detail');
+    // Route::get('employee-contact/{id}',[EmployeeDetailController::class,'EmergencyContact'])->name('employee-contact');
+    // Route::get('employee-address/{id}',[EmployeeDetailController::class,'EmployeeAddress'])->name('employee-address');
+    // Route::get('employee-bank/{id}',[EmployeeDetailController::class,'EmployeeBank'])->name('employee-bank');
+    // Route::get('employee-visa/{id}',[EmployeeDetailController::class,'EmployeeVisa'])->name('employee-visa');
+    // Route::get('employee-project-detail/{id}',[EmployeeDetailController::class,'EmployeeProject'])->name('employee-project-detail');
+    // Route::get('employee-job-detail/{id}',[EmployeeDetailController::class,'EmployeeJob'])->name('employee-job-detail');
+    // Route::get('employee-payslip-detail/{id}',[EmployeeDetailController::class,'EmployeePayslip'])->name('employee-payslip-detail');
+    // Route::get('employee-document-detail/{id}',[EmployeeDetailController::class,'EmployeeDocument'])->name('employee-document-detail');
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
     Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');

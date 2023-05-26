@@ -1,4 +1,4 @@
-@extends('layouts.backend-detail')
+@extends('layouts.backend')
 
 @section('content')
 <?php

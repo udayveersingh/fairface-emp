@@ -58,14 +58,6 @@
 								<div class="dropdown-menu dropdown-menu-right">
 									<a data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-employee_id="{{$employee->employee_id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-main_work_loc="{{!empty($employee->branch->id) ? $employee->branch->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 									<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" href="javascript:void(0)" data-toggle="modal" data-target="#deletebtn"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-									<a class="dropdown-item" href="{{route('emergency-contact',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Emergency Contact</a>
-									<a class="dropdown-item" href="{{route('employee-address',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Address</a>
-									<a class="dropdown-item" href="{{route('employee-bank',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Bank</a>
-									<a class="dropdown-item" href="{{route('employee-payslip',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Payslip</a>
-									<a class="dropdown-item" href="{{route('employee-document',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Document</a>
-									<a class="dropdown-item" href="{{route('employee-visa',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Visa</a>
-									<a class="dropdown-item" href="{{route('employee-project',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee Project</a>
-									<a class="dropdown-item" href="{{route('employee-job',$employee->id)}}"><i class="fa fa-pencil m-r-5"></i> Employee job</a>
 								</div>
 							</div>
 						</td>

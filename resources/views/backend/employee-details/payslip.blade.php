@@ -70,7 +70,7 @@
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
                     <td>{{!empty(date("Y-m-d", strtotime($employee_payslip->created_at) ))? date("Y-m-d", strtotime($employee_payslip->created_at)):''}}</td>
-                    <td><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></td>
+                    <td><a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a></td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
