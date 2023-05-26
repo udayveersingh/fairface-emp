@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
 
 class EmployeeLeaveController extends Controller
 {
@@ -21,8 +22,9 @@ class EmployeeLeaveController extends Controller
         $leaves = Leave::with('leaveType','employee')->get();
         $leave_types = LeaveType::get();
         $employees = Employee::get();
+        $projects = Project::get();
         return view('backend.employee-leaves',compact(
-            'title','leaves','leave_types','employees'
+            'title','leaves','leave_types','employees','projects'
         ));
     }
 
