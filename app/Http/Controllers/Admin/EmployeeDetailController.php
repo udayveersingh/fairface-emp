@@ -26,7 +26,7 @@ class EmployeeDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($id="")
     {
         $title = 'Employee Detail';
         $employee = Employee::with('department', 'designation')->find($id);
@@ -85,14 +85,17 @@ class EmployeeDetailController extends Controller
         $Employee_payslip->attachment = $file_name;
         $Employee_payslip->save();
         // $getEmployeeSlips = EmployeePayslip::where('employee_id', '=', $request->emp_id)->get();
-        return response()->json([
-            // 'data' => $getEmployeeSlips,
-        ]);
+        // return response()->json([
+        //     // 'data' => $getEmployeeSlips,
+        // ]);
+        $notification = notify('Your record saved!');
+        return back()->with($notification);
     }
 
 
     public function EmployeeDocumentUpload(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'name' => 'required',
         ]);
@@ -109,9 +112,12 @@ class EmployeeDetailController extends Controller
         $Employee_document->attachment = $file_name;
         $Employee_document->save();
         // $getEmployeeSlips = EmployeePayslip::where('employee_id', '=', $request->emp_id)->get();
-        return response()->json([
-            // 'data' => $getEmployeeSlips,
-        ]);
+        // return response()->json([
+        //     // 'data' => $getEmployeeSlips,
+        // ]);
+
+        $notification = notify('Your record saved!');
+        return back()->with($notification);
     }
 
     public function DeleteResource(Request $request)

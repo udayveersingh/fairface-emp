@@ -1,10 +1,16 @@
 @extends('layouts.backend')
 
+@section('styles')
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
+@endsection
+
+
 @section('content')
 <?php
 $tabs = [
     'document' => "Document",
-    'job'      => 'job',
+    'job'      => 'Job',
     'visa'     => "Visa",
     'project'  => "Project",
     'contact'  => 'Contact',
@@ -196,16 +202,9 @@ $tabs = [
 </div>
 <!-- /Delete  Modal -->
 @endsection
-<script src="http://127.0.0.1:8000/assets/js/jquery-3.2.1.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-            localStorage.setItem('activeTab', $(this).attr('href'));
-            test = $(this).attr('href');
-        });
-        var activeTab = localStorage.getItem('activeTab');
-        if (activeTab) {
-            $('[href="' + activeTab + '"]').tab('show');
-        }
-    });
-</script>
+
+@section('scripts')
+<!-- Datatable JS -->
+<script src="{{asset('assets/js/employee.js')}}"></script>
+<script src="{{asset('assets/plugins/select2/select2.min.js')}}"></script>
+@endsection

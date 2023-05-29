@@ -148,6 +148,8 @@
     </div>
 </div>
 <!-- Edit Employee Project Modal -->
+@push('scripts')
+<!-- Datatable JS -->
 <script>
     $(document).ready(function() {
         $('.table').on('click', '.edit_btn', function() {
@@ -165,3 +167,4 @@
         });
     });
 </script>
+@endpush

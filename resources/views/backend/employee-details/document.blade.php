@@ -1,6 +1,7 @@
 <div class="row mt-3">
     <div class="col-md-12">
-        <form id="documentform" method="POST" action="" enctype="multipart/form-data">
+        <form id="documentform" method="POST" action="{{route('employee-document-update')}}" enctype="multipart/form-data">
+            <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
             <input type="hidden" id="edit_id" value="{{!empty($document->id) ? $document->id:'' }}" name="id">
             <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
             <div class="row">
@@ -27,7 +28,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-striped custom-table mb-0 datatable">
+        <table class="table table-striped custom-table mb-0">
             <thead>
                 <tr>
                     <thead>
@@ -63,27 +64,3 @@
         </table>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('#documentform').on('submit', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ route('employee-document-update') }}",
-                method: "POST",
-                data: new FormData(this),
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(dataResult) {
-                    location.reload();
-                }
-            });
-        });
-    });
-</script>

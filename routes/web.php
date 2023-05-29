@@ -231,15 +231,8 @@ Route::group(['middleware'=>['auth']], function (){
     Route::delete('clients',[ClientController::class,'destroy'])->name('client.destroy');
     Route::get('clients-list',[ClientController::class,'lists'])->name('clients-list');
 
-    Route::get('employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
-    // Route::get('employee-contact/{id}',[EmployeeDetailController::class,'EmergencyContact'])->name('employee-contact');
-    // Route::get('employee-address/{id}',[EmployeeDetailController::class,'EmployeeAddress'])->name('employee-address');
-    // Route::get('employee-bank/{id}',[EmployeeDetailController::class,'EmployeeBank'])->name('employee-bank');
-    // Route::get('employee-visa/{id}',[EmployeeDetailController::class,'EmployeeVisa'])->name('employee-visa');
-    // Route::get('employee-project-detail/{id}',[EmployeeDetailController::class,'EmployeeProject'])->name('employee-project-detail');
-    // Route::get('employee-job-detail/{id}',[EmployeeDetailController::class,'EmployeeJob'])->name('employee-job-detail');
-    // Route::get('employee-payslip-detail/{id}',[EmployeeDetailController::class,'EmployeePayslip'])->name('employee-payslip-detail');
-    // Route::get('employee-document-detail/{id}',[EmployeeDetailController::class,'EmployeeDocument'])->name('employee-document-detail');
+    // Route::get('employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
+    Route::match(['get', 'post'],'employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
     Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');

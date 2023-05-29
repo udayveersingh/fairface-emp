@@ -23,13 +23,13 @@
                     @php
                     if(!empty($job->supervisor)){
                     $supervisor = App\Models\Employee::find($job->supervisor);
-                    $supervisor_name = $supervisor->firstname ."". $supervisor->lastname;
+                    $supervisor_name = $supervisor->firstname ." ". $supervisor->lastname;
                     }else{
                     $supervisor_name='';
                     }
                     if(!empty($job->timesheet_approval_incharge)){
                     $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                    $incharge_name = $timesheet_approval_incharge->firstname ."". $timesheet_approval_incharge->lastname;
+                    $incharge_name = $timesheet_approval_incharge->firstname ." ". $timesheet_approval_incharge->lastname;
                     }else{
                     $incharge_name = "";
                     }
@@ -44,7 +44,7 @@
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a data-id="{{$job->id}}" data-resource_data="Employee Job" class="dropdown-item deletebtn" href="javascript:void(0);" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                <a data-id="{{$job->id}}" data-employee_id="{{$job->employee_id}}" data-supervisor="{{$job->supervisor }}" data-timesheet_approval_inch="{{$job->timesheet_approval_incharge}}" data-job_title="{{$job->job_title}}" data-department="{{$job->department_id}}" data-work_email="{{$job->work_email}}" data-work_phone_number="{{$job->work_phone_number}}" data-start_date="{{$job->start_date}}" data-job_type="{{$job->job_type}}" data-cont_weekly_hours="{{$job->contracted_weekly_hours}}" class="dropdown-item edit_btn" href="javascript:void(0);" data-target="edit_employee_job" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                <a data-id="{{$job->id}}" data-employee_id="{{$job->employee_id}}" data-supervisor="{{$job->supervisor }}" data-timesheet_approval_inch="{{$job->timesheet_approval_incharge}}" data-job_title="{{$job->job_title}}" data-department="{{$job->department_id}}" data-work_email="{{$job->work_email}}" data-work_phone_number="{{$job->work_phone_number}}" data-start_date="{{$job->start_date}}" data-job_type="{{$job->job_type}}" data-cont_weekly_hours="{{$job->contracted_weekly_hours}}" class="dropdown-item edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                             </div>
                         </div>
                     </td>
@@ -82,7 +82,7 @@
                                 <select name="supervisor" id="supervisor" class="select form-control">
                                     <option value="">Select Supervisor</option>
                                     @foreach($employees as $employee)
-                                    <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
+                                    <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -95,7 +95,7 @@
                                 <select name="timesheet_approval_inch" id="" class="select form-control">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach($employees as $employee)
-                                    <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
+                                    <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -201,7 +201,7 @@
                                 <select name="timesheet_approval_inch" id="timesheet_approval_inch" class="select form-control">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach($employees as $employee)
-                                    <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
+                                    <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -265,32 +265,3 @@
     </div>
 </div>
 <!--Edit Employee Job Modal -->
-<script>
-    $(document).ready(function() {
-        $('.table').on('click', '.edit_btn', function() {
-            $('#edit_employee_job').modal('show');
-            var id = $(this).data('id');
-            var emp_id = $(this).data('employee_id');
-            var job_title = $(this).data('job_title');
-            var edit_supervisor = $(this).data('supervisor');
-            var edit_timesheet_approval_inch = $(this).data('timesheet_approval_inch');
-            var edit_department = $(this).data('department');
-            var edit_work_email = $(this).data('work_email');
-            var edit_work_phone_number = $(this).data('work_phone_number');
-            var edit_start_date = $(this).data('start_date');
-            var edit_job_type = $(this).data('job_type');
-            var cont_weekly_hours = $(this).data('cont_weekly_hours');
-            $('#edit_job_id').val(id);
-            $('#employee_id').val(emp_id);
-            $('#edit_job_title').val(job_title);
-            $('#edit_supervisor').val(edit_supervisor);
-            $('#timesheet_approval_inch').val(edit_timesheet_approval_inch);
-            $('#edit_department').val(edit_department);
-            $('#edit_work_email').val(edit_work_email);
-            $('#edit_phone_number').val(edit_work_phone_number);
-            $('#edit_start_date').val(edit_start_date);
-            $('#edit_job_type').val(edit_job_type);
-            $('#contracted_weekly_hours').val(cont_weekly_hours);
-        });
-    });
-</script>

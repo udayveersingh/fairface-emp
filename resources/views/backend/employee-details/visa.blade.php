@@ -63,7 +63,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="visa_type" class="select form-control">
+                                <select name="visa_type" id="visa_type" class=" form-control">
                                     <option value="">Select Visa Type</option>
                                     @foreach($visa_types as $type)
                                     <option value="{{$type->id}}">{{$type->visa_type}}</option>
@@ -179,26 +179,3 @@
     </div>
 </div>
 <!-- Edit Employee Visa Modal -->
-<script>
-    $(document).ready(function() {
-        $('.table').on('click', '.edit_btn', function() {
-            $('#edit_employee_visa').modal('show');
-            var id = $(this).data('id');
-            var emp_id = $(this).data('employee_id');
-            var visa_type = $(this).data('visa_type');
-            var cos_number = $(this).data('cos_number');
-            var cos_issue_date = $(this).data('cos_issue_date');
-            var cos_expiry_date = $(this).data('cos_expiry_date');
-            var visa_issue_date = $(this).data('visa_issue_date');
-            var visa_expiry_date = $(this).data('visa_expiry_date');
-            $('#edit_visa_id').val(id);
-            $('#visa_employee_id').val(emp_id);
-            $('#edit_visa_type').val(visa_type);
-            $('#edit_cos_number').val(cos_number);
-            $('#edit_cos_issue_date').val(cos_issue_date);
-            $('#edit_cos_expiry_date').val(cos_expiry_date);
-            $('#edit_visa_issue_date').val(visa_issue_date);
-            $('#edit_visa_expiry_date').val(visa_expiry_date);
-        });
-    });
-</script>

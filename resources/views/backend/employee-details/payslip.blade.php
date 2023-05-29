@@ -1,6 +1,7 @@
 <div class="row">
     <div class="col-md-12">
-        <form id="payslipform" method="POST" action="" enctype="multipart/form-data">
+        <form id="payslipform" method="POST" action="{{route('employee-payslip-update')}}" enctype="multipart/form-data">
+        <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
             <input type="hidden" id="edit_id" value="{{!empty($employee_payslip->id) ? $employee_payslip->id:'' }}" name="id">
             <div class="row">
                 <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
@@ -85,31 +86,3 @@
         </table>
     </div>
 </div>
-@section('scripts')
-<script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
-<script>
-    $(document).ready(function() {
-        $('#payslipform').on('submit', function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: "{{ route('employee-payslip-update') }}",
-                method: "POST",
-                data: new FormData(this),
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(dataResult) {
-                    location.reload();
-                }
-            });
-        });
-    });
-</script>
-@endsection
