@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                     @if(!empty($employee_timesheets->count()))
-                    @foreach ($employee_timesheets as $timesheet)
+                    @foreach ($employee_timesheets as $index=>$timesheet)
                     <tr>
                         @php
                         $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname:'';
@@ -56,7 +56,28 @@
                         <td>{{!empty($timesheet->projectphase->name) ? str_replace("_"," ",ucfirst($timesheet->projectphase->name)):''}}</td>
                         <td>{{$timesheet->from_time}}</td>
                         <td>{{$timesheet->to_time}}</td>
-                        <td>{{!empty($timesheet->timesheet_status->status) ? str_replace("_" ," " ,ucfirst($timesheet->timesheet_status->status)):''}}</td>
+                        <td class="text-center">
+                            <div class="form-check">
+                                <input class="form-check-input statusChecked" data-id="{{$timesheet->id}}" data-status="approved" data-toggle="modal" type="checkbox" value="" id="statusChecked"  {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}}>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                 Approved
+                                </label>
+                                <br>
+                                <input class="form-check-input statusChecked" type="checkbox" data-status="pending_approved" data-id="{{$timesheet->id}}" data-toggle="modal" id="statusChecked" {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "pending_approval" ? 'checked' : ''}}>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Pending
+                                </label>
+                                <br>
+                                <input class="form-check-input statusChecked" type="checkbox" data-status="rejected" data-id="{{$timesheet->id}}" data-toggle="modal" id="statusChecked" {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "rejected" ? 'checked' : ''}}>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    Rejected
+                                </label>
+                            </div>
+                        </td>
+                        <!-- <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
+											<i class="fa fa-dot-circle-o text-success"></i> Rejected
+										</a> -->
+                        <!-- <td>{{!empty($timesheet->timesheet_status->status) ? str_replace("_" ," " ,ucfirst($timesheet->timesheet_status->status)):''}}</td> -->
                         <td class="text-right">
                             <div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -244,7 +265,7 @@
     </div>
 </div>
 
-<!-- Add Branch Modal -->
+<!-- Add Employee Timesheet Modal -->
 <div id="add_employee_timesheet" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -411,7 +432,49 @@
         </div>
     </div>
 </div>
-<!-- /Add Branch Modal -->
+<!-- Add Employee Timesheet Modal -->
+
+<!-- update Employee Timsheet status Model-->
+<div class="modal custom-modal fade" id="update_timesheet_status" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-header">
+                    <h3>Update {{ucfirst($title)}} data</h3>
+                    <p>Are you sure want to update status?</p>
+                </div>
+                <form action="{{route('timesheet-status-update')}}" method="post">
+                    @csrf
+                    <input type="hidden" id="timesheet_id" name="id">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>TimeSheet Status<span class="text-danger">*</span></label>
+                                <select name="timesheet_status" id="edit_timesheet_status" class="select form-control">
+                                    <option value="">Select TimeSheet Status</option>
+                                    @foreach($timesheet_statuses as $time_status )
+                                    <option value="{{$time_status->id}}">{{str_replace("_"," ",ucfirst($time_status->status))}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-btn delete-action">
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-primary continue-btn btn-block" type="submit">Update</button>
+                            </div>
+                            <div class="col-6">
+                                <button data-dismiss="modal" class="btn btn-primary cancel-btn btn-block">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- update Employee Timsheet status Model-->
 @endsection
 
 @section('scripts')
@@ -456,5 +519,37 @@
             $('#edit_approved_datetime').val(timesheet_approved_date_time);
         });
     });
+</script>
+<script>
+    $('.statusChecked').on('click', function() {
+        $('#update_timesheet_status').modal('show');
+        var id = $(this).data('id');
+        var status = $(this).data('status');
+        $('#timesheet_id').val(id);
+    });
+
+    // $(document).ready(function() {
+    //     $('#timesheet_status_form').on('status_update_button', function(e) {
+    //         e.preventDefault();
+    //         alert("test hello");
+    //         $.ajaxSetup({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    //             }
+    //         });
+    //         $.ajax({
+    //             url: "{{ route('timesheet-status-update') }}",
+    //             method: "POST",
+    //             data: new FormData(this),
+    //             dataType: 'JSON',
+    //             contentType: false,
+    //             cache: false,
+    //             processData: false,
+    //             success: function(dataResult) {
+    //                 location.reload();
+    //             }
+    //         });
+    //     });
+    // });
 </script>
 @endsection

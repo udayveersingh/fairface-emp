@@ -18,6 +18,8 @@ class AlterAddNewColumnsInLeavesTable extends Migration
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');
             $table->foreignId('project_phase_id')->nullable()->constrained('project_phases')->onDelete('cascade');
             $table->string('status_reason')->nullable();
+            $table->dropColumn('status');
+            $table->foreignId('timesheet_status_id')->nullable()->constrained('timesheet_statuses')->onDelete('cascade');
             $table->date('approved_date_time')->nullable();
         });
     }
