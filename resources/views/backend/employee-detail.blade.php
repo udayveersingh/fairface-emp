@@ -111,8 +111,9 @@ $tabs = [
                                 <label>Nationality <span class="text-danger">*</span></label>
                                 <select name="nationality" id="nationality" class="form-control">
                                     <option value="">Select Nationality</option>
-                                    <option value="india" {{ $employee->nationality == "india"  ? 'selected' : ''}}>India</option>
-                                    <option value="australia" {{ $employee->nationality == "australia"  ? 'selected' : ''}}>Australia</option>
+                                    @foreach($countries as $country)
+                                    <option value="{{$country->id}}" {{ $employee->country_id == "$country->id"  ? 'selected' : ''}}>{{$country->name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Country;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
@@ -34,6 +35,7 @@ class EmployeeDetailController extends Controller
         $departments = Department::get();
         $branches = Branch::get();
         $employee = Employee::find($id);
+        $countries = Country::get();
         $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
         $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
         $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
@@ -61,6 +63,7 @@ class EmployeeDetailController extends Controller
             'employee_projects',
             'employee_jobs',
             'employees',
+            'countries',
             'branches'
         ));
     }

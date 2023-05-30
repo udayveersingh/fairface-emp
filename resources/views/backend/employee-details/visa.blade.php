@@ -62,6 +62,12 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label>Employee Id<span class="text-danger">*</span></label>
+                                <input class="form-control" value="{{$employee->employee_id}}" name="employee_id" id="" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
                                 <select name="visa_type" id="visa_type" class=" form-control">
                                     <option value="">Select Visa Type</option>

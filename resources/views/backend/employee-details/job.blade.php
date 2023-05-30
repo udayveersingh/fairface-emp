@@ -184,12 +184,6 @@
                         <input type="hidden" id="employee_id" name="emp_id">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Employee Id<span class="text-danger">*</span></label>
-                                <input class="form-control" value="{{$employee->employee_id}}" name="employee_id" id="" type="text" readonly>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
                                 <input class="form-control" name="job_title" value="" id="edit_job_title" type="text">
                             </div>
