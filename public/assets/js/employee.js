@@ -37,7 +37,8 @@ $(document).ready(function() {
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');
         var job_title = $(this).data('job_title');
-        var edit_supervisor = $(this).data('supervisor');
+        var supervisor = $(this).data('supervisor');
+        console.log(edit_supervisor,"edit_supervisor");
         var edit_timesheet_approval_inch = $(this).data('timesheet_approval_inch');
         var edit_department = $(this).data('department');
         var edit_work_email = $(this).data('work_email');
@@ -48,7 +49,7 @@ $(document).ready(function() {
         $('#edit_job_id').val(id);
         $('#employee_id').val(emp_id);
         $('#edit_job_title').val(job_title);
-        $('#edit_supervisor').val(edit_supervisor);
+        $('#edit_supervisor').val(supervisor);
         $('#timesheet_approval_inch').val(edit_timesheet_approval_inch);
         $('#edit_department').val(edit_department);
         $('#edit_work_email').val(edit_work_email);
@@ -113,5 +114,13 @@ $(document).ready(function() {
         $('#edit_end_date').val(end_date);
         $('#edit_project').val(project);
     });
+
+    $(".mask_phone_number").keyup(function() {
+        $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+    });
+
+    // $(document).ready(function() {
+    //     $('.select').select2();
+    // })
 
 });

@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Month<span class="text-danger">*</span></label>
-                        <select name="month" id="edit_month" class="select form-control">
+                        <select name="month" id="edit_month" class="form-control">
                             <option value="">Select Month</option>
                             @php
                             for ($i = 0; $i < 12; $i++) { $date_str=date('M', strtotime("+ $i months")); @endphp <option value={{$date_str}}> {{$date_str}}</option>;
@@ -26,7 +26,7 @@
                         return (string) date('Y') - $item;
                         });
                         @endphp
-                        <select name="year" id="edit_year" class="select form-control">
+                        <select name="year" id="edit_year" class="form-control">
                             <option value="">Select Year</option>
                             @foreach($years as $year)
                             <option value="{{$year}}">{{$year}}</option>
@@ -76,7 +76,7 @@
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a data-id="{{$employee_payslip->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="#deletebtn" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                <a data-id="{{$employee_payslip->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
                     </td>

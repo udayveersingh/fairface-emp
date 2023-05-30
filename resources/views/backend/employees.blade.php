@@ -24,8 +24,6 @@
 @endsection
 
 @section('content')
-
-
 <div class="row staff-grid-row">
 	@if (!empty($employees->count()))
 	@foreach ($employees as $employee)
@@ -37,7 +35,7 @@
 			<div class="dropdown profile-action">
 				<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 				<div class="dropdown-menu dropdown-menu-right">
-					<a data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-employee_id="{{$employee->employee_id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-designation="" data-main_work_loc="{{!empty($employee->branch->id) ? $employee->branch->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->nationality}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+					<a data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-employee_id="{{$employee->employee_id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-designation="" data-main_work_loc="{{!empty($employee->branch->id) ? $employee->branch->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->country_id}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 					<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" data-target="#deletebtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 				</div>
 			</div>
@@ -72,7 +70,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Main Work Location<span class="text-danger">*</span></label>
-								<select name="branch_id" class="select form-control">
+								<select name="branch_id" class="form-control">
 									<option value="">Select Main Work Location</option>
 									@foreach ($branches as $branch)
 									<option value="{{$branch->id}}">{{$branch->branch_code}}</option>
@@ -101,13 +99,13 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Phone Number Main </label>
-								<input class="form-control" name="phone" type="text">
+								<input class="form-control mask_phone_number mask_phone_number" name="phone" type="text">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="col-form-label">Alternate Phone Number</label>
-								<input class="form-control" name="al_phone_number" type="text">
+								<input class="form-control mask_phone_number" name="al_phone_number" type="text">
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -131,10 +129,11 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" class="select form-control">
+								<select name="nationality" class="form-control">
 									<option value="">Select Nationality</option>
-									<option value="india">India</option>
-									<option value="australia">Australia</option>
+									@foreach($countries as $country)
+									<option value="{{$country->id}}">{{$country->name}}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
@@ -159,7 +158,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" class="select form-control">
+								<select name="marital_status" class="form-control">
 									<option value="">Select Marital Status</option>
 									<option value="married">Married</option>
 									<option value="unmarried">Unmarried</option>
@@ -171,7 +170,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" class="select form-control">
+								<select name="record_status" class="form-control">
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="archieve">Archieve</option>
@@ -216,7 +215,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Main Work Location<span class="text-danger">*</span></label>
-								<select name="branch_id" id="edit_main_work_loc" class="select form-control">
+								<select name="branch_id" id="edit_main_work_loc" class="form-control">
 									<option>Select Main Work Location</option>
 									@foreach ($branches as $branch)
 									<option value="{{$branch->id}}">{{$branch->branch_code}}</option>
@@ -245,13 +244,13 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Phone Number Main </label>
-								<input class="form-control edit_phone" name="phone" type="text">
+								<input class="form-control mask_phone_number edit_phone" name="phone" type="text">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="form-group">
 								<label class="col-form-label">Alternate Phone Number</label>
-								<input class="form-control edit_al_phone_number" name="al_phone_number" type="text">
+								<input class="form-control mask_phone_number edit_al_phone_number" name="al_phone_number" type="text">
 							</div>
 						</div>
 
@@ -276,10 +275,11 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" id="nationality" class="select form-control">
+								<select name="nationality" id="nationality" class="form-control">
 									<option value="">Select Nationality</option>
-									<option value="india">India</option>
-									<option value="australia">Australia</option>
+									@foreach($countries as $country)
+									<option value="{{$country->id}}">{{$country->name}}</option>
+									@endforeach
 								</select>
 							</div>
 						</div>
@@ -304,7 +304,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" id="marital_status" class="select form-control">
+								<select name="marital_status" id="marital_status" class="form-control">
 									<option value="">Select Marital Status</option>
 									<option value="married">Married</option>
 									<option value="unmarried">Unmarried</option>
@@ -316,7 +316,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" selected="selected" id="record_status" class="select form-control">
+								<select name="record_status" selected="selected" id="record_status" class="form-control">
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="archieve">Archieve</option>
@@ -353,7 +353,7 @@
 			var company = $(this).data('company');
 			// var designation = $(this).data('designation');
 			var department = $(this).data('department');
-			var al_phone_number = $(this).data('alternate_phone_number');
+			var al_phone_number = $(this).data('phone_number');
 			var national_insurance_number = $(this).data('national_insurance_number');
 			var nationality = $(this).data('nationality');
 			var passport_number = $(this).data('passport_number');

@@ -68,7 +68,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="project" class="select form-control">
+                                <select name="project" id="project" class="form-control">
                                     <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                     <option value="{{$project->id}}">{{$project->name}}</option>
@@ -118,7 +118,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="edit_project" class="select form-control">
+                                <select name="project" id="edit_project" class="form-control">
                                     <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                     <option value="{{$project->id}}">{{$project->name}}</option>
@@ -148,23 +148,3 @@
     </div>
 </div>
 <!-- Edit Employee Project Modal -->
-@push('scripts')
-<!-- Datatable JS -->
-<script>
-    $(document).ready(function() {
-        $('.table').on('click', '.edit_btn', function() {
-            $('#edit_employee_project').modal('show');
-            var id = $(this).data('id');
-            var emp_id = $(this).data('employee_id');
-            var start_date = $(this).data('start_date');
-            var end_date = $(this).data('end_date');
-            var project = $(this).data('project');
-            $('#edit_project_id').val(id);
-            $('#project_employee_id').val(emp_id);
-            $('#pro_edit_start_date').val(start_date);
-            $('#edit_end_date').val(end_date);
-            $('#edit_project').val(project);
-        });
-    });
-</script>
-@endpush

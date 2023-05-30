@@ -21,13 +21,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Phone Number 1</label>
-                        <input class="form-control" name="phone_number_1" value="{{!empty($emergency_contact->phone_number_1)? $emergency_contact->phone_number_1:''}}" id="edit_phone_number_1" type="text">
+                        <input class="form-control mask_phone_number" name="phone_number_1" value="{{!empty($emergency_contact->phone_number_1)? $emergency_contact->phone_number_1:''}}" id="edit_phone_number_1" type="text">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Phone Number 2</label>
-                        <input class="form-control" name="phone_number_2" value="{{!empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2:''}}" id="edit_phone_number_2" type="text">
+                        <input class="form-control mask_phone_number" name="phone_number_2" value="{{!empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2:''}}" id="edit_phone_number_2" type="text">
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -53,13 +53,13 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Overseas Phone Number 1</label>
-                        <input class="form-control" name="overseas_phone_number_1" value="{{!empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1:''}}" id="edit_overseas_phone_number_1" type="text">
+                        <input class="form-control mask_phone_number" name="overseas_phone_number_1" value="{{!empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1:''}}" id="edit_overseas_phone_number_1" type="text">
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label>Overseas Phone Number 2</label>
-                        <input class="form-control" name="overseas_phone_number_2" value="{{!empty($emergency_contact->overseas_phone_number_2)? $emergency_contact->overseas_phone_number_2:''}}" id="edit_overseas_phone_number_2" type="text">
+                        <input class="form-control mask_phone_number" name="overseas_phone_number_2" value="{{!empty($emergency_contact->overseas_phone_number_2)? $emergency_contact->overseas_phone_number_2:''}}" id="edit_overseas_phone_number_2" type="text">
                     </div>
                 </div>
                 <div class="col-sm-4">

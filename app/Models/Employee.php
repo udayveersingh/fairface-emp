@@ -15,7 +15,7 @@ class Employee extends Model
     protected $table ="employees";
     protected $fillable = [
         'employee_id', 'branch_id','firstname','lastname','uuid','email','phone','avatar','alternate_phone_number','national_insurance_number',
-        'nationality','passport_number','marital_status','record_status','date_of_birth','passport_issue_date','passport_expiry_date',
+        'country_id','passport_number','marital_status','record_status','date_of_birth','passport_issue_date','passport_expiry_date',
     ];
 
 

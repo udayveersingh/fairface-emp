@@ -123,29 +123,29 @@
 		});
 		$('.alert').delay(2000).fadeOut();
 		@if(Session::has('message'))
-		var type = "{{ Session::get('alert-type', '') }}";
-		switch (type) {
-			case 'info':
-				toastr.info("{{ Session::get('message') }}");
-				break;
+			var type = "{{ Session::get('alert-type', '') }}";
+			switch (type) {
+				case 'info':
+					toastr.info("{{ Session::get('message') }}");
+					break;
 
-			case 'success':
-				toastr.success("{{ Session::get('message') }}");
-				break;
+				case 'success':
+					toastr.success("{{ Session::get('message') }}");
+					break;
 
-			case 'warning':
-				toastr.warning("{{ Session::get('message') }}");
-				break;
+				case 'warning':
+					toastr.warning("{{ Session::get('message') }}");
+					break;
 
-			case 'error':
-				toastr.error("{{ Session::get('message') }}");
-				break;
+				case 'error':
+					toastr.error("{{ Session::get('message') }}");
+					break;
 
-			case 'danger':
-				toastr.error("{{ Session::get('message') }}");
-				break;
+				case 'danger':
+					toastr.error("{{ Session::get('message') }}");
+					break;
 
-		}
+			}
 		@endif
 	});
 </script>
@@ -162,6 +162,10 @@
 			$('#resource_data').val(resource_model);
 		})
 	});
+
+	$(".mask_phone_number").keyup(function() {
+        $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+    });
 </script>
 @yield('scripts')
 

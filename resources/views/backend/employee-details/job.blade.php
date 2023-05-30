@@ -72,6 +72,12 @@
                         <input type="hidden" value="{{$employee->id}}" id="emp_id" name="emp_id">
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label>Employee Id<span class="text-danger">*</span></label>
+                                <input class="form-control" value="{{$employee->employee_id}}" name="employee_id" id="" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
                                 <input class="form-control" name="job_title" id="job_title" type="text">
                             </div>
@@ -79,7 +85,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Supervisor<span class="text-danger">*</span></label>
-                                <select name="supervisor" id="supervisor" class="select form-control">
+                                <select name="supervisor" id="supervisor" class="form-control">
                                     <option value="">Select Supervisor</option>
                                     @foreach($employees as $employee)
                                     <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
@@ -92,7 +98,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>TimeSheet Approval Incharge<span class="text-danger">*</span></label>
-                                <select name="timesheet_approval_inch" id="" class="select form-control">
+                                <select name="timesheet_approval_inch" id="" class="form-control">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach($employees as $employee)
                                     <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
@@ -103,7 +109,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Department<span class="text-danger">*</span></label>
-                                <select name="department" id="department" class="select form-control">
+                                <select name="department" id="department" class="form-control">
                                     <option value="">Select Department</option>
                                     @foreach($departments as $department)
                                     <option value="{{$department->id}}">{{$department->name}}</option>
@@ -122,7 +128,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Work Phone Number</label>
-                                <input class="form-control" name="work_phone_number" id="phone_number" type="text">
+                                <input class="form-control mask_phone_number" name="work_phone_number" id="phone_number" type="text">
                             </div>
                         </div>
                     </div>
@@ -136,7 +142,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Type<span class="text-danger">*</span></label>
-                                <select name="job_type" id="job_type" class="select form-control">
+                                <select name="job_type" id="job_type" class="form-control">
                                     <option value="">Select Job Type</option>
                                     <option value="full_time">Full Time</option>
                                     <option value="part_time">Part Time</option>
@@ -146,7 +152,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Contracted Weekly Hours</label>
-                                <input class="form-control" name="contract_weekly_hours" id="" type="time">
+                                <input class="form-control" name="contract_weekly_hours" id="" type="text">
                             </div>
                         </div>
                     </div>
@@ -178,6 +184,12 @@
                         <input type="hidden" id="employee_id" name="emp_id">
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label>Employee Id<span class="text-danger">*</span></label>
+                                <input class="form-control" value="{{$employee->employee_id}}" name="employee_id" id="" type="text" readonly>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
                                 <input class="form-control" name="job_title" value="" id="edit_job_title" type="text">
                             </div>
@@ -185,7 +197,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Supervisor<span class="text-danger">*</span></label>
-                                <select name="supervisor" id="edit_supervisor" class="select form-control">
+                                <select name="supervisor" id="edit_supervisor" class="form-control">
                                     <option value="">Select Supervisor</option>
                                     @foreach($employees as $employee)
                                     <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
@@ -198,7 +210,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>TimeSheet Approval Incharge<span class="text-danger">*</span></label>
-                                <select name="timesheet_approval_inch" id="timesheet_approval_inch" class="select form-control">
+                                <select name="timesheet_approval_inch" id="timesheet_approval_inch" class="form-control">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach($employees as $employee)
                                     <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
@@ -209,7 +221,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Department<span class="text-danger">*</span></label>
-                                <select name="department" id="edit_department" class="select form-control">
+                                <select name="department" id="edit_department" class="form-control">
                                     <option value="">Select Department</option>
                                     @foreach($departments as $department)
                                     <option value="{{$department->id}}">{{$department->name}}</option>
@@ -228,7 +240,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Work Phone Number</label>
-                                <input class="form-control" name="work_phone_number" id="edit_phone_number" type="text">
+                                <input class="form-control mask_phone_number" name="work_phone_number" id="edit_phone_number" type="text">
                             </div>
                         </div>
                     </div>
@@ -242,7 +254,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Type<span class="text-danger">*</span></label>
-                                <select name="job_type" id="edit_job_type" class="select form-control">
+                                <select name="job_type" id="edit_job_type" class="form-control">
                                     <option value="">Select Job Type</option>
                                     <option value="full_time">Full Time</option>
                                     <option value="part_time">Part Time</option>
@@ -252,7 +264,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Contracted Weekly Hours</label>
-                                <input class="form-control" name="contract_weekly_hours" id="contracted_weekly_hours" type="time">
+                                <input class="form-control" name="contract_weekly_hours" id="contracted_weekly_hours" type="text">
                             </div>
                         </div>
                     </div>

@@ -110,7 +110,8 @@ class SettingsController extends Controller
             'phone' => 'required',
             'mobile' => 'required',
             'fax' => 'required',
-            'website_url' => 'required|url'
+            'website_url' => 'required|url',
+            'timesheet_interval' => 'required',
         ]);
 
         $settings->company_name = $request->company_name;
@@ -125,6 +126,7 @@ class SettingsController extends Controller
         $settings->mobile = $request->mobile;
         $settings->fax = $request->fax;
         $settings->website_url = $request->website_url;
+        $settings->timesheet_interval = $request->timesheet_interval;
         $settings->save();
         $notification = notify('company settings has been updated');
         return back()->with($notification);

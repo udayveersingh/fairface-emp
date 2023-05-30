@@ -47,7 +47,7 @@ $tabs = [
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Main Work Location<span class="text-danger">*</span></label>
-                                <select name="branch_id" class="select form-control">
+                                <select name="branch_id" class="form-control">
                                     <option value="">Select Main Work Location</option>
                                     @foreach ($branches as $branch)
                                     <option value="{{$branch->id}}" {{ $employee->branch_id == $branch->id ? 'selected' : ''}}>{{$branch->branch_code}}</option>
@@ -77,13 +77,13 @@ $tabs = [
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Phone Number Main </label>
-                                <input class="form-control edit_phone" name="phone" value="{{$employee->phone}}" type="text">
+                                <input class="form-control edit_phone mask_phone_number" name="phone" value="{{$employee->phone}}" type="text">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="col-form-label">Phone Number Alternate</label>
-                                <input class="form-control edit_al_phone_number" name="al_phone_number" value="{{$employee->alternate_phone_number}}" type="text">
+                                <input class="form-control edit_al_phone_number mask_phone_number" name="al_phone_number" value="{{$employee->alternate_phone_number}}" type="text">
                             </div>
                         </div>
 
@@ -109,7 +109,7 @@ $tabs = [
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nationality <span class="text-danger">*</span></label>
-                                <select name="nationality" id="nationality" class="select form-control">
+                                <select name="nationality" id="nationality" class="form-control">
                                     <option value="">Select Nationality</option>
                                     <option value="india" {{ $employee->nationality == "india"  ? 'selected' : ''}}>India</option>
                                     <option value="australia" {{ $employee->nationality == "australia"  ? 'selected' : ''}}>Australia</option>
@@ -137,7 +137,7 @@ $tabs = [
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Marital Status <span class="text-danger">*</span></label>
-                                <select name="marital_status" id="marital_status" class="select form-control">
+                                <select name="marital_status" id="marital_status" class="form-control">
                                     <option value="">Select Marital Status</option>
                                     <option value="married" {{ $employee->marital_status == "married"  ? 'selected' : ''}}>Married</option>
                                     <option value="unmarried" {{ $employee->marital_status == "unmarried"  ? 'selected' : ''}}>Unmarried</option>
@@ -149,7 +149,7 @@ $tabs = [
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Record Status <span class="text-danger">*</span></label>
-                                <select name="record_status" id="record_status" class="select form-control">
+                                <select name="record_status" id="record_status" class="form-control">
                                     <option>Select Record Status</option>
                                     <option value="active" {{ $employee->record_status == "active"  ? 'selected' : ''}}>Active</option>
                                     <option value="archieve" {{$employee->record_status == "archieve"  ? 'selected' : ''}}>Archieve</option>
@@ -207,4 +207,5 @@ $tabs = [
 <!-- Datatable JS -->
 <script src="{{asset('assets/js/employee.js')}}"></script>
 <script src="{{asset('assets/plugins/select2/select2.min.js')}}"></script>
+<script src="{{asset('assets/js/jquery.maskedinput.min.js')}}"></script>
 @endsection

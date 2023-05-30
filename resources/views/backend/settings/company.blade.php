@@ -1,14 +1,14 @@
 @extends('layouts.backend-settings')
 
 @section('styles')
-    <!-- Select2 css -->
-    <link href="{{ asset('assets/libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
+<!-- Select2 css -->
+<link href="{{ asset('assets/libs/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
 <div class="row">
     <div class="col-md-8 offset-md-2">
-    
+
         <!-- Page Header -->
         <div class="page-header">
             <div class="row">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <!-- /Page Header -->
-        
+
         <form action="{{route('settings.company')}}" method="post">
             @csrf
             <div class="row">
@@ -101,6 +101,17 @@
                         <label>Website Url</label>
                         <input class="form-control" name="website_url" value="{{$settings->website_url}}" type="text">
                     </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="form-label">TimeSheet Interval</label>
+                </div>
+                <div class="col-lg-4">
+                    <input class="form-check-input" type="radio" name="timesheet_interval" value="weekly" id="timesheet_interval_1" {{!empty($settings->timesheet_interval) && $settings->timesheet_interval == "weekly" ? 'checked' : ''}}>Weekly
+                </div>
+                <div class="col-lg-4">
+                    <input class="form-check-input" type="radio" name="timesheet_interval" value="monthly" id="timesheet_interval_2" {{!empty($settings->timesheet_interval) && $settings->timesheet_interval == "monthly" ? 'checked' : ''}}>Monthly
                 </div>
             </div>
             <div class="submit-section">
