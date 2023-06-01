@@ -41,12 +41,15 @@
                 <li class="{{route_is('employees-list') ? 'active' : '' }}">
                     <a href="{{route('employees-list')}}"><i class="la la-user"></i> <span>All Employees</span></a>
                 </li>
-                <li class="{{route_is('tickets') ? 'active' : '' }}">
+                <li class="{{route_is('employee-timesheet') ? 'active' : '' }}">
+                    <a href="{{route('employee-timesheet')}}"><i class="la la-files-o"></i> <span>Timesheet</span></a>
+                </li>
+                <!-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-files-o"></i> <span>Timesheet</span></a>
-                </li>
-                <li class="{{route_is('tickets') ? 'active' : '' }}">
+                </li> -->
+                <!-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bell"></i> <span>Leaves</span></a>
-                </li>
+                </li> -->
                 <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
                 </li>

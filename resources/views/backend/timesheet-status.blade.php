@@ -42,14 +42,14 @@
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a data-id="{{$timesheet_status->id}}" data-status="{{$timesheet_status->status}}" class="dropdown-item editbtn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-id="{{$timesheet_status->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    <a data-id="{{$timesheet_status->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-target="#deletebtn" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
                         </td>
                     </tr>
                     @endforeach
                     <x-modals.delete :route="'timesheet-status.destroy'" :title="'timesheet status'" />
-                    <!-- Edit Branch Modal -->
+                    <!-- Edit TImeSheet Status Modal -->
                     <div id="edit_timesheet_status" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -68,8 +68,9 @@
                                         <select name="timesheet_status" id="edit_status" class="select form-control">
                                             <option value="">Select TimeSheet Status</option>
                                             <option value="submitted">Submitted</option>
-                                            <option value="pending_approval">Pending Approval</option>
                                             <option value="approved">Approved</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="pending_approval">Pending Approval</option>
                                         </select>
                                         <div class="submit-section">
                                             <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -79,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /Edit Branch Modal -->
+                    <!-- /Edit TimeSheet Status Modal -->
                     @endif
                 </tbody>
             </table>
@@ -87,7 +88,7 @@
     </div>
 </div>
 
-<!-- Add Branch Modal -->
+<!-- Add Timesheet status Modal -->
 <div id="add_timeSheet_status" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -107,6 +108,7 @@
                         <option value="submitted">Submitted</option>
                         <option value="approved">Approved</option>
                         <option value="pending_approval">Pending Approval</option>
+                        <option value="rejected">Rejected</option>
                     </select>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
@@ -116,7 +118,7 @@
         </div>
     </div>
 </div>
-<!-- /Add Branch Modal -->
+<!-- Add Timesheet status Modal -->
 @endsection
 
 @section('scripts')

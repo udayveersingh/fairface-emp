@@ -123,7 +123,7 @@
                                                     <select name="timesheet_approval_inch" id="timesheet_approval_inch" class="select">
                                                         <option value="">Select Approval Incharge</option>
                                                         @foreach($employees as $employee)
-                                                        <option value="{{$employee->id}}">{{$employee->firstname ."".$employee->lastname }}</option>
+                                                        <option value="{{$employee->id}}">{{$employee->firstname ." ".$employee->lastname }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>

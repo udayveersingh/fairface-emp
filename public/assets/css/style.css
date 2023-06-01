@@ -8166,3 +8166,4 @@ ul.comment-list li ul.children {
     gap: 10px; margin:0;
 }
 .dataTables_filter{ text-align: right;}
+.avatar img{ width:100%; height: 100%; object-fit: cover;}

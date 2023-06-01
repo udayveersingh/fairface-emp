@@ -12,11 +12,10 @@ class Employee extends Model
 {
     use HasFactory;
 
+    protected $table ="employees";
     protected $fillable = [
-        'firstname','lastname','uuid',
-        'email','phone',
-        'department_id','designation_id','company','avatar','alternate_phone_number','national_insurance_number',
-        'nationality','passport_number','marital_status','record_status','date_of_birth','passport_issue_date','passport_expiry_date'
+        'employee_id', 'branch_id','firstname','lastname','uuid','email','phone','avatar','alternate_phone_number','national_insurance_number',
+        'country_id','passport_number','marital_status','record_status','date_of_birth','passport_issue_date','passport_expiry_date',
     ];
 
 
@@ -28,5 +27,8 @@ class Employee extends Model
         return $this->belongsTo(Designation::class);
     }
 
+    public function branch(){
+        return $this->belongsTo(Branch::class);
+    }
     
 }

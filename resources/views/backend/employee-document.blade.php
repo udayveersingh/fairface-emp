@@ -50,7 +50,7 @@
                         </td>
                     </tr>
                     @endforeach
-                    <x-modals.delete :route="'employee-document.destroy'" :title="'Employee Document'" />
+                    <!-- <x-modals.delete :route="'employee-document.destroy'" :title="'Employee Document'" /> -->
                     <!-- Edit Employee Document Modal -->
                     <div id="edit_employee_document" class="modal custom-modal fade" role="dialog">
                         <div class="modal-dialog modal-dialog-centered" role="document">

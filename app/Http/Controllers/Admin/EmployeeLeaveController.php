@@ -7,6 +7,9 @@ use App\Models\Employee;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Project;
+use App\Models\ProjectPhase;
+use App\Models\TimesheetStatus;
 
 class EmployeeLeaveController extends Controller
 {
@@ -19,10 +22,13 @@ class EmployeeLeaveController extends Controller
     {
         $title = "employee leave";
         $leaves = Leave::with('leaveType','employee')->get();
+        $timesheet_statuses = TimesheetStatus::get(); 
         $leave_types = LeaveType::get();
         $employees = Employee::get();
+        $projects = Project::get();
+        $project_phases = ProjectPhase::get();
         return view('backend.employee-leaves',compact(
-            'title','leaves','leave_types','employees'
+            'title','leaves','leave_types','employees','projects','timesheet_statuses','project_phases'
         ));
     }
 
@@ -42,12 +48,17 @@ class EmployeeLeaveController extends Controller
             'reason'=>'required'
         ]);
         Leave::create([
-            'employee_id'=>$request->employee,
             'leave_type_id'=>$request->leave_type,
+            'employee_id'=>$request->employee,
+            'supervisor_id' => $request->supervisor, 
+            'project_id' => $request->project,
+            'project_phase_id' => $request->project_phase_id,
             'from'=>$request->from,
             'to'=>$request->to,
             'reason'=>$request->reason,
-            'status' =>$request->status,
+            'timesheet_status_id' => $request->timesheet_status,
+            'status_reason' => $request->status_reason,
+            'approved_date_time' => $request->approved_date_time,
         ]);
         $notification = notify("Employee leave has been added");
         return back()->with($notification);
@@ -65,12 +76,17 @@ class EmployeeLeaveController extends Controller
     {
         $leave = Leave::find($request->id);
         $leave->update([
-            'employee_id'=>$request->employee,
             'leave_type_id'=>$request->leave_type,
+            'employee_id'=>$request->employee,
+            'supervisor_id' => $request->supervisor, 
+            'project_id' => $request->project,
+            'project_phase_id' => $request->project_phase_id,
             'from'=>$request->from,
             'to'=>$request->to,
             'reason'=>$request->reason,
-            'status' => $request->status,
+            'status_reason' => $request->status_reason,
+            'timesheet_status_id' => $request->timesheet_status,
+            'approved_date_time' => $request->approved_date_time,
         ]);
         $notification = notify("Employee leave has been updated");;
         return back()->with($notification);

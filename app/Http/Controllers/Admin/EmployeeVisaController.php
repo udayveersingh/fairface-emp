@@ -55,7 +55,7 @@ class EmployeeVisaController extends Controller
             'visa_issue_date' => $request->visa_issue_date,
             'visa_expiry_date' => $request->visa_expiry_date,
         ]);
-        return back()->with('success', "Employee Visa has been added successfully.");
+        return back()->with('success', "Your record saved!");
     }
 
     /**
@@ -72,7 +72,7 @@ class EmployeeVisaController extends Controller
             'cos_number' => 'required|max:100',
         ]);
 
-        $employee_visa = EmployeeVisa::find($request->id);
+        $employee_visa = EmployeeVisa::find($request->edit_id);
         $employee_visa->update([
             'employee_id' => $request->emp_id,
             'visa_type' => $request->visa_type,
@@ -82,7 +82,7 @@ class EmployeeVisaController extends Controller
             'visa_issue_date' => $request->visa_issue_date,
             'visa_expiry_date' => $request->visa_expiry_date,
         ]);
-        return back()->with('success', "Employee Visa has been updated.");
+        return back()->with('success', "Your record updated!");
     }
 
     /**

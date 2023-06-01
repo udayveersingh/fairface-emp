@@ -29,22 +29,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Client Name</label>
-                                <input class="form-control" type="text" name="client_name">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Work Location</label>
-                                <input class="form-control" type="text" name="work_location">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Contract_id</label>
                                 <input class="form-control" type="number" name="contract_id">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Client Name</label>
+                                <input class="form-control" type="text" name="client_name">
                             </div>
                         </div>
                     </div>
@@ -57,7 +51,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Work Location</label>
+                                <input class="form-control" type="text" name="work_location">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <div class="cal-icon">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>End Date</label>
                                 <div class="cal-icon">
@@ -120,22 +120,16 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Contract id</label>
+                                <input class="form-control" type="number" id="contract_id" name="contract_id">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Client Name</label>
                                 <input class="form-control" type="text" id="client_name" name="client_name">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Work Location</label>
-                                <input class="form-control" type="text" name="work_location" id="work_location">
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>Contract_id</label>
-                                <input class="form-control" type="number" id="contract_id" name="contract_id">
                             </div>
                         </div>
                     </div>
@@ -148,7 +142,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Work Location</label>
+                                <input class="form-control" type="text" name="work_location" id="work_location">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <div class="cal-icon">
@@ -156,7 +156,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>End Date</label>
                                 <div class="cal-icon">
