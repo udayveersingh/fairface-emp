@@ -32,7 +32,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Contract_id</label>
-                                <input class="form-control" type="number" name="contract_id">
+                                <input class="form-control" type="text" name="contract_id">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Start Date</label>
+                                <label>Start Date<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" name="start_date">
                                 </div>
@@ -67,7 +67,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>End Date</label>
+                                <label>End Date<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" name="end_date" type="text">
                                 </div>
@@ -123,7 +123,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Contract id</label>
-                                <input class="form-control" type="number" id="contract_id" name="contract_id">
+                                <input class="form-control" type="text" id="contract_id" name="contract_id">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -150,7 +150,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Start Date</label>
+                                <label>Start Date<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" type="text" id="edit_startdate" name="start_date">
                                 </div>
@@ -158,7 +158,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label>End Date</label>
+                                <label>End Date<span class="text-danger">*</span></label>
                                 <div class="cal-icon">
                                     <input class="form-control datetimepicker" name="end_date" id="edit_enddate" type="text">
                                 </div>

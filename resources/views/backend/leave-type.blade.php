@@ -77,7 +77,7 @@
 					</div>
 					<div class="form-group">
 						<label>Number of days <span class="text-danger">*</span></label>
-						<input class="form-control" name="days" type="text">
+						<input class="form-control" name="days" type="number">
 					</div>
 					<div class="submit-section">
 						<button class="btn btn-primary submit-btn">Submit</button>
@@ -110,7 +110,7 @@
 					</div>
 					<div class="form-group">
 						<label>Number of days <span class="text-danger">*</span></label>
-						<input class="form-control edit_days" name="days" type="text" >
+						<input class="form-control edit_days" name="days" type="number" >
 					</div>
 					<div class="submit-section">
 						<button type="submit" class="btn btn-primary submit-btn">Save</button>
