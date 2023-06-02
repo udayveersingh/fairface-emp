@@ -64,14 +64,8 @@
                                         @csrf
                                         @method("PUT")
                                         <input type="hidden" id="edit_id" name="id">
-                                        <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                        <select name="timesheet_status" id="edit_status" class="select form-control">
-                                            <option value="">Select TimeSheet Status</option>
-                                            <option value="submitted">Submitted</option>
-                                            <option value="approved">Approved</option>
-                                            <option value="rejected">Rejected</option>
-                                            <option value="pending_approval">Pending Approval</option>
-                                        </select>
+                                        <label>Time Sheet Status<span class="text-danger">*</span></label>
+                                        <input class="form-control" name="timesheet_status"  id="edit_status" type="text">
                                         <div class="submit-section">
                                             <button type="submit" class="btn btn-primary submit-btn">Save</button>
                                         </div>
@@ -102,14 +96,10 @@
                 <form action="{{route('timesheet-status')}}" method="POST">
                     @csrf
                     <input type="hidden" id="edit_id" name="id">
-                    <label>TimeSheet Status<span class="text-danger">*</span></label>
-                    <select name="timesheet_status" id="edit_status" class="select form-control">
-                        <option value="">Select TimeSheet Status</option>
-                        <option value="submitted">Submitted</option>
-                        <option value="approved">Approved</option>
-                        <option value="pending_approval">Pending Approval</option>
-                        <option value="rejected">Rejected</option>
-                    </select>
+                    <div class="form-group">
+                        <label>Time Sheet Status<span class="text-danger">*</span></label>
+                        <input class="form-control" name="timesheet_status" type="text">
+                    </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                     </div>

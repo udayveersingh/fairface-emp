@@ -37,6 +37,7 @@ use App\Http\Controllers\Admin\EmployeeAttendanceController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\JobController as BackendJobController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CompanyEmailController;
 use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\EmployeeBankController;
 use App\Http\Controllers\Admin\EmployeeDetailController;
@@ -271,6 +272,11 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('employee-leave',[EmployeeLeaveController::class,'store']);
     Route::put('employee-leave',[EmployeeLeaveController::class,'update']);
     Route::delete('employee-leave',[EmployeeLeaveController::class,'destroy'])->name('leave.destroy');
+
+    Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
+    Route::post('company-email',[CompanyEmailController::class,'store']);
+    // Route::put('company-email',[CompanyEmailController::class,'update']);
+    Route::delete('company-email',[CompanyEmailController::class,'destroy'])->name('company-email.destroy');
 
     Route::get('jobs',[BackendJobController::class,'index'])->name('jobs');
     Route::post('jobs',[BackendJobController::class,'store']);

@@ -56,6 +56,11 @@ class LeaveTypeController extends Controller
      */
     public function update(Request $request)
     {
+        $this->validate($request,[
+            'type'=>'required|max:255',
+            'days'=>'required'
+        ]);
+        
         $leave_type = LeaveType::find($request->id);
         $leave_type->update($request->all());
         return back()->with('success',"Leave type has been updated");

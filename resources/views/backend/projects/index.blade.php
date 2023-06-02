@@ -37,14 +37,14 @@
                 <div class="dropdown dropdown-action profile-action">
                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$project->id}}" data-name="{{$project->name}}" data-project_type="{{$project->project_type}}" data-client_name="{{$project->client_name}}" data-client_address="{{$project->client_address}}" data-work_location="{{$project->work_location}}" data-start_date="{{$project->client_cont_start_date}}" data-end_date="{{$project->client_cont_start_date}}" data-contract_id="{{$project->contract_id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$project->id}}" data-name="{{$project->name}}" data-project_type="{{$project->project_type}}" data-client_name="{{$project->client_name}}" data-client_address="{{$project->client_address}}" data-work_location="{{$project->work_location}}" data-start_date="{{$project->client_cont_start_date}}" data-end_date="{{$project->client_cont_end_date}}" data-contract_id="{{$project->contract_id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                         <a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$project->id}}" data-target="#deletebtn"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div>
                 </div>
                 <h4 class="project-title"><a href="#">{{$project->name}}</a></h4>
                 <div class="pro-deadline m-b-15">
                     <div class="text-muted">
-                        {{date_format(date_create($project->end_date),"D M, Y")}}
+                        {{date_format(date_create($project->client_cont_start_date),"D M, Y")}}
                     </div>
                 </div>
             </div>
@@ -72,12 +72,13 @@
             var id = $(this).data('id');
             var edit_name = $(this).data('name');
             var project_type = $(this).data('project_type');
-            console.log(project_type);
+            console.log(project_type,"edit_enddate");
             var edit_client_name = $(this).data('client_name');
             var edit_client_address = $(this).data('client_address');
             var edit_work_location = $(this).data('work_location');
             var edit_startdate = $(this).data('start_date');
             var edit_enddate = $(this).data('end_date');
+            console.log(edit_enddate,"edit_enddate");
             var edit_contract_id = $(this).data('contract_id');
             $('#edit_project').modal('show');
             $('#edit_id').val(id);

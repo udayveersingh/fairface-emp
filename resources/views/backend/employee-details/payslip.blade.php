@@ -8,7 +8,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Month<span class="text-danger">*</span></label>
-                        <select name="month" id="edit_month" class="form-control">
+                        <select name="month" id="edit_month" class="form-control select">
                             <option value="">Select Month</option>
                             @php
                             for ($i = 0; $i < 12; $i++) { $date_str=date('M', strtotime("+ $i months")); @endphp <option value={{$date_str}}> {{$date_str}}</option>;
@@ -26,7 +26,7 @@
                         return (string) date('Y') - $item;
                         });
                         @endphp
-                        <select name="year" id="edit_year" class="form-control">
+                        <select name="year" id="edit_year" class="form-control select">
                             <option value="">Select Year</option>
                             @foreach($years as $year)
                             <option value="{{$year}}">{{$year}}</option>

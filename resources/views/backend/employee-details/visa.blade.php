@@ -30,7 +30,7 @@
                             <div class="dropdown dropdown-action">
                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a data-id="{{$visa->id}}" data-employee_id="{{$visa->employee_id}}" data-visa_type="{{$visa->visa_type}}" data-cos_number="{{$visa->cos_number}}" data-cos_issue_date="{{$visa->cos_issue_date}}" data-cos_expiry_date="{{$visa->cos_expiry_date}}" data-visa_issue_date="{{$visa->visa_issue_date}}" data-visa_expiry_date="{{$visa->visa_expiry_date}}" data-target="edit_employee_visa" class="dropdown-item edit_btn" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a data-id="{{$visa->id}}" data-employee_id="{{$visa->employee_id}}" data-visa_type="{{$visa->visa_type}}" data-cos_number="{{$visa->cos_number}}" data-cos_issue_date="{{$visa->cos_issue_date}}" data-cos_expiry_date="{{$visa->cos_expiry_date}}" data-visa_issue_date="{{$visa->visa_issue_date}}" data-visa_expiry_date="{{$visa->visa_expiry_date}}" data-target="edit_employee_visa" class="dropdown-item" id="edit_btn_visa" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                     <a data-id="{{$visa->id}}" class="dropdown-item deletebtn" data-resource_data="Employee Visa" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="visa_type" class=" form-control">
+                                <select name="visa_type" id="visa_type" class="form-control select">
                                     <option value="">Select Visa Type</option>
                                     @foreach($visa_types as $type)
                                     <option value="{{$type->id}}">{{$type->visa_type}}</option>
@@ -137,7 +137,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="edit_visa_type" class="form-control">
+                                <select name="visa_type" id="edit_visa_type" class="form-control select">
                                     <option value="">Select Visa Type</option>
                                     @foreach($visa_types as $type)
                                     <option value="{{$type->id}}">{{$type->visa_type}}</option>

@@ -74,7 +74,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="project" class="form-control">
+                                <select name="project" id="project" class="form-control select">
                                     <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                     <option value="{{$project->id}}">{{$project->name}}</option>
@@ -124,7 +124,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="edit_project" class="form-control">
+                                <select name="project" id="edit_project" class="form-control select">
                                     <option value="">Select Project</option>
                                     @foreach($projects as $project)
                                     <option value="{{$project->id}}">{{$project->name}}</option>
