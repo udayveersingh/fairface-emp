@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyEmail;
 use App\Models\Employee;
 use App\Models\EmployeeJob;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
 
 class CompanyEmailController extends Controller
@@ -67,7 +69,20 @@ class CompanyEmailController extends Controller
          $company_email->body = $request->email_body;
          $company_email->attachment = $imageName;
          $company_email->save();
-         return back()->with('success',$message);
+
+         $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
+         $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
+         $cc_email =  EmployeeJob::where('id', '=', $request->cc)->value('work_email');
+         $emp_job_detail = ([
+             'to'   =>  $to_email,
+             'from' => $form_email,
+             'cc_email' => $cc_email,
+             'subject' => $request->email_subject,
+             'attchment' => $request->email_attachment
+            ]);
+           Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
+        //    dd("Mail Sent Successfully!");
+           return back()->with('success',$message);
     }
 
     /**
