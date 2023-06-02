@@ -45,10 +45,6 @@
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
-                                            class="dropdown-item deletebtn" href="javascript:void(0);"
-                                            data-target="data_delete_modal" data-toggle="modal"><i
-                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
                                         <a data-id="{{ $job->id }}" data-employee_id="{{ $job->employee_id }}"
                                             data-supervisor="{{ $job->supervisor }}"
                                             data-timesheet_approval_inch="{{ $job->timesheet_approval_incharge }}"
@@ -59,8 +55,12 @@
                                             data-start_date="{{ $job->start_date }}"
                                             data-job_type="{{ $job->job_type }}"
                                             data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}"
-                                            class="dropdown-item edit_btn" href="javascript:void(0);"><i
+                                            class="dropdown-item" id="edit_btn" href="javascript:void(0);"><i
                                                 class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
+                                            class="dropdown-item deletebtn" href="javascript:void(0);"
+                                            data-target="data_delete_modal" data-toggle="modal"><i
+                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
                                     </div>
                                 </div>
                             </td>

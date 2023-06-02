@@ -31,7 +31,7 @@ $(document).ready(function() {
     // });
 
     console.log("Element ", $(document).find(".edit_btn").length);
-    $(document).on('click', '.edit_btn', function() {
+    $(document).on('click', '#edit_btn', function() {
         console.log('edit clicked');
         $('#employee_job').modal("show");
         var id = $(this).data('id');
@@ -81,7 +81,7 @@ $(document).ready(function() {
 
 
     //Edit Form of Visa
-    $(document).on('click', '.edit_btn', function() {
+    $(document).on('click', '#edit_btn_visa', function() {
         $('#edit_employee_visa').modal('show');
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');

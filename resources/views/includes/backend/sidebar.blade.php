@@ -50,6 +50,9 @@
                 <!-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bell"></i> <span>Leaves</span></a>
                 </li> -->
+                <li class="{{route_is('company-email') ? 'active' : '' }}">
+                    <a href="{{route('company-email')}}"><i class="la la-bullhorn"></i> <span>Company Email</span></a>
+                </li>
                 <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
                 </li>
