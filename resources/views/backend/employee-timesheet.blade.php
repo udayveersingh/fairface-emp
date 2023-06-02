@@ -3,6 +3,8 @@
 @section('styles')
 <!-- Datatable CSS -->
 <link rel="stylesheet" href="{{asset('assets/css/dataTables.bootstrap4.min.css')}}">
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 @endsection
 @section('page-header')
 <div class="row align-items-center">
@@ -63,7 +65,7 @@
                                  Approved
                                 </label>
                                 <br>
-                                <input class="form-check-input statusChecked" type="checkbox" data-status="pending_approved" data-id="{{$timesheet->id}}" data-toggle="modal" id="statusChecked" {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "pending_approval" ? 'checked' : ''}}>
+                                <input class="form-check-input statusChecked" type="checkbox" data-status="pending_approved" data-id="{{$timesheet->id}}" data-toggle="modal" id="statusChecked" {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "pending approval" ? 'checked' : ''}}>
                                 <label class="form-check-label" for="flexCheckChecked">
                                     Pending
                                 </label>
@@ -156,7 +158,7 @@
                                                 <div class="form-group">
                                                     <label>Project Phase<span class="text-danger">*</span></label>
                                                     <select name="project_phase_id" id="edit_project_phase_id" class="select form-control">
-                                                        <option value="">Select Project</option>
+                                                        <option value="">Select Project Phase</option>
                                                         @foreach($project_phases as $project_phase)
                                                         <option value="{{$project_phase->id}}">{{str_replace("_"," ",ucfirst($project_phase->name))}}</option>
                                                         @endforeach
@@ -450,9 +452,9 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                <select name="timesheet_status" id="edit_timesheet_status" class="select form-control">
+                                <select name="timesheet_status" id="" class="select form-control">
                                     <option value="">Select TimeSheet Status</option>
-                                    @foreach($timesheet_statuses as $time_status )
+                                    @foreach($timesheet_statuses as $time_status)
                                     <option value="{{$time_status->id}}">{{str_replace("_"," ",ucfirst($time_status->status))}}</option>
                                     @endforeach
                                 </select>
@@ -481,6 +483,7 @@
 <!-- Datatable JS -->
 <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('assets/plugins/select2/select2.min.js')}}"></script>
 <script>
     $(document).ready(function() {
         $('.table').on('click', '.editbtn', function() {
@@ -504,17 +507,17 @@
             $('#edit_id').val(id);
             $('#edit_status').val(edit_status);
             $('#edit_timesheet_id').val(timesheet_id);
-            $('#edit_employee_id').val(employee_id);
-            $('#edit_supervisor_id').val(supervisor_id);
-            $('#edit_project_id').val(project_id);
-            $('#edit_project_phase_id').val(project_phase_id);
-            $('#edit_calendar_day').val(calendar_day);
+            $("#edit_employee_id").val(employee_id).trigger("change");
+            $("#edit_supervisor_id").val(supervisor_id).trigger("change");
+            $("#edit_project_id").val(project_id).trigger("change");
+            $("#edit_project_phase_id").val(project_phase_id).trigger("change");
+            $("#edit_calendar_day").val(calendar_day).trigger("change");
             $('#edit_calendar_date').val(calendar_date);
             $('#edit_from_time').val(from_time);
             $('#edit_to_time').val(to_time);
             $('#edit_total_hours_works').val(total_hours_worked);
             $('#edit_notes').val(notes);
-            $('#edit_timesheet_status').val(timesheet_status_id);
+            $("#edit_timesheet_status").val(timesheet_status_id).trigger("change");
             $('#edit_status_reason').val(status_reason);
             $('#edit_approved_datetime').val(timesheet_approved_date_time);
         });

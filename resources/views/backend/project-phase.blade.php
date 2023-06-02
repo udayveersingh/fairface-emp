@@ -48,7 +48,7 @@
                                                     class="dropdown-item editbtn" href="javascript:void(0);"
                                                     data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                 <a data-id="{{ $project_phase->id }}" class="dropdown-item deletebtn"
-                                                    href="javascript:void(0);" data-target="#deletebtn"
+                                                    href="javascript:void(0);" data-resource_data="Project" data-target="#deletebtn" 
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                         </div>

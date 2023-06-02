@@ -1,7 +1,8 @@
 @extends('layouts.backend')
 
 @section('styles')
-
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{{asset('assets/plugins/select2/select2.min.css')}}">
 @endsection
 
 @section('page-header')
@@ -70,7 +71,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Main Work Location<span class="text-danger">*</span></label>
-								<select name="branch_id" class="form-control">
+								<select name="branch_id" class="form-control select">
 									<option value="">Select Main Work Location</option>
 									@foreach ($branches as $branch)
 									<option value="{{$branch->id}}">{{$branch->branch_code}}</option>
@@ -129,7 +130,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" class="form-control">
+								<select name="nationality" class="form-control select">
 									<option value="">Select Nationality</option>
 									@foreach($countries as $country)
 									<option value="{{$country->id}}">{{$country->name}}</option>
@@ -158,7 +159,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" class="form-control">
+								<select name="marital_status" class="form-control select">
 									<option value="">Select Marital Status</option>
 									<option value="married">Married</option>
 									<option value="unmarried">Unmarried</option>
@@ -170,7 +171,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" class="form-control">
+								<select name="record_status" class="form-control select">
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="archieve">Archieve</option>
@@ -179,7 +180,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="submit-section">
 						<button class="btn btn-primary submit-btn">Submit</button>
 					</div>
@@ -215,7 +215,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label>Main Work Location<span class="text-danger">*</span></label>
-								<select name="branch_id" id="edit_main_work_loc" class="form-control">
+								<select name="branch_id" id="edit_main_work_loc" class="form-control select">
 									<option>Select Main Work Location</option>
 									@foreach ($branches as $branch)
 									<option value="{{$branch->id}}">{{$branch->branch_code}}</option>
@@ -275,7 +275,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Nationality <span class="text-danger">*</span></label>
-								<select name="nationality" id="nationality" class="form-control">
+								<select name="nationality" id="nationality" class="form-control select">
 									<option value="">Select Nationality</option>
 									@foreach($countries as $country)
 									<option value="{{$country->id}}">{{$country->name}}</option>
@@ -304,7 +304,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Marital Status <span class="text-danger">*</span></label>
-								<select name="marital_status" id="marital_status" class="form-control">
+								<select name="marital_status" id="marital_status" class="form-control select">
 									<option value="">Select Marital Status</option>
 									<option value="married">Married</option>
 									<option value="unmarried">Unmarried</option>
@@ -316,7 +316,7 @@
 						<div class="col-md-6">
 							<div class="form-group">
 								<label>Record Status <span class="text-danger">*</span></label>
-								<select name="record_status" selected="selected" id="record_status" class="form-control">
+								<select name="record_status" selected="selected" id="record_status" class="form-control select">
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
 									<option value="archieve">Archieve</option>
@@ -364,7 +364,7 @@
 			var passport_expiry_date = $(this).data('passport_expiry_date');
 			$('#edit_id').val(id);
 			$('#edit_employee_id').val(employee_id);
-			$('#edit_main_work_loc').val(main_work_loc);
+			$("#edit_main_work_loc").val(main_work_loc).trigger("change");
 			$('.edit_firstname').val(firstname);
 			$('.edit_lastname').val(lastname);
 			$('.edit_email').val(email);
@@ -378,11 +378,11 @@
 			$('.edit_passport_number').val(passport_number);
 			$('.edit_pass_issue_date').val(passport_issue_date);
 			$('.edit_pass_expire_date').val(passport_expiry_date);
-			$('#nationality').val(nationality);
-			$('#marital_status').val(marital_status);
-			$('#record_status').val(record_status);
+			$("#nationality").val(nationality).trigger("change");
+			$("#marital_status").val(marital_status).trigger("change");
+			$("#record_status").val(record_status).trigger("change");
 			$('.edit_date_of_birth').val(date_of_birth);
-		})
-	})
+		});
+	});
 </script>
 @endsection

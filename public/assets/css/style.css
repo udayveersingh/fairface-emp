@@ -8167,3 +8167,4 @@ ul.comment-list li ul.children {
 }
 .dataTables_filter{ text-align: right;}
 .avatar img{ width:100%; height: 100%; object-fit: cover;}
+.select2.select2-container{ width:100% !important;}

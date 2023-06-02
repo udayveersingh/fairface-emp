@@ -33,7 +33,7 @@ $(document).ready(function() {
     console.log("Element ", $(document).find(".edit_btn").length);
     $(document).on('click', '.edit_btn', function() {
         console.log('edit clicked');
-        $('#edit_employee_job').modal("show");
+        $('#employee_job').modal("show");
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');
         var job_title = $(this).data('job_title');
@@ -57,6 +57,7 @@ $(document).ready(function() {
         $('#edit_start_date').val(edit_start_date);
         $('#edit_job_type').val(edit_job_type);
         $('#contracted_weekly_hours').val(cont_weekly_hours);
+        $('.select').select2('destroy').select2();
     });
 
 
@@ -98,6 +99,7 @@ $(document).ready(function() {
         $('#edit_cos_expiry_date').val(cos_expiry_date);
         $('#edit_visa_issue_date').val(visa_issue_date);
         $('#edit_visa_expiry_date').val(visa_expiry_date);
+        $('.select').select2('destroy').select2();
     });
 
   //Edit form of Project
@@ -113,6 +115,7 @@ $(document).ready(function() {
         $('#pro_edit_start_date').val(start_date);
         $('#edit_end_date').val(end_date);
         $('#edit_project').val(project);
+        $('.select').select2('destroy').select2();
     });
 
     $(".mask_phone_number").keyup(function() {
@@ -121,6 +124,6 @@ $(document).ready(function() {
 
     // $(document).ready(function() {
     //     $('.select').select2();
-    // })
+    // });
 
 });
