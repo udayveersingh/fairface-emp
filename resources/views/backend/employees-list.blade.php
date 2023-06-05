@@ -58,7 +58,7 @@
 							<div class="dropdown dropdown-action">
 								<a href="javascript:void(0)" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 								<div class="dropdown-menu dropdown-menu-right">
-									<a data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-employee_id="{{$employee->employee_id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-main_work_loc="{{!empty($employee->branch->id) ? $employee->branch->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->country_id}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+									<a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{!empty($employee->id) ? $employee->id:'' }}" data-employee_id="{{$employee->employee_id}}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-email="{{$employee->email}}" data-phone="{{$employee->phone}}" data-avatar="{{$employee->avatar}}" data-company="{{$employee->company}}" data-main_work_loc="{{!empty($employee->branch->id) ? $employee->branch->id:''}}" data-phone_number="{{$employee->alternate_phone_number}}" data-national_insurance_number="{{$employee->national_insurance_number}}" data-nationality="{{$employee->country_id}}" data-passport_number="{{$employee->passport_number}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-date_of_birth="{{$employee->date_of_birth}}" data-passport_issue_date="{{$employee->passport_issue_date}}" data-passport_expiry_date="{{$employee->passport_expiry_date}}"  data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
 									<a data-id="{{$employee->id}}" class="dropdown-item deletebtn" href="javascript:void(0)" data-toggle="modal" data-target="#deletebtn"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 								</div>
 							</div>
@@ -214,7 +214,7 @@
 <!-- /Add Employee Modal -->
 
 <!-- Edit Employee Modal -->
-<div id="edit_employee" class="modal custom-modal fade" role="dialog">
+<div id="edit_employee_list" class="modal custom-modal fade" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -361,12 +361,11 @@
 
 @section('scripts')
 <!-- Datatable JS -->
-<script src="assets/js/jquery.dataTables.min.js"></script>
-<script src="assets/js/dataTables.bootstrap4.min.js"></script>
+{{-- <script src="assets/js/jquery.dataTables.min.js"></script>
+<script src="assets/js/dataTables.bootstrap4.min.js"></script> --}}
 <script>
-	$(document).ready(function() {
+	// $(document).ready(function() {
 		$('.editbtn').on('click', function() {
-			$('#edit_employee').modal('show');
 			var id = $(this).data('id');
 			var employee_id = $(this).data('employee_id');
 			var main_work_loc = $(this).data('main_work_loc');
@@ -387,6 +386,7 @@
 			var record_status = $(this).data('record_status');
 			// var department = $(this).data('department');
 			var avatar = $(this).data('avatar');
+			$('#edit_employee_list').modal('show');
 
 			$('#edit_id').val(id);
 			$('#edit_employee_id').val(employee_id);
@@ -408,7 +408,7 @@
 			$("#record_status").val(record_status).trigger("change");
 			// $('#edit_department').val(department);
 			$('.edit_avatar').val(avatar);
-		})
-	})
+		});
+	// })
 </script>
 @endsection

@@ -117,7 +117,7 @@
 <script>
 	$(document).ready(function() {
 		$('body').on('click', '.deletebtn', function() {
-			$('#delete_modal').modal('show');
+			$('#deletebtn').modal('show');
 			var id = $(this).data('id');
 			$('#delete_id').val(id);
 		});
