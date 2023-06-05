@@ -124,7 +124,7 @@
 	<!-- Custom JS -->
 	<script src="{{asset('assets/js/app.js')}}"></script>
 	@yield('scripts')
-	<script>
+	{{-- <script>
 			 $(document).ready(function() {
         $('.deletebtn').on('click', function() {
             $('#delete_modal').modal('show');
@@ -135,7 +135,7 @@
             $('#resource_data').val(resource_model);
         })
     });
- </script>
+ </script> --}}
 </body>
 
 </html>
