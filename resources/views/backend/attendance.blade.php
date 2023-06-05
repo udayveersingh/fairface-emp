@@ -44,7 +44,7 @@
 					   <td>
 							<h2 class="table-avatar">
 								<a href="#" class="avatar"><img alt="avatar"  src="{{ !empty($attendance->employee->avatar) ? asset('storage/employees/'.$attendance->employee->avatar): asset('assets/img/profiles/avatar-19.jpg') }}"></a>
-								<a href="#">{{$attendance->employee->firstname.' '. $attendance->employee->lastname}}<span>{{$attendance->employee->designation->name}}</span></a>
+								<a href="#">{{$attendance->employee->firstname.' '. $attendance->employee->lastname}}<span>{{-- {{$attendance->employee->designation->name}} --}}</span></a>
 							</h2>
 						</td>
 					   <td>{{date_format(date_create($attendance->checkin),'H:i a')}}</td>
@@ -56,7 +56,7 @@
 								<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 								<div class="dropdown-menu dropdown-menu-right">
 									<a class="dropdown-item editbtn" href="javascript:void(0)" data-id="{{$attendance->id}}" data-checkin="{{$attendance->checkin}}" data-checkout="{{$attendance->checkout}}" data-employee="{{$attendance->employee_id}}"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-									<a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$attendance->id}}"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+									<a class="dropdown-item deletebtn" href="javascript:void(0)" data-id="{{$attendance->id}}" data-target="#deletebtn"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
 								</div>
 							</div>
 						</td>
