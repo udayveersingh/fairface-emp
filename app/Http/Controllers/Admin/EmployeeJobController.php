@@ -17,12 +17,12 @@ class EmployeeJobController extends Controller
      */
     public function index($id)
     {
-        $empId = $id;
-        $title = "Employee Job";
-        $employee_jobs = EmployeeJob::get();
-        $employees = Employee::get();
-        $departments  = Department::get();
-        return view('backend.employee-job', compact('title', 'employee_jobs', 'employees', 'departments', 'empId'));
+        // $empId = $id;
+        // $title = "Employee Job";
+        // $employee_jobs = EmployeeJob::get();
+        // $employees = Employee::get();
+        // $departments  = Department::get();
+        // return view('backend.employee-job', compact('title', 'employee_jobs', 'employees', 'departments', 'empId'));
     }
 
     /**

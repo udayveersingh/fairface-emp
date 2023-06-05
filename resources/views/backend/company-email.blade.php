@@ -95,8 +95,13 @@
                                                     <select name="from_id" id="from_id" class="form-control">
                                                         <option value="">Select from</option>
                                                         @foreach ($employee_jobs as $employee_job)
+                                                            @php
+                                                                $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                                                $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                                                $emp_name = $firstname . '  ' . $lastname;
+                                                            @endphp
                                                             <option value="{{ $employee_job->id }}">
-                                                                {{ $employee_job->work_email }}
+                                                                {{ 'From' . ' ' . $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -106,8 +111,13 @@
                                                     <select name="to_id" id="to_id" class="form-control">
                                                         <option value="">Select to</option>
                                                         @foreach ($employee_jobs as $employee_job)
+                                                            @php
+                                                                $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                                                $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                                                $emp_name = $firstname . '  ' . $lastname;
+                                                            @endphp
                                                             <option value="{{ $employee_job->id }}">
-                                                                {{ $employee_job->work_email }}
+                                                                {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -117,8 +127,13 @@
                                                     <select name="cc" id="cc" class="form-control">
                                                         <option value="">Select CC</option>
                                                         @foreach ($employee_jobs as $employee_job)
+                                                            @php
+                                                                $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                                                $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                                                $emp_name = $firstname . '  ' . $lastname;
+                                                            @endphp
                                                             <option value="{{ $employee_job->id }}">
-                                                                {{ $employee_job->work_email }}
+                                                                {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -182,8 +197,13 @@
                             <select name="from_id" id="from_id" class="form-control">
                                 <option value="">Select from</option>
                                 @foreach ($employee_jobs as $employee_job)
+                                    @php
+                                        $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                        $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
                                     <option value="{{ $employee_job->id }}">
-                                        {{ $employee_job->work_email }}
+                                        {{ 'From' . ' ' . $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -193,9 +213,13 @@
                             <select name="to_id" id="to_id" class="form-control">
                                 <option value="">Select to</option>
                                 @foreach ($employee_jobs as $employee_job)
+                                    @php
+                                        $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                        $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
                                     <option value="{{ $employee_job->id }}">
-                                        {{ $employee_job->work_email }}
-                                    </option>
+                                        {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -204,8 +228,13 @@
                             <select name="cc" id="cc" class="form-control">
                                 <option value="">Select CC</option>
                                 @foreach ($employee_jobs as $employee_job)
+                                    @php
+                                        $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                        $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
                                     <option value="{{ $employee_job->id }}">
-                                        {{ $employee_job->work_email }}
+                                        {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                     </option>
                                 @endforeach
                             </select>
@@ -250,14 +279,14 @@
             $('.table').on('click', '.editbtn', function() {
                 $('#edit_company_email').modal('show');
                 var id = $(this).data('id');
-                var edit_from_id = $(this).data('email_from'); 
-                var edit_email_to = $(this).data('email_to'); 
-                var edit_cc_id = $(this).data('email_cc'); 
-                var edit_date = $(this).data('email_date'); 
-                var edit_time = $(this).data('email_time'); 
-                var edit_subject = $(this).data('email_subject'); 
-                var edit_body = $(this).data('email_body'); 
-                var edit_attachment = $(this).data('email_attachment');  
+                var edit_from_id = $(this).data('email_from');
+                var edit_email_to = $(this).data('email_to');
+                var edit_cc_id = $(this).data('email_cc');
+                var edit_date = $(this).data('email_date');
+                var edit_time = $(this).data('email_time');
+                var edit_subject = $(this).data('email_subject');
+                var edit_body = $(this).data('email_body');
+                var edit_attachment = $(this).data('email_attachment');
                 $('#edit_id').val(id);
                 $('#from_id').val(edit_from_id);
                 $('#to_id').val(edit_email_to);

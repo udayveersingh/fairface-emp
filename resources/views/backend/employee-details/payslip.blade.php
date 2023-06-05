@@ -71,6 +71,7 @@
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
                     <td>{{!empty(date("Y-m-d", strtotime($employee_payslip->created_at) ))? date("Y-m-d", strtotime($employee_payslip->created_at)):''}}</td>
+                    {{-- {{ $extension = pathinfo(storage_path('storage/payslips/'./my_image.jpg'), PATHINFO_EXTENSION);}} --}}
                     <td><a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a></td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">
