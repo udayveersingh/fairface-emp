@@ -8,13 +8,13 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Full Name<span class="text-danger">*</span></label>
+                        <label>Contact Name</label>
                         <input class="form-control" name="name" value="{{!empty($emergency_contact->full_name) ? $emergency_contact->full_name:''}}" id="edit_name" type="text">
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Address<span class="text-danger">*</span></label>
+                        <label>Address</label>
                         <textarea class="form-control" id="edit_address" name="address" rows="4" cols="50">{{!empty($emergency_contact->address)? $emergency_contact->address:''}}</textarea>
                     </div>
                 </div>
@@ -40,13 +40,13 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Overseas Full Name<span class="text-danger">*</span></label>
+                        <label>Overseas Contact Name</label>
                         <input class="form-control" name="overseas_name" value="{{!empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name:''}}" id="edit_overseas_name" type="text">
                     </div>
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Overseas Address<span class="text-danger">*</span></label>
+                        <label>Overseas Address</label>
                         <textarea class="form-control" id="edit_overseas_address" name="overseas_address" rows="4" cols="50">{{!empty($emergency_contact->overseas_address)?$emergency_contact->overseas_address:''}}</textarea>
                     </div>
                 </div>

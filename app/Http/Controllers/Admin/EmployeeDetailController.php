@@ -30,11 +30,11 @@ class EmployeeDetailController extends Controller
     public function index($id="")
     {
         $title = 'Employee Detail';
-        $employee = Employee::with('department', 'designation')->find($id);
+        $employee = Employee::with('department', 'designation','country','branch')->find($id);
         $designations = Designation::get();
         $departments = Department::get();
         $branches = Branch::get();
-        $employee = Employee::find($id);
+        // $employee = Employee::find($id);
         $countries = Country::get();
         $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
         $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
@@ -46,7 +46,7 @@ class EmployeeDetailController extends Controller
         $projects = Project::where('status', '=', 1)->get();
         $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
         $employees = Employee::get();
-        $employee_jobs  = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->get();
+        $employee_jobs  = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
         return view('backend.employee-detail', compact(
             'employee',
             'title',
@@ -67,6 +67,19 @@ class EmployeeDetailController extends Controller
             'branches'
         ));
     }
+
+     
+    // public function employeeViewDetail($id)
+    // {
+    //     $title = 'Employee Detail';
+    //     return view('backend.employee-details.employee-detail-view',compact('title'));
+    // }
+
+
+
+
+
+
 
     public function EmployeePayslipUpload(Request $request)
     {

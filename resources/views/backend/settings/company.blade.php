@@ -10,13 +10,13 @@
     <div class="col-md-8 offset-md-2">
 
         <!-- Page Header -->
-        <div class="page-header">
+        {{-- <div class="page-header">
             <div class="row">
                 <div class="col-sm-12">
                     <h3 class="page-title">Company Settings</h3>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- /Page Header -->
 
         <form action="{{route('settings.company')}}" method="post">

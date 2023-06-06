@@ -30,6 +30,11 @@ $(document).ready(function() {
     //     });
     // });
 
+    $(document).on('click', '#employee_edit_btn', function() {
+        console.log('edit clicked');
+        $('#edit_employee_detail').modal("show");
+    });
+
     console.log("Element ", $(document).find(".edit_btn").length);
     $(document).on('click', '#edit_btn', function() {
         console.log('edit clicked');

@@ -30,15 +30,15 @@ class EmployeeEmergencyContactController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'relationship' => 'required',
-            'address' => 'required|max:200',
-            'overseas_name' => 'required|max:15',
-            'overseas_address' => 'required|max:200',
-            'phone_number_1' => 'nullable|max:15',
-            'phone_number_2' => 'nullable|max:15',
-            'overseas_phone_number_1' => 'nullable|max:15',
-            'overseas_phone_number_2' => 'nullable|max:15',
+            // 'name' => 'required',
+            // 'relationship' => 'required',
+            // 'address' => 'required|max:200',
+            // 'overseas_name' => 'required|max:15',
+            // 'overseas_address' => 'required|max:200',
+            // 'phone_number_1' => 'nullable|max:15',
+            // 'phone_number_2' => 'nullable|max:15',
+            // 'overseas_phone_number_1' => 'nullable|max:15',
+            // 'overseas_phone_number_2' => 'nullable|max:15',
         ]);
 
         EmployeeEmergencyContact::create([
@@ -67,14 +67,14 @@ class EmployeeEmergencyContactController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'address' => 'required|max:200',
-            'overseas_name' => 'required',
-            'overseas_address' => 'required|max:200',
-            'phone_number_1' => 'nullable|max:25',
-            'phone_number_2' => 'nullable|max:25',
-            'overseas_phone_number_1' => 'nullable|max:25',
-            'overseas_phone_number_2' => 'nullable|max:25',
+            // 'name' => 'required',
+            // 'address' => 'required|max:200',
+            // 'overseas_name' => 'required',
+            // 'overseas_address' => 'required|max:200',
+            // 'phone_number_1' => 'nullable|max:25',
+            // 'phone_number_2' => 'nullable|max:25',
+            // 'overseas_phone_number_1' => 'nullable|max:25',
+            // 'overseas_phone_number_2' => 'nullable|max:25',
         ]);
 
         if (!empty($request->id)) {

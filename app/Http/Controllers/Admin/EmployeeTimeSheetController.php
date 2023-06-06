@@ -81,6 +81,9 @@ class EmployeeTimeSheetController extends Controller
 
     public function TimesheetStatusUpdate(Request $request)
     {
+        $this->validate($request,[
+            'timesheet_status'=>'required',
+        ]);
         $employee_timesheet = EmployeeTimesheet::find($request->id);
         $employee_timesheet->timesheet_status_id =  $request->input('timesheet_status');
         $employee_timesheet->save();

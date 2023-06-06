@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Home Address Line 1<span class="text-danger">*</span></label>
+                        <label>Address Line 1<span class="text-danger">*</span></label>
                         <textarea class="form-control" id="edit_address_line_1" name="address_line_1" rows="4" cols="50">{{!empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1:'' }}</textarea>
                     </div>
                 </div>
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
-                        <label>Home Address Line 2<span class="text-danger">*</span></label>
+                        <label>Address Line 2<span class="text-danger">*</span></label>
                         <textarea class="form-control" id="edit_address_line_2" name="address_line_2" rows="4" cols="50">{{!empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2:''}}</textarea>
                     </div>
                 </div>

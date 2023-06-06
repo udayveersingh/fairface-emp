@@ -153,7 +153,7 @@
 <!-- delete functionality of employee detail page -->
 <script>
 	$(document).ready(function() {
-		$('.deletebtn').on('click', function() {
+		$('.detail_delete').on('click', function() {
 			$('#delete_modal').modal('show');
 			var id = $(this).data('id');
 			var resource_model = $(this).data('resource_data');

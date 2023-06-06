@@ -49,7 +49,7 @@
 								<a href="javascript:void(0)" class="avatar"><img alt="avatar" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}} @else assets/img/profiles/default.jpg @endif"></a>
 								<a href="{{route('employee-detail',$employee->id)}}">{{$employee->firstname}} {{$employee->lastname}}</a>
 							</h2>
-						</td>
+						</td>	
 						<td>{{$employee->uuid}}</td>
 						<td>{{$employee->email}}</td>
 						<td>{{$employee->phone}}</td>

@@ -39,7 +39,7 @@
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a data-id="{{$project->id}}" data-employee_id="{{$project->employee_id}}" data-project="{{$project->project_id}}" data-start_date="{{$project->start_date}}" data-end_date="{{$project->end_date}}" class="dropdown-item edit_btn" data-target="edit_employee_project" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                <a data-id="{{$project->id}}" class="dropdown-item deletebtn" data-resource_data="Employee Project" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                <a data-id="{{$project->id}}" class="dropdown-item detail_delete" data-resource_data="Employee Project" href="javascript:void(0);" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
                     </td>

@@ -30,5 +30,9 @@ class Employee extends Model
     public function branch(){
         return $this->belongsTo(Branch::class);
     }
+
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
     
 }
