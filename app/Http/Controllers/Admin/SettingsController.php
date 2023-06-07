@@ -31,17 +31,17 @@ class SettingsController extends Controller
         if($request->hasFile('logo')){
             $logo = time().'.'.$request->logo->extension();
             $request->logo->move(public_path('storage/settings/theme'), $logo);
+            $settings->logo = $logo;
         }
         $favicon = '';
         if($request->hasFile('favicon')){
             $favicon = time().'.'.$request->favicon->extension();
             $request->favicon->move(public_path('storage/settings/theme'), $favicon);
+            $settings->favicon = $favicon;
         }
         $settings->site_name = $request->site_name;
-        $settings->logo = $logo;
-        $settings->favicon = $favicon;
-        $settings->currency_code = $request->currency_code;
-        $settings->currency_symbol = $request->currency_symbol;
+        $settings->currency_code = !empty($request->currency_code) ? $request->currency_code:'';
+        $settings->currency_symbol = !empty($request->currency_symbol) ? $request->currency_symbol:''  ;
         $settings->save();
         $notification = notify('theme has been updated');
         return back()->with($notification);
