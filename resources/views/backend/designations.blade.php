@@ -29,7 +29,7 @@
             <table class="table table-striped custom-table mb-0 datatable">
                 <thead>
                     <tr>
-                        <th style="width: 30px;">#</th>
+                        <th>Sr No.</th>
                         <th>Designation </th>
                         <th>Department </th>
                         <th class="text-right">Action</th>
@@ -37,9 +37,9 @@
                 </thead>
                 <tbody>
                    @if (!empty($designations->count()))
-                       @foreach ($designations as $designation)
+                       @foreach ($designations as $index=>$designation)
                         <tr>
-                            <td>{{$designation->id}}</td>
+                            <td>{{$index+1}}</td>
                             <td>{{$designation->name}}</td>
                             <td>{{$designation->department->name}}</td>
                             <td class="text-right">

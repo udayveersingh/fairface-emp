@@ -32,6 +32,7 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
+                            <th>Sr No.</th>
                             <th>Leave Type</th>
                             <th>From</th>
                             <th>To</th>
@@ -43,8 +44,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($leaves as $leave)
+                        @foreach ($leaves as $index => $leave)
                             <tr>
+                                <td>{{ $index + 1 }}</td>
                                 <td>{{ $leave->leaveType->type }}</td>
                                 <td>{{ date_format(date_create($leave->from), 'd M, Y') }}</td>
                                 <td>{{ date_format(date_create($leave->to), 'd M, Y') }}</td>
@@ -217,14 +219,14 @@
                         </div>
 
                         <!-- <div class="form-group">
-          <label>Status </label>
-          <select name="status" class="select">
-          <option value="null" disabled selected>Select Status</option>
-          <option>Approved</option>
-          <option>Pending</option>
-          <option>Declined</option>
-          </select>
-          </div> -->
+              <label>Status </label>
+              <select name="status" class="select">
+              <option value="null" disabled selected>Select Status</option>
+              <option>Approved</option>
+              <option>Pending</option>
+              <option>Declined</option>
+              </select>
+              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -332,14 +334,14 @@
                         </div>
 
                         <!-- <div class="form-group">
-              <label>Status </label>
-              <select name="status" class="select2 form-control" id="edit_status">
-              <option value="null">Select Status</option>
-              <option>Approved</option>
-              <option>Pending</option>
-              <option>Declined</option>
-              </select>
-              </div> -->
+                  <label>Status </label>
+                  <select name="status" class="select2 form-control" id="edit_status">
+                  <option value="null">Select Status</option>
+                  <option>Approved</option>
+                  <option>Pending</option>
+                  <option>Declined</option>
+                  </select>
+                  </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>

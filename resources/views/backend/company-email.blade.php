@@ -27,7 +27,7 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
+                            <th>Sr No.</th>
                             <th>From</th>
                             <th>To</th>
                             <th>CC</th>
@@ -38,14 +38,14 @@
                     </thead>
                     <tbody>
                         @if (!empty($company_emails->count()))
-                            @foreach ($company_emails as $company_email)
+                            @foreach ($company_emails as $index => $company_email)
                                 @php
                                     $from = App\Models\EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
                                     $to = App\Models\EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
                                     $cc = App\Models\EmployeeJob::where('id', '=', $company_email->cc)->value('work_email');
                                 @endphp
                                 <tr>
-                                    <td>{{ $company_email->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ $from }}</td>
                                     <td>{{ $to }}</td>
                                     <td>{{ $cc }}</td>

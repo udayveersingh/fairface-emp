@@ -16,7 +16,7 @@ class ProjectPhaseController extends Controller
     public function index()
     {
         $title = "Project Phase";
-        $project_phases = ProjectPhase::get();
+        $project_phases = ProjectPhase::orderBy('created_at','desc')->get();
         return view('backend.project-phase', compact('title', 'project_phases'));
     }
 

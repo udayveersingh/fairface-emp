@@ -17,14 +17,14 @@ class HolidayController extends Controller
     public function index()
     {
         $title = "holidays";
-        $holidays = Holiday::get();
+        $holidays = Holiday::orderBy('created_at','desc')->get();
         
         return view('backend.holidays',compact('title','holidays'));
     }
 
     public function completed(Request $request,Holiday $holiday){
     //    $holiday = Holiday::find($request->id);
-       $holiday->update([
+       $holiday->update([   
            'completed'=>1,
        ]);
        return back()->with('success',"Holiday marked as complete");

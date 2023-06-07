@@ -27,16 +27,16 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
+                            <th>Sr No.</th>
                             <th>Project Phase</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (!empty($project_phases->count()))
-                            @foreach ($project_phases as $project_phase)
+                            @foreach ($project_phases as $index => $project_phase)
                                 <tr>
-                                    <td>{{ $project_phase->id }}</td>
+                                    <td>{{ $index + 1 }}</td>
                                     <td>{{ str_replace('_', ' ', ucfirst($project_phase->name)) }}</td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
@@ -48,8 +48,9 @@
                                                     class="dropdown-item editbtn" href="javascript:void(0);"
                                                     data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                 <a data-id="{{ $project_phase->id }}" class="dropdown-item deletebtn"
-                                                    href="javascript:void(0);" data-resource_data="Project" data-target="#deletebtn" 
-                                                    data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    href="javascript:void(0);" data-resource_data="Project"
+                                                    data-target="#deletebtn" data-toggle="modal"><i
+                                                        class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
                                         </div>
                                     </td>
@@ -72,7 +73,8 @@
                                                 @method('PUT')
                                                 <input type="hidden" id="edit_id" name="id">
                                                 <label>Project Phase<span class="text-danger">*</span></label>
-                                                <input class="form-control" name="project_phase" id="project_phase" type="text">
+                                                <input class="form-control" name="project_phase" id="project_phase"
+                                                    type="text">
                                                 <div class="submit-section">
                                                     <button type="submit" class="btn btn-primary submit-btn">Save</button>
                                                 </div>

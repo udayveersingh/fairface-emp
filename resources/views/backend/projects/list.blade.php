@@ -40,6 +40,7 @@
                 <table class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
+                            <th>Sr No.</th>
                             <th>Project</th>
                             <th>Project Type</th>
                             <th>Client</th>
@@ -48,8 +49,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $project)
+                        @foreach ($projects as $index => $project)
                             <tr>
+                                <td>{{ $index + 1 }}</td>
                                 <td>
                                     <a href="#">{{ $project->name }}</a>
                                 </td>

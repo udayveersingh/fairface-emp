@@ -123,7 +123,7 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Phone Number Main </label>
-								<input class="form-control mask_phone_number" name="phone" type="text">
+								<input class="form-control mask_phone_number" name="phone" type="tel">
 							</div>
 						</div>
 						<div class="col-sm-6">

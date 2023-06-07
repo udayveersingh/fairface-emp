@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Contract_id</label>
+                                <label>Contract Id</label>
                                 <input class="form-control" type="text" name="contract_id">
                             </div>
                         </div>

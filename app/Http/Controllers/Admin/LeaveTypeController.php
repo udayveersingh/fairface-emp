@@ -16,7 +16,7 @@ class LeaveTypeController extends Controller
     public function index()
     {
         $title = "Leave Type";
-        $leave_types = LeaveType::get();
+        $leave_types = LeaveType::latest()->get();
         return view('backend.leave-type',compact('title','leave_types'));
     }
 

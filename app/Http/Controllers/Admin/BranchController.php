@@ -16,7 +16,7 @@ class BranchController extends Controller
     public function index()
     {
         $title = "Branches";
-        $branches = Branch::get();
+        $branches = Branch::orderBy('created_at','desc')->get();
         return view('backend.branches', compact('title', 'branches'));
     }
 

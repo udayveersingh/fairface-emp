@@ -26,7 +26,7 @@
             <table class="table table-striped custom-table mb-0 datatable">
                 <thead>
                     <tr>
-                        <th style="width: 30px;">#</th>
+                        <th>Sr No.</th>
                         <th>Branch Code</th>
                         <th>Branch Address</th>
                         <th class="text-right">Action</th>
@@ -34,9 +34,9 @@
                 </thead>
                 <tbody>
                     @if(!empty($branches->count()))
-                    @foreach ($branches as $branch)
+                    @foreach ($branches as $index => $branch)
                     <tr>
-                        <td>{{$branch->id}}</td>
+                        <td>{{$index+1}}</td>
                         <td>{{$branch->branch_code}}</td>
                         <td>{{$branch->branch_address}}</td>
                         <td class="text-right">

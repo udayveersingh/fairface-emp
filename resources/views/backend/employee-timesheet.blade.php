@@ -29,14 +29,13 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
                             <th>Employee Name</th>
                             <th>Supervisor</th>
                             <th>Project</th>
                             <th>Project Phase</th>
                             <th>From Time</th>
                             <th>To Time</th>
-                            <th>Status</th>
+                            <th style="text-align:center">Status</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
@@ -52,7 +51,6 @@
                                             $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
                                         }
                                     @endphp
-                                    <td>{{ $timesheet->id }}</td>
                                     <td>{{ $firstname . ' ' . $lastname }}</td>
                                     <td>{{ $supervisor_name }}</td>
                                     <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
