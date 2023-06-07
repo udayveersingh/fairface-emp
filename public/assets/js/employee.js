@@ -107,21 +107,37 @@ $(document).ready(function() {
         $('.select').select2('destroy').select2();
     });
 
-  //Edit form of Project
-    $(document).on('click', '.edit_btn', function() {
-        $('#edit_employee_project').modal('show');
-        var id = $(this).data('id');
-        var emp_id = $(this).data('employee_id');
-        var start_date = $(this).data('start_date');
-        var end_date = $(this).data('end_date');
-        var project = $(this).data('project');
-        $('#edit_project_id').val(id);
-        $('#project_employee_id').val(emp_id);
-        $('#pro_edit_start_date').val(start_date);
-        $('#edit_end_date').val(end_date);
-        $('#edit_project').val(project);
-        $('.select').select2('destroy').select2();
+    //Edit form of Project
+      $(document).on('click', '.edit_btn', function() {
+          $('#edit_employee_project').modal('show');
+          var id = $(this).data('id');
+          var emp_id = $(this).data('employee_id');
+          var start_date = $(this).data('start_date');
+          var end_date = $(this).data('end_date');
+          var project = $(this).data('project');
+          $('#edit_project_id').val(id);
+          $('#project_employee_id').val(emp_id);
+          $('#pro_edit_start_date').val(start_date);
+          $('#edit_end_date').val(end_date);
+          $('#edit_project').val(project);
+          $('.select').select2('destroy').select2();
+      });
+
+    //Edit Emergency contact form
+    $(document).on('click', '#employee_contact_btn', function() {
+        $('#edit_contact_detail').modal("show");
     });
+
+    //Edit Employee Address form
+    $(document).on('click', '#employee_address_btn', function() {
+        $('#edit_address_detail').modal("show");
+    });
+
+    //Edit Employee Bank Detail form
+    $(document).on('click', '#employee_bank_btn', function() {
+        $('#edit_bank_detail').modal("show");
+    });
+
 
     $(".mask_phone_number").keyup(function() {
         $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
