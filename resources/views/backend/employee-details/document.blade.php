@@ -33,7 +33,7 @@
                 <tr>
                     <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
+                            <th style="width: 30px;">Sr No.</th>
                             <th>Document Name</th>
                             <th>Created</th>
                             <th>Attachment</th>
@@ -43,9 +43,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($employee_documents as $document)
+                @foreach ($employee_documents as $index=>$document)
                 <tr>
-                    <td>{{$document->id}}</td>
+                    <td>{{$index+1}}</td>
                     <td>{{$document->name}}</td>
                     <td>{{!empty(date("Y-m-d", strtotime($document->created_at) ))? date("Y-m-d", strtotime($document->created_at)):''}}</td>
                     @php
