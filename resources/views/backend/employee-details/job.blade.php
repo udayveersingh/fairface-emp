@@ -1,10 +1,20 @@
-<div class="row align-items-center mb-2">
-    <div class="col-auto float-right ml-auto">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i class="fa fa-plus"></i>
-            Add Employee Job</a>
+@if (!empty($employee_jobs->count()))
+    <div class="row align-items-center mb-2">
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
+                    class="fa fa-plus"></i>
+                Add Job</a>
+        </div>
     </div>
-</div>
-
+@else
+    <div class="row align-items-center mb-2">
+        <div class="">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
+                    class="fa fa-plus"></i>
+                Add Job</a>
+        </div>
+    </div>
+@endif
 @if (!empty($employee_jobs->count()))
     <div class="row">
         @foreach ($employee_jobs as $job)
@@ -50,6 +60,14 @@
                             <td>{{ $job->work_phone_number }}</td>
                         </tr>
                         <tr>
+                            <th>Start Date</th>
+                            <td>{{ $job->start_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>End Date</th>
+                            <td>{{ $job->end_date }}</td>
+                        </tr>
+                        <tr>
                             <th>Job Type</th>
                             <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
                         </tr>
@@ -65,7 +83,8 @@
                             data-job_title="{{ $job->job_title }}" data-department="{{ $job->department_id }}"
                             data-work_email="{{ $job->work_email }}"
                             data-work_phone_number="{{ $job->work_phone_number }}"
-                            data-start_date="{{ $job->start_date }}" data-job_type="{{ $job->job_type }}"
+                            data-start_date="{{ $job->start_date }}" data-end_date="{{ $job->end_date }}"
+                            data-job_type="{{ $job->job_type }}"
                             data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}" class="btn btn-primary"
                             id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                         <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
@@ -163,6 +182,12 @@
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <input class="form-control" name="start_date" id="start_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input class="form-control" name="end_date" id="end_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -275,6 +300,12 @@
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <input class="form-control" name="start_date" id="edit_start_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input class="form-control" name="end_date" id="edit_end_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">

@@ -1,9 +1,18 @@
+@if (!empty($employee_visas->count()))
 <div class="row align-items-center mb-2">
     <div class="col-auto float-right ml-auto">
         <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i>
             Add Visa</a>
     </div>
 </div>
+@else
+<div class="row align-items-center mb-2">
+    <div class="">
+        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i>
+            Add Visa</a>
+    </div>
+</div>
+@endif
 @if (!empty($employee_visas->count()))
     <div class="row">
         @foreach ($employee_visas as $visa)

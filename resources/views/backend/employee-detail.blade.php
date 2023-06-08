@@ -331,6 +331,7 @@
             @endforeach
         </div>
     @else
+       <div class="mt-4">
         <form method="POST" action="{{ route('employee.add') }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -456,6 +457,7 @@
                 <button class="btn btn-primary submit-btn">Submit</button>
             </div>
         </form>
+       </div>
     @endif
     <!-- Delete Modal -->
     <div class="modal custom-modal fade" id="delete_modal" role="dialog">

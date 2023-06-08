@@ -56,9 +56,10 @@ class EmployeeJobController extends Controller
             'timesheet_approval_incharge' => $request->timesheet_approval_inch,
             'department_id' => $request->department,
             'job_title' => $request->job_title,
-            'work_email' => $request->work_email,
+            'work_email' =>$request->work_email,
             'work_phone_number' => $request->work_phone_number,
-            'start_date' => $request->start_date,
+            'start_date'=>$request->start_date,
+            'end_date'=>$request->end_date,
             'job_type' => $request->job_type,
             'contracted_weekly_hours' => $request->contract_weekly_hours,
         ]);
@@ -93,6 +94,7 @@ class EmployeeJobController extends Controller
         $employee_job->work_email =  $request->work_email;
         $employee_job->work_phone_number =  $request->work_phone_number;
         $employee_job->start_date =  $request->start_date;
+        $employee_job->end_date  = $request->end_date;
         $employee_job->job_type =  $request->job_type;
         $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
         $employee_job->save();

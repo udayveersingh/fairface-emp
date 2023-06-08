@@ -1,4 +1,5 @@
 
+@if(!empty($emergency_contact))
 <div class="row">
     <div class="col-md-8">
         <div class="card card-block shadow shadow-sm p-3 h-100">
@@ -53,6 +54,12 @@
         </div>
     </div>
 </div>
+@else
+<div class="btn-group text-center col-auto" style="max-width: 200px;">
+    <a class="btn btn-primary add-btn w-100 " id="employee_contact_btn" href="javascript:void(0)" data-toggle="modal"><i
+            class="fa fa-plus m-r-5"></i>Add Emergency Contact</a>
+</div>
+@endif
 <div id="edit_contact_detail" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">

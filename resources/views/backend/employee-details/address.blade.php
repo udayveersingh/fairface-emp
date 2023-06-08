@@ -1,3 +1,4 @@
+@if(!empty($employee_address))
 <div class="row">
     <div class="col-md-8">
         <div class="card card-block shadow shadow-sm p-3 h-100">
@@ -32,6 +33,12 @@
         </div>
     </div>
 </div>
+@else
+<div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+    <a class="btn btn-primary w-100  add-btn " id="employee_address_btn" href="javascript:void(0)" data-toggle="modal"><i
+            class="fa fa-plus m-r-5"></i>Add Address</a>
+</div>
+@endif
 
 <div id="edit_address_detail" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
