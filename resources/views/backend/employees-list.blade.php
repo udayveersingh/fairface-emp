@@ -17,7 +17,8 @@
 		</ul>
 	</div>
 	<div class="col-auto float-right ml-auto">
-		<a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
+		<a href="{{route('employee-detail')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
+		{{-- <a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a> --}}
 		<div class="view-icons">
 			<a href="{{route('employees')}}" class="grid-view btn btn-link {{route_is(['employees','employees-list']) ? 'active' : ''}}"><i class="fa fa-th"></i></a>
 			<a href="{{route('employees-list')}}" class="list-view btn btn-link {{route_is(['employees','employees-list']) ? 'active' : '' }}"><i class="fa fa-bars"></i></a>
@@ -123,7 +124,7 @@
 						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Phone Number Main </label>
-								<input class="form-control mask_phone_number" name="phone" type="tel">
+								<input class="form-control mask_phone_number" name="phone" type="text">
 							</div>
 						</div>
 						<div class="col-sm-6">

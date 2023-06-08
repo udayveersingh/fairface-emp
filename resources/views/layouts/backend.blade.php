@@ -164,7 +164,7 @@
 	});
 
 	$(".mask_phone_number").keyup(function() {
-        $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "(+) $1-$2-$3"));
+        $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
     });
 
 	$(document).ready(function() {

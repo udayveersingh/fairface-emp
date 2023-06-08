@@ -233,7 +233,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('clients-list',[ClientController::class,'lists'])->name('clients-list');
 
     // Route::get('employee-view-details/{id}',[EmployeeDetailController::class,'employeeViewDetail'])->name('employee-view-details');
-    Route::match(['get', 'post'],'employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
+    Route::match(['get', 'post'],'employee-detail/{id?}',[EmployeeDetailController::class,'index'])->name('employee-detail');
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
     Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');
