@@ -120,12 +120,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card card-block shadow shadow-sm p-3">
-                            <img alt="avatar" height="300px" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}}  @else assets/img/profiles/default.jpg @endif">
+                    @if (!empty($employee->avatar))
+                        <div class="col-md-4">
+                            <div class="card card-block shadow shadow-sm p-3">
+                                <img alt="avatar" height="300px"
+                                    src="@if (!empty($employee->avatar)) {{ asset('storage/employees/' . $employee->avatar) }}  @else assets/img/profiles/default.jpg @endif">
+                            </div>
                         </div>
-                    
-                    </div>
+                    @endif
                 </div>
                 <!-- Edit Employee Modal -->
                 <div id="edit_employee_detail" class="modal custom-modal fade" role="dialog">
@@ -146,7 +148,8 @@
                                             @method('PUT')
                                             <div class="row">
                                                 <input type="hidden" name="id"
-                                                    value="{{ !empty($employee->id) ? $employee->id : '' }}" id="edit_id">
+                                                    value="{{ !empty($employee->id) ? $employee->id : '' }}"
+                                                    id="edit_id">
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Employee ID <span
@@ -337,133 +340,133 @@
             @endforeach
         </div>
     @else
-       <div class="mt-4">
-        <form method="POST" action="{{ route('employee.add') }}" enctype="multipart/form-data">
-            @csrf
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                        <input class="form-control" name="employee_id" type="text">
+        <div class="mt-4">
+            <form method="POST" action="{{ route('employee.add') }}" enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                            <input class="form-control" name="employee_id" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Main Work Location<span class="text-danger">*</span></label>
+                            <select name="branch_id" class="form-control select">
+                                <option value="">Select Main Work Location</option>
+                                @foreach ($branches as $branch)
+                                    <option value="{{ $branch->id }}">{{ $branch->branch_code }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
+                            <input class="form-control floating" name="avatar" type="file">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">First Name <span class="text-danger">*</span></label>
+                            <input class="form-control" name="firstname" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Last Name</label>
+                            <input class="form-control" name="lastname" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Phone Number Main </label>
+                            <input class="form-control mask_phone_number" name="phone" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Alternate Phone Number</label>
+                            <input class="form-control mask_phone_number" name="al_phone_number" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                            <input class="form-control" name="email" type="email">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Date of Birth</label>
+                            <input class="form-control edit_date_of_birth" name="date_of_birth" type="date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">National Insurance Number</label>
+                            <input class="form-control edit_insurance_number" name="nat_insurance_number" type="text">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Nationality <span class="text-danger">*</span></label>
+                            <select name="nationality" class="form-control select">
+                                <option value="">Select Nationality</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Passport Number</label>
+                            <input class="form-control edit_passport_number" name="passport_number" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Passport Issue Date</label>
+                            <input class="form-control edit_pass_issue_date" name="pass_issue_date" type="date">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-form-label">Passport Expire Date</label>
+                            <input class="form-control edit_pass_expire_date" name="pass_expire_date" type="date">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Marital Status <span class="text-danger">*</span></label>
+                            <select name="marital_status" class="form-control select">
+                                <option value="">Select Marital Status</option>
+                                <option value="married">Married</option>
+                                <option value="unmarried">Unmarried</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Record Status <span class="text-danger">*</span></label>
+                            <select name="record_status" class="form-control select">
+                                <option value="">Select Record Status</option>
+                                <option value="active">Active</option>
+                                <option value="archieve">Archieve</option>
+                                <option value="delete">Delete</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Main Work Location<span class="text-danger">*</span></label>
-                        <select name="branch_id" class="form-control select">
-                            <option value="">Select Main Work Location</option>
-                            @foreach ($branches as $branch)
-                                <option value="{{ $branch->id }}">{{ $branch->branch_code }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="submit-section">
+                    <button class="btn btn-primary submit-btn">Submit</button>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
-                        <input class="form-control floating" name="avatar" type="file">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                        <input class="form-control" name="firstname" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label">Last Name</label>
-                        <input class="form-control" name="lastname" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label class="col-form-label">Phone Number Main </label>
-                        <input class="form-control mask_phone_number" name="phone" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Alternate Phone Number</label>
-                        <input class="form-control mask_phone_number" name="al_phone_number" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                        <input class="form-control" name="email" type="email">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Date of Birth</label>
-                        <input class="form-control edit_date_of_birth" name="date_of_birth" type="date">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">National Insurance Number</label>
-                        <input class="form-control edit_insurance_number" name="nat_insurance_number" type="text">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Nationality <span class="text-danger">*</span></label>
-                        <select name="nationality" class="form-control select">
-                            <option value="">Select Nationality</option>
-                            @foreach ($countries as $country)
-                                <option value="{{ $country->id }}">{{ $country->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Passport Number</label>
-                        <input class="form-control edit_passport_number" name="passport_number" type="text">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Passport Issue Date</label>
-                        <input class="form-control edit_pass_issue_date" name="pass_issue_date" type="date">
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label class="col-form-label">Passport Expire Date</label>
-                        <input class="form-control edit_pass_expire_date" name="pass_expire_date" type="date">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Marital Status <span class="text-danger">*</span></label>
-                        <select name="marital_status" class="form-control select">
-                            <option value="">Select Marital Status</option>
-                            <option value="married">Married</option>
-                            <option value="unmarried">Unmarried</option>
-                            <option value="divorced">Divorced</option>
-                            <option value="widowed">Widowed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Record Status <span class="text-danger">*</span></label>
-                        <select name="record_status" class="form-control select">
-                            <option value="">Select Record Status</option>
-                            <option value="active">Active</option>
-                            <option value="archieve">Archieve</option>
-                            <option value="delete">Delete</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="submit-section">
-                <button class="btn btn-primary submit-btn">Submit</button>
-            </div>
-        </form>
-       </div>
+            </form>
+        </div>
     @endif
     <!-- Delete Modal -->
     <div class="modal custom-modal fade" id="delete_modal" role="dialog">
