@@ -3,6 +3,8 @@
 @section('styles')
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
 @endsection
 @section('page-header')
     <div class="row align-items-center">
@@ -42,7 +44,13 @@
                                 @php
                                     $from = App\Models\EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
                                     $to = App\Models\EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
-                                    $cc = App\Models\EmployeeJob::where('id', '=', $company_email->cc)->value('work_email');
+                                    $multiple_cc = explode(',', $company_email->company_cc);
+                                    $cc_emails = [];
+                                    foreach ($multiple_cc as $value) {
+                                        $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                                        $cc_emails[] = $cc;
+                                    }
+                                    $cc = implode(',', $cc_emails);
                                 @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
@@ -59,7 +67,7 @@
                                                 <a data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
-                                                    data-email_cc="{{ $company_email->cc }}"
+                                                    data-email_cc="{{ $company_email->company_cc }}"
                                                     data-email_date="{{ $company_email->date }}"
                                                     data-email_time="{{ $company_email->time }}"
                                                     data-email_subject="{{ $company_email->subject }}"
@@ -123,9 +131,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>CC </label>
-                                                    <select name="cc" id="cc" class="form-control">
-                                                        <option value="">Select CC</option>
+                                                    <label>CC</label>
+                                                    <select name="cc[]" id="cc" class="form-control select" multiple data-mdb-placeholder="Example placeholder" multiple>
                                                         @foreach ($employee_jobs as $employee_job)
                                                             @php
                                                                 $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -224,9 +231,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>CC </label>
-                            <select name="cc" id="cc" class="form-control">
-                                <option value="">Select CC</option>
+                            <label class="form-label select-label">CC </label>
+                            <select name="cc[]" class="form-control select" multiple data-mdb-placeholder="Example placeholder" multiple>
                                 @foreach ($employee_jobs as $employee_job)
                                     @php
                                         $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -282,6 +288,8 @@
                 var edit_from_id = $(this).data('email_from');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc_id = $(this).data('email_cc');
+                var cc_id=edit_cc_id.split(",");
+                //  console.log(cc_id.length);
                 var edit_date = $(this).data('email_date');
                 var edit_time = $(this).data('email_time');
                 var edit_subject = $(this).data('email_subject');
@@ -290,7 +298,7 @@
                 $('#edit_id').val(id);
                 $('#from_id').val(edit_from_id);
                 $('#to_id').val(edit_email_to);
-                $('#cc').val(edit_cc_id);
+                $('#cc').val(cc_id);
                 $('#edit_date').val(edit_date);
                 $('#edit_time').val(edit_time);
                 $('#edit_subject').val(edit_subject);

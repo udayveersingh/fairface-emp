@@ -120,6 +120,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="card card-block shadow shadow-sm p-3">
+                            <img alt="avatar" height="300px" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}}  @else assets/img/profiles/default.jpg @endif">
+                        </div>
+                    
+                    </div>
                 </div>
                 <!-- Edit Employee Modal -->
                 <div id="edit_employee_detail" class="modal custom-modal fade" role="dialog">
