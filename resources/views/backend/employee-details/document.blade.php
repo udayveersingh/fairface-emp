@@ -26,6 +26,7 @@
         </form>
     </div>
 </div>
+<hr/> 
 <div class="row">
     <div class="col-md-12">
         <table class="table table-striped custom-table mb-0">
@@ -33,7 +34,7 @@
                 <tr>
                     <thead>
                         <tr>
-                            <th style="width: 30px;">#</th>
+                            <th style="width: 30px;">Sr No.</th>
                             <th>Document Name</th>
                             <th>Created</th>
                             <th>Attachment</th>
@@ -43,12 +44,21 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($employee_documents as $document)
+                @foreach ($employee_documents as $index=>$document)
                 <tr>
-                    <td>{{$document->id}}</td>
+                    <td>{{$index+1}}</td>
                     <td>{{$document->name}}</td>
                     <td>{{!empty(date("Y-m-d", strtotime($document->created_at) ))? date("Y-m-d", strtotime($document->created_at)):''}}</td>
-                    <td><a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="100px"></a></td>
+                    @php
+                    $extension = pathinfo(storage_path('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
+                    @endphp
+                    <td>
+                        @if(!empty($extension) && $extension == "pdf")
+                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
+                        @else
+                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="100px"></a>
+                        @endif
+                    </td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

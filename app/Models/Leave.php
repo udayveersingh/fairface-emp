@@ -23,4 +23,8 @@ class Leave extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
+
+    public function time_sheet_status(){
+        return $this->belongsTo(TimesheetStatus::class,'timesheet_status_id','id');
+    }
 }

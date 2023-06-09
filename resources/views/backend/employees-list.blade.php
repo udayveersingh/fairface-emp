@@ -17,7 +17,8 @@
 		</ul>
 	</div>
 	<div class="col-auto float-right ml-auto">
-		<a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
+		<a href="{{route('employee-detail')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
+		{{-- <a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a> --}}
 		<div class="view-icons">
 			<a href="{{route('employees')}}" class="grid-view btn btn-link {{route_is(['employees','employees-list']) ? 'active' : ''}}"><i class="fa fa-th"></i></a>
 			<a href="{{route('employees-list')}}" class="list-view btn btn-link {{route_is(['employees','employees-list']) ? 'active' : '' }}"><i class="fa fa-bars"></i></a>
@@ -49,11 +50,11 @@
 								<a href="javascript:void(0)" class="avatar"><img alt="avatar" src="@if(!empty($employee->avatar)) {{asset('storage/employees/'.$employee->avatar)}} @else assets/img/profiles/default.jpg @endif"></a>
 								<a href="{{route('employee-detail',$employee->id)}}">{{$employee->firstname}} {{$employee->lastname}}</a>
 							</h2>
-						</td>
+						</td>	
 						<td>{{$employee->uuid}}</td>
 						<td>{{$employee->email}}</td>
 						<td>{{$employee->phone}}</td>
-						<td>{{date_format(date_create($employee->date_created),"d M,Y")}}</td>
+						<td>{{date_format(date_create($employee->created_at),"d M,Y")}}</td>
 						<td class="text-right">
 							<div class="dropdown dropdown-action">
 								<a href="javascript:void(0)" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

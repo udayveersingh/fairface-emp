@@ -29,7 +29,7 @@
             <table class="table table-striped custom-table mb-0 datatable">
                 <thead>
                     <tr>
-                        <th style="width: 30px;">#</th>
+                        <th>Sr No.</th>
                         <th>Designation </th>
                         <th>Department </th>
                         <th class="text-right">Action</th>
@@ -37,9 +37,9 @@
                 </thead>
                 <tbody>
                    @if (!empty($designations->count()))
-                       @foreach ($designations as $designation)
+                       @foreach ($designations as $index=>$designation)
                         <tr>
-                            <td>{{$designation->id}}</td>
+                            <td>{{$index+1}}</td>
                             <td>{{$designation->name}}</td>
                             <td>{{$designation->department->name}}</td>
                             <td class="text-right">
@@ -47,7 +47,7 @@
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a data-id="{{$designation->id}}" data-name="{{$designation->name}}" data-department="{{$designation->department->name}}" class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-id="{{$designation->id}}" class="dropdown-item deletebtn" href="javascript:void(0)"  data-target="#deletebtn"  data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                    <a data-id="{{$designation->id}}" class="dropdown-item deletebtn" href="javascript:void(0)"  data-target="#deletebtn" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div>
                                 </div>
                             </td>

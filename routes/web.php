@@ -232,8 +232,8 @@ Route::group(['middleware'=>['auth']], function (){
     Route::delete('clients',[ClientController::class,'destroy'])->name('client.destroy');
     Route::get('clients-list',[ClientController::class,'lists'])->name('clients-list');
 
-    // Route::get('employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
-    Route::match(['get', 'post'],'employee-detail/{id}',[EmployeeDetailController::class,'index'])->name('employee-detail');
+    // Route::get('employee-view-details/{id}',[EmployeeDetailController::class,'employeeViewDetail'])->name('employee-view-details');
+    Route::match(['get', 'post'],'employee-detail/{id?}',[EmployeeDetailController::class,'index'])->name('employee-detail');
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
     Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');
@@ -244,10 +244,10 @@ Route::group(['middleware'=>['auth']], function (){
     Route::put('employees',[EmployeeController::class,'update'])->name('employee.update');
     Route::delete('employees',[EmployeeController::class,'destroy'])->name('employee.destroy');
 
-    Route::get('employees/attendance',[EmployeeAttendanceController::class,'index'])->name('employees.attendance');
-    Route::post('employees/attendance',[EmployeeAttendanceController::class,'store']);
-    Route::put('employees/attendance',[EmployeeAttendanceController::class,'update']);
-    Route::delete('employees/attendance',[EmployeeAttendanceController::class,'destroy']);
+    // Route::get('employees/attendance',[EmployeeAttendanceController::class,'index'])->name('employees.attendance');
+    // Route::post('employees/attendance',[EmployeeAttendanceController::class,'store']);
+    // Route::put('employees/attendance',[EmployeeAttendanceController::class,'update']);
+    // Route::delete('employees/attendance',[EmployeeAttendanceController::class,'destroy']);
 
     Route::get('tickets',[TicketController::class,'index'])->name('tickets');
     Route::get('tickets/show/{subject}',[TicketController::class,'show'])->name('ticket-view');
@@ -271,6 +271,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('employee-leave',[EmployeeLeaveController::class,'index'])->name('employee-leave');
     Route::post('employee-leave',[EmployeeLeaveController::class,'store']);
     Route::put('employee-leave',[EmployeeLeaveController::class,'update']);
+    Route::post('leave-status-update',[EmployeeLeaveController::class,'LeaveStatusUpdate'])->name('leave-status-update');
     Route::delete('employee-leave',[EmployeeLeaveController::class,'destroy'])->name('leave.destroy');
 
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');

@@ -40,22 +40,30 @@
                 <table class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
-                            <th>Project</th>
-                            <th>Project Type</th>
-                            <th>Client</th>
+                            <th>Sr No.</th>
+                            <th>Project Name</th>
+                            <th>Contract Id</th>
+                            <th>Client Name</th>
+                            <th>Work Location</th>
+                            {{-- <th>Project Type</th> --}}
                             <th>Start Date</th>
+                            <th>End Date</th>
                             <th class="text-end">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $project)
+                        @foreach ($projects as $index => $project)
                             <tr>
+                                <td>{{ $index + 1 }}</td>
                                 <td>
                                     <a href="#">{{ $project->name }}</a>
                                 </td>
-                                <td>{{ $project->project_type }}</td>
+                                <td>{{ $project->contract_id}}</td>
                                 <td>{{ $project->client_name }}</td>
+                                <td>{{$project->work_location}}</td>
+                                {{-- <td>{{ $project->project_type }}</td> --}}
                                 <td>{{ date_format(date_create($project->client_cont_start_date), 'D M, Y') }}</td>
+                                <td>{{ date_format(date_create($project->client_cont_end_date), 'D M, Y') }}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"

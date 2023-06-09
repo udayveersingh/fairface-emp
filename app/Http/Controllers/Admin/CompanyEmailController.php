@@ -20,7 +20,7 @@ class CompanyEmailController extends Controller
     public function index()
     {
         $title = "Company Email";
-        $employee_jobs = EmployeeJob::get();
+        $employee_jobs = EmployeeJob::with('employee')->get();
         $company_emails = CompanyEmail::with('employeejob')->get();
         return view('backend.company-email', compact('title', 'company_emails','employee_jobs'));
     }
@@ -68,8 +68,6 @@ class CompanyEmailController extends Controller
          $company_email->subject = $request->email_subject;
          $company_email->body = $request->email_body;
          $company_email->attachment = $imageName;
-         $company_email->save();
-
          $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
          $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
          $cc_email =  EmployeeJob::where('id', '=', $request->cc)->value('work_email');
@@ -78,9 +76,11 @@ class CompanyEmailController extends Controller
              'from' => $form_email,
              'cc_email' => $cc_email,
              'subject' => $request->email_subject,
-             'attchment' => $request->email_attachment
+             'attachment' => $imageName
             ]);
            Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
+           $company_email->save();
+
         //    dd("Mail Sent Successfully!");
            return back()->with('success',$message);
     }

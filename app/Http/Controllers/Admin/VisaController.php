@@ -16,8 +16,8 @@ class VisaController extends Controller
     public function index()
     {
         $title = "Visas";
-        $visas = Visa::get();
-        return view('backend.visa', compact('title', 'visas'));
+        $visas = Visa::orderBy('created_at','desc')->get();
+               return view('backend.visa', compact('title', 'visas'));
     }
 
     /**

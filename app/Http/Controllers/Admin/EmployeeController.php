@@ -39,9 +39,8 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch')->get();
-        return view('backend.employees-list',
-            compact('title', 'employees', 'branches', 'countries')
+        $employees = Employee::with('branch')->orderBy('created_at','desc')->get();
+        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries')
         );
     }
 
@@ -58,10 +57,10 @@ class EmployeeController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',
-            'phone' => 'nullable|max:15',
+            'phone' => 'nullable|max:25',
             'avatar' => 'file|image|mimes:jpg,jpeg,png,gif',
-            'nat_insurance_number' => 'nullable|max:20',
-            'passport_number' => 'nullable|max:15',
+            'nat_insurance_number' => 'nullable|max:25',
+            'passport_number' => 'nullable|max:25',
             'pass_issue_date' => 'required',
             'pass_expire_date' => 'required',
             'nationality' => 'required',
@@ -73,8 +72,8 @@ class EmployeeController extends Controller
             $imageName = time() . '.' . $request->avatar->extension();
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }
-        $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
-        Employee::create([
+            $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
+            $employee = Employee::create([
             'uuid' => $uuid,
             'employee_id' => $request->input('employee_id'),
             'firstname' => $request->input('firstname'),
@@ -94,7 +93,7 @@ class EmployeeController extends Controller
             'branch_id' => $request->branch_id,
 
         ]);
-        return redirect()->route('employees-list')->with('success', "Employee has been added");
+        return redirect()->route('employee-detail', $employee->id)->with('success', "Employee has been added");
     }
 
     /**
@@ -122,10 +121,10 @@ class EmployeeController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',
-            'phone' => 'nullable|max:15',
+            'phone' => 'nullable|max:20',
             'avatar' => 'file|image|mimes:jpg,jpeg,png,gif',
-            'nat_insurance_number' => 'nullable|max:20',
-            'passport_number' => 'nullable|max:15',
+            'nat_insurance_number' => 'nullable|max:25',
+            'passport_number' => 'nullable|max:25',
             'pass_issue_date' => 'required',
             'pass_expire_date' => 'required',
             'nationality' => 'required',

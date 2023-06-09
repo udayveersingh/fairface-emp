@@ -22,6 +22,7 @@
             <table class="table table-striped custom-table mb-0">
                 <thead>
                     <tr>
+                        <th>Sr No.</th>
                         <th>Title </th>
                         <th>Holiday Date</th>
                         <th>Day</th>
@@ -30,8 +31,9 @@
                 </thead>
                 <tbody>
                     @if (!empty($holidays->count()))
-                        @foreach ($holidays as $holiday)
+                        @foreach ($holidays as $index=> $holiday)
                             <tr class="@if($holiday->completed) holiday-completed @endif holiday-upcoming">
+                                <td>{{$index+1}}</td>
                                 <td>{{$holiday->name}}</td>
                                 <td>{{date_format(date_create($holiday->holiday_date),'d M Y')}}</td>
                                 <td>{{ date_format(date_create($holiday->holiday_date),'D') }}</td>

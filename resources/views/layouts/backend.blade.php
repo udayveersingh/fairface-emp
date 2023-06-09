@@ -9,7 +9,7 @@
     <!-- <meta name="_token" content="{{csrf_token()}}" /> -->
 	<title>{{ucfirst(config('app.name'))}} - {{ucfirst($title)}}</title>
 	<!-- Favicon -->
-	<link rel="shortcut icon" type="image/x-icon" href="{{!empty(app(App\Settings\ThemeSettings::class)->favicon) ? asset('storage/settings/'.app(App\Settings\ThemeSettings::class)->favicon):asset('assets/img/favicon.png')}}">
+	<link rel="shortcut icon" type="image/x-icon" href="{{!empty(app(App\Settings\ThemeSettings::class)->favicon) ? asset('storage/settings/theme/'.app(App\Settings\ThemeSettings::class)->favicon):asset('assets/img/favicon.png')}}">
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
 	<!-- Fontawesome CSS -->
@@ -153,7 +153,7 @@
 <!-- delete functionality of employee detail page -->
 <script>
 	$(document).ready(function() {
-		$('.deletebtn').on('click', function() {
+		$('.detail_delete').on('click', function() {
 			$('#delete_modal').modal('show');
 			var id = $(this).data('id');
 			var resource_model = $(this).data('resource_data');
@@ -164,7 +164,7 @@
 	});
 
 	$(".mask_phone_number").keyup(function() {
-        $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+        $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
     });
 
 	$(document).ready(function() {

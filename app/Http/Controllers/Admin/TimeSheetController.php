@@ -16,7 +16,7 @@ class TimeSheetController extends Controller
     public function index()
     {
         $title = "Timesheet Status";
-        $timesheet_statuses = TimesheetStatus::get();
+        $timesheet_statuses = TimesheetStatus::orderBy('created_at','desc')->get();
         return view('backend.timesheet-status', compact('title', 'timesheet_statuses'));
     }
 

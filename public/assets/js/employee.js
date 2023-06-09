@@ -30,6 +30,11 @@ $(document).ready(function() {
     //     });
     // });
 
+    $(document).on('click', '#employee_edit_btn', function() {
+        console.log('edit clicked');
+        $('#edit_employee_detail').modal("show");
+    });
+
     console.log("Element ", $(document).find(".edit_btn").length);
     $(document).on('click', '#edit_btn', function() {
         console.log('edit clicked');
@@ -44,6 +49,7 @@ $(document).ready(function() {
         var edit_work_email = $(this).data('work_email');
         var edit_work_phone_number = $(this).data('work_phone_number');
         var edit_start_date = $(this).data('start_date');
+        var edit_end_date = $(this).data('end_date');
         var edit_job_type = $(this).data('job_type');
         var cont_weekly_hours = $(this).data('cont_weekly_hours');
         $('#edit_job_id').val(id);
@@ -55,6 +61,7 @@ $(document).ready(function() {
         $('#edit_work_email').val(edit_work_email);
         $('#edit_phone_number').val(edit_work_phone_number);
         $('#edit_start_date').val(edit_start_date);
+        $('#edit_end_date').val(edit_end_date);
         $('#edit_job_type').val(edit_job_type);
         $('#contracted_weekly_hours').val(cont_weekly_hours);
         $('.select').select2('destroy').select2();
@@ -102,24 +109,41 @@ $(document).ready(function() {
         $('.select').select2('destroy').select2();
     });
 
-  //Edit form of Project
-    $(document).on('click', '.edit_btn', function() {
-        $('#edit_employee_project').modal('show');
-        var id = $(this).data('id');
-        var emp_id = $(this).data('employee_id');
-        var start_date = $(this).data('start_date');
-        var end_date = $(this).data('end_date');
-        var project = $(this).data('project');
-        $('#edit_project_id').val(id);
-        $('#project_employee_id').val(emp_id);
-        $('#pro_edit_start_date').val(start_date);
-        $('#edit_end_date').val(end_date);
-        $('#edit_project').val(project);
-        $('.select').select2('destroy').select2();
+    //Edit form of Project
+      $(document).on('click', '.edit_btn', function() {
+          $('#edit_employee_project').modal('show');
+          var id = $(this).data('id');
+          var emp_id = $(this).data('employee_id');
+          var start_date = $(this).data('start_date');
+          var end_date = $(this).data('end_date');
+          var project = $(this).data('project');
+          $('#edit_project_id').val(id);
+          $('#project_employee_id').val(emp_id);
+          $('#pro_edit_start_date').val(start_date);
+          $('#edit_end_date').val(end_date);
+          $('#edit_project').val(project);
+          $('.select').select2('destroy').select2();
+      });
+
+    //Edit Emergency contact form
+    $(document).on('click', '#employee_contact_btn', function() {
+        $('#edit_contact_detail').modal("show");
     });
 
+    //Edit Employee Address form
+    $(document).on('click', '#employee_address_btn', function() {
+        $('#edit_address_detail').modal("show");
+    });
+
+    //Edit Employee Bank Detail form
+    $(document).on('click', '#employee_bank_btn', function() {
+        $('#edit_bank_detail').modal("show");
+    });
+
+
     $(".mask_phone_number").keyup(function() {
-        $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+        // $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+        $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
     });
 
     // $(document).ready(function() {

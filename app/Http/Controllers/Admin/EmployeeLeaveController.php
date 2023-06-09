@@ -21,7 +21,7 @@ class EmployeeLeaveController extends Controller
     public function index()
     {
         $title = "employee leave";
-        $leaves = Leave::with('leaveType','employee')->get();
+        $leaves = Leave::with('leaveType','employee','time_sheet_status')->get();
         $timesheet_statuses = TimesheetStatus::get(); 
         $leave_types = LeaveType::get();
         $employees = Employee::get();
@@ -40,6 +40,7 @@ class EmployeeLeaveController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request,[
             'employee'=>'required',
             'leave_type'=>'required',
@@ -104,5 +105,17 @@ class EmployeeLeaveController extends Controller
         $leave->delete();
         $notification = notify('Employee leave has been deleted');
         return back()->with($notification);
+    }
+
+    public function LeaveStatusUpdate(Request $request)
+    {
+        $this->validate($request,[
+            'timesheet_status'=>'required',
+        ]);
+        $employee_leave_status = Leave::find($request->id);
+        $employee_leave_status->timesheet_status_id =  $request->input('timesheet_status');
+        $employee_leave_status->save();
+        return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
+
     }
 }

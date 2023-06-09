@@ -56,7 +56,7 @@
         <table class="table table-striped custom-table mb-0 datatable">
             <thead>
                 <tr>
-                    <th style="width: 30px;">#</th>
+                    <th style="width: 30px;">Sr No.</th>
                     <th>Month</th>
                     <th>Year</th>
                     <th>Created</th>
@@ -65,18 +65,26 @@
                 </tr>
             </thead>
             <tbody id="bodyData">
-                @foreach ($employee_payslips as $employee_payslip)
+                @foreach ($employee_payslips as $index=>$employee_payslip)
                 <tr>
-                    <td>{{!empty($employee_payslip->id)? $employee_payslip->id:''}}</td>
+                    <td>{{$index+1}}</td>
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
                     <td>{{!empty(date("Y-m-d", strtotime($employee_payslip->created_at) ))? date("Y-m-d", strtotime($employee_payslip->created_at)):''}}</td>
-                    <td><a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a></td>
+                    @php
+                        $extension = pathinfo(storage_path('storage/payslips/'.$employee_payslip->attachment), PATHINFO_EXTENSION);
+                    @endphp
+                    <td>@if($extension == "pdf")
+                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
+                        @else
+                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a>
+                        @endif
+                    </td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a data-id="{{$employee_payslip->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                <a data-id="{{$employee_payslip->id}}" class="dropdown-item detail_delete" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
                     </td>

@@ -1,76 +1,101 @@
-<div class="row align-items-center mb-2">
-    <div class="col-auto float-right ml-auto">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i class="fa fa-plus"></i>
-            Add Employee Job</a>
+@if (!empty($employee_jobs->count()))
+    <div class="row align-items-center mb-2">
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
+                    class="fa fa-plus"></i>
+                Add Job</a>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped custom-table mb-0 datatable">
-            <thead>
-                <tr>
-                    <th style="width: 30px;">#</th>
-                    <th>supervisor </th>
-                    <th>Timesheet Approval Incharge </th>
-                    <th>Job Title</th>
-                    <th>Job Type</th>
-                    <th class="text-right">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (!empty($employee_jobs->count()))
-                    @foreach ($employee_jobs as $job)
+@else
+    <div class="row align-items-center mb-2">
+        <div class="">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
+                    class="fa fa-plus"></i>
+                Add Job</a>
+        </div>
+    </div>
+@endif
+@if (!empty($employee_jobs->count()))
+    <div class="row">
+        @foreach ($employee_jobs as $job)
+            @php
+                if (!empty($job->supervisor)) {
+                    $supervisor = App\Models\Employee::find($job->supervisor);
+                    $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                } else {
+                    $supervisor_name = '';
+                }
+                if (!empty($job->timesheet_approval_incharge)) {
+                    $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                } else {
+                    $incharge_name = '';
+                }
+            @endphp
+            <div class="col-md-12 mb-4">
+                <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+                    <table class="table table-striped">
                         <tr>
-                            @php
-                                if (!empty($job->supervisor)) {
-                                    $supervisor = App\Models\Employee::find($job->supervisor);
-                                    $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                                } else {
-                                    $supervisor_name = '';
-                                }
-                                if (!empty($job->timesheet_approval_incharge)) {
-                                    $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
-                                } else {
-                                    $incharge_name = '';
-                                }
-                            @endphp
-                            <td>{{ $job->id }}</td>
-                            <td>{{ $supervisor_name }}</td>
-                            <td>{{ $incharge_name }}</td>
+                            <th>Job Title</th>
                             <td>{{ $job->job_title }}</td>
-                            <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
-                            <td class="text-right">
-                                <div class="dropdown dropdown-action">
-                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a data-id="{{ $job->id }}" data-employee_id="{{ $job->employee_id }}"
-                                            data-supervisor="{{ $job->supervisor }}"
-                                            data-timesheet_approval_inch="{{ $job->timesheet_approval_incharge }}"
-                                            data-job_title="{{ $job->job_title }}"
-                                            data-department="{{ $job->department_id }}"
-                                            data-work_email="{{ $job->work_email }}"
-                                            data-work_phone_number="{{ $job->work_phone_number }}"
-                                            data-start_date="{{ $job->start_date }}"
-                                            data-job_type="{{ $job->job_type }}"
-                                            data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}"
-                                            class="dropdown-item" id="edit_btn" href="javascript:void(0);"><i
-                                                class="fa fa-pencil m-r-5"></i> Edit</a>
-                                        <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
-                                            class="dropdown-item deletebtn" href="javascript:void(0);"
-                                            data-target="data_delete_modal" data-toggle="modal"><i
-                                                class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </td>
                         </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
+                        <tr>
+                            <th>supervisor </th>
+                            <td>{{ $supervisor_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Timesheet Approval Incharge </th>
+                            <td>{{ $incharge_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Department</th>
+                            <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Work Email</th>
+                            <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Work Phone Number</th>
+                            <td>{{ $job->work_phone_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Start Date</th>
+                            <td>{{ $job->start_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>End Date</th>
+                            <td>{{ $job->end_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Job Type</th>
+                            <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Contracted Weekly Hours</th>
+                            <td>{{ $job->contracted_weekly_hours }}</td>
+                        </tr>
+                    </table>
+                    <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+                        <a data-id="{{ $job->id }}" data-employee_id="{{ $job->employee_id }}"
+                            data-supervisor="{{ $job->supervisor }}"
+                            data-timesheet_approval_inch="{{ $job->timesheet_approval_incharge }}"
+                            data-job_title="{{ $job->job_title }}" data-department="{{ $job->department_id }}"
+                            data-work_email="{{ $job->work_email }}"
+                            data-work_phone_number="{{ $job->work_phone_number }}"
+                            data-start_date="{{ $job->start_date }}" data-end_date="{{ $job->end_date }}"
+                            data-job_type="{{ $job->job_type }}"
+                            data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}" class="btn btn-primary"
+                            id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                        <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
+                            class="btn btn-danger detail_delete" href="javascript:void(0);" data-target="delete_modal"
+                            data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     </div>
-</div>
+@endif
 <!-- Add Employee Job Modal -->
 <div id="add_employee_job" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -157,6 +182,12 @@
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <input class="form-control" name="start_date" id="start_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input class="form-control" name="end_date" id="end_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -269,6 +300,12 @@
                             <div class="form-group">
                                 <label>Start Date</label>
                                 <input class="form-control" name="start_date" id="edit_start_date" type="date">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input class="form-control" name="end_date" id="edit_end_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">

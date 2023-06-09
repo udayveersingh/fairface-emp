@@ -4,7 +4,7 @@
     <!-- Logo -->
     <div class="header-left">
         <a href="{{route('dashboard')}}" class="logo">
-            <img src="{{!empty(app(App\Settings\ThemeSettings::class)->logo) ? asset('storage/settings/'.app(App\Settings\ThemeSettings::class)->logo):asset('assets/img/logo.png')}}" alt="logo" width="40" height="40">
+            <img src="{{!empty(app(App\Settings\ThemeSettings::class)->logo) ? asset('storage/settings/theme/'.app(App\Settings\ThemeSettings::class)->logo):asset('assets/img/logo.png')}}" alt="logo" width="40" height="40">
         </a>
     </div>
     <!-- /Logo -->
