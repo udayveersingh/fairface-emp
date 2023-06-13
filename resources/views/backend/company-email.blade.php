@@ -132,7 +132,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>CC</label>
-                                                    <select name="cc[]" id="cc" class="form-control select" multiple data-mdb-placeholder="Example placeholder" multiple>
+                                                    <select name="cc[]" id="cc" class="form-control select"
+                                                        multiple data-mdb-placeholder="Example placeholder" multiple>
                                                         @foreach ($employee_jobs as $employee_job)
                                                             @php
                                                                 $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -232,7 +233,8 @@
                         </div>
                         <div class="form-group">
                             <label class="form-label select-label">CC </label>
-                            <select name="cc[]" class="form-control select" multiple data-mdb-placeholder="Example placeholder" multiple>
+                            <select name="cc[]" class="form-control select" multiple
+                                data-mdb-placeholder="Example placeholder" multiple>
                                 @foreach ($employee_jobs as $employee_job)
                                     @php
                                         $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -288,7 +290,7 @@
                 var edit_from_id = $(this).data('email_from');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc_id = $(this).data('email_cc');
-                var cc_id=edit_cc_id.split(",");
+                var cc_id = edit_cc_id.split(",");
                 //  console.log(cc_id.length);
                 var edit_date = $(this).data('email_date');
                 var edit_time = $(this).data('email_time');
