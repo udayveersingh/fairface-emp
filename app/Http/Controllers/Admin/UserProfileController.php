@@ -3,15 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use App\Models\EmployeeEmergencyContact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
     public function index(){
         $title= 'user Profile';
-        return view('backend.profile',compact(
-            'title'
-        ));
+     if (Auth::check() && Auth::user()->role_id == '3')
+     {
+        $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id','=',Auth::user()->id)->first();
+        $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
+        return view('backend.profile',compact('title','employee','emergency_contact'));
+     }else{
+        return view('backend.profile',compact('title'));
+     }
     }
 
     public function update(Request $request){

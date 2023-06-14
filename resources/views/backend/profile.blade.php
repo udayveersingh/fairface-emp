@@ -1,118 +1,280 @@
 @extends('layouts.backend')
 
 @section('styles')
-	
 @endsection
 
 @section('page-header')
-<div class="row">
-	<div class="col-sm-12">
-		<h3 class="page-title">Profile</h3>
-		<ul class="breadcrumb">
-			<li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
-			<li class="breadcrumb-item active">Profile</li>
-		</ul>
-	</div>
-</div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Profile</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Profile</li>
+            </ul>
+        </div>
+    </div>
 @endsection
 
-
 @section('content')
-<div class="card mb-0">
-	<div class="card-body">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="profile-view">
-					<div class="profile-img-wrap">
-						<div class="profile-img">
-							<a href="#"><img alt="avatar" src="{{!empty(auth()->user()->avatar) ? asset('storage/users/'.auth()->user()->avatar) : asset('assets/img/user.jpg') }}"></a>
-						</div>
-					</div>
-					<div class="profile-basic">
-						<div class="row">
-							<div class="col-md-5">
-								<div class="profile-info-left">
-									<h3 class="user-name m-t-0 mb-0">{{auth()->user()->name}}</h3>
-									
-								</div>
-							</div>
-							<div class="col-md-7">
-								<ul class="personal-info">
-									<li>
-										<div class="title">Username:</div>
-										<div class="text">{{auth()->user()->username}}</div>
-									</li>
-									<li>
-										<div class="title">Email:</div>
-										<div class="text">{{auth()->user()->email}}</div>
-									</li>
-									
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="pro-edit"><a data-target="#profile_info" data-toggle="modal" class="edit-icon" href="#"><i class="fa fa-pencil"></i></a></div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- Profile Modal -->
-<div id="profile_info" class="modal custom-modal fade" role="dialog">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Profile Information</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form method="POST" enctype="multipart/form-data" action="{{route('profile')}}">
-					@csrf
-					<div class="row">
-						<div class="col-md-12">
-							<div class="profile-img-wrap edit-img">
-								<img class="inline-block" src="{{!empty(auth()->user()->avatar) ? asset('storage/users/'.auth()->user()->avatar) : asset('assets/img/user.jpg') }}" alt="user">
-								<div class="fileupload btn">
-									<span class="btn-text">edit</span>
-									<input name="avatar" class="upload" type="file">
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label>Full Name</label>
-										<input type="text" class="form-control" name="name" value="{{auth()->user()->name}}">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<label> Username</label>
-										<input type="text" class="form-control" name="username" value="{{auth()->user()->username}}">
-									</div>
-								</div>
-								<div class="col-md-12">
-									<div class="form-group">
-										<label>Email</label>
-										<input type="email" class="form-control" name="email" value="{{auth()->user()->email}}">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="submit-section">
-						<button class="btn btn-primary submit-btn">Submit</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Profile Modal -->
+    <div class="card mb-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-view">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <a href="#"><img alt="avatar"
+                                        src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"></a>
+                            </div>
+                        </div>
+                        <div class="profile-basic">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="profile-info-left">
+                                        <h3 class="user-name m-t-0 mb-0">{{ auth()->user()->name }}</h3>
+                                        <h5 class="user-name m-t-0 mb-0">Employee ID:{{ $employee->employee_id }}</h5>
+                                        <div class="text">Date of Join
+                                            :{{ date_format(date_create($employee->created_at), 'd M,Y') }}</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <ul class="personal-info">
+                                        <li>
+                                            <div class="title">Username:</div>
+                                            <div class="text">{{ auth()->user()->username }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Email:</div>
+                                            <div class="text">{{ auth()->user()->email }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Birthday:</div>
+                                            <div class="text">{{ $employee->date_of_birth }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Phone:</div>
+                                            <div class="text">{{ $employee->phone }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Marital Status:</div>
+                                            <div class="text">{{ $employee->marital_status }}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pro-edit"><a data-target="#profile_info" data-toggle="modal" class="edit-icon"
+                                href="#"><i class="fa fa-pencil"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button"
+                role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button"
+                role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button"
+                role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">test</div>
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">test2</div>
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">test3</div>
+    </div> --}}
+    @php
+        $tabs = [
+            'document' => 'Document',
+            'job' => 'Job',
+            'visa' => 'Visa',
+            'project' => 'Project',
+            'payslip' => 'Payslip',
+        ];
+    @endphp
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                aria-controls="profile" aria-selected="true">Profile</a>
+        </li>
+        @foreach ($tabs as $index => $tab)
+            <li class="nav-item">
+                <a class="nav-link" id="{{ $index }}-tab" data-toggle="tab" href="#{{ $index }}"
+                    role="tab" aria-controls="{{ $index }}" aria-selected="true">{{ $tab }}</a>
+            </li>
+        @endforeach
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Personal Informations <a href="#" class="edit-icon"
+                              data-bs-toggle="modal" data-bs-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Main Branch Location</div>
+                                    <div class="text">
+                                        {{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">Alternate Phone Number</div>
+                                    <div class="text">{{ $employee->alternate_phone_number }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Nationality</div>
+                                    <div class="text">
+                                        {{ !empty($employee->country->name) ? $employee->country->name : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">National Insurance Number</div>
+                                    <div class="text">{{ $employee->national_insurance_number }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Passport Number</div>
+                                    <div class="text">{{ $employee->passport_number }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Passport Issue Date</div>
+                                    <div class="text">{{ $employee->passport_issue_date }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Passport Expire Date</div>
+                                    <div class="text">{{ $employee->passport_expiry_date }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Record Status</div>
+                                    <div class="text">{{ $employee->record_status }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon"
+                                    data-bs-toggle="modal" data-bs-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Local Contact Name</div>
+                                    <div class="text">{{ !empty($emergency_contact->full_name) ? $emergency_contact->full_name : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Address</div>
+                                    <div class="text">{{ !empty($emergency_contact->address) ? $emergency_contact->address : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Phone Number 1</div>
+                                    <div class="text">{{ !empty($emergency_contact->phone_number_1) ? $emergency_contact->phone_number_1 : '' }}</div>
+                                </li>
+								<li>
+                                    <div class="title">Phone Number 2</div>
+                                    <div class="text">{{ !empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2 : '' }}</div>
+                                </li>
+								<li>
+                                    <div class="title">Relationship</div>
+                                    <div class="text">{{ !empty($emergency_contact->relationship) ? $emergency_contact->relationship : '' }}</div>
+                                </li>
+                            </ul>
+                            <hr style="margin-top:3rem;">
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Overseas & Local Contact Name</div>
+                                    <div class="text">{{!empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : ''}}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Overseas Address</div>
+                                    <div class="text">{{ !empty($emergency_contact->overseas_address) ? $emergency_contact->overseas_address : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Overseas Phone Number 1 </div>
+                                    <div class="text">{{ !empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1 : '' }}</div>
+                                </li>
+								<li>
+                                    <div class="title">Overseas Phone Number 2</div>
+                                    <div class="text">{{ !empty($emergency_contact->overseas_phone_number_2) ? $emergency_contact->overseas_phone_number_2 : '' }}</div>
+                                </li>
+								<li>
+                                    <div class="title">Overseas Relationship</div>
+                                    <div class="text">{{ !empty($emergency_contact->overseas_relationship) ? $emergency_contact->overseas_relationship : '' }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @foreach ($tabs as $index => $tab)
+            <div class="tab-pane fade" id="{{ $index }}" role="tabpanel"
+                aria-labelledby="{{ $index }}-tab">
+				test1
+            </div>
+        @endforeach
+    </div>
+    <!-- Profile Modal -->
+    <div id="profile_info" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Profile Information</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('profile') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="profile-img-wrap edit-img">
+                                    <img class="inline-block"
+                                        src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
+                                        alt="user">
+                                    <div class="fileupload btn">
+                                        <span class="btn-text">edit</span>
+                                        <input name="avatar" class="upload" type="file">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ auth()->user()->name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label> Username</label>
+                                            <input type="text" class="form-control" name="username"
+                                                value="{{ auth()->user()->username }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" name="email"
+                                                value="{{ auth()->user()->email }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Profile Modal -->
 @endsection
 
 @section('scripts')
-	
 @endsection

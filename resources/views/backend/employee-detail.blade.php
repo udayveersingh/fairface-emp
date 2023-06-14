@@ -43,8 +43,7 @@
                                 </tr>
                                 <tr>
                                     <th>Main Branch Location</th>
-                                    <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
-                                    </td>
+                                    <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Name</th>
@@ -81,10 +80,6 @@
                                 <tr>
                                     <th>Passport Issue Date</th>
                                     <td>{{ $employee->passport_issue_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Passport Expire Date</th>
-                                    <td>{{ $employee->passport_expiry_date }}</td>
                                 </tr>
                                 <tr>
                                     <th>Passport Expire Date</th>
