@@ -113,7 +113,8 @@
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Personal Informations <a href="#" class="edit-icon"
-                              data-bs-toggle="modal" data-bs-target="#personal_info_modal"><i class="fa fa-pencil"></i></a></h3>
+                                    data-bs-toggle="modal" data-bs-target="#personal_info_modal"><i
+                                        class="fa fa-pencil"></i></a></h3>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Main Branch Location</div>
@@ -158,50 +159,147 @@
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
                             <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon"
-                                    data-bs-toggle="modal" data-bs-target="#emergency_contact_modal"><i class="fa fa-pencil"></i></a></h3>
+                                    data-bs-toggle="modal" data-bs-target="#emergency_contact_modal"><i
+                                        class="fa fa-pencil"></i></a></h3>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Local Contact Name</div>
-                                    <div class="text">{{ !empty($emergency_contact->full_name) ? $emergency_contact->full_name : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->full_name) ? $emergency_contact->full_name : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Address</div>
-                                    <div class="text">{{ !empty($emergency_contact->address) ? $emergency_contact->address : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->address) ? $emergency_contact->address : '' }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Phone Number 1</div>
-                                    <div class="text">{{ !empty($emergency_contact->phone_number_1) ? $emergency_contact->phone_number_1 : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->phone_number_1) ? $emergency_contact->phone_number_1 : '' }}
+                                    </div>
                                 </li>
-								<li>
+                                <li>
                                     <div class="title">Phone Number 2</div>
-                                    <div class="text">{{ !empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2 : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2 : '' }}
+                                    </div>
                                 </li>
-								<li>
+                                <li>
                                     <div class="title">Relationship</div>
-                                    <div class="text">{{ !empty($emergency_contact->relationship) ? $emergency_contact->relationship : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->relationship) ? $emergency_contact->relationship : '' }}
+                                    </div>
                                 </li>
                             </ul>
                             <hr style="margin-top:3rem;">
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Overseas & Local Contact Name</div>
-                                    <div class="text">{{!empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : ''}}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Overseas Address</div>
-                                    <div class="text">{{ !empty($emergency_contact->overseas_address) ? $emergency_contact->overseas_address : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->overseas_address) ? $emergency_contact->overseas_address : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Overseas Phone Number 1 </div>
-                                    <div class="text">{{ !empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1 : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1 : '' }}
+                                    </div>
                                 </li>
-								<li>
+                                <li>
                                     <div class="title">Overseas Phone Number 2</div>
-                                    <div class="text">{{ !empty($emergency_contact->overseas_phone_number_2) ? $emergency_contact->overseas_phone_number_2 : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->overseas_phone_number_2) ? $emergency_contact->overseas_phone_number_2 : '' }}
+                                    </div>
                                 </li>
-								<li>
+                                <li>
                                     <div class="title">Overseas Relationship</div>
-                                    <div class="text">{{ !empty($emergency_contact->overseas_relationship) ? $emergency_contact->overseas_relationship : '' }}</div>
+                                    <div class="text">
+                                        {{ !empty($emergency_contact->overseas_relationship) ? $emergency_contact->overseas_relationship : '' }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Bank Information</h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Bank Account Name</div>
+                                    <div class="text">
+                                        {{ !empty($employee_bank->account_name) ? $employee_bank->account_name : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">Bank name</div>
+                                    <div class="text">
+                                        {{ !empty($employee_bank->bank_name) ? $employee_bank->bank_name : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Bank account No.</div>
+                                    <div class="text">
+                                        {{ !empty($employee_bank->bank_account_number) ? $employee_bank->bank_account_number : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">IFSC Code</div>
+                                    <div class="text">
+                                        {{ !empty($employee_bank->ifsc_code) ? $employee_bank->ifsc_code : '' }}</div>
+                                </li>
+                                <li>
+                                    <div class="title">Bank Sort Code</div>
+                                    <div class="text">
+                                        {{ !empty($employee_bank->bank_sort_code) ? $employee_bank->bank_sort_code : '' }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Employee Address</h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">Address Line 1</div>
+                                    <div class="text">
+                                        {{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">Address Line 2</div>
+                                    <div class="text">
+                                        {{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">Post Code</div>
+                                    <div class="text">
+                                        {{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">From Date</div>
+                                    <div class="text">
+                                        {{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="title">To Date</div>
+                                    <div class="text">
+                                        {{ !empty($employee_address->to_date) ? $employee_address->to_date : '' }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -209,12 +307,174 @@
                 </div>
             </div>
         </div>
-        @foreach ($tabs as $index => $tab)
-            <div class="tab-pane fade" id="{{ $index }}" role="tabpanel"
-                aria-labelledby="{{ $index }}-tab">
-				test1
+
+        <!-- Employee Document -->
+        <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+            <div class="card profile-box flex-fill">
+                <div class="row">
+                    @foreach ($employee_documents as $document)
+                        @php
+                            $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
+                        @endphp
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Document Name</div>
+                                        <div class="text">{{ $document->name }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Created Date</div>
+                                        <div class="text">
+                                            {{ !empty(date('Y-m-d', strtotime($document->created_at))) ? date('Y-m-d', strtotime($document->created_at)) : '' }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="text"><a
+                                                href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                                class="btn btn-primary" target="_blank" download> download</a></div>
+                                    </li>
+                                </ul>
+                                <br>
+                                @if (!empty($extension) && $extension == 'pdf')
+                                    <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                        target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                            width="300px" height="185px"></a>
+                                @else
+                                    <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                        target="_blank"><img
+                                            src="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                            width="300px"></a>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        @endforeach
+        </div>
+        <!-- Employee Document -->
+
+        <!-- Employee Job -->
+        <div class="tab-pane fade" id="job" role="tabpanel" aria-labelledby="job-tab">
+            <div class="row">
+                @foreach ($employee_jobs as $job)
+                    @php
+                        if (!empty($job->supervisor)) {
+                            $supervisor = App\Models\Employee::find($job->supervisor);
+                            $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                        } else {
+                            $supervisor_name = '';
+                        }
+                        if (!empty($job->timesheet_approval_incharge)) {
+                            $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                            $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                        } else {
+                            $incharge_name = '';
+                        }
+                    @endphp
+                    <div class="col-md-6 d-flex">
+                        <div class="card profile-box flex-fill">
+                            <div class="card-body">
+                                <h3 class="card-title">Employee Job</h3>
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Job Title</div>
+                                        <div class="text">{{ $job->job_title }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">supervisor</div>
+                                        <div class="text">{{ $supervisor_name }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Timesheet Approval Incharge</div>
+                                        <div class="text">
+                                            {{ $incharge_name }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Department</div>
+                                        <div class="text">
+                                            {{ !empty($job->department->name) ? $job->department->name : '' }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Work Email</div>
+                                        <div class="text">{{ !empty($job->work_email) ? $job->work_email : '' }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Work Phone Number</div>
+                                        <div class="text">{{ $job->work_phone_number }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Start Date</div>
+                                        <div class="text">{{ $job->start_date }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">End Date</div>
+                                        <div class="text">{{ $job->end_date }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Job Type</div>
+                                        <div class="text">{{ str_replace('_', ' ', $job->job_type) }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Contracted Weekly Hours</div>
+                                        <div class="text">{{ $job->contracted_weekly_hours }}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Employee Job -->
+        <!-- Emplolyee Visa -->
+        <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="job-visa">
+            <div class="row">
+                @foreach ($employee_visas as $visa)
+                    <div class="col-md-6 d-flex">
+                        <div class="card profile-box flex-fill">
+                            <div class="card-body">
+                                <h3 class="card-title">Employee Visa</h3>
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Visa Type</div>
+                                        <div class="text">
+                                            {{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Cos Number</div>
+                                        <div class="text">{{ $visa->cos_number }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Cos Issue Date</div>
+                                        <div class="text">
+                                            {{ $visa->cos_issue_date }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Cos Expire Date</div>
+                                        <div class="text">
+                                            {{ $visa->cos_expiry_date }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Visa Issue Date</div>
+                                        <div class="text">{{ $visa->visa_issue_date }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Visa Expiry Date</div>
+                                        <div class="text">{{ $visa->visa_expiry_date }}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Employee Visa -->
     </div>
     <!-- Profile Modal -->
     <div id="profile_info" class="modal custom-modal fade" role="dialog">
