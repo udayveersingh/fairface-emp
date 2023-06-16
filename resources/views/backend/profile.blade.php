@@ -112,9 +112,12 @@
                 <div class="col-md-12 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Personal Informations <a href="#" class="edit-icon"
-                                    data-bs-toggle="modal" data-bs-target="#personal_info_modal"><i
-                                        class="fa fa-pencil"></i></a></h3>
+                            <h3 class="card-title">Personal Informations
+                                {{-- <a href="#" class="edit-icon"
+                                    data-bs-toggle="modal" data-bs-target="#personal_info_modal">
+                                    <i class="fa fa-pencil"></i>
+                                </a> --}}
+                            </h3>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Main Branch Location</div>
@@ -158,9 +161,11 @@
                 <div class="col-md-12 d-flex">
                     <div class="card profile-box flex-fill">
                         <div class="card-body">
-                            <h3 class="card-title">Emergency Contact <a href="#" class="edit-icon"
+                            <h3 class="card-title">Emergency Contact
+                                {{-- <a href="#" class="edit-icon"
                                     data-bs-toggle="modal" data-bs-target="#emergency_contact_modal"><i
-                                        class="fa fa-pencil"></i></a></h3>
+                                        class="fa fa-pencil"></i></a> --}}
+                            </h3>
                             <ul class="personal-info">
                                 <li>
                                     <div class="title">Local Contact Name</div>
@@ -430,7 +435,7 @@
         </div>
         <!-- Employee Job -->
         <!-- Emplolyee Visa -->
-        <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="job-visa">
+        <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
             <div class="row">
                 @foreach ($employee_visas as $visa)
                     <div class="col-md-6 d-flex">
@@ -475,6 +480,90 @@
             </div>
         </div>
         <!-- Employee Visa -->
+        <!-- Employee Project  -->
+        <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
+            @if (!empty($employee_projects->count()))
+                <div class="row">
+                    @foreach ($employee_projects as $project)
+                        <div class="col-md-6 d-flex">
+                            <div class="card profile-box flex-fill">
+                                <div class="card-body">
+                                    <h3 class="card-title">Projects</h3>
+                                    <ul class="personal-info">
+                                        <li>
+                                            <div class="title">Project Name</div>
+                                            <div class="text">
+                                                {{ !empty($project->projects->name) ? $project->projects->name : '' }}
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="title">Start Date</div>
+                                            <div class="text">{{ $project->start_date }}</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">End Date</div>
+                                            <div class="text">
+                                                {{ $project->end_date }}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
+        <!-- Employee Projetct -->
+        <!-- Employee Payslip -->
+        <div class="tab-pane fade" id="payslip" role="tabpanel" aria-labelledby="payslip-tab">
+            <div class="card profile-box flex-fill">
+                <div class="row">
+                    @foreach ($employee_payslips as $payslip)
+                        @php
+                            $extension = pathinfo(storage_path('storage/payslips/' . $payslip->attachment), PATHINFO_EXTENSION);
+                        @endphp
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <ul class="personal-info">
+                                    <li>
+                                        <div class="title">Month</div>
+                                        <div class="text">{{ $payslip->month }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Year</div>
+                                        <div class="text">{{ $payslip->year }}</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">Created Date</div>
+                                        <div class="text">
+                                            {{ !empty(date('Y-m-d', strtotime($payslip->created_at))) ? date('Y-m-d', strtotime($payslip->created_at)) : '' }}
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="text"><a
+                                                href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
+                                                class="btn btn-primary" target="_blank" download> download</a></div>
+                                    </li>
+                                </ul>
+                                <br>
+                                @if (!empty($extension) && $extension == 'pdf')
+                                    <a href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
+                                        target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                            width="300px" height="185px"></a>
+                                @else
+                                    <a href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
+                                        target="_blank"><img
+                                            src="{{ asset('storage/payslips/' . $payslip->attachment) }}"
+                                            width="300px"></a>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        <!-- Employee Payslip -->
     </div>
     <!-- Profile Modal -->
     <div id="profile_info" class="modal custom-modal fade" role="dialog">
