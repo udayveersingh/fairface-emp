@@ -6,15 +6,31 @@ use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeProject;
+use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $title = 'Dashboard';
         $clients_count = Client::count();
         $employee_count = Employee::count();
-        return view('backend.dashboard',compact(
-            'title','clients_count','employee_count'
+        return view('backend.dashboard', compact(
+            'title',
+            'clients_count',
+            'employee_count'
         ));
+    }
+
+    public function EmployeeDashboard()
+    {
+        $title = 'Employee Dashboard';
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
+            $employee_projects = EmployeeProject::where('employee_id', '=', $employee->id)->get();
+            return view('includes.frontend.employee-dashboard', compact('title', 'employee','employee_projects'));
+        }
     }
 }

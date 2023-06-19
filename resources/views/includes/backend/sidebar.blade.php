@@ -6,15 +6,15 @@
                 <li class="menu-title">
                     <span>Main</span>
                 </li>
-                @if (Auth::check() && Auth::user()->role_id == '3')
+                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                     <li class="{{ route_is('profile') ? 'active' : '' }}">
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
                         <a href=""><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
                     </li>
-                    <li class="">
-                        <a href=""><i class="la la-files-o"></i> <span>Apply Leave</span></a>
+                    <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply leave</span></a>
                     </li>
                     <li class="">
                         <a href=""><i class="la la-bullhorn"></i> <span>Send Email</span></a>

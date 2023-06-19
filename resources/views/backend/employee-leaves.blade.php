@@ -39,7 +39,10 @@
                             <th>No of Days</th>
                             <th>Reason</th>
                             <th class="text-center">Status</th>
-                            <th>Employee</th>
+                            @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                                <th>Employee</th>
+                            @endif
+                            <th>Approved Date/Time</th>
                             <th class="text-right">Actions</th>
                         </tr>
                     </thead>
@@ -64,9 +67,11 @@
                                             <i
                                                 class="fa fa-dot-circle-o text-success"></i>{{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         </a>
-                                        <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
-                                            data-status="approved" href="#" data-toggle="modal"
-                                            id="statusChecked">Change Status</a>
+                                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                                            <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
+                                                data-status="approved" href="#" data-toggle="modal"
+                                                id="statusChecked">Change Status</a>
+                                        @endif
                                     </div>
                                     {{-- <div class="action-label">
                                         <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
@@ -81,16 +86,19 @@
                                             id="statusChecked">Change Status</a> --}}
                                     {{-- </div> --}}
                                 </td>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="javascript:void(0)" class="avatar avatar-xs">
-                                            <img alt="avatar"
-                                                src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
-                                        </a>
-                                        <a href="#">{{ $leave->employee->firstname }}
-                                            {{ $leave->employee->lastname }}</a>
-                                    </h2>
-                                </td>
+                                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="javascript:void(0)" class="avatar avatar-xs">
+                                                <img alt="avatar"
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </a>
+                                            <a
+                                                href="#">{{ !empty($leave->employee->firstname) ? $leave->employee->firstname:'' }} {{!empty($leave->employee->lastname) ? $leave->employee->lastname:'' }} </a>
+                                        </h2>
+                                    </td>
+                                @endif
+                                <td>{{ $leave->approved_date_time }}</td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -146,15 +154,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Employee</label>
-                            <select name="employee" class="select">
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->firstname }}
-                                        {{ $employee->lastname }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>Employee</label>
+                                <select name="employee" class="select">
+                                    @foreach ($employees as $employee)
+                                        <option value="{{ $employee->id }}">{{ $employee->firstname }}
+                                            {{ $employee->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label>Supervisor</label>
                             <select name="supervisor" class="select">
@@ -199,34 +209,35 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" rows="4" class="form-control"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label>TimeSheet Status<span class="text-danger">*</span></label>
-                            <select name="timesheet_status" class="select form-control">
-                                <option value="">Select TimeSheet Status</option>
-                                @foreach ($timesheet_statuses as $time_status)
-                                    <option value="{{ $time_status->id }}">
-                                        {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Status Reason <span class="text-danger">*</span></label>
-                            <textarea name="status_reason" rows="4" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Approved Date/Time<span class="text-danger">*</span></label>
-                            <input class="form-control datetimepicker" name="approved_date_time" type="text">
-                        </div>
-
+                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>TimeSheet Status<span class="text-danger">*</span></label>
+                                <select name="timesheet_status" class="select form-control">
+                                    <option value="">Select TimeSheet Status</option>
+                                    @foreach ($timesheet_statuses as $time_status)
+                                        <option value="{{ $time_status->id }}">
+                                            {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Status Reason <span class="text-danger">*</span></label>
+                                <textarea name="status_reason" rows="4" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Approved Date/Time<span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" name="approved_date_time" type="text">
+                            </div>
+                        @endif
                         <!-- <div class="form-group">
-              <label>Status </label>
-              <select name="status" class="select">
-              <option value="null" disabled selected>Select Status</option>
-              <option>Approved</option>
-              <option>Pending</option>
-              <option>Declined</option>
-              </select>
-              </div> -->
+                          <label>Status </label>
+                          <select name="status" class="select">
+                          <option value="null" disabled selected>Select Status</option>
+                          <option>Approved</option>
+                          <option>Pending</option>
+                          <option>Declined</option>
+                          </select>
+                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -260,15 +271,17 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Employee<span class="text-danger">*</span></label>
-                            <select name="employee" class="select2" id="edit_employee">
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">
-                                        {{ $employee->firstname . ' ' . $employee->lastname }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>Employee<span class="text-danger">*</span></label>
+                                <select name="employee" class="select2" id="edit_employee">
+                                    @foreach ($employees as $employee)
+                                        <option value="{{ $employee->id }}">
+                                            {{ $employee->firstname . ' ' . $employee->lastname }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label>Supervisor</label>
                             <select name="supervisor" id="edit_supervisor_id" class="select">
@@ -313,35 +326,37 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" rows="4" class="form-control" id="edit_reason"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label>TimeSheet Status<span class="text-danger">*</span></label>
-                            <select name="timesheet_status" id="edit_status" class="select form-control">
-                                <option value="">Select TimeSheet Status</option>
-                                @foreach ($timesheet_statuses as $time_status)
-                                    <option value="{{ $time_status->id }}">
-                                        {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Status Reason <span class="text-danger">*</span></label>
-                            <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-form-label">Approved Date/Time<span class="text-danger">*</span></label>
-                            <input class="form-control datetimepicker" name="approved_date_time"
-                                id="edit_approved_date_time" type="text">
-                        </div>
+                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>TimeSheet Status<span class="text-danger">*</span></label>
+                                <select name="timesheet_status" id="edit_status" class="select form-control">
+                                    <option value="">Select TimeSheet Status</option>
+                                    @foreach ($timesheet_statuses as $time_status)
+                                        <option value="{{ $time_status->id }}">
+                                            {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Status Reason <span class="text-danger">*</span></label>
+                                <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Approved Date/Time<span class="text-danger">*</span></label>
+                                <input class="form-control datetimepicker" name="approved_date_time"
+                                    id="edit_approved_date_time" type="text">
+                            </div>
+                        @endif
 
                         <!-- <div class="form-group">
-                  <label>Status </label>
-                  <select name="status" class="select2 form-control" id="edit_status">
-                  <option value="null">Select Status</option>
-                  <option>Approved</option>
-                  <option>Pending</option>
-                  <option>Declined</option>
-                  </select>
-                  </div> -->
+                              <label>Status </label>
+                              <select name="status" class="select2 form-control" id="edit_status">
+                              <option value="null">Select Status</option>
+                              <option>Approved</option>
+                              <option>Pending</option>
+                              <option>Declined</option>
+                              </select>
+                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -375,6 +390,10 @@
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status Reason <span class="text-danger">*</span></label>
+                                    <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>

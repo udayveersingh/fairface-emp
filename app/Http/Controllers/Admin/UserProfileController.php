@@ -12,6 +12,7 @@ use App\Models\EmployeeJob;
 use App\Models\EmployeePayslip;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeVisa;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,7 +21,8 @@ class UserProfileController extends Controller
     public function index()
     {
         $title = 'user Profile';
-        if (Auth::check() && Auth::user()->role_id == '3') {
+        
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
             $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();

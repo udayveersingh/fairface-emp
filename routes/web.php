@@ -82,10 +82,10 @@ Route::post('apply',[JobApplicationController::class,'store'])->name('apply-job'
 Route::group(['middleware'=>['auth']], function (){
     
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::get('employee-dashboard',[DashboardController::class,'EmployeeDashboard'])->name('employee-dashboard');
     Route::post('logout',[LogoutController::class,'index'])->name('logout');
 
     //apps routes
-    
     Route::get('contacts',[ContactController::class,'index'])->name('contacts');
     Route::post('contacts',[ContactController::class,'store']);
     Route::put('contacts',[ContactController::class,'update']);

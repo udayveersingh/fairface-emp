@@ -10,4 +10,6 @@ class TimesheetStatus extends Model
     protected $fillable = [
         'status'
     ]; 
+
+    const PENDING_APPROVED = 'pending approval';
 }
