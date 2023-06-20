@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Country;
 use App\Models\Employee;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\NewUserNotification;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -22,15 +24,12 @@ class UserController extends Controller
     public function index()
     {
         $title = "users";
-        $users = User::where('role_id', '!=', '1')->get();
+        $users = User::with('role')->whereHas('role', function (Builder $query) {
+            $query->where('name', '!=', Role::SUPERADMIN);
+        })->get();
         $roles = DB::table('roles')->where('name', '!=', 'Super admin')->where('name', '!=', 'Admin')->get();
         $countries = Country::get();
-        return view('backend.users', compact(
-            'title',
-            'users',
-            'roles',
-            'countries',
-        ));
+        return view('backend.users', compact('title', 'users', 'roles', 'countries'));
     }
 
     /**
@@ -44,7 +43,7 @@ class UserController extends Controller
         $this->validate($request, [
             'firstname' => 'required|max:100',
             'lastname' => 'required|max:100',
-            'username' => 'required|max:20',
+            'username' => 'required|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|max:200|min:5',
             'avatar' => 'nullable|file|image|mimes:jpg,jpeg,png,gif',
@@ -100,8 +99,9 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:100',
-            'username' => 'required|max:10',
+            'firstname' => 'required|max:100',
+            'lastname' => 'required|max:100',
+            'username' => 'required|max:50',
             'email' => 'required|email',
             'password' => 'nullable|confirmed|max:200|min:5',
             'avatar' => 'nullable|file|image|mimes:jpg,jpeg,png,gif',
@@ -117,7 +117,7 @@ class UserController extends Controller
             $password = Hash::make($request->password);
         }
         $user->update([
-            'name' => $request->name,
+            'name' => $request->firstname . " " . $request->lastname,
             'username' => $request->username,
             'email' => $request->email,
             'password' => $password,

@@ -60,6 +60,9 @@
                                 @endphp
                                 <td>{{ $role->name }}</td>
                                 <td>{{ date_format(date_create($user->created_at), 'd M, Y') }}</td>
+                                @php
+                                    $employee = App\Models\Employee::where('user_id', '=', $user->id)->first();
+                                @endphp
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="javascript:void(0)" class="action-icon dropdown-toggle"
@@ -67,8 +70,7 @@
                                                 class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                data-username="{{ $user->username }}" data-email="{{ $user->email }}"
-                                                class="dropdown-item editbtn" href="javascript:void(0)"
+                                                data-username="{{ $user->username }}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-employee_id="{{$employee->employee_id}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-nationality="{{$employee->country_id}}" data-email="{{ $user->email }}" data-role="{{$role->name}}" class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
                                                 href="javascript:void(0)" data-toggle="modal"><i
@@ -78,7 +80,6 @@
                                 </td>
                             </tr>
                         @endforeach
-
                     </tbody>
                 </table>
             </div>
@@ -131,7 +132,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Role<span class="text-danger">*</span></label>
-                                    <select name="role_id" id="role_id" class="form-control">
+                                    <select name="role_id" class="form-control">
                                         <option value="">Select to</option>
                                         @foreach ($roles as $role)
                                             <option value="{{ $role->id }}">
@@ -223,8 +224,14 @@
                             <input type="hidden" name="id" id="edit_id">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label>Full Name <span class="text-danger">*</span></label>
-                                    <input class="form-control edit_name" name="name" type="text">
+                                    <label>First Name <span class="text-danger">*</span></label>
+                                    <input class="form-control edit_firstname" name="firstname" type="text">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Last Name <span class="text-danger">*</span></label>
+                                    <input class="form-control edit_lastname" name="lastname" type="text">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -243,6 +250,59 @@
                                 <div class="form-group">
                                     <label>Email <span class="text-danger">*</span></label>
                                     <input class="form-control edit_email" name="email" type="email">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Role<span class="text-danger">*</span></label>
+                                    <select name="role_id" selected="selected" id="role_id" class="form-control">
+                                        <option value="">Select to</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role->id }}">
+                                                {{ $role->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
+                                    <input class="form-control employee_id" name="employee_id" type="text">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Marital Status <span class="text-danger">*</span></label>
+                                    <select name="marital_status" class="form-control marital_status">
+                                        <option value="">Select Marital Status</option>
+                                        <option value="married">Married</option>
+                                        <option value="unmarried">Unmarried</option>
+                                        <option value="divorced">Divorced</option>
+                                        <option value="widowed">Widowed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Record Status <span class="text-danger">*</span></label>
+                                    <select name="record_status" class="form-control record_status">
+                                        <option value="">Select Record Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="archieve">Archieve</option>
+                                        <option value="delete">Delete</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nationality <span class="text-danger">*</span></label>
+                                    <select name="nationality" class="form-control nationality">
+                                        <option value="">Select Nationality</option>
+                                        @foreach ($countries as $country)
+                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -283,13 +343,27 @@
                 $('#edit_user').modal('show');
                 var id = $(this).data('id');
                 var name = $(this).data('name');
+                var firstname = $(this).data('firstname');
+                var lastname = $(this).data('lastname');
                 var username = $(this).data('username');
                 var email = $(this).data('email');
+                var role_id = $(this).data('role');
+                console.log(role_id,"role_id");
+                var employee = $(this).data('employee_id');
+                var marital_status = $(this).data('marital_status');
+                var record_status = $(this).data('record_status');
+                var nationality_id = $(this).data('nationality');
                 $('#edit_id').val(id);
                 $('.edit_name').val(name);
+                $('.edit_firstname').val(firstname);
+                $('.edit_lastname').val(lastname);
                 $('.edit_username').val(username);
                 $('.edit_email').val(email);
-
+                $('#role_id').val(role_id);
+                $('.employee_id').val(employee);
+                $('.marital_status').val(marital_status);
+                $('.record_status').val(record_status);
+                $('.nationality').val(nationality_id);
             });
         });
     </script>
