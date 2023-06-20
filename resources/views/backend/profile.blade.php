@@ -91,7 +91,7 @@
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">test2</div>
         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">test3</div>
     </div> --}}
-    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::Employee)
+    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
         @php
             $tabs = [
                 'document' => 'Document',

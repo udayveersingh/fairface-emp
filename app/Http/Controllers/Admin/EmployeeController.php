@@ -9,7 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
 use App\Models\Country;
+use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
@@ -24,9 +26,7 @@ class EmployeeController extends Controller
         $branches = Branch::get();
         $countries = Country::get();
         $employees = Employee::with('branch')->get();
-        return view('backend.employees',
-            compact('title', 'employees', 'branches', 'countries')
-        );
+        return view('backend.employees',compact('title', 'employees', 'branches', 'countries'));
     }
 
     /**
@@ -39,9 +39,8 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch')->orderBy('created_at','desc')->get();
-        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries')
-        );
+        $employees = Employee::with('branch')->orderBy('created_at', 'desc')->get();
+        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
     }
 
     /**
@@ -72,8 +71,18 @@ class EmployeeController extends Controller
             $imageName = time() . '.' . $request->avatar->extension();
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }
-            $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
-            $employee = Employee::create([
+
+        // $user = User::create([
+        //     'name' => $request->firstname . " " . $request->lastname,
+        //     'username' => $request->username,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        //     'avatar' => $imageName,
+        //     'role_id' => $request->role_id,
+        // ]);
+
+        $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
+        $employee = Employee::create([
             'uuid' => $uuid,
             'employee_id' => $request->input('employee_id'),
             'firstname' => $request->input('firstname'),

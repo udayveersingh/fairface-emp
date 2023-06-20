@@ -114,8 +114,7 @@
                                                 data-status_reason="{{ $leave->status_reason }}"
                                                 data-approved_date_time="{{ $leave->approved_date_time }}"
                                                 data-timesheet_status_id="{{ $leave->timesheet_status_id }}"
-                                                class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"
-                                                data-target="#edit_leave"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                class="dropdown-item editbtn" href="javascript:void(0)" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{ $leave->id }}" class="dropdown-item deletebtn"
                                                 href="javascript:void(0)" data-toggle="modal"><i
                                                     class="fa fa-trash-o m-r-5"></i> Delete</a>
@@ -249,7 +248,7 @@
     <!-- /Add Leave Modal -->
 
     <!-- Edit Leave Modal -->
-    <div id="edit_leave" class="modal custom-modal fade" role="dialog">
+    <div id="" class="modal custom-modal fade edit_leave_list" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -262,7 +261,7 @@
                     <form action="{{ route('employee-leave') }}" method="post">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="id" id="edit_id">
+                        <input type="hidden" name="id" id="leave_edit_id">
                         <div class="form-group">
                             <label>Leave Type <span class="text-danger">*</span></label>
                             <select name="leave_type" class="select2" id="edit_leave_type">
@@ -425,7 +424,8 @@
     <script>
         $(document).ready(function() {
             $('.editbtn').click(function() {
-                var id = $(this).data('id');
+                var leave_id = $(this).data('id');
+                console.log(leave_id,'testid');
                 var leave_type = $(this).data('leave_type');
                 var employee = $(this).data('employee');
                 var supervisor = $(this).data('supervisor');
@@ -438,8 +438,8 @@
                 var status_reason = $(this).data('status_reason');
                 var timesheet_status_id = $(this).data('timesheet_status_id');
                 var approved_date_time = $(this).data('approved_date_time');
-                $('#edit_leave').modal('show');
-                $('#edit_id').val(id);
+                $('.edit_leave_list').modal('show');
+                $('#leave_edit_id').val(leave_id);
                 $('#edit_employee').val(employee).trigger('change');
                 $('#edit_supervisor_id').val(supervisor).trigger('change');
                 $('#edit_project_id').val(project).trigger('change');

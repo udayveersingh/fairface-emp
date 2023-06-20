@@ -59,17 +59,20 @@ class EmployeeLeaveController extends Controller
             $timesheet_status = TimesheetStatus::where('status','pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
+            $timesheet_status_field = 'nullable';
         } else {
             $employee_id = $request->employee;
             $employee_field = 'required';
             $timesheet_status_id = $request->timesheet_status;
+            $timesheet_status_field = 'required';
         }
         $this->validate($request, [
             'employee' => $employee_field,
             'leave_type' => 'required',
             'from' => 'required',
             'to' => 'required',
-            'reason' => 'required'
+            'reason' => 'required',
+            'timesheet_status' => $timesheet_status_field
         ]);
         Leave::create([
             'leave_type_id' => $request->leave_type,
@@ -104,10 +107,12 @@ class EmployeeLeaveController extends Controller
             $timesheet_status = TimesheetStatus::where('status','pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
+            $timesheet_status_field = 'nullable';
         } else {
             $employee_id = $request->employee;
             $employee_field = 'required';
             $timesheet_status_id = $request->timesheet_status;
+            $timesheet_status_field = 'required';
         }
 
         $this->validate($request, [
@@ -115,7 +120,8 @@ class EmployeeLeaveController extends Controller
             'leave_type' => 'required',
             'from' => 'required',
             'to' => 'required',
-            'reason' => 'required'
+            'reason' => 'required',
+            'timesheet_status' => $timesheet_status_field,
         ]);
         $leave = Leave::find($request->id);
         $leave->update([
@@ -130,6 +136,7 @@ class EmployeeLeaveController extends Controller
             'status_reason' => $request->status_reason,
             'timesheet_status_id' => $timesheet_status_id,
             'approved_date_time' => $request->approved_date_time,
+            
         ]);
         $notification = notify("Employee leave has been updated");;
         return back()->with($notification);
