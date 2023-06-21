@@ -11,12 +11,12 @@
                         <img alt src="assets/img/profiles/avatar-02.jpg">
                     </div>
                     <div class="welcome-det">
-                        <h3>Welcome,{{ Auth::user()->name}}</h3>
+                        <h3>Welcome,{{ Auth::user()->name }}</h3>
                         @php
                             $date = Carbon\Carbon::now();
-                            $formatedDate = $date->format('l'.','.'d M Y');
+                            $formatedDate = $date->format('l' . ',' . 'd M Y');
                         @endphp
-                        <p>{{$formatedDate}}</p>
+                        <p>{{ $formatedDate }}</p>
                     </div>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                                         <i class="fa fa-hourglass-o"></i>
                                     </div>
                                     <div class="dash-card-content">
-                                        <p>{{ Auth::user()->name}} is off sick today</p>
+                                        <p>{{ Auth::user()->name }} is off sick today</p>
                                     </div>
                                     <div class="dash-card-avatars">
                                         <div class="e-avatar"><img src="assets/img/profiles/avatar-09.jpg" alt></div>
@@ -76,35 +76,39 @@
                 </section>
             </div>
             <section>
-                @if(!empty($employee_projects))
-                <h5 class="dash-title">Projects</h5>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="request-btn">
-                            <div class="dash-stats-list">
-                                <h4>{{count($employee_projects)}}</h4>
-                                <p>Total Projects</p>
+                @if (!empty($employee_projects))
+                    <h5 class="dash-title">Projects</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="request-btn">
+                                <div class="dash-stats-list">
+                                    <h4>{{ count($employee_projects) }}</h4>
+                                    <p>Total Projects</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endif
                 <h5 class="dash-title">Your Leave</h5>
                 <div class="card">
                     <div class="card-body">
                         <div class="time-list">
                             <div class="dash-stats-list">
-                                <h4>4.5</h4>
+                                @if (!empty($employee_leaves) && count($employee_leaves) > 0)
+                                    <h4>{{ count($employee_leaves) }}</h4>
+                                @else
+                                    <h4>0</h4>
+                                @endif
                                 <p>Leave Taken</p>
                             </div>
-                            <div class="dash-stats-list">
+                            {{-- <div class="dash-stats-list">
                                 <h4>12</h4>
                                 <p>Remaining</p>
-                            </div>
+                            </div> --}}
                         </div>
-                        <div class="request-btn">
+                        {{-- <div class="request-btn">
                             <a class="btn btn-primary" href="#">Apply Leave</a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </section>

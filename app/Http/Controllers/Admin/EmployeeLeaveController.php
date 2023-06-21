@@ -25,24 +25,16 @@ class EmployeeLeaveController extends Controller
         $title = "employee leave";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->get();
+            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->orderBy('id', 'desc')->get();
         } else {
-            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->get();
+            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->orderBy('id', 'desc')->get();
         }
         $timesheet_statuses = TimesheetStatus::get();
         $leave_types = LeaveType::get();
         $employees = Employee::get();
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
-        return view('backend.employee-leaves', compact(
-            'title',
-            'leaves',
-            'leave_types',
-            'employees',
-            'projects',
-            'timesheet_statuses',
-            'project_phases'
-        ));
+        return view('backend.employee-leaves', compact('title','leaves','leave_types','employees','projects','timesheet_statuses','project_phases'));
     }
 
     /**
