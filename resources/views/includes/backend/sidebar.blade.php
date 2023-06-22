@@ -11,28 +11,29 @@
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href=""><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
+                        <a href="{{ route('employee-timesheet-view') }}"><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply leave</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
+                                leave</span></a>
                     </li>
                     <li class="">
                         <a href=""><i class="la la-bullhorn"></i> <span>Send Email</span></a>
                     </li>
                 @else
-                <li class="{{ route_is('dashboard') ? 'active' : '' }}">
-                    <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
-                </li>
-                <!-- <li class="submenu">
+                    <li class="{{ route_is('dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+                    </li>
+                    <!-- <li class="submenu">
                     <a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         
                         <li><a class="{{ route_is('contacts') ? 'active' : '' }}" href="{{ route('contacts') }}">Contacts</a></li>
                     </ul>
                 </li> -->
-                <li class="menu-title">
-                    <span>Configurations</span>
-                </li>
+                    <li class="menu-title">
+                        <span>Configurations</span>
+                    </li>
                     <li class="submenu">
                         <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
                                 class="la la-cog"></i> <span> Master DataSet</span> <span class="menu-arrow"></span></a>

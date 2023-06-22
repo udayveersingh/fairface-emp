@@ -7,8 +7,10 @@ use App\Models\Employee;
 use App\Models\EmployeeTimesheet;
 use App\Models\Project;
 use App\Models\ProjectPhase;
+use App\Models\Role;
 use App\Models\TimesheetStatus;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeTimeSheetController extends Controller
 {
@@ -27,6 +29,21 @@ class EmployeeTimeSheetController extends Controller
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->get();
         return view('backend.employee-timesheet', compact('title', 'employee_timesheets', 'employees', 'projects', 'project_phases', 'timesheet_statuses'));
     }
+
+
+    /**
+     * employee timesheet view
+     */
+     public function employeeTimesheetView()
+     {
+        $title ="Employee TimeSheet";
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+            $employee_timesheets = EmployeeTimesheet::with('project','projectphase')->where('employee_id','=',$employee->id)->first();
+        }
+        return view('backend.employee-timesheet-view',compact('title','employee','employee_timesheets'));
+
+     }
 
     /**
      * Store a newly created resource in storage.
