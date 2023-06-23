@@ -34,16 +34,15 @@ class EmployeeTimeSheetController extends Controller
     /**
      * employee timesheet view
      */
-     public function employeeTimesheetView()
-     {
-        $title ="Employee TimeSheet";
+    public function employeeTimesheetView()
+    {
+        $title = "Employee TimeSheet";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            $employee = Employee::where('user_id','=',Auth::user()->id)->first();
-            $employee_timesheets = EmployeeTimesheet::with('project','projectphase')->where('employee_id','=',$employee->id)->first();
+            $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+            $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $employee->id)->first();
         }
-        return view('backend.employee-timesheet-view',compact('title','employee','employee_timesheets'));
-
-     }
+        return view('backend.employee-timesheet-view', compact('title', 'employee', 'employee_timesheets'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,34 +52,62 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'timesheet_id' => 'required|unique:employee_timesheets,timesheet_id,'. $request->id,
-            'employee_id'  => 'required',
-        ]);
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            $calender_date = $request->input('calender_date');
+            $calender_day = $request->input('calender_day');
+            $start_time = $request->input('start_time');
+            $end_time = $request->input('end_time');
+            $hours = $request->input('hours');
+            foreach ($start_time as $key => $value) {
+                if($hours[$key] == "half_day")
+                {
+                    $total_hours_worked = "4 hours";
+                }elseif($hours[$key] == "full_day"){
+                    $total_hours_worked = "8 hours";
+                }else{
+                    $total_hours_worked="";
+                }
+                $employee_timesheet = new EmployeeTimesheet();
+                $employee_timesheet->employee_id = $request->input('employee_id');
+                $employee_timesheet->calender_day = $calender_day[$key];
+                $employee_timesheet->calender_date = $calender_date[$key];
+                $employee_timesheet->from_time = $value;
+                $employee_timesheet->to_time = $end_time[$key];
+                $employee_timesheet->total_hours_worked = $total_hours_worked ;
+                $employee_timesheet->save();
+            }
+            return back()->with('success', "Employee TimeSheet Data has been added successfully!");
+        } else {
 
-        if (!empty($request->id)) {
-            $employee_timesheet = EmployeeTimesheet::find($request->id);
-            $message = "Employee TimeSheet Data has been updated successfully!!.";
-        } else {    
-            $employee_timesheet = new EmployeeTimesheet();
-            $message = "Employee TimeSheet Data has been added successfully!!.";
+            $this->validate($request, [
+                'timesheet_id' => 'required|unique:employee_timesheets,timesheet_id,' . $request->id,
+                'employee_id'  => 'required',
+            ]);
+
+            if (!empty($request->id)) {
+                $employee_timesheet = EmployeeTimesheet::find($request->id);
+                $message = "Employee TimeSheet Data has been updated successfully!!.";
+            } else {
+                $employee_timesheet = new EmployeeTimesheet();
+                $message = "Employee TimeSheet Data has been added successfully!!.";
+            }
+            $employee_timesheet->timesheet_id = $request->input('timesheet_id');
+            $employee_timesheet->employee_id  = $request->input('employee_id');
+            $employee_timesheet->supervisor_id  = $request->input('supervisor_id');
+            $employee_timesheet->project_id  = $request->input('project_id');
+            $employee_timesheet->project_phase_id  = $request->input('project_phase_id');
+            $employee_timesheet->calender_day = $request->input('calendar_day');
+            $employee_timesheet->calender_date = $request->input('calender_date');
+            $employee_timesheet->from_time = $request->input('from_time');
+            $employee_timesheet->to_time = $request->input('to_time');
+            $employee_timesheet->total_hours_worked = $request->input('total_hours_works');
+            $employee_timesheet->notes = $request->input('notes');
+            $employee_timesheet->timesheet_status_id = $request->input('timesheet_status');
+            $employee_timesheet->status_reason = $request->input('status_reason');
+            $employee_timesheet->approved_date_time = $request->input('approved_date_time');
+            $employee_timesheet->save();
+            return back()->with('success', $message);
         }
-        $employee_timesheet->timesheet_id = $request->input('timesheet_id');
-        $employee_timesheet->employee_id  = $request->input('employee_id');
-        $employee_timesheet->supervisor_id  = $request->input('supervisor_id');
-        $employee_timesheet->project_id  = $request->input('project_id');
-        $employee_timesheet->project_phase_id  = $request->input('project_phase_id');
-        $employee_timesheet->calender_day = $request->input('calendar_day');
-        $employee_timesheet->calender_date = $request->input('calender_date');
-        $employee_timesheet->from_time = $request->input('from_time');
-        $employee_timesheet->to_time = $request->input('to_time');
-        $employee_timesheet->total_hours_worked = $request->input('total_hours_works');
-        $employee_timesheet->notes = $request->input('notes');
-        $employee_timesheet->timesheet_status_id = $request->input('timesheet_status');
-        $employee_timesheet->status_reason = $request->input('status_reason');
-        $employee_timesheet->approved_date_time = $request->input('approved_date_time');
-        $employee_timesheet->save();
-        return back()->with('success',$message);
     }
 
     /**
@@ -98,8 +125,8 @@ class EmployeeTimeSheetController extends Controller
 
     public function TimesheetStatusUpdate(Request $request)
     {
-        $this->validate($request,[
-            'timesheet_status'=>'required',
+        $this->validate($request, [
+            'timesheet_status' => 'required',
         ]);
         $employee_timesheet = EmployeeTimesheet::find($request->id);
         $employee_timesheet->timesheet_status_id =  $request->input('timesheet_status');
