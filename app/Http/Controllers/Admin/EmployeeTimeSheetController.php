@@ -71,6 +71,8 @@ class EmployeeTimeSheetController extends Controller
     public function store(Request $request)
     {
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+
+            $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
             $calender_date = $request->input('calender_date');
             $calender_day = $request->input('calender_day');
             $start_time = $request->input('start_time');
@@ -91,7 +93,8 @@ class EmployeeTimeSheetController extends Controller
                 $employee_timesheet->calender_date = $calender_date[$key];
                 $employee_timesheet->from_time = $value;
                 $employee_timesheet->to_time = $end_time[$key];
-                $employee_timesheet->total_hours_worked = $total_hours_worked ;
+                $employee_timesheet->total_hours_worked = $total_hours_worked;
+                $employee_timesheet->timesheet_status_id =$timesheet_status->id;
                 $employee_timesheet->save();
             }
             return back()->with('success', "Employee TimeSheet Data has been added successfully!");

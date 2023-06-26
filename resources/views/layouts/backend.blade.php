@@ -16,6 +16,10 @@
 	<link rel="stylesheet" href="{{asset('assets/css/font-awesome.min.css')}}">
 	<!-- Lineawesome CSS -->
 	<link rel="stylesheet" href="{{asset('assets/css/line-awesome.min.css')}}">
+
+	<!-- Daterangepicker CSS -->
+	<link rel="stylesheet" href="{{asset('assets/css/daterangepicker.css')}}">
+
 	<!-- Datetimepicker CSS -->
 	<link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
 
@@ -102,6 +106,8 @@
 <!-- Datetimepicker JS -->
 <script src="{{asset('assets/js/moment.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+<!--Daterangepicker Js -->
+<script src="{{asset('assets/js/daterangepicker.min.js')}}"></script>
 <!-- Ck Editor -->
 <script src="{{asset('assets/plugins/ckeditor/ckeditor.js')}}"></script>
 <!-- Toastr JS -->

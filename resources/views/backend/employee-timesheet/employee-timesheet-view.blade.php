@@ -7,75 +7,18 @@
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
     {{-- @endsection --}}
-    {{-- @section('page-header')
-    <div class="row align-items-center">
-        <div class="col">
-            <h3 class="page-title">Employee TimeSheet</h3>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('employee-dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Employee TimeSheet</li>
-            </ul>
-        </div>
-        {{-- <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_timesheet"><i
-                    class="fa fa-plus"></i>Add Employee TimeSheet</a>
-        </div> --}}
-    {{-- </div>
-@endsection --}}
-@section('content')
-    {{-- <form method="POST" action="" enctype="multipart/form-data">
-        @csrf
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="col-form-label">Employee Name </label>
-                    <input class="form-control" name="employee_name" value="" type="text">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                @php
-                    $date = new DateTime('now');
-                    $date->modify('last day of this month');
-                @endphp
-                <div class="form-group">
-                    <label class="col-form-label">Month Ending</label>
-                    <input class="form-control" name="month_ending" value="{{ $date->format('Y-m-d') }}" type="text">
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="col-form-label">Designation</label>
-                    <input class="form-control" name="month_ending"
-                        value="{{ !empty($employee_timesheets->projectphase->name) ? $employee_timesheets->projectphase->name : '' }}"
-                        type="text">
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <label>TimeSheet Interval</label>
-                <select name="timesheet_interval" class="form-control select">
-                    <option value="">Select</option>
-                    <option value="weekly"
-                        {{ !empty($settings->timesheet_interval) && $settings->timesheet_interval == 'weekly' ? 'checked' : '' }}>
-                        weekly</option>
-                    <option value="monthly"
-                        {{ !empty($settings->timesheet_interval) && $settings->timesheet_interval == 'monthly' ? 'checked' : '' }}>
-                        monthly</option>
-                </select>
-            </div>
-        </div>
-        </div>
-    </form> --}}
+ @section('content')
     <div class="container my-4">
         <div class="row mb-3">
-            <div class="col-md-2"><img src="" alt=""/></div>
+            <div class="col-md-2"><img src="" alt="" /></div>
             <div class="col-md-10">
                 <h1 class="text-left">Indus Services Limited</h1>
-                <h3 class="text-left">Employee Time Sheet</h3>
+                {{-- <h3 class="text-left">Employee Time Sheet</h3> --}}
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div>
+        {{-- <div class="row">
+            <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div> --}}
             @php
                 $date = new DateTime('now');
                 $date->modify('last day of this month');
@@ -90,26 +33,28 @@
                 $day_display->modify('first day of this month');
                 $day_display->modify('-1 days')->format('l');
                 
-                //display week starting date
-                $week_starting = new DateTime('now');
-                $week_starting->modify('first day of this month');
+                // //display week starting date
+                // $week_starting = new DateTime('now');
+                // $week_starting->modify('first day of this month');
+                
             @endphp
-            <div class="col-md-6">Month Ending:- <span>{{ $date->format('d-m-Y') }}</span></div>
+            {{-- <div class="col-md-6">Month Ending:- <span>{{ $date->format('d-m-Y') }}</span></div>
             <div class="col-md-6">Designation:- <span>Business Analyst </span></div>
             <div class="col-md-12">
                 <p class="mb-0 mx-0">This form must be signed by your manager</p>
                 <p class="mt-0 mx-0"><strong>Record start and finish times as well as total daily hours worked. Record
                         weekly and monthly hours and days.</strong></p>
             </div>
-        </div>
+        </div> --}}
 
         <form method="POST" action="{{ route('employee-timesheet') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="employee_id" value="{{ $employee->id }}">
             @if ($settings->timesheet_interval == 'weekly')
+                <label>Week starting</label>
+                <input type="text" name="daterange" class="form-control" style="width:200px" value="" />
                 <div class="row">
                     <div class="col-md-12">
-                        <input type="text" name="daterange" value=""/>
                         {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
                         <p class="mx-0"></p>
                         <table class="table">
@@ -279,14 +224,13 @@
             @endif
             <input type="submit" class="btn btn-primary">
         </form>
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <p class="mx-0"><strong>Total Days to be paid for Month Ending:- </strong></p>
                 <div class="row mb-3">
                     <div class="col-10">
-                        Employee Confirmation:<br/>
+                        Employee Confirmation:<br />
                         <small>
-                            {{-- <input class="form-check-input" type="checkbox" value="true" id="confirm"> --}}
                             I confirm that this is an accurate record of the times I have worked
                         </small>
                     </div>
@@ -309,21 +253,20 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 @section('scripts')
-
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-{{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> --}}
-     <script>
-
-   $(function() {
-  $('input[name="daterange"]').daterangepicker({
-    opens: 'left'
-  }, function(start, end, label) {
-    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-  });
-});
-    </script> 
+    <script>
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
+                    .format('YYYY-MM-DD'));
+                var teststart = start.format('YYYY-MM-DD');
+                console.log(teststart, "teststart");
+            });
+        });
+    </script>
 @endsection

@@ -119,7 +119,6 @@
 		<!--Daterangepicker Js -->
 		<script src="{{asset('assets/js/daterangepicker.min.js')}}"></script>
 
-
 		<!-- Custom JS -->
 		<script src="{{asset('assets/js/app.js')}}"></script>
 		@yield('scripts')

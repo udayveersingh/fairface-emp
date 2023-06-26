@@ -16,8 +16,7 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="{{ route('employee-timesheet-view') }}" class="btn add-btn"><i class="fa fa-plus"></i>Add Employee
-                TimeSheet</a>
+            <a href="{{ route('employee-timesheet-view') }}" class="btn add-btn"><i class="fa fa-plus"></i>Add Employee TimeSheet</a>
         </div>
     </div>
 @endsection

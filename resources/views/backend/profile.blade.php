@@ -326,44 +326,51 @@
             <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
                 <div class="card profile-box flex-fill">
                     <div class="row">
-                        @foreach ($employee_documents as $document)
-                            @php
-                                $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <div class="col-md-6">
-                                <div class="card-body">
-                                    <ul class="personal-info">
-                                        <li>
-                                            <div class="title">Document Name</div>
-                                            <div class="text">{{ $document->name }}
+                        <div class="col-md-12">
+                            <table class="table table-striped custom-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 30px;">Sr No.</th>
+                                                <th>Document Name</th>
+                                                <th>Created</th>
+                                                <th>Attachment</th>
+                                                {{-- <th class="text-right">Action</th> --}}
+                                            </tr>
+                                        </thead>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($employee_documents as $index=>$document)
+                                    <tr>
+                                        <td>{{$index+1}}</td>
+                                        <td>{{$document->name}}</td>
+                                        <td>{{!empty(date("Y-m-d", strtotime($document->created_at) ))? date("Y-m-d", strtotime($document->created_at)):''}}</td>
+                                        @php
+                                        $extension = pathinfo(storage_path('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
+                                        @endphp
+                                        <td>
+                                            @if(!empty($extension) && $extension == "pdf")
+                                            <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
+                                            @else
+                                            <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="100px"></a>
+                                            @endif
+                                        </td>
+                                        {{-- <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a data-id="{{$document->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-target="#deletebtn" data-resource_data="Employee Document" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </div>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Created Date</div>
-                                            <div class="text">
-                                                {{ !empty(date('Y-m-d', strtotime($document->created_at))) ? date('Y-m-d', strtotime($document->created_at)) : '' }}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="text"><a
-                                                    href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                                    class="btn btn-primary" target="_blank" download> download</a></div>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                    @if (!empty($extension) && $extension == 'pdf')
-                                        <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                            target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                                width="300px" height="185px"></a>
-                                    @else
-                                        <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                            target="_blank"><img
-                                                src="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                                width="300px"></a>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
+                                        </td> --}}
+                                    </tr>
+                                    @endforeach
+                                    <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -446,7 +453,7 @@
             <!-- Employee Job -->
             <!-- Emplolyee Visa -->
             <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
-                <div class="row">
+                {{-- <div class="row">
                     @foreach ($employee_visas as $visa)
                         <div class="col-md-6 d-flex">
                             <div class="card profile-box flex-fill">
@@ -487,89 +494,151 @@
                             </div>
                         </div>
                     @endforeach
+                </div> --}}
+                <div class="row">
+                    @foreach ($employee_visas as $visa)
+                        <div class="col-md-12 mb-4">
+                            <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Visa Type</th>
+                                        <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cos Number</th>
+                                        <td>{{ $visa->cos_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cos Issue Date</th>
+                                        <td>{{ $visa->cos_issue_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Cos Expire Date</th>
+                                        <td>{{ $visa->cos_expiry_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Visa Issue Date</th>
+                                        <td>{{ $visa->visa_issue_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Visa Expiry Date</th>
+                                        <td>{{ $visa->visa_expiry_date }}</td>
+                                    </tr>
+                                </table>
+                                {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+                                    <a data-id="{{ $visa->id }}" data-employee_id="{{ $visa->employee_id }}"
+                                        data-visa_type="{{ $visa->visa_type }}" data-cos_number="{{ $visa->cos_number }}"
+                                        data-cos_issue_date="{{ $visa->cos_issue_date }}"
+                                        data-cos_expiry_date="{{ $visa->cos_expiry_date }}"
+                                        data-visa_issue_date="{{ $visa->visa_issue_date }}"
+                                        data-visa_expiry_date="{{ $visa->visa_expiry_date }}" data-target="edit_employee_visa"
+                                        class="btn btn-primary" id="edit_btn_visa" href="javascript:void(0);" data-toggle="modal"><i
+                                            class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a data-id="{{ $visa->id }}" class="btn btn-danger detail_delete"
+                                        data-resource_data="Employee Visa" href="javascript:void(0);" data-toggle="modal"><i
+                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                </div> --}}
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             <!-- Employee Visa -->
             <!-- Employee Project  -->
             <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
                 @if (!empty($employee_projects->count()))
-                    <div class="row">
-                        @foreach ($employee_projects as $project)
-                            <div class="col-md-6 d-flex">
-                                <div class="card profile-box flex-fill">
-                                    <div class="card-body">
-                                        <h3 class="card-title">Projects</h3>
-                                        <ul class="personal-info">
-                                            <li>
-                                                <div class="title">Project Name</div>
-                                                <div class="text">
-                                                    {{ !empty($project->projects->name) ? $project->projects->name : '' }}
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="title">Start Date</div>
-                                                <div class="text">{{ $project->start_date }}</div>
-                                            </li>
-                                            <li>
-                                                <div class="title">End Date</div>
-                                                <div class="text">
-                                                    {{ $project->end_date }}
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                <div class="row">
+                    @foreach ($employee_projects as $project)
+                        <div class="col-md-12 mb-4">
+                            <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Project</th>
+                                        <td>{{ !empty($project->projects->name) ? $project->projects->name : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Start Date</th>
+                                        <td>{{ $project->start_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>End Date</th>
+                                        <td>{{ $project->end_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>status</th>
+                                        @php
+                                            $status = '';
+                                            if (!empty($project->projects->status) && $project->projects->status == 1) {
+                                                $status = 'Active';
+                                            } else {
+                                                $status = 'Inactive';
+                                            }
+                                        @endphp
+                                        <td>{{ $status }}</td>
+                                    </tr>
+                                </table>
+                                {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+                                    <a data-id="{{ $project->id }}" data-employee_id="{{ $project->employee_id }}"
+                                        data-project="{{ $project->project_id }}" data-start_date="{{ $project->start_date }}"
+                                        data-end_date="{{ $project->end_date }}" class="btn btn-primary edit_btn"
+                                        data-target="edit_employee_project" href="javascript:void(0);" data-toggle="modal"><i
+                                            class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a data-id="{{ $project->id }}" class="btn btn-danger detail_delete"
+                                        data-resource_data="Employee Project" href="javascript:void(0);" data-toggle="modal"><i
+                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                </div> --}}
                             </div>
-                        @endforeach
-                    </div>
-                @endif
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             </div>
-            <!-- Employee Projetct -->
+            <!-- Employee Project -->
             <!-- Employee Payslip -->
             <div class="tab-pane fade" id="payslip" role="tabpanel" aria-labelledby="payslip-tab">
                 <div class="card profile-box flex-fill">
                     <div class="row">
-                        @foreach ($employee_payslips as $payslip)
-                            @php
-                                $extension = pathinfo(storage_path('storage/payslips/' . $payslip->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <div class="col-md-6">
-                                <div class="card-body">
-                                    <ul class="personal-info">
-                                        <li>
-                                            <div class="title">Month</div>
-                                            <div class="text">{{ $payslip->month }}</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Year</div>
-                                            <div class="text">{{ $payslip->year }}</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Created Date</div>
-                                            <div class="text">
-                                                {{ !empty(date('Y-m-d', strtotime($payslip->created_at))) ? date('Y-m-d', strtotime($payslip->created_at)) : '' }}
+                        <div class="col-md-12">
+                            <table class="table table-striped custom-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30px;">Sr No.</th>
+                                        <th>Month</th>
+                                        <th>Year</th>
+                                        <th>Created</th>
+                                        <th>Attachment</th>
+                                        {{-- <th class="text-right">Action</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyData">
+                                    @foreach ($employee_payslips as $index=>$employee_payslip)
+                                    <tr>
+                                        <td>{{$index+1}}</td>
+                                        <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
+                                        <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
+                                        <td>{{!empty(date("Y-m-d", strtotime($employee_payslip->created_at) ))? date("Y-m-d", strtotime($employee_payslip->created_at)):''}}</td>
+                                        @php
+                                            $extension = pathinfo(storage_path('storage/payslips/'.$employee_payslip->attachment), PATHINFO_EXTENSION);
+                                        @endphp
+                                        <td>@if($extension == "pdf")
+                                            <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
+                                            @else
+                                            <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a>
+                                            @endif
+                                        </td>
+                                        {{-- <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                                <div class="dropdown-menu dropdown-menu-right">
+                                                    <a data-id="{{$employee_payslip->id}}" class="dropdown-item detail_delete" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                </div>
                                             </div>
-                                        </li>
-                                        <li>
-                                            <div class="text"><a
-                                                    href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
-                                                    class="btn btn-primary" target="_blank" download> download</a></div>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                    @if (!empty($extension) && $extension == 'pdf')
-                                        <a href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
-                                            target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                                width="300px" height="185px"></a>
-                                    @else
-                                        <a href="{{ asset('storage/payslips/' . $payslip->attachment) }}"
-                                            target="_blank"><img
-                                                src="{{ asset('storage/payslips/' . $payslip->attachment) }}"
-                                                width="300px"></a>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
+                                        </td> --}}
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
