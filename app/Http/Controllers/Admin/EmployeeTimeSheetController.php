@@ -42,7 +42,24 @@ class EmployeeTimeSheetController extends Controller
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $employee->id)->first();
         }
-        return view('backend.employee-timesheet-view', compact('title', 'employee','settings', 'employee_timesheets'));
+        return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee','settings', 'employee_timesheets'));
+    }
+
+    /**
+     * employee timesheet listing
+     */
+    public function employeeTimesheetList()
+    {
+        $title = "Employee TimeSheet";
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            $employee = Employee::where('user_id','=', Auth::user()->id)->first();
+            $projects = Project::get();
+            $project_phases = ProjectPhase::get();
+            $timesheet_statuses = TimesheetStatus::get();
+            $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->where('employee_id','=',$employee->id)->get();
+        }
+        
+        return view('backend.employee-timesheet.timesheet-list', compact('title','projects', 'project_phases','timesheet_statuses','employee_timesheets'));
     }
 
     /**

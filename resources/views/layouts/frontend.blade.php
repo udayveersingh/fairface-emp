@@ -24,7 +24,10 @@
 		
 		<!-- Select2 CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
-		
+
+		<!-- Daterangepicker CSS -->
+		<link rel="stylesheet" href="{{asset('assets/css/daterangepicker.css')}}">
+
 		<!-- Datetimepicker CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
 		
@@ -112,6 +115,10 @@
 		<!-- Datetimepicker JS -->
 		<script src="{{asset('assets/js/moment.min.js')}}"></script>
 		<script src="{{asset('assets/js/bootstrap-datetimepicker.min.js')}}"></script>
+
+		<!--Daterangepicker Js -->
+		<script src="{{asset('assets/js/daterangepicker.min.js')}}"></script>
+
 
 		<!-- Custom JS -->
 		<script src="{{asset('assets/js/app.js')}}"></script>

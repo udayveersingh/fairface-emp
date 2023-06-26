@@ -11,7 +11,7 @@
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href="{{ route('employee-timesheet-view') }}"><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
+                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
@@ -44,8 +44,7 @@
                                     href="{{ route('holidays') }}">Public Holidays</a></li>
                             <li><a class="{{ route_is('leave-type') ? 'active' : '' }}"
                                     href="{{ route('leave-type') }}">Leave Type</a></li>
-                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa
-                                    Type</a></li>
+                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa Type</a></li>
                             <li><a class="{{ route_is('departments') ? 'active' : '' }}"
                                     href="{{ route('departments') }}">Departments</a></li>
                             <li><a class="{{ route_is(['projects', 'project-list']) ? 'active' : '' }}"
@@ -68,8 +67,7 @@
                         </ul>
                     </li>
                     <li class="{{ route_is('employees-list') ? 'active' : '' }}">
-                        <a href="{{ route('employees-list') }}"><i class="la la-user"></i> <span>All
-                                Employees</span></a>
+                        <a href="{{ route('employees-list') }}"><i class="la la-user"></i> <span>All Employees</span></a>
                     </li>
                     <li class="{{ route_is('employee-timesheet') ? 'active' : '' }}">
                         <a href="{{ route('employee-timesheet') }}"><i class="la la-files-o"></i>
@@ -82,12 +80,10 @@
                     <a href="{{ route('tickets') }}"><i class="la la-bell"></i> <span>Leaves</span></a>
                 </li> -->
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee
-                                leaves</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee leaves</span></a>
                     </li>
                     <li class="{{ route_is('company-email') ? 'active' : '' }}">
-                        <a href="{{ route('company-email') }}"><i class="la la-bullhorn"></i> <span>Company
-                                Email</span></a>
+                        <a href="{{ route('company-email') }}"><i class="la la-bullhorn"></i> <span>Company Email</span></a>
                     </li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>

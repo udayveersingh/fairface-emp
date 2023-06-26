@@ -67,7 +67,7 @@
     </form> --}}
     <div class="container my-4">
         <div class="row mb-3">
-            <div class="col-md-2"><img src="" alt="" /></div>
+            <div class="col-md-2"><img src="" alt=""/></div>
             <div class="col-md-10">
                 <h1 class="text-left">Indus Services Limited</h1>
                 <h3 class="text-left">Employee Time Sheet</h3>
@@ -109,7 +109,9 @@
             @if ($settings->timesheet_interval == 'weekly')
                 <div class="row">
                     <div class="col-md-12">
-                        <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p>
+                        <input type="text" name="daterange" value=""/>
+                        {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
+                        <p class="mx-0"></p>
                         <table class="table">
                             <tr>
                                 <td>Calender Date</td>
@@ -137,7 +139,8 @@
                                             type="time"></td>
                                     <td><input name="end_time[]" value="" type="time"
                                             class="form-control end_time"></td>
-                                    <td><select name="hours[]" id="hours" class="form-control">
+                                    <td>
+                                        <select name="hours[]" id="hours" class="form-control">
                                             <option value="">Select Day</option>
                                             <option value="half_day">Half Day</option>
                                             <option value="full_day">Full Day</option>
@@ -310,13 +313,9 @@
     </div>
 @endsection
 @section('scripts')
-    {{-- <script>
-        $(document).ready(function() {
-            $("input").keyup(function() {
-                $("input").css("background-color", "pink");
-            })
-
-
-        })
-    </script> --}}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" /> --}}
+     <script>
+      $('input[name="daterange"]').daterangepicker();
+    </script> 
 @endsection
