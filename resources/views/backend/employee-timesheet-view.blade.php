@@ -79,18 +79,18 @@
             @php
                 $date = new DateTime('now');
                 $date->modify('last day of this month');
-
+                
                 //calender date store
                 $first_day = new DateTime('now');
                 $first_day->modify('first day of this month');
-                $first_day->modify("-1 days")->format('l d-m-Y');
-
-                //display day this week 
-                $day_display =  new DateTime('now');
+                $first_day->modify('-1 days')->format('l d-m-Y');
+                
+                //display day this week
+                $day_display = new DateTime('now');
                 $day_display->modify('first day of this month');
-                $day_display->modify("-1 days")->format('l');
-
-                //display week starting date 
+                $day_display->modify('-1 days')->format('l');
+                
+                //display week starting date
                 $week_starting = new DateTime('now');
                 $week_starting->modify('first day of this month');
             @endphp
@@ -106,40 +106,46 @@
         <form method="POST" action="{{ route('employee-timesheet') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="employee_id" value="{{ $employee->id }}">
-            <div class="row">
-                <div class="col-md-12">
-                    <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p>
-                    <table class="table">
-                        <tr>
-                            <td>Calender Date</td>
-                            <td>Days</td>
-                            <td>Start Time</td>
-                            <td>Finish Time</td>
-                            <td>1/2 or 1 Day</td>
-                        </tr>
-
-                        @php
-                            $days = ['Monday', 'Tuesday', 'Wednesday','Thursday', 'Friday', 'Saturday', 'Sunday'];
-                            // $date = $first_day->format('Y-m-d');
-                            // $date = new DateTime();
-                            //  echo $first_day->modify("+1 days")->format('l d-m-Y');
-                        @endphp
-                        @foreach ($days as $index => $day)
+            @if ($settings->timesheet_interval == 'weekly')
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p>
+                        <table class="table">
                             <tr>
-                               {{-- <input type="hidden" name="calender_date[]" value="{{$first_day->modify("+1 days")->format('Y-m-d')}}"> --}}
-                                <td><input type="text" class="" name="calender_date[]" value="{{$first_day->modify("+1 days")->format('Y-m-d')}}" readonly></td>
-                                <td><input name="calender_day[]" value="{{$day_display->modify("+1 days")->format('l')}}" class="" type="text" readonly></td>
-                                <td><input name="start_time[]" value="" class="start_time" type="time"></td>
-                                <td><input name="end_time[]" value="" type="time" class="end_time"></td>
-                                <td><select name="hours[]" id="hours" class="form-control">
-                                    <option value="">Select Day</option>
-                                    <option value="half_day">Half Day</option>
-                                    <option value="full_day">Full Day</option>
-                                </select>
-                              </td>
+                                <td>Calender Date</td>
+                                <td>Days</td>
+                                <td>Start Time</td>
+                                <td>Finish Time</td>
+                                <td>1/2 or 1 Day</td>
                             </tr>
-                        @endforeach
-                        {{-- <tr>
+
+                            @php
+                                $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                // $date = $first_day->format('Y-m-d');
+                                // $date = new DateTime();
+                                //  echo $first_day->modify("+1 days")->format('l d-m-Y');
+                            @endphp
+                            @foreach ($days as $index => $day)
+                                <tr>
+                                    {{-- <input type="hidden" name="calender_date[]" value="{{$first_day->modify("+1 days")->format('Y-m-d')}}"> --}}
+                                    <td><input type="text" class="form-control" name="calender_date[]"
+                                            value="{{ $first_day->modify('+1 days')->format('Y-m-d') }}" readonly></td>
+                                    <td><input name="calender_day[]"
+                                            value="{{ $day_display->modify('+1 days')->format('l') }}" class="form-control"
+                                            type="text" readonly></td>
+                                    <td><input name="start_time[]" value="" class="form-control start_time"
+                                            type="time"></td>
+                                    <td><input name="end_time[]" value="" type="time"
+                                            class="form-control end_time"></td>
+                                    <td><select name="hours[]" id="hours" class="form-control">
+                                            <option value="">Select Day</option>
+                                            <option value="half_day">Half Day</option>
+                                            <option value="full_day">Full Day</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            {{-- <tr>
                             <td>Tue</td>
                             <td>2</td>
                             <td></td>
@@ -187,13 +193,13 @@
                             <td></td>
                             <td></td>
                         </tr> --}}
-                        {{-- <tr>
+                            {{-- <tr>
                             <td colspan="5" align="end">Total</td>
                             <td>4</td>
                         </tr> --}}
-                    </table>
-                </div>
-                {{-- <div class="col-md-6">
+                        </table>
+                    </div>
+                    {{-- <div class="col-md-6">
 				<p class="mx-0">Week starting:- <strong>5/8/2023	</strong></p>
 				<table class="table">
 					<tr>						
@@ -266,7 +272,8 @@
 					</tr>
 				</table>
 			</div> --}}
-            </div>
+                </div>
+            @endif
             <input type="submit" class="btn btn-primary">
         </form>
         <div class="row">
@@ -274,9 +281,11 @@
                 <p class="mx-0"><strong>Total Days to be paid for Month Ending:- </strong></p>
                 <div class="row mb-3">
                     <div class="col-10">
-                        Employee Confirmation:<br />
-                        <small>I confirm that this is an accurate record of the times I have worked </small>
-
+                        Employee Confirmation:<br/>
+                        <small>
+                            {{-- <input class="form-check-input" type="checkbox" value="true" id="confirm"> --}}
+                            I confirm that this is an accurate record of the times I have worked
+                        </small>
                     </div>
                     <div class="col-2 text-right"> 20 Days
                         <div>Signature: <strong>Lavanya Kolli</strong></div>
