@@ -7,7 +7,7 @@
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
     {{-- @endsection --}}
- @section('content')
+@section('content')
     <div class="container my-4">
         <div class="row mb-3">
             <div class="col-md-2"><img src="" alt="" /></div>
@@ -19,26 +19,26 @@
 
         {{-- <div class="row">
             <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div> --}}
-            @php
-                $date = new DateTime('now');
-                $date->modify('last day of this month');
-                
-                //calender date store
-                $first_day = new DateTime('now');
-                $first_day->modify('first day of this month');
-                $first_day->modify('-1 days')->format('l d-m-Y');
-                
-                //display day this week
-                $day_display = new DateTime('now');
-                $day_display->modify('first day of this month');
-                $day_display->modify('-1 days')->format('l');
-                
-                // //display week starting date
-                // $week_starting = new DateTime('now');
-                // $week_starting->modify('first day of this month');
-                
-            @endphp
-            {{-- <div class="col-md-6">Month Ending:- <span>{{ $date->format('d-m-Y') }}</span></div>
+        @php
+            $date = new DateTime('now');
+            $date->modify('last day of this month');
+            
+            //calender date store
+            $first_day = new DateTime('now');
+            $first_day->modify('first day of this month');
+            $first_day->modify('-1 days')->format('l d-m-Y');
+            
+            //display day this week
+            $day_display = new DateTime('now');
+            $day_display->modify('first day of this month');
+            $day_display->modify('-1 days')->format('l');
+            
+            // //display week starting date
+            // $week_starting = new DateTime('now');
+            // $week_starting->modify('first day of this month');
+            
+        @endphp
+        {{-- <div class="col-md-6">Month Ending:- <span>{{ $date->format('d-m-Y') }}</span></div>
             <div class="col-md-6">Designation:- <span>Business Analyst </span></div>
             <div class="col-md-12">
                 <p class="mb-0 mx-0">This form must be signed by your manager</p>
@@ -71,13 +71,31 @@
                                 // $date = $first_day->format('Y-m-d');
                                 // $date = new DateTime();
                                 //  echo $first_day->modify("+1 days")->format('l d-m-Y');
+                                // $start = '27-11-2014';
+                                // $end = '1-12-2014';
+                                //     function date_difference($start, $end)
+                                //     {
+                                //         $first_date = strtotime($start);
+                                //         $second_date = strtotime($end);
+                                //         $offset = $second_date-$first_date;
+                                //         $result = array();
+                                //         for($i = 0; $i <= floor($offset/24/60/60); $i++) {
+                                //             $result[1+$i]['date'] = date('d-m-Y', strtotime($start. ' + '.$i.'  days'));
+                                //             $result[1+$i]['day'] = date('l', strtotime($start. ' + '.$i.' days'));
+                                //         }
+                                //         echo '<pre>';
+                                //         print_r($result);
+                                //         echo '</pre>';
+                                //     }
+                                //     date_difference($start, $end);
                             @endphp
-                            @foreach ($days as $index => $day)
+                            {{-- @foreach ($days as $index => $day) --}}
+                            <tbody id="bodyData">
                                 <tr>
                                     {{-- <input type="hidden" name="calender_date[]" value="{{$first_day->modify("+1 days")->format('Y-m-d')}}"> --}}
-                                    <td><input type="text" class="form-control" name="calender_date[]"
-                                            value="{{ $first_day->modify('+1 days')->format('Y-m-d') }}" readonly></td>
-                                    <td><input name="calender_day[]"
+                                    {{-- <td><input type="text" class="form-control" name="calender_date[]"
+                                            value="{{ $first_day->modify('+1 days')->format('Y-m-d') }}" readonly></td> --}}
+                                    {{-- <td><input name="calender_day[]"
                                             value="{{ $day_display->modify('+1 days')->format('l') }}" class="form-control"
                                             type="text" readonly></td>
                                     <td><input name="start_time[]" value="" class="form-control start_time"
@@ -90,9 +108,10 @@
                                             <option value="half_day">Half Day</option>
                                             <option value="full_day">Full Day</option>
                                         </select>
-                                    </td>
+                                    </td> --}}
                                 </tr>
-                            @endforeach
+                            </tbody>
+                            {{-- @endforeach --}}
                             {{-- <tr>
                             <td>Tue</td>
                             <td>2</td>
@@ -264,8 +283,42 @@
             }, function(start, end, label) {
                 console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
                     .format('YYYY-MM-DD'));
-                var teststart = start.format('YYYY-MM-DD');
-                console.log(teststart, "teststart");
+                var start_date = start.format('YYYY-MM-DD');
+                var end_date = end.format('YYYY-MM-DD');
+                var start = new Date(start_date);
+                var end = new Date(end_date);
+                var bodyData = '';
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                while (start <= end) {
+                    var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
+                        .getMonth() + 1);
+                    var dd = ((start.getDate()) >= 10) ? (start.getDate()) : '0' + (start.getDate());
+                    var yyyy = start.getFullYear();
+                    var day = days[start.getDay()];
+                    var readonly = "";
+                    var disabled = "";
+                    if (day == "Sunday" || day == "Saturday") {
+                        readonly = "readonly";
+                        disabled = disabled = "disabled";
+                    } 
+                    console.log(day, "day 1")
+                    var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
+                    bodyData +=
+                        '<tr><td><input type="text" class="form-control" name="calender_date[]" value="' +
+                        date + '" readonly></td>' +
+                        '<td><input type="text" class="form-control" name="calender_day[]" value="' + day +
+                        '"></td>' +
+                        '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
+                        readonly + '></td>' +
+                        '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
+                        readonly + '></td>' +
+                        '<td><select name="hours[]" id="hours" class="form-control" ' + disabled +
+                        ' ><option value="">Select Day</option><option value="half_day">Half Day</option>' +
+                        '<option value="full_day">Full Day</option></select></td>';
+                    bodyData += "</tr>";
+                    start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
+                }
+                $("#bodyData").append(bodyData);
             });
         });
     </script>

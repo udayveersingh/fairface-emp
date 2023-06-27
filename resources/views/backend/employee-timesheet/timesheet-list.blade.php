@@ -28,9 +28,10 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
-                            <th>Employee Name</th>
-                            <th>Project</th>
-                            <th>Project Phase</th>
+                            {{-- <th>Employee Name</th> --}}
+                            {{-- <th>Project</th>
+                            <th>Project Phase</th> --}}
+                            <th>Calender Date</th>
                             <th>From Time</th>
                             <th>To Time</th>
                             <th style="text-align:center">Status</th>
@@ -41,20 +42,21 @@
                         @if (!empty($employee_timesheets->count()))
                             @foreach ($employee_timesheets as $index => $timesheet)
                                 <tr>
-                                    @php
+                                    {{-- @php
                                         $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
                                         $lastname = !empty($timesheet->employee->lastname) ? $timesheet->employee->lastname : '';
                                         $supervisor = App\Models\Employee::find($timesheet->supervisor_id);
                                         if (!empty($supervisor)) {
                                             $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
                                         }
-                                    @endphp
-                                    <td>{{ $firstname . ' ' . $lastname }}</td>
-                                    <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
-                                    <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }}
-                                    </td>
-                                    <td>{{ $timesheet->from_time }}</td>
-                                    <td>{{ $timesheet->to_time }}</td>
+                                    @endphp --}}
+                                    {{-- <td>{{ $firstname . ' ' . $lastname }}</td> --}}
+                                        {{-- <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
+                                        <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }}
+                                        </td> --}}
+                                    <td>{{$timesheet->calender_date}}</td>    
+                                    <td>{{ date('H:i', strtotime($timesheet->from_time)) }}</td>
+                                    <td>{{ date('H:i', strtotime($timesheet->to_time)) }}</td>
                                     {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
                                     <td class="text-center">
                                         <div class="action-label">

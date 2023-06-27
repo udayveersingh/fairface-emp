@@ -70,8 +70,15 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-
+            $this->validate($request,[
+                'calender_date.*'=> 'required',
+                'calender_day.*'=> 'required',
+                'start_time.*'=> 'nullable',
+                'end_time.*'=> 'nullable',
+                'hours.*' => 'nullable',
+            ]);
             $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
             $calender_date = $request->input('calender_date');
             $calender_day = $request->input('calender_day');
@@ -79,11 +86,11 @@ class EmployeeTimeSheetController extends Controller
             $end_time = $request->input('end_time');
             $hours = $request->input('hours');
             foreach ($start_time as $key => $value) {
-                if($hours[$key] == "half_day")
+                if(!empty($hours[$key]) == "full_day")
                 {
-                    $total_hours_worked = "4 hours";
-                }elseif($hours[$key] == "full_day"){
                     $total_hours_worked = "8 hours";
+                }elseif(!empty($hours[$key]) == "full_day"){
+                    $total_hours_worked = "4 hours";
                 }else{
                     $total_hours_worked="";
                 }
