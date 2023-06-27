@@ -38,7 +38,7 @@
                 <table class="table table-striped">
                     <tr>
                         <th>Overseas & Local Contact Name</th>
-                        <td>{{ !empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}
+                        <td>{{!empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}
                         </td>
                     </tr>
                     <tr>
