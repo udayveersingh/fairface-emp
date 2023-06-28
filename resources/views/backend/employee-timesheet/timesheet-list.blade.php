@@ -31,68 +31,32 @@
                             {{-- <th>Employee Name</th> --}}
                             {{-- <th>Project</th>
                             <th>Project Phase</th> --}}
-                            <th>Calender Date</th>
-                            <th>From Time</th>
-                            <th>To Time</th>
-                            <th style="text-align:center">Status</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            {{-- <th>To Time</th> --}}
+                            {{-- <th style="text-align:center">Status</th> --}}
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (!empty($employee_timesheets->count()))
                             @foreach ($employee_timesheets as $index => $timesheet)
-                                <tr>
-                                    {{-- @php
-                                        $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
-                                        $lastname = !empty($timesheet->employee->lastname) ? $timesheet->employee->lastname : '';
-                                        $supervisor = App\Models\Employee::find($timesheet->supervisor_id);
-                                        if (!empty($supervisor)) {
-                                            $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                                        }
-                                    @endphp --}}
-                                    {{-- <td>{{ $firstname . ' ' . $lastname }}</td> --}}
-                                        {{-- <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
-                                        <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }}
-                                        </td> --}}
-                                    <td>{{$timesheet->calender_date}}</td>    
-                                    <td>{{ date('H:i', strtotime($timesheet->from_time)) }}</td>
-                                    <td>{{ date('H:i', strtotime($timesheet->to_time)) }}</td>
-                                    {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
-                                    <td class="text-center">
-                                        <div class="action-label">
-                                            <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
-                                                <i
-                                                    class="fa fa-dot-circle-o text-success"></i>{{ !empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status) : '' }}
-                                            </a>
-                                            <a class="btn text-danger statusChecked" data-id="{{ $timesheet->id }}"
-                                                data-status="approved" href="#" data-toggle="modal"
-                                                id="statusChecked">Change Status</a>
-                                        </div>
-                                    </td>
-                                    <!-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> -->
+                            @php
+                                $start_date = explode(',',$timesheet->start_date);
+                                $end_date = explode(',',$timesheet->end_date);
+                            @endphp
+                                <tr> 
+                                     <td>{{ date('Y-m-d', strtotime($start_date[0]))}}</td>
+                                     <td>{{ date('Y-m-d', strtotime($end_date[0]))}}</td>
+                                     {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a data-id="{{ $timesheet->id }}"
-                                                    data-timesheet_id="{{ $timesheet->timesheet_id }}"
-                                                    data-employee_id="{{ $timesheet->employee_id }}"
-                                                    data-supervisor_id="{{ $timesheet->supervisor_id }}"
-                                                    data-project_id="{{ $timesheet->project_id }}"
-                                                    data-project_phase_id="{{ $timesheet->project_phase_id }}"
-                                                    data-calendar_day="{{ $timesheet->calender_day }}"
-                                                    data-calendar_date="{{ $timesheet->calender_date }}"
-                                                    data-from_time="{{ $timesheet->from_time }}"
-                                                    data-to_time="{{ $timesheet->to_time }}"
-                                                    data-total_hours_worked="{{ $timesheet->total_hours_worked }}"
-                                                    data-notes="{{ $timesheet->notes }}"
-                                                    data-timesheet_status_id="{{ $timesheet->timesheet_status_id }}"
-                                                    data-status_reason="{{ $timesheet->status_reason }}"
-                                                    data-edit_approved_date_time="{{ $timesheet->approved_date_time }}"
-                                                    class="dropdown-item editbtn" href="javascript:void(0);"
-                                                    data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                                <a data-id="{{ $timesheet->id }}" class="dropdown-item deletebtn"
+                                                <a class="dropdown-item editbtn" href="javascript:void(0);"
+                                                    data-toggle="modal"><i class="fa fa-pencil m-r-5"></i>View</a>
+                                                <a data-id="" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>

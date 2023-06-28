@@ -52,7 +52,7 @@
             <input type="hidden" name="employee_id" value="{{ $employee->id }}">
             @if ($settings->timesheet_interval == 'weekly')
                 <label>Week starting</label>
-                <input type="text" name="daterange" class="form-control" style="width:200px" value="" />
+                <input type="text" name="daterange" class="form-control" id="enter_date" style="width:200px" value="" />
                 <div class="row">
                     <div class="col-md-12">
                         {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
@@ -281,8 +281,9 @@
             $('input[name="daterange"]').daterangepicker({
                 opens: 'left'
             }, function(start, end, label) {
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
-                    .format('YYYY-MM-DD'));
+                $("#bodyData").html("");
+                // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
+                //     .format('YYYY-MM-DD'));
                 var start_date = start.format('YYYY-MM-DD');
                 var end_date = end.format('YYYY-MM-DD');
                 var start = new Date(start_date);
@@ -301,7 +302,7 @@
                         readonly = "readonly";
                         disabled = disabled = "disabled";
                     } 
-                    console.log(day, "day 1")
+                    // console.log(day, "day 1")
                     var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                     bodyData +=
                         '<tr><td><input type="text" class="form-control" name="calender_date[]" value="' +
