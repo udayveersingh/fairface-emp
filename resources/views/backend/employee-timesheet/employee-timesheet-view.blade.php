@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        {{-- <div class="row">
-            <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div> --}}
+        {{-- <div class="row"> --}}
+        {{-- <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div> --}}
         @php
             $date = new DateTime('now');
             $date->modify('last day of this month');
@@ -43,16 +43,41 @@
             <div class="col-md-12">
                 <p class="mb-0 mx-0">This form must be signed by your manager</p>
                 <p class="mt-0 mx-0"><strong>Record start and finish times as well as total daily hours worked. Record
-                        weekly and monthly hours and days.</strong></p>
-            </div>
-        </div> --}}
+                        weekly and monthly hours and days.</strong></p> --}}
+        {{-- </div> --}}
+        {{-- </div> --}}
 
         <form method="POST" action="{{ route('employee-timesheet') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="employee_id" value="{{ $employee->id }}">
             @if ($settings->timesheet_interval == 'weekly')
-                <label>Week starting</label>
-                <input type="text" name="daterange" class="form-control" id="enter_date" style="width:200px" value="" />
+                <div class="row">
+                    <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Week starting</label>
+                            <input type="text" name="daterange" class="form-control" id="enter_date"  value=""/>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Timesheet ID <span class="text-danger">*</span></label>
+                            <input class="form-control" name="timesheet_id" id="timesheet_id" type="text">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        {{-- <div class="form-group">
+                            <label>Supervisor</label>
+                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                                <option value="">Select Supervisor</option>
+                                @foreach ($employees as $employee)
+                                    <option value="{{ $employee->id }}">
+                                        {{ $employee->firstname . ' ' . $employee->lastname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div> --}}
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12">
                         {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
@@ -64,6 +89,7 @@
                                 <td>Start Time</td>
                                 <td>Finish Time</td>
                                 <td>1/2 or 1 Day</td>
+                                <td>Project</td>
                             </tr>
 
                             @php
@@ -298,10 +324,10 @@
                     var day = days[start.getDay()];
                     var readonly = "";
                     var disabled = "";
-                    if (day == "Sunday" || day == "Saturday") {
+                    if (day == "Sunday") {
                         readonly = "readonly";
                         disabled = disabled = "disabled";
-                    } 
+                    }
                     // console.log(day, "day 1")
                     var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                     bodyData +=
@@ -315,7 +341,10 @@
                         readonly + '></td>' +
                         '<td><select name="hours[]" id="hours" class="form-control" ' + disabled +
                         ' ><option value="">Select Day</option><option value="half_day">Half Day</option>' +
-                        '<option value="full_day">Full Day</option></select></td>';
+                        '<option value="full_day">Full Day</option></select></td>'+
+                        '<td><select name="project_id[]" id="edit_project_id" class="select form-control">'+
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option value="{{ !empty($project->projects->id) ? $project->projects->id:'' }}">{{ !empty($project->projects->name) ? $project->projects->name:''}}</option>'+
+                        '@endforeach</select></td>';
                     bodyData += "</tr>";
                     start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
                 }

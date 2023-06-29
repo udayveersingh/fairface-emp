@@ -116,6 +116,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::put('timesheet-status',[TimeSheetController::class,'update']);
     Route::delete('timesheet-status',[TimeSheetController::class,'destroy'])->name('timesheet-status.destroy');
 
+    Route::get('employee-timesheet-detail/{id}/{start_date}/{end_date}',[EmployeeTimeSheetController::class,'employeeTimeSheetDetail'])->name('employee-timesheet-detail');
     Route::get('employee-timesheet-view',[EmployeeTimeSheetController::class,'employeeTimesheetView'])->name('employee-timesheet-view');
     Route::get('employee-timesheet-list',[EmployeeTimeSheetController::class,'employeeTimesheetList'])->name('employee-timesheet-list');
     Route::get('employee-timesheet',[EmployeeTimeSheetController::class,'index'])->name('employee-timesheet');
