@@ -7,6 +7,11 @@
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
     {{-- @endsection --}}
+    {{-- <style>
+        table,th,td {
+            border: 1px solid;
+        }
+    </style> --}}
 @section('content')
     <div class="container my-4">
         <div class="row mb-3">
@@ -16,10 +21,10 @@
             </div>
         </div>
         @php
-              //Monthly ending date
-              $date = new DateTime('now');
-              $date->modify('last day of this month');
-
+            //Monthly ending date
+            $date = new DateTime('now');
+            $date->modify('last day of this month');
+            
             //display week starting date
             $week_starting = new DateTime('now');
             $week_starting->modify('first day of this month');
@@ -30,7 +35,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="mx-0"><strong>Week starting:-</strong>{{ $week_starting->format('d-m-Y') }}</p>
+                <p class="mx-0"><strong>Month starting:-</strong>{{ $start_date }}</p>
                 <p class="mx-0"></p>
                 {{-- <table class="table">
                     <tr>
@@ -71,7 +76,7 @@
                         @endforeach
                     </tbody>
                 </table> --}}
-                    <table border="2px">
+                <table border="1px">
                     <tr>
                         <td></td>
                         <td></td>
@@ -80,25 +85,25 @@
                         <td>1/2 or 1 Day</td>
                     </tr>
                     @foreach ($employee_timesheets as $index => $timesheet)
-                    <tbody id="bodyData">
-                        @php
-                            $timesheet_hours = '';
-                            if (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours') {
-                                $timesheet_hours = 'Full day';
-                            } elseif (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours') {
-                                $timesheet_hours = 'Half day';
-                            } else {
-                                $timesheet_hours = '______';
-                            }
-                            $from_time = date('H:i', strtotime($timesheet->from_time));
-                            $to_time = date('H:i', strtotime($timesheet->to_time));
-                        @endphp
-                        <td>{{ $timesheet->calender_day }}</td>
-                        <td>{{$index+1}}</td>
-                        <td>{{ !empty($from_time) ? $from_time : '' }}</td>
-                        <td>{{ !empty($to_time) ? $to_time : '' }}</td>
-                        <td>{{ $timesheet_hours }}</td>
-                    </tbody>
+                        <tbody id="bodyData">
+                            @php
+                                $timesheet_hours = '';
+                                if (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours') {
+                                    $timesheet_hours = 'Full day';
+                                } elseif (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours') {
+                                    $timesheet_hours = 'Half day';
+                                } else {
+                                    $timesheet_hours = '______';
+                                }
+                                $from_time = date('H:i', strtotime($timesheet->from_time));
+                                $to_time = date('H:i', strtotime($timesheet->to_time));
+                            @endphp
+                            <td>{{ $timesheet->calender_day }}</td>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ !empty($from_time) ? $from_time : '' }}</td>
+                            <td>{{ !empty($to_time) ? $to_time : '' }}</td>
+                            <td>{{ $timesheet_hours }}</td>
+                        </tbody>
                     @endforeach
                 </table>
             </div>

@@ -59,7 +59,7 @@ class EmployeeTimeSheetController extends Controller
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title' ,'start_date'));
     }
 
     /**
