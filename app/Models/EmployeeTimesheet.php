@@ -26,5 +26,4 @@ class EmployeeTimesheet extends Model
     public function timesheet_status(){
         return $this->belongsTo(TimesheetStatus::class,'timesheet_status_id','id');
     }
-
 }

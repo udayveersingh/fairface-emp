@@ -42,21 +42,23 @@ class EmployeeTimeSheetController extends Controller
         $title = "Employee TimeSheet";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employees = Employee::get();
-            // $project_phases = ProjectPhase::get();
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-            $employee_project = EmployeeProject::with('projects')->where('employee_id',$employee->id)->get();
+            $employee_project = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
             $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $employee->id)->first();
         }
         return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_project'));
-    }   
+    }
 
     /**
      * Employee Timesheet Detail
      */
-    public function employeeTimeSheetDetail($id,$start_date,$end_date)
+    public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
-        $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $id)->where('start_date','=',$start_date)->where('end_date','=',$end_date)->latest()->get();
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->latest()->get();
+        // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
+        // dd($employee_timesheets);
+
         return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title'));
     }
 
@@ -71,7 +73,6 @@ class EmployeeTimeSheetController extends Controller
             $projects = Project::get();
             $project_phases = ProjectPhase::get();
             $timesheet_statuses = TimesheetStatus::get();
-            $start_end_datetime = EmployeeTimesheet::get();
             $employee_timesheets = DB::table('employee_timesheets')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
             // $employee_timesheets = EmployeeTimesheet::select('*', DB::raw("CONCAT('start_date', '-','end_date') AS timesheet_date"))->groupBy('timesheet_date')->get();
             // dd($employee_timesheets);
@@ -88,14 +89,12 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $start_end_date = explode(" ", $request->daterange);
         $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
         $end_date = date('Y-m-d', strtotime($start_end_date[2]));
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $this->validate($request, [
                 'timesheet_id' => 'required',
-                'project_id' => 'required',
                 'calender_date.*' => 'required',
                 'calender_day.*' => 'required',
                 'start_time.*' => 'nullable',
@@ -109,10 +108,11 @@ class EmployeeTimeSheetController extends Controller
             $end_time = $request->input('end_time');
             $hours = $request->input('hours');
             $project_id = $request->input('project_id');
+            $supervisor_id = $request->input('supervisor_id');
             foreach ($start_time as $key => $value) {
-                if (!empty($hours[$key]) == "full_day") {
+                if (!empty($hours[$key]) && $hours[$key] == "full_day") {
                     $total_hours_worked = "8 hours";
-                } elseif (!empty($hours[$key]) == "half_day") {
+                } elseif (!empty($hours[$key]) && $hours[$key] == "half_day") {
                     $total_hours_worked = "4 hours";
                 } else {
                     $total_hours_worked = "";
@@ -122,9 +122,8 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet = new EmployeeTimesheet();
                     $emp_timesheet->timesheet_id = $request->input('timesheet_id');
                     $emp_timesheet->employee_id = $request->input('employee_id');
-                    // $emp_timesheet->supervisor_id = $request->input('supervisor_id');
+                    $emp_timesheet->supervisor_id = $supervisor_id[$key];
                     $emp_timesheet->project_id = $project_id[$key];
-                    // $emp_timesheet->project_phase_id = $request->input('project_phase_id');
                     $emp_timesheet->calender_day = $calender_day[$key];
                     $emp_timesheet->calender_date = $calender_date[$key];
                     $emp_timesheet->from_time = $value;
@@ -138,7 +137,6 @@ class EmployeeTimeSheetController extends Controller
             }
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
-
             $this->validate($request, [
                 'timesheet_id' => 'required|unique:employee_timesheets,timesheet_id,' . $request->id,
                 'employee_id'  => 'required',

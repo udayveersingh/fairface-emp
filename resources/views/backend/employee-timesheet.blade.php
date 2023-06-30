@@ -32,7 +32,7 @@
                             <th>Employee Name</th>
                             <th>Supervisor</th>
                             <th>Project</th>
-                            <th>Project Phase</th>
+                            {{-- <th>Project Phase</th> --}}
                             <th>From Time</th>
                             <th>To Time</th>
                             <th style="text-align:center">Status</th>
@@ -54,8 +54,8 @@
                                     <td>{{ $firstname . ' ' . $lastname }}</td>
                                     <td>{{ $supervisor_name }}</td>
                                     <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
-                                    <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }}
-                                    </td>
+                                    {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
+                                    {{-- </td> --}}
                                     <td>{{ $timesheet->from_time }}</td>
                                     <td>{{ $timesheet->to_time }}</td>
                                     {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}

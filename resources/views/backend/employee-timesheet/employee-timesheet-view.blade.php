@@ -90,10 +90,11 @@
                                 <td>Finish Time</td>
                                 <td>1/2 or 1 Day</td>
                                 <td>Project</td>
+                                <td>Supervisor</td>
                             </tr>
 
                             @php
-                                $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                // $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                                 // $date = $first_day->format('Y-m-d');
                                 // $date = new DateTime();
                                 //  echo $first_day->modify("+1 days")->format('l d-m-Y');
@@ -326,8 +327,8 @@
                     var disabled = "";
                     if (day == "Sunday") {
                         readonly = "readonly";
-                        disabled = disabled = "disabled";
-                    }
+                        disabled = "disabled";
+                    }   
                     // console.log(day, "day 1")
                     var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                     bodyData +=
@@ -339,12 +340,14 @@
                         readonly + '></td>' +
                         '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
                         readonly + '></td>' +
-                        '<td><select name="hours[]" id="hours" class="form-control" ' + disabled +
-                        ' ><option value="">Select Day</option><option value="half_day">Half Day</option>' +
-                        '<option value="full_day">Full Day</option></select></td>'+
-                        '<td><select name="project_id[]" id="edit_project_id" class="select form-control">'+
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option value="{{ !empty($project->projects->id) ? $project->projects->id:'' }}">{{ !empty($project->projects->name) ? $project->projects->name:''}}</option>'+
-                        '@endforeach</select></td>';
+                        '<td><select name="hours[]" '+ readonly +' id="hours" class="form-control hours" ' +
+                        ' ><option selected="selected" value="">Select Day</option><option '+ disabled +' value="half_day">Half Day</option>' +
+                        '<option '+ disabled +' value="full_day">Full Day</option></select></td>'+
+                        '<td><select name="project_id[]" '+ readonly +' id="edit_project_id" class="select form-control">'+
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option '+ disabled +' value="{{ !empty($project->projects->id) ? $project->projects->id:'' }}">{{ !empty($project->projects->name) ? $project->projects->name:''}}</option>'+
+                        '@endforeach</select></td><td><select name="supervisor_id[]" '+ readonly +' id="supervisor_id" class="select form-control">'+
+                        '<option value="">Select Supervisor</option>@foreach(getSupervisor() as $supervisor)<option '+ disabled +' value="{{ $supervisor->id }}">'+
+                        '{{ $supervisor->name }}</option>@endforeach</select></td>';
                     bodyData += "</tr>";
                     start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
                 }

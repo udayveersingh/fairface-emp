@@ -122,6 +122,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $password,
             'avatar' => $imageName,
+            'role_id' => $request->role_id,
         ]);
         return back()->with('success', "User has been updated!!!");
     }
