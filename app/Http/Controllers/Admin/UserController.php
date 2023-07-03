@@ -13,6 +13,7 @@ use App\Notifications\NewUserNotification;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -102,7 +103,7 @@ class UserController extends Controller
             'firstname' => 'required|max:100',
             'lastname' => 'required|max:100',
             'username' => 'required|max:50',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.$request->id,
             'password' => 'nullable|confirmed|max:200|min:5',
             'avatar' => 'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
@@ -124,6 +125,24 @@ class UserController extends Controller
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);
+
+        $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
+
+        if(!empty($request->emp_id)){
+            $employee = Employee::find($request->emp_id);
+        }else{
+            $employee = new Employee;
+            $employee->uuid = $uuid;
+        }
+        $employee->firstname = $request->input('firstname');
+        $employee->lastname = $request->input('lastname');
+        $employee->email = $request->input('email');
+        $employee->marital_status = $request->input('marital_status');
+        $employee->record_status = $request->input('record_status');
+        $employee->country_id = $request->input('nationality');
+        $employee->employee_id = $request->input('employee_id');
+        $employee->user_id = $user->id;
+        $employee->save();
         return back()->with('success', "User has been updated!!!");
     }
 

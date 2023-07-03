@@ -8173,3 +8173,15 @@ ul.comment-list li ul.children {
 .profile-info-left {
     height: 168px;
 }
+
+a.btn.btn-danger.compose {
+	 /* padding: 10px 20px; */
+    /*font-size: 15px; */
+    width: 297px;
+    height: 37px;
+    margin-top: 4.5%;
+    margin-left: 6%;
+}
+.email-sidebar-menu ul{
+	list-style-type: none;  
+}

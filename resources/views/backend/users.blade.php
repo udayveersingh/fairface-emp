@@ -70,7 +70,7 @@
                                                 class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                data-username="{{ $user->username }}" data-firstname="{{$employee->firstname}}" data-lastname="{{$employee->lastname}}" data-employee_id="{{$employee->employee_id}}" data-marital_status="{{$employee->marital_status}}" data-record_status="{{$employee->record_status}}" data-nationality="{{$employee->country_id}}" data-email="{{ $user->email }}" data-role="{{$role->name}}" class="dropdown-item editbtn" href="javascript:void(0)"
+                                                data-username="{{ $user->username }}" data-emp_id="{{!empty($employee->id) ? $employee->id:''}}" data-firstname="{{!empty($employee->firstname) ? $employee->firstname:'' }}" data-lastname="{{!empty($employee->lastname) ? $employee->lastname:''}}" data-employee_id="{{!empty($employee->employee_id) ? $employee->employee_id:'' }}" data-marital_status="{{!empty($employee->marital_status) ? $employee->marital_status:''}}" data-record_status="{{!empty($employee->record_status) ? $employee->record_status:'' }}" data-nationality="{{!empty($employee->country_id)? $employee->country_id:'' }}" data-email="{{ $user->email }}" data-role="{{$role->name}}" class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
                                                 href="javascript:void(0)" data-toggle="modal"><i
@@ -222,6 +222,7 @@
                         @method('PUT')
                         <div class="row">
                             <input type="hidden" name="id" id="edit_id">
+                            <input type="hidden" name="emp_id" id="emp_id">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>First Name <span class="text-danger">*</span></label>
@@ -342,6 +343,8 @@
             $('.table').on('click', '.editbtn', function() {
                 $('#edit_user').modal('show');
                 var id = $(this).data('id');
+                var emp_id = $(this).data('emp_id');
+                console.log(emp_id , 'emp_id');
                 var name = $(this).data('name');
                 var firstname = $(this).data('firstname');
                 var lastname = $(this).data('lastname');
@@ -354,6 +357,7 @@
                 var record_status = $(this).data('record_status');
                 var nationality_id = $(this).data('nationality');
                 $('#edit_id').val(id);
+                $('#emp_id').val(emp_id);
                 $('.edit_name').val(name);
                 $('.edit_firstname').val(firstname);
                 $('.edit_lastname').val(lastname);

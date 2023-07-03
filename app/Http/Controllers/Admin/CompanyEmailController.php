@@ -25,6 +25,20 @@ class CompanyEmailController extends Controller
         return view('backend.company-email', compact('title', 'company_emails','employee_jobs'));
     }
 
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+     public function userEmailView()
+     {
+         $title = "User Email";
+         $employee_jobs = EmployeeJob::with('employee')->get();
+         $company_emails = CompanyEmail::with('employeejob')->get();
+         return view('backend.user-email-view', compact('title', 'company_emails','employee_jobs'));
+     }
+
     /**
      * Show the form for creating a new resource.
      *
