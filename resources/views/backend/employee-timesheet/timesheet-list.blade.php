@@ -28,11 +28,12 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
-                            {{-- <th>Employee Name</th> --}}
+                            <th>Timesheet ID</th>
                             {{-- <th>Project</th>
                             <th>Project Phase</th> --}}
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Status</th>
                             {{-- <th>To Time</th> --}}
                             {{-- <th style="text-align:center">Status</th> --}}
                             <th class="text-right">Action</th>
@@ -46,8 +47,10 @@
                                 $end_date = explode(',',$timesheet->end_date);
                             @endphp
                                 <tr> 
+                                    <td></td>
                                      <td>{{ date('Y-m-d', strtotime($start_date[0]))}}</td>
                                      <td>{{ date('Y-m-d', strtotime($end_date[0]))}}</td>
+                                     <td></td>
                                      {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">

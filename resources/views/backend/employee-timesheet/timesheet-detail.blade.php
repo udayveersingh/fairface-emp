@@ -84,17 +84,17 @@
                         <td>Finish Time</td>
                         <td>1/2 or 1 Day</td>
                     </tr>
-                    @php
+                    {{-- @php
                         $count = 0;
-                    @endphp
+                    @endphp --}}
                     @foreach ($employee_timesheets as $index => $timesheet)
                         <tbody id="bodyData">
                             @php
-                                if ($timesheet->calender_day == 'Sunday') {
-                                    $count++;
-                                    continue;
-                                }
-                                $total_count = $index + 1;
+                                // if ($timesheet->calender_day == 'Sunday') {
+                                //     $count++;
+                                //     continue;
+                                // }
+                                // $total_count = $index + 1;
                                 $timesheet_hours = '';
                                 if (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours') {
                                     $timesheet_hours = 'Full day';
@@ -113,12 +113,12 @@
                             <td>{{ $timesheet_hours }}</td>
                         </tbody>
                     @endforeach
-                    <tr>
+                    {{-- <tr>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td colspan="2">total: {{ $total_count - $count }}</td>
-                    </tr>
+                    </tr> --}}
                 </table>
             </div>
         </div>

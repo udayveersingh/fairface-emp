@@ -37,10 +37,9 @@ class CompanyEmailController extends Controller
      {
          $title = "User Email";
          if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+         $employee = Employee::where('user_id','=',Auth::user()->id)->first();  
          $employee_jobs = EmployeeJob::with('employee')->get();
-         $company_emails = CompanyEmail::with('employeejob')->whereHas('employeejob', function ($q) {
-            $q->where('employee_id', '=', Auth::user()->id);
-        })->get();
+         $company_emails = CompanyEmail::with('employeejob')->where('from_id','=',$employee->id)->get();
          }
          return view('backend.sent-emails.email-inbox', compact('title', 'company_emails','employee_jobs'));
      }
