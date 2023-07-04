@@ -15,15 +15,15 @@
     <div class="row">
         <div class="col-lg-4">
             <div class="card">
-                <a href="" class="btn btn-danger compose">Compose</a>
+                <a href="" class="btn btn-danger compose">Inbox</a>
                 <div class="card-body">
                     <div id="email-sidebar-menu" class="email-sidebar-menu">
                         <ul>
                             <li class="">
-                                <a href=""><i class="la la-files-o"></i> <span>Inbox</span></a>
+                                <a href=""><span>Inbox</span></a>
                             </li>
                             <li class="">
-                                <a href=""><i class="la la-files-o"></i> <span>Sent Mail</span></a>
+                                <a href=""><span>Sent Mail</span></a>
                             </li>
                         </ul>
                     </div>

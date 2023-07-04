@@ -122,12 +122,6 @@
                                     <th>National Insurance Number</th>
                                     <td>{{ $employee->national_insurance_number }}</td>
                                 </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card card-block shadow shadow-sm p-3 h-80">
-                            <table class="table table-striped">
                                 <tr>
                                     <th>Passport Number</th>
                                     <td>{{ $employee->passport_number }}</td>
@@ -147,9 +141,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                @if (!empty($emergency_contact))
-                    <div class="row">
+                    @if (!empty($emergency_contact))
                         <div class="col-md-6">
                             <div class="card card-block shadow shadow-sm p-3 h-80">
                                 <h3 class="card-title">Emergency Contact</h3>
@@ -179,12 +171,6 @@
                                         <td>{{ !empty($emergency_contact->relationship) ? $emergency_contact->relationship : '' }}
                                         </td>
                                     </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card card-block shadow shadow-sm p-3 h-80">
-                                <table class="table table-striped">
                                     <tr>
                                         <th>Overseas & Local Contact Name</th>
                                         <td>{{ !empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}
@@ -213,8 +199,8 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-                @endif
+                    @endif
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card card-block shadow shadow-sm p-3 h-80">
@@ -325,12 +311,6 @@
                         <th>Work Email</th>
                         <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
                     </tr>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-block shadow shadow-sm p-3 h-80">
-                <table class="table table-striped">
                     <tr>
                         <th>Work Phone Number</th>
                         <td>{{ $job->work_phone_number }}</td>
@@ -355,9 +335,7 @@
             </div>
         </div>
     @endforeach
-</div>
-@if (!empty($employee_visas->count()))
-    <div class="row">
+    @if (!empty($employee_visas->count()))
         @foreach ($employee_visas as $index => $visa)
             @if ($index == 1)
             @break;
@@ -379,12 +357,6 @@
                         <th>Cos Issue Date</th>
                         <td>{{ $visa->cos_issue_date }}</td>
                     </tr>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card card-block shadow shadow-sm p-3 h-80">
-                <table class="table table-striped">
                     <tr>
                         <th>Cos Expire Date</th>
                         <td>{{ $visa->cos_expiry_date }}</td>

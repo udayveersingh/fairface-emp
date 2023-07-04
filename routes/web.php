@@ -277,7 +277,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('leave-status-update',[EmployeeLeaveController::class,'LeaveStatusUpdate'])->name('leave-status-update');
     Route::delete('employee-leave',[EmployeeLeaveController::class,'destroy'])->name('leave.destroy');
 
-    Route::get('user-email',[CompanyEmailController::class,'userEmailView'])->name('user-email');
+    Route::get('user-email-inbox',[CompanyEmailController::class,'emailInbox'])->name('user-email-inbox');
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
     Route::post('company-email',[CompanyEmailController::class,'store']);
     // Route::put('company-email',[CompanyEmailController::class,'update']);

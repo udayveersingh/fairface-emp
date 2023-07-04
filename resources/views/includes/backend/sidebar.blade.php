@@ -18,7 +18,7 @@
                                 leave</span></a>
                     </li>
                     <li class="">
-                        <a href="{{route('user-email')}}"><i class="la la-bullhorn"></i> <span>Send Email</span></a>
+                        <a href="{{route('user-email-inbox')}}"><i class="la la-bullhorn"></i> <span>Send Email</span></a>
                     </li>
                 @else
                     <li class="{{ route_is('dashboard') ? 'active' : '' }}">

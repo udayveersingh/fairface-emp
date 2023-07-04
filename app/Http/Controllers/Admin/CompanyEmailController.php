@@ -8,7 +8,9 @@ use App\Models\Employee;
 use App\Models\EmployeeJob;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyEmailController extends Controller
 {
@@ -31,12 +33,16 @@ class CompanyEmailController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function userEmailView()
+     public function emailInbox()
      {
          $title = "User Email";
+         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
          $employee_jobs = EmployeeJob::with('employee')->get();
-         $company_emails = CompanyEmail::with('employeejob')->get();
-         return view('backend.user-email-view', compact('title', 'company_emails','employee_jobs'));
+         $company_emails = CompanyEmail::with('employeejob')->whereHas('employeejob', function ($q) {
+            $q->where('employee_id', '=', Auth::user()->id);
+        })->get();
+         }
+         return view('backend.sent-emails.email-inbox', compact('title', 'company_emails','employee_jobs'));
      }
 
     /**
@@ -44,9 +50,10 @@ class CompanyEmailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function composeEmail()
     {
-        //
+        $title = "User Email";
+         return view('backend.sent-emails.compose-email',compact('title'));
     }
 
     /**
