@@ -240,7 +240,6 @@
                             </div>
                         </div>
                     @endif --}}
-        </div>
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-block shadow shadow-sm p-3 h-80">
@@ -413,13 +412,13 @@
                 </div>
             </div>
         @endforeach
-</div>
-@endif
+    </div>
+  @endif
 </div>
 
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
-<div class="card profile-box flex-fill">
+ <div class="card profile-box flex-fill">
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped custom-table mb-0">
@@ -474,7 +473,7 @@
             </table>
         </div>
     </div>
-</div>
+  </div>
 </div>
 <!-- Employee Document -->
 

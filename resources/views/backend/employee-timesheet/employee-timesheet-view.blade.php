@@ -13,12 +13,8 @@
             <div class="col-md-2"><img src="" alt="" /></div>
             <div class="col-md-10">
                 <h1 class="text-left">Indus Services Limited</h1>
-                {{-- <h3 class="text-left">Employee Time Sheet</h3> --}}
             </div>
         </div>
-
-        {{-- <div class="row"> --}}
-        {{-- <div class="col-md-6">Employee Name:- <span>{{ Auth::user()->name }}</span></div> --}}
         @php
             $date = new DateTime('now');
             $date->modify('last day of this month');
@@ -52,30 +48,86 @@
             <input type="hidden" name="employee_id" value="{{ $employee->id }}">
             @if ($settings->timesheet_interval == 'weekly')
                 <div class="row">
+                    @php
+                        $months = [];
+                        for ($m=1; $m<=12; $m++) {
+                            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
+                        }
+
+                        $weeks = [];
+
+                        $get_week_dates = function($position){
+
+                            $start = date('d-m-Y', strtotime("{$position} Monday of this month"));
+                            // dd($start);
+                            $time = strtotime($start);
+                            $end = strtotime('next sunday, 12:00am', $time);
+                            $format = 'l, F j, Y g:i A';
+                            $end_day = date($format, $end);
+
+                            return [\carbon\Carbon::parse($start)->format('m-d-Y'), \carbon\Carbon::parse($end_day)->format('m-d-Y')];
+                        };
+
+                        $weeks += [
+                        'w1' => $get_week_dates('first'),
+                        'w2' => $get_week_dates('second'),
+                        'w3' => $get_week_dates('third'),
+                        'w4' => $get_week_dates('fourth')
+                        ];
+                        // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
+                        // dd($weeks_merge_data);
+                    @endphp
                     <div class="col-lg-4 mt-2">
                         <div class="form-group">
-                            <label>Week starting</label>
-                            <input type="text" name="daterange" class="form-control" id="enter_date"  value=""/>
+                            <label>Months</label>
+                            <select name="month" id="month" class="select month">
+                                <option value="">Select Months</option>
+                                @foreach ($months as $month)
+                                    <option value="{{ $month}}">{{$month}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+
+                   <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Weeks</label>
+                            <select name="week" id="week" class="select">
+                                <option value="">Select week</option>
+                                    <option value="{{"start day" . $weeks['w1'][0] ." ". " end day".$weeks['w1'][1] }} ">Week-1</option>
+                                    <option value="{{"start day" . $weeks['w2'][0] ." ". " end day" .$weeks['w2'][1] }} ">Week-2</option>
+                                    <option value="{{"start day" . $weeks['w3'][0] ." ". " end day" .$weeks['w3'][1] }} ">Week-3</option>
+                                    <option value="{{"start day" . $weeks['w4'][0] ." ". " end day" .$weeks['w4'][1] }} ">Week-4</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{-- <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Week starting</label>
+                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
+                        </div>
+                    </div> --}}
+                    {{-- <div class="col-lg-4">
                         <div class="form-group">
                             <label class="col-form-label">Timesheet ID <span class="text-danger">*</span></label>
                             <input class="form-control" name="timesheet_id" id="timesheet_id" type="text">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-4">
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label>Supervisor</label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">
-                                        {{ $employee->firstname . ' ' . $employee->lastname }}
+                                @foreach (getSupervisor() as $employee)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                    @endphp
+                                    <option value="{{ $supervisor->id }}">
+                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
                                     </option>
                                 @endforeach
                             </select>
-                        </div> --}}
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -90,7 +142,7 @@
                                 <td>Finish Time</td>
                                 <td>1/2 or 1 Day</td>
                                 <td>Project</td>
-                                <td>Supervisor</td>
+                                <td>Project Phase</td>
                             </tr>
 
                             @php
@@ -119,153 +171,87 @@
                             {{-- @foreach ($days as $index => $day) --}}
                             <tbody id="bodyData">
                                 <tr>
-                                    {{-- <input type="hidden" name="calender_date[]" value="{{$first_day->modify("+1 days")->format('Y-m-d')}}"> --}}
-                                    {{-- <td><input type="text" class="form-control" name="calender_date[]"
-                                            value="{{ $first_day->modify('+1 days')->format('Y-m-d') }}" readonly></td> --}}
-                                    {{-- <td><input name="calender_day[]"
-                                            value="{{ $day_display->modify('+1 days')->format('l') }}" class="form-control"
-                                            type="text" readonly></td>
-                                    <td><input name="start_time[]" value="" class="form-control start_time"
-                                            type="time"></td>
-                                    <td><input name="end_time[]" value="" type="time"
-                                            class="form-control end_time"></td>
-                                    <td>
-                                        <select name="hours[]" id="hours" class="form-control">
-                                            <option value="">Select Day</option>
-                                            <option value="half_day">Half Day</option>
-                                            <option value="full_day">Full Day</option>
-                                        </select>
-                                    </td> --}}
                                 </tr>
                             </tbody>
-                            {{-- @endforeach --}}
-                            {{-- <tr>
-                            <td>Tue</td>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Wed</td>
-                            <td>3</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Thur</td>
-                            <td>4</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Fri</td>
-                            <td>5</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>1</td>
-                        </tr>
-                        <tr>
-                            <td>Sat</td>
-                            <td>6</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Sun</td>
-                            <td>7</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr> --}}
-                            {{-- <tr>
-                            <td colspan="5" align="end">Total</td>
-                            <td>4</td>
-                        </tr> --}}
                         </table>
                     </div>
-                    {{-- <div class="col-md-6">
-				<p class="mx-0">Week starting:- <strong>5/8/2023	</strong></p>
-				<table class="table">
-					<tr>						
-						<td></td>
-						<td>#</td>
-						<td>Start Time</td>
-						<td>Finish Time</td>
-						<td>Break</td>
-						<td>1/2 or 1 Day</td>
-					</tr>
-					<tr>						
-						<td>Mon</td>
-						<td>8</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>						
-						<td>Tue</td>
-						<td>9</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>1</td>
-					</tr>
-					<tr>						
-						<td>Wed</td>
-						<td>10</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>1</td>
-					</tr>
-					<tr>						
-						<td>Thur</td>
-						<td>11</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>1</td>
-					</tr>
-					<tr>						
-						<td>Fri</td>
-						<td>12</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td>1</td>
-					</tr>
-					<tr>						
-						<td>Sat</td>
-						<td>13</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>						
-						<td>Sun</td>
-						<td>14</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>						
-						<td colspan="5" align="end">Total</td>
-						<td>4</td>
-					</tr>
-				</table>
-			</div> --}}
+                </div>
+                @elseif ($settings->timesheet_interval == 'monthly')
+                <div class="row">
+                    <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Week starting</label>
+                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
+                        </div>
+                    </div>
+                    {{-- <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Timesheet ID <span class="text-danger">*</span></label>
+                            <input class="form-control" name="timesheet_id" id="timesheet_id" type="text">
+                        </div>
+                    </div> --}}
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Supervisor</label>
+                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                                <option value="">Select Supervisor</option>
+                                @foreach (getSupervisor() as $employee)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                    @endphp
+                                    <option value="{{ $supervisor->id }}">
+                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
+                        <p class="mx-0"></p>
+                        <table class="table">
+                            <tr>
+                                <td>Calender Date</td>
+                                <td>Days</td>
+                                <td>Start Time</td>
+                                <td>Finish Time</td>
+                                <td>1/2 or 1 Day</td>
+                                <td>Project</td>
+                                <td>Project Phase</td>
+                            </tr>
+
+                            @php
+                                // $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                // $date = $first_day->format('Y-m-d');
+                                // $date = new DateTime();
+                                //  echo $first_day->modify("+1 days")->format('l d-m-Y');
+                                // $start = '27-11-2014';
+                                // $end = '1-12-2014';
+                                //     function date_difference($start, $end)
+                                //     {
+                                //         $first_date = strtotime($start);
+                                //         $second_date = strtotime($end);
+                                //         $offset = $second_date-$first_date;
+                                //         $result = array();
+                                //         for($i = 0; $i <= floor($offset/24/60/60); $i++) {
+                                //             $result[1+$i]['date'] = date('d-m-Y', strtotime($start. ' + '.$i.'  days'));
+                                //             $result[1+$i]['day'] = date('l', strtotime($start. ' + '.$i.' days'));
+                                //         }
+                                //         echo '<pre>';
+                                //         print_r($result);
+                                //         echo '</pre>';
+                                //     }
+                                //     date_difference($start, $end);
+                            @endphp
+                            {{-- @foreach ($days as $index => $day) --}}
+                            <tbody id="bodyData">
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             @endif
             <input type="submit" class="btn btn-primary">
@@ -304,6 +290,14 @@
 @endsection
 @section('scripts')
     <script>
+           $("#month").change(function(){
+
+            var selectedMonth = $(this).children("option:selected").val();
+
+            console.log("You have selected the country - " + selectedMonth);
+
+            });
+
         $(function() {
             $('input[name="daterange"]').daterangepicker({
                 opens: 'left'
@@ -328,7 +322,7 @@
                     if (day == "Sunday") {
                         readonly = "readonly";
                         disabled = "disabled";
-                    }   
+                    }
                     // console.log(day, "day 1")
                     var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                     bodyData +=
@@ -340,14 +334,18 @@
                         readonly + '></td>' +
                         '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
                         readonly + '></td>' +
-                        '<td><select name="hours[]" '+ readonly +' id="hours" class="form-control hours" ' +
-                        ' ><option selected="selected" value="">Select Day</option><option '+ disabled +' value="half_day">Half Day</option>' +
-                        '<option '+ disabled +' value="full_day">Full Day</option></select></td>'+
-                        '<td><select name="project_id[]" '+ readonly +' id="edit_project_id" class="select form-control">'+
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option '+ disabled +' value="{{ !empty($project->projects->id) ? $project->projects->id:'' }}">{{ !empty($project->projects->name) ? $project->projects->name:''}}</option>'+
-                        '@endforeach</select></td><td><select name="supervisor_id[]" '+ readonly +' id="supervisor_id" class="select form-control">'+
-                        '<option value="">Select Supervisor</option>@foreach(getSupervisor() as $supervisor)<option '+ disabled +' value="{{ $supervisor->id }}">'+
-                        '{{ $supervisor->name }}</option>@endforeach</select></td>';
+                        '<td><select name="hours[]" ' + readonly +
+                        ' id="hours" class="form-control hours" ' +
+                        ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
+                        ' value="half_day">Half Day</option>' +
+                        '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
+                        '<td><select name="project_id[]" ' + readonly +
+                        ' id="edit_project_id" class="select form-control">' +
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
+                        disabled +
+                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
+                        '@endforeach</select></td><td><select name="project_phase_id[]" id="project_phase_id" class="select form-control">' +
+                        '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id:'' }}">{{ !empty($phase->name) ? $phase->name:'' }}</option>@endforeach</select></td>';
                     bodyData += "</tr>";
                     start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
                 }

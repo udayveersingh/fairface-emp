@@ -11,6 +11,7 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Settings\CompanySettings;
 use App\Models\TimesheetStatus;
+use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class EmployeeTimeSheetController extends Controller
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title' ,'start_date'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date'));
     }
 
     /**
@@ -94,12 +95,12 @@ class EmployeeTimeSheetController extends Controller
         $end_date = date('Y-m-d', strtotime($start_end_date[2]));
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $this->validate($request, [
-                'timesheet_id' => 'required',
+                'supervisor_id'   => 'required',
                 'calender_date.*' => 'required',
-                'calender_day.*' => 'required',
-                'start_time.*' => 'nullable',
-                'end_time.*' => 'nullable',
-                'hours.*' => 'nullable',
+                'calender_day.*'  => 'required',
+                'start_time.*'    => 'nullable',
+                'end_time.*'      => 'nullable',
+                'hours.*'         => 'nullable',
             ]);
             $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
             $calender_date = $request->input('calender_date');
@@ -108,7 +109,7 @@ class EmployeeTimeSheetController extends Controller
             $end_time = $request->input('end_time');
             $hours = $request->input('hours');
             $project_id = $request->input('project_id');
-            $supervisor_id = $request->input('supervisor_id');
+            $project_phase_id = $request->input('project_phase_id');
             foreach ($start_time as $key => $value) {
                 if (!empty($hours[$key]) && $hours[$key] == "full_day") {
                     $total_hours_worked = "8 hours";
@@ -117,13 +118,16 @@ class EmployeeTimeSheetController extends Controller
                 } else {
                     $total_hours_worked = "";
                 }
+                $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
+                
                 $employee_timesheet = EmployeeTimesheet::where('calender_date', '=', $calender_date[$key])->first();
                 if (empty($employee_timesheet)) {
                     $emp_timesheet = new EmployeeTimesheet();
-                    $emp_timesheet->timesheet_id = $request->input('timesheet_id');
+                    $emp_timesheet->timesheet_id = $timesheet_id;
                     $emp_timesheet->employee_id = $request->input('employee_id');
-                    $emp_timesheet->supervisor_id = $supervisor_id[$key];
+                    $emp_timesheet->supervisor_id = $request->input('supervisor_id');
                     $emp_timesheet->project_id = $project_id[$key];
+                    $emp_timesheet->project_phase_id  = $project_phase_id[$key];
                     $emp_timesheet->calender_day = $calender_day[$key];
                     $emp_timesheet->calender_date = $calender_date[$key];
                     $emp_timesheet->from_time = $value;
