@@ -18,7 +18,7 @@
         @php
             $date = new DateTime('now');
             $date->modify('last day of this month');
-            
+
             //calender date store
             $first_day = new DateTime('now');
             $first_day->modify('first day of this month');
@@ -49,13 +49,12 @@
             @if ($settings->timesheet_interval == 'weekly')
                 <div class="row">
                     @php
-                        $months = [];
-                        for ($m=1; $m<=12; $m++) {
-                            $months[] = date('F', mktime(0,0,0,$m, 1, date('Y')));
-                        }
-
+                    // $test = date("F, d-M-Y", strtotime("last friday of this month"));
+                    // dd($test);
+                        // $now =\carbon\Carbon::now();
+                        // $start = $now->startOfWeek(\carbon\Carbon::MONDAY);
+                        // $end = $now->endOfWeek(\carbon\Carbon::SUNDAY);
                         $weeks = [];
-
                         $get_week_dates = function($position){
 
                             $start = date('d-m-Y', strtotime("{$position} Monday of this month"));
@@ -73,7 +72,9 @@
                         'w2' => $get_week_dates('second'),
                         'w3' => $get_week_dates('third'),
                         'w4' => $get_week_dates('fourth')
-                        ];
+                    ];
+
+                        // dd($weeks);
                         // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
                         // dd($weeks_merge_data);
                     @endphp
@@ -82,8 +83,8 @@
                             <label>Months</label>
                             <select name="month" id="month" class="select month">
                                 <option value="">Select Months</option>
-                                @foreach ($months as $month)
-                                    <option value="{{ $month}}">{{$month}}</option>
+                                @foreach (getMonth() as $index => $month)
+                                    <option value="{{$index + 1}}">{{$month}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -94,10 +95,10 @@
                             <label>Weeks</label>
                             <select name="week" id="week" class="select">
                                 <option value="">Select week</option>
-                                    <option value="{{"start day" . $weeks['w1'][0] ." ". " end day".$weeks['w1'][1] }} ">Week-1</option>
-                                    <option value="{{"start day" . $weeks['w2'][0] ." ". " end day" .$weeks['w2'][1] }} ">Week-2</option>
-                                    <option value="{{"start day" . $weeks['w3'][0] ." ". " end day" .$weeks['w3'][1] }} ">Week-3</option>
-                                    <option value="{{"start day" . $weeks['w4'][0] ." ". " end day" .$weeks['w4'][1] }} ">Week-4</option>
+                                    <option value="{{ $weeks['w1'][0]." , ".$weeks['w1'][1] }}">Week-1</option>
+                                    <option value="{{ $weeks['w2'][0]." , ".$weeks['w2'][1] }}">Week-2</option>
+                                    <option value="{{ $weeks['w3'][0]." , ".$weeks['w3'][1] }}">Week-3</option>
+                                    <option value="{{ $weeks['w4'][0]." , ".$weeks['w4'][1] }}">Week-4</option>
                             </select>
                         </div>
                     </div>
@@ -144,31 +145,6 @@
                                 <td>Project</td>
                                 <td>Project Phase</td>
                             </tr>
-
-                            @php
-                                // $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-                                // $date = $first_day->format('Y-m-d');
-                                // $date = new DateTime();
-                                //  echo $first_day->modify("+1 days")->format('l d-m-Y');
-                                // $start = '27-11-2014';
-                                // $end = '1-12-2014';
-                                //     function date_difference($start, $end)
-                                //     {
-                                //         $first_date = strtotime($start);
-                                //         $second_date = strtotime($end);
-                                //         $offset = $second_date-$first_date;
-                                //         $result = array();
-                                //         for($i = 0; $i <= floor($offset/24/60/60); $i++) {
-                                //             $result[1+$i]['date'] = date('d-m-Y', strtotime($start. ' + '.$i.'  days'));
-                                //             $result[1+$i]['day'] = date('l', strtotime($start. ' + '.$i.' days'));
-                                //         }
-                                //         echo '<pre>';
-                                //         print_r($result);
-                                //         echo '</pre>';
-                                //     }
-                                //     date_difference($start, $end);
-                            @endphp
-                            {{-- @foreach ($days as $index => $day) --}}
                             <tbody id="bodyData">
                                 <tr>
                                 </tr>
@@ -184,12 +160,6 @@
                             <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
                         </div>
                     </div>
-                    {{-- <div class="col-lg-4">
-                        <div class="form-group">
-                            <label class="col-form-label">Timesheet ID <span class="text-danger">*</span></label>
-                            <input class="form-control" name="timesheet_id" id="timesheet_id" type="text">
-                        </div>
-                    </div> --}}
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>Supervisor</label>
@@ -209,7 +179,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
                         <p class="mx-0"></p>
                         <table class="table">
                             <tr>
@@ -223,6 +192,7 @@
                             </tr>
 
                             @php
+                            dd(getWeekDays());
                                 // $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                                 // $date = $first_day->format('Y-m-d');
                                 // $date = new DateTime();
@@ -291,24 +261,28 @@
 @section('scripts')
     <script>
            $("#month").change(function(){
-
             var selectedMonth = $(this).children("option:selected").val();
-
-            console.log("You have selected the country - " + selectedMonth);
-
+            console.log(selectedMonth);
+            console.log("You have selected the month - " + selectedMonth);
             });
 
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                opens: 'left'
-            }, function(start, end, label) {
+        // $(function() {
+            // $('input[name="daterange"]').daterangepicker({
+            //     opens: 'left'
+            // }, function(start, end, label) {
+             $("#week").change(function(){
+               var selectedWeek = $(this).children("option:selected").val();
+               console.log(selectedWeek);
+               selectedWeekDate = selectedWeek.split(',');
+               console.log(selectedWeekDate);
                 $("#bodyData").html("");
                 // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
                 //     .format('YYYY-MM-DD'));
-                var start_date = start.format('YYYY-MM-DD');
-                var end_date = end.format('YYYY-MM-DD');
-                var start = new Date(start_date);
-                var end = new Date(end_date);
+                // var start_date = selectedWeekDate[0].format('YYYY-MM-DD');
+                // console.log(start_date ,'start_date');
+                // var end_date = selectedWeekDate[1].format('YYYY-MM-DD');
+                var start = new Date(selectedWeekDate[0]);
+                var end = new Date(selectedWeekDate[1]);
                 var bodyData = '';
                 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 while (start <= end) {
@@ -350,7 +324,7 @@
                     start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
                 }
                 $("#bodyData").append(bodyData);
-            });
+            // });
         });
     </script>
 @endsection
