@@ -414,7 +414,6 @@
         @endforeach
     </div>
   @endif
-</div>
 
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
@@ -554,48 +553,6 @@
 <!-- Employee Job -->
 <!-- Emplolyee Visa -->
 <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
-{{-- <div class="row">
-                    @foreach ($employee_visas as $visa)
-                        <div class="col-md-6 d-flex">
-                            <div class="card profile-box flex-fill">
-                                <div class="card-body">
-                                    <h3 class="card-title">Employee Visa</h3>
-                                    <ul class="personal-info">
-                                        <li>
-                                            <div class="title">Visa Type</div>
-                                            <div class="text">
-                                                {{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Cos Number</div>
-                                            <div class="text">{{ $visa->cos_number }}</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Cos Issue Date</div>
-                                            <div class="text">
-                                                {{ $visa->cos_issue_date }}
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Cos Expire Date</div>
-                                            <div class="text">
-                                                {{ $visa->cos_expiry_date }}</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Visa Issue Date</div>
-                                            <div class="text">{{ $visa->visa_issue_date }}</div>
-                                        </li>
-                                        <li>
-                                            <div class="title">Visa Expiry Date</div>
-                                            <div class="text">{{ $visa->visa_expiry_date }}</div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div> --}}
 <div class="row">
     @foreach ($employee_visas as $visa)
         <div class="col-md-12 mb-4">
@@ -627,23 +584,10 @@
                         <td>{{ $visa->visa_expiry_date }}</td>
                     </tr>
                 </table>
-                {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
-                                    <a data-id="{{ $visa->id }}" data-employee_id="{{ $visa->employee_id }}"
-                                        data-visa_type="{{ $visa->visa_type }}" data-cos_number="{{ $visa->cos_number }}"
-                                        data-cos_issue_date="{{ $visa->cos_issue_date }}"
-                                        data-cos_expiry_date="{{ $visa->cos_expiry_date }}"
-                                        data-visa_issue_date="{{ $visa->visa_issue_date }}"
-                                        data-visa_expiry_date="{{ $visa->visa_expiry_date }}" data-target="edit_employee_visa"
-                                        class="btn btn-primary" id="edit_btn_visa" href="javascript:void(0);" data-toggle="modal"><i
-                                            class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a data-id="{{ $visa->id }}" class="btn btn-danger detail_delete"
-                                        data-resource_data="Employee Visa" href="javascript:void(0);" data-toggle="modal"><i
-                                            class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                </div> --}}
             </div>
         </div>
     @endforeach
-</div>
+  </div>
 </div>
 <!-- Employee Visa -->
 <!-- Employee Project  -->
@@ -750,7 +694,7 @@
             </table>
         </div>
     </div>
-</div>
+ </div>
 </div>
 <!-- Employee Payslip -->
 </div>

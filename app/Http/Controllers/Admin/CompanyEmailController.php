@@ -90,8 +90,8 @@ class CompanyEmailController extends Controller
          $company_email->subject = $request->email_subject;
          $company_email->body = $request->email_body;
          $company_email->attachment = $imageName;
-         $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
-         $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
+        //  $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
+        //  $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
 
          
          $cc_ids = explode(',', $cc);
@@ -102,16 +102,16 @@ class CompanyEmailController extends Controller
              $cc_value[] = "'".$cc_email."'";
          }
 
-         $multi_cc_value = implode(',', $cc_value);
+        //  $multi_cc_value = implode(',', $cc_value);
 
-         $emp_job_detail = ([
-             'to'   =>  $to_email,
-             'from' => $form_email,
-             'cc_email' => $multi_cc_value,
-             'subject' => $request->email_subject,
-             'attachment' => $imageName
-            ]);
-           Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
+        //  $emp_job_detail = ([
+        //      'to'   =>  $to_email,
+        //      'from' => $form_email,
+        //      'cc_email' => $multi_cc_value,
+        //      'subject' => $request->email_subject,
+        //      'attachment' => $imageName
+        //     ]);
+        //    Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
            $company_email->save();
 
         //    dd("Mail Sent Successfully!");

@@ -113,6 +113,7 @@ class EmployeeTimeSheetController extends Controller
             $hours = $request->input('hours');
             $project_id = $request->input('project_id');
             $project_phase_id = $request->input('project_phase_id');
+            $notes = $request->input('notes');
             foreach ($start_time as $key => $value) {
                 if (!empty($hours[$key]) && $hours[$key] == "full_day") {
                     $total_hours_worked = "8 hours";
@@ -134,6 +135,7 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet->calender_date = $calender_date[$key];
                     $emp_timesheet->from_time = $value;
                     $emp_timesheet->to_time = $end_time[$key];
+                    $emp_timesheet->notes =  $notes[$key];
                     $emp_timesheet->total_hours_worked = $total_hours_worked;
                     $emp_timesheet->timesheet_status_id = $timesheet_status->id;
                     $emp_timesheet->start_date = $start_date;
@@ -245,12 +247,11 @@ class EmployeeTimeSheetController extends Controller
            }
         }
 
-        // dd($weekDates);
+        dd($weekDates);
         // foreach($weekDates as $key=> $value){
         //     dd($value);
 
         // }
-
 
         return json_encode(array('data'=>$weekDates));
         // echo "<pre>";

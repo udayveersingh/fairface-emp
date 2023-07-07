@@ -77,7 +77,23 @@
                         // dd($weeks_merge_data);
                         
                     @endphp
-                    <div class="col-lg-4 mt-2">
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Supervisor</label>
+                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                                <option value="">Select Supervisor</option>
+                                @foreach (getSupervisor() as $employee)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                    @endphp
+                                    <option value="{{ $supervisor->id }}">
+                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
                         <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                         <div class="form-group">
                             <label>Months</label>
@@ -90,7 +106,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4 mt-2">
+                    <div class="col-lg-4">
                         <div class="form-group">
                             <label>Weeks</label>
                             <select name="week" id="week" class="select">
@@ -114,22 +130,6 @@
                             <input class="form-control" name="timesheet_id" id="timesheet_id" type="text">
                         </div>
                     </div> --}}
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label>Supervisor</label>
-                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
-                                <option value="">Select Supervisor</option>
-                                @foreach (getSupervisor() as $employee)
-                                    @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
-                                    @endphp
-                                    <option value="{{ $supervisor->id }}">
-                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -138,12 +138,13 @@
                         <table class="table">
                             <tr>
                                 <td>Calender Date</td>
-                                <td>Days</td>
+                                <td style="width:11%">Days</td>
                                 <td>Start Time</td>
                                 <td>Finish Time</td>
                                 <td>1/2 or 1 Day</td>
                                 <td>Project</td>
                                 <td>Project Phase</td>
+                                <td>Notes</td>
                             </tr>
                             <tbody id="bodyData">
                                 <tr>
@@ -154,12 +155,6 @@
                 </div>
             @elseif ($settings->timesheet_interval == 'monthly')
                 <div class="row">
-                    <div class="col-lg-4 mt-2">
-                        <div class="form-group">
-                            <label>Week starting</label>
-                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
-                        </div>
-                    </div>
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>Supervisor</label>
@@ -172,6 +167,33 @@
                                     <option value="{{ $supervisor->id }}">
                                         {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
                                     </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                       <label>Year</label>
+                         <select name="year" id="year" class="form-control">
+                            <option value="">Select Year</option>
+                            <option value="">{{date('Y')}}</option>
+                        </select>
+                     </div>
+                 </div>
+                    {{-- <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Week starting</label>
+                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
+                        </div>
+                    </div> --}}
+                    <div class="col-lg-4">
+                        {{-- <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}"> --}}
+                        <div class="form-group">
+                            <label>Months</label>
+                            <select name="month" id="year_month" class="select month">
+                                <option value="">Select Months</option>
+                                @foreach (getMonth() as $index => $month)
+                                    <option value="{{ $index + 1 }}">{{ $month }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -189,6 +211,7 @@
                                 <td>1/2 or 1 Day</td>
                                 <td>Project</td>
                                 <td>Project Phase</td>
+                                <td>Notes</td>
                             </tr>
 
                             @php
@@ -296,7 +319,7 @@
             var start = new Date(selectedWeekDate[0]);
             var end = new Date(selectedWeekDate[1]);
             var bodyData = '';
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             while (start <= end) {
                 var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
                     .getMonth() + 1);
@@ -312,9 +335,9 @@
                 // console.log(day, "day 1")
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 bodyData +=
-                    '<tr><td><input type="text" class="form-control" name="calender_date[]" value="' +
+                    '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
-                    '<td><input type="text" class="form-control" name="calender_day[]" value="' + day +
+                    '<td><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' + day +
                     '"></td>' +
                     '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
                     readonly + '></td>' +
@@ -331,7 +354,8 @@
                     disabled +
                     ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
                     '@endforeach</select></td><td><select name="project_phase_id[]" id="project_phase_id" class="select form-control">' +
-                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>';
+                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>'+
+                    '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10"></textarea></td>';
                 bodyData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
             }
