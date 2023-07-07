@@ -18,7 +18,7 @@
         @php
             $date = new DateTime('now');
             $date->modify('last day of this month');
-
+            
             //calender date store
             $first_day = new DateTime('now');
             $first_day->modify('first day of this month');
@@ -49,56 +49,56 @@
             @if ($settings->timesheet_interval == 'weekly')
                 <div class="row">
                     @php
-                    // $test = date("F, d-M-Y", strtotime("last friday of this month"));
-                    // dd($test);
+                        // $test = date("F, d-M-Y", strtotime("last friday of this month"));
+                        // dd($test);
                         // $now =\carbon\Carbon::now();
                         // $start = $now->startOfWeek(\carbon\Carbon::MONDAY);
                         // $end = $now->endOfWeek(\carbon\Carbon::SUNDAY);
                         $weeks = [];
-                        $get_week_dates = function($position){
-
+                        $get_week_dates = function ($position) {
                             $start = date('d-m-Y', strtotime("{$position} Monday of this month"));
-                            // dd($start);
                             $time = strtotime($start);
                             $end = strtotime('next sunday, 12:00am', $time);
                             $format = 'l, F j, Y g:i A';
                             $end_day = date($format, $end);
-
+                        
                             return [\carbon\Carbon::parse($start)->format('m-d-Y'), \carbon\Carbon::parse($end_day)->format('m-d-Y')];
                         };
-
+                        
                         $weeks += [
-                        'w1' => $get_week_dates('first'),
-                        'w2' => $get_week_dates('second'),
-                        'w3' => $get_week_dates('third'),
-                        'w4' => $get_week_dates('fourth')
-                    ];
-
+                            'w1' => $get_week_dates('first'),
+                            'w2' => $get_week_dates('second'),
+                            'w3' => $get_week_dates('third'),
+                            'w4' => $get_week_dates('fourth'),
+                        ];
+                        
                         // dd($weeks);
                         // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
                         // dd($weeks_merge_data);
+                        
                     @endphp
                     <div class="col-lg-4 mt-2">
+                        <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
                         <div class="form-group">
                             <label>Months</label>
                             <select name="month" id="month" class="select month">
                                 <option value="">Select Months</option>
                                 @foreach (getMonth() as $index => $month)
-                                    <option value="{{$index + 1}}">{{$month}}</option>
+                                    <option value="{{ $index + 1 }}">{{ $month }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                   <div class="col-lg-4 mt-2">
+                    <div class="col-lg-4 mt-2">
                         <div class="form-group">
                             <label>Weeks</label>
                             <select name="week" id="week" class="select">
                                 <option value="">Select week</option>
-                                    <option value="{{ $weeks['w1'][0]." , ".$weeks['w1'][1] }}">Week-1</option>
-                                    <option value="{{ $weeks['w2'][0]." , ".$weeks['w2'][1] }}">Week-2</option>
-                                    <option value="{{ $weeks['w3'][0]." , ".$weeks['w3'][1] }}">Week-3</option>
-                                    <option value="{{ $weeks['w4'][0]." , ".$weeks['w4'][1] }}">Week-4</option>
+                                <option value="{{ $weeks['w1'][0] . ' , ' . $weeks['w1'][1] }}">Week-1</option>
+                                <option value="{{ $weeks['w2'][0] . ' , ' . $weeks['w2'][1] }}">Week-2</option>
+                                <option value="{{ $weeks['w3'][0] . ' , ' . $weeks['w3'][1] }}">Week-3</option>
+                                <option value="{{ $weeks['w4'][0] . ' , ' . $weeks['w4'][1] }}">Week-4</option>
                             </select>
                         </div>
                     </div>
@@ -152,7 +152,7 @@
                         </table>
                     </div>
                 </div>
-                @elseif ($settings->timesheet_interval == 'monthly')
+            @elseif ($settings->timesheet_interval == 'monthly')
                 <div class="row">
                     <div class="col-lg-4 mt-2">
                         <div class="form-group">
@@ -192,7 +192,6 @@
                             </tr>
 
                             @php
-                            dd(getWeekDays());
                                 // $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
                                 // $date = $first_day->format('Y-m-d');
                                 // $date = new DateTime();
@@ -260,70 +259,83 @@
 @endsection
 @section('scripts')
     <script>
-           $("#month").change(function(){
+        $("#month").change(function() {
             var selectedMonth = $(this).children("option:selected").val();
-            console.log(selectedMonth);
             console.log("You have selected the month - " + selectedMonth);
+            $.ajax({
+                type: 'POST',
+                url: '/get-week-days',
+                data:{
+                    _token: $("#csrf").val(),
+                    month: selectedMonth,
+                },
+                success: function(data) {
+                    console.log(data);
+                // var resultData = dataResult.data;
+                // var bodyData = '';
+                // var i=1;
+                }
             });
+        });
 
         // $(function() {
-            // $('input[name="daterange"]').daterangepicker({
-            //     opens: 'left'
-            // }, function(start, end, label) {
-             $("#week").change(function(){
-               var selectedWeek = $(this).children("option:selected").val();
-               console.log(selectedWeek);
-               selectedWeekDate = selectedWeek.split(',');
-               console.log(selectedWeekDate);
-                $("#bodyData").html("");
-                // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
-                //     .format('YYYY-MM-DD'));
-                // var start_date = selectedWeekDate[0].format('YYYY-MM-DD');
-                // console.log(start_date ,'start_date');
-                // var end_date = selectedWeekDate[1].format('YYYY-MM-DD');
-                var start = new Date(selectedWeekDate[0]);
-                var end = new Date(selectedWeekDate[1]);
-                var bodyData = '';
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                while (start <= end) {
-                    var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
-                        .getMonth() + 1);
-                    var dd = ((start.getDate()) >= 10) ? (start.getDate()) : '0' + (start.getDate());
-                    var yyyy = start.getFullYear();
-                    var day = days[start.getDay()];
-                    var readonly = "";
-                    var disabled = "";
-                    if (day == "Sunday") {
-                        readonly = "readonly";
-                        disabled = "disabled";
-                    }
-                    // console.log(day, "day 1")
-                    var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
-                    bodyData +=
-                        '<tr><td><input type="text" class="form-control" name="calender_date[]" value="' +
-                        date + '" readonly></td>' +
-                        '<td><input type="text" class="form-control" name="calender_day[]" value="' + day +
-                        '"></td>' +
-                        '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
-                        readonly + '></td>' +
-                        '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
-                        readonly + '></td>' +
-                        '<td><select name="hours[]" ' + readonly +
-                        ' id="hours" class="form-control hours" ' +
-                        ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
-                        ' value="half_day">Half Day</option>' +
-                        '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
-                        '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control">' +
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                        disabled +
-                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                        '@endforeach</select></td><td><select name="project_phase_id[]" id="project_phase_id" class="select form-control">' +
-                        '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id:'' }}">{{ !empty($phase->name) ? $phase->name:'' }}</option>@endforeach</select></td>';
-                    bodyData += "</tr>";
-                    start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
+        // $('input[name="daterange"]').daterangepicker({
+        //     opens: 'left'
+        // }, function(start, end, label) {
+        $("#week").change(function() {
+            var selectedWeek = $(this).children("option:selected").val();
+            console.log(selectedWeek);
+            selectedWeekDate = selectedWeek.split(',');
+            console.log(selectedWeekDate);
+            $("#bodyData").html("");
+            // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
+            //     .format('YYYY-MM-DD'));
+            // var start_date = selectedWeekDate[0].format('YYYY-MM-DD');
+            // console.log(start_date ,'start_date');
+            // var end_date = selectedWeekDate[1].format('YYYY-MM-DD');
+            var start = new Date(selectedWeekDate[0]);
+            var end = new Date(selectedWeekDate[1]);
+            var bodyData = '';
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            while (start <= end) {
+                var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
+                    .getMonth() + 1);
+                var dd = ((start.getDate()) >= 10) ? (start.getDate()) : '0' + (start.getDate());
+                var yyyy = start.getFullYear();
+                var day = days[start.getDay()];
+                var readonly = "";
+                var disabled = "";
+                if (day == "Sunday") {
+                    readonly = "readonly";
+                    disabled = "disabled";
                 }
-                $("#bodyData").append(bodyData);
+                // console.log(day, "day 1")
+                var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
+                bodyData +=
+                    '<tr><td><input type="text" class="form-control" name="calender_date[]" value="' +
+                    date + '" readonly></td>' +
+                    '<td><input type="text" class="form-control" name="calender_day[]" value="' + day +
+                    '"></td>' +
+                    '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
+                    readonly + '></td>' +
+                    '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
+                    readonly + '></td>' +
+                    '<td><select name="hours[]" ' + readonly +
+                    ' id="hours" class="form-control hours" ' +
+                    ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
+                    ' value="half_day">Half Day</option>' +
+                    '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
+                    '<td><select name="project_id[]" ' + readonly +
+                    ' id="edit_project_id" class="select form-control">' +
+                    '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
+                    disabled +
+                    ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
+                    '@endforeach</select></td><td><select name="project_phase_id[]" id="project_phase_id" class="select form-control">' +
+                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>';
+                bodyData += "</tr>";
+                start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
+            }
+            $("#bodyData").append(bodyData);
             // });
         });
     </script>

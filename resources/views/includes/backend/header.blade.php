@@ -75,7 +75,9 @@
             </a>
             <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{route('profile')}}">My Profile</a>
+                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
                 <a class="dropdown-item" href="{{route('settings.theme')}}">Settings</a>
+                @endif
                 <form action="{{route('logout')}}" method="post">
                     @csrf
                     <button type="submit" class="dropdown-item">Logout</button>

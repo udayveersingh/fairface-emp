@@ -11,6 +11,9 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Settings\CompanySettings;
 use App\Models\TimesheetStatus;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,7 +93,7 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        $start_end_date = explode(" ", $request->daterange);
+        $start_end_date = explode(" ", $request->week);
         $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
         $end_date = date('Y-m-d', strtotime($start_end_date[2]));
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
@@ -119,11 +122,10 @@ class EmployeeTimeSheetController extends Controller
                     $total_hours_worked = "";
                 }
                 $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
-                
                 $employee_timesheet = EmployeeTimesheet::where('calender_date', '=', $calender_date[$key])->first();
                 if (empty($employee_timesheet)) {
                     $emp_timesheet = new EmployeeTimesheet();
-                    $emp_timesheet->timesheet_id = $timesheet_id;
+                    $emp_timesheet->timesheet_id = $timesheet_id."-".$calender_date[$key];
                     $emp_timesheet->employee_id = $request->input('employee_id');
                     $emp_timesheet->supervisor_id = $request->input('supervisor_id');
                     $emp_timesheet->project_id = $project_id[$key];
@@ -195,4 +197,81 @@ class EmployeeTimeSheetController extends Controller
         $employee_timesheet->save();
         return back()->with('success', "Employee TimeSheet status has been updated successfully!!.");
     }
+
+    public function getWeekDays(Request $request)
+    {
+        // $date_days = "";
+        // $weeks = [];
+        // $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        // $month = $request->month;
+        // $year = 2023;
+        // $start_date = "01-" . $month . "-2023";
+        // $start_date_day = date("l", strtotime($start_date));
+        // $week_number = 4;
+        // $start_day_index = array_search($start_date_day, $days);
+
+        // if($start_day_index !== 0){
+        //     $nextWeekDate = date("d-m-Y", strtotime($start_date. "+". (7-$start_day_index). "days" ));
+        //     $weekStartDate = date("d-m-Y", strtotime($nextWeekDate. "+".( ($week_number-1) *7 )." days" ));
+        //     $weekEndDate = date("d-m-Y", strtotime($weekStartDate. "+ 6 days" ));
+
+            // dd($weekStartDate. " and ". $weekEndDate);
+        // }
+
+        $weeks = [];
+        $year = 2023;
+        $month = $request->month;
+        
+        // Get the first day of the month
+        $firstDay = strtotime("$year-$month-01");
+        
+        // Get the last day of the month
+        $lastDay = strtotime(date("Y-m-t", $firstDay));
+        
+        // Iterate over each day and determine the week number
+        $currentDay = $firstDay;
+        $weekDates = array();
+        while ($currentDay <= $lastDay) {
+            $weekNumber = date("W", $currentDay);
+            $weekDates[$weekNumber][] = date("Y-m-d", $currentDay);
+            $currentDay = strtotime("+1 day", $currentDay);
+        }
+        array_shift($weekDates);
+        
+        foreach ($weekDates as $weekNumber => $dates) {
+           if(count($dates) < 7){
+               $start = $weekDates[$weekNumber][0];
+               $weekDates[$weekNumber] = $this->get_next_days($start);
+           }
+        }
+
+        // dd($weekDates);
+        // foreach($weekDates as $key=> $value){
+        //     dd($value);
+
+        // }
+
+
+        return json_encode(array('data'=>$weekDates));
+        // echo "<pre>";
+        // print_r($weekDates);
+
+}
+
+
+function get_next_days($date){
+    $date = date($date, strtotime('+1 day')); //tomorrow date
+    $weekOfdays = array();
+    $begin = new DateTime($date);
+    $end = new DateTime($date);
+    $end = $end->add(new DateInterval('P7D'));
+    $interval = new DateInterval('P1D');
+    $daterange = new DatePeriod($begin, $interval ,$end);
+    
+    foreach($daterange as $dt){
+        $weekOfdays[] = $dt->format('Y-m-d');
+    }
+    return $weekOfdays;
+}
+
 }

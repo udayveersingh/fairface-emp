@@ -45,12 +45,13 @@
                             @php
                                 $start_date = explode(',',$timesheet->start_date);
                                 $end_date = explode(',',$timesheet->end_date);
+                                $status = App\Models\TimesheetStatus::find($timesheet->timesheet_status_id);
                             @endphp
                                 <tr> 
-                                    <td></td>
+                                     <td>{{$timesheet->timesheet_id}}</td>
                                      <td>{{ date('Y-m-d', strtotime($start_date[0]))}}</td>
                                      <td>{{ date('Y-m-d', strtotime($end_date[0]))}}</td>
-                                     <td></td>
+                                     <td>{{ucfirst($status->status)}}</td>
                                      {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">

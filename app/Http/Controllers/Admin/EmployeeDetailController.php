@@ -76,20 +76,7 @@ class EmployeeDetailController extends Controller
             return view('backend.employee-detail',compact('title','employee','employees','departments','branches','visa_types','projects','countries'));
         }
     }
-
-     
-    // public function employeeViewDetail($id)
-    // {
-    //     $title = 'Employee Detail';
-    //     return view('backend.employee-details.employee-detail-view',compact('title'));
-    // }
-
-
-
-
-
-
-
+    
     public function EmployeePayslipUpload(Request $request)
     {
         $this->validate($request, [
