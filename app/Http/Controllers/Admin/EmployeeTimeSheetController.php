@@ -203,23 +203,38 @@ class EmployeeTimeSheetController extends Controller
     public function getWeekDays(Request $request)
     {
         // $date_days = "";
-        // $weeks = [];
-        // $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        // $month = $request->month;
-        // $year = 2023;
-        // $start_date = "01-" . $month . "-2023";
-        // $start_date_day = date("l", strtotime($start_date));
-        // $week_number = 4;
-        // $start_day_index = array_search($start_date_day, $days);
 
-        // if($start_day_index !== 0){
-        //     $nextWeekDate = date("d-m-Y", strtotime($start_date. "+". (7-$start_day_index). "days" ));
-        //     $weekStartDate = date("d-m-Y", strtotime($nextWeekDate. "+".( ($week_number-1) *7 )." days" ));
-        //     $weekEndDate = date("d-m-Y", strtotime($weekStartDate. "+ 6 days" ));
+        $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        $month = $request->month;
+        $year = 2023;
+        $start_date = "01-" . $month . "-2024";
+        $start_date_day = date("l", strtotime($start_date));
+        $start_day_index = array_search($start_date_day, $days);
 
-            // dd($weekStartDate. " and ". $weekEndDate);
-        // }
+        if($start_day_index !== 0){
+            $weekStartDate = date("d-m-Y", strtotime($start_date. "+". (7-$start_day_index). "days" ));
+        }else{
+            $weekStartDate = date("d-m-Y", strtotime($start_date));
+        }
 
+        $weeksData = [];
+        for($weeks =0; $weeks <= 5; $weeks++){
+            $week_end_date = date("d-m-Y", strtotime($weekStartDate. "+ 6 days" ));
+            $weeksData[] = [
+                'week_start_date' => $weekStartDate,
+                'week_end_date' => $week_end_date
+            ];
+            $weekStartDate = date("d-m-Y", strtotime($week_end_date. "+1 day" ));
+            
+            if(date("m", strtotime($weekStartDate)) != $month ){
+                break;
+            }
+        }
+
+        return json_encode(array('data'=> $weeksData));
+
+
+        /*
         $weeks = [];
         $year = 2023;
         $month = $request->month;
@@ -256,6 +271,7 @@ class EmployeeTimeSheetController extends Controller
         return json_encode(array('data'=>$weekDates));
         // echo "<pre>";
         // print_r($weekDates);
+        */
 
 }
 

@@ -292,11 +292,14 @@
                     _token: $("#csrf").val(),
                     month: selectedMonth,
                 },
-                success: function(data) {
-                    console.log(data);
-                // var resultData = dataResult.data;
-                // var bodyData = '';
-                // var i=1;
+                success: function(dataResult) {
+                    myArray = JSON.parse(dataResult);
+                    console.log(myArray);
+                    $("#week").html(" ");
+                    $.each(myArray.data,function(index,row){
+                        $("#week").append(` <option value="${row.week_start_date} - ${row.week_end_date}">${row.week_start_date}-${row.week_end_date}
+                            </option>`);
+                    });
                 }
             });
         });
