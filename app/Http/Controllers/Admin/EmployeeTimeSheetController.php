@@ -206,8 +206,8 @@ class EmployeeTimeSheetController extends Controller
 
         $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         $month = $request->month;
-        $year = 2023;
-        $start_date = "01-" . $month . "-2023";
+        $year = date('Y');
+        $start_date = "01-" . $month . "-$year";
         $start_date_day = date("l", strtotime($start_date));
         $start_day_index = array_search($start_date_day, $days);
 
