@@ -207,7 +207,7 @@ class EmployeeTimeSheetController extends Controller
         $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         $month = $request->month;
         $year = 2023;
-        $start_date = "01-" . $month . "-2024";
+        $start_date = "01-" . $month . "-2023";
         $start_date_day = date("l", strtotime($start_date));
         $start_day_index = array_search($start_date_day, $days);
 
@@ -276,19 +276,19 @@ class EmployeeTimeSheetController extends Controller
 }
 
 
-function get_next_days($date){
-    $date = date($date, strtotime('+1 day')); //tomorrow date
-    $weekOfdays = array();
-    $begin = new DateTime($date);
-    $end = new DateTime($date);
-    $end = $end->add(new DateInterval('P7D'));
-    $interval = new DateInterval('P1D');
-    $daterange = new DatePeriod($begin, $interval ,$end);
+// function get_next_days($date){
+//     $date = date($date, strtotime('+1 day')); //tomorrow date
+//     $weekOfdays = array();
+//     $begin = new DateTime($date);
+//     $end = new DateTime($date);
+//     $end = $end->add(new DateInterval('P7D'));
+//     $interval = new DateInterval('P1D');
+//     $daterange = new DatePeriod($begin, $interval ,$end);
     
-    foreach($daterange as $dt){
-        $weekOfdays[] = $dt->format('Y-m-d');
-    }
-    return $weekOfdays;
-}
+//     foreach($daterange as $dt){
+//         $weekOfdays[] = $dt->format('Y-m-d');
+//     }
+//     return $weekOfdays;
+// }
 
 }

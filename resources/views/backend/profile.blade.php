@@ -180,7 +180,6 @@
                                 </tr>
                             </table> --}}
                 </div>
-            </div>
             {{-- @if (!empty($emergency_contact))
                         <div class="col-md-6">
                             <div class="card card-block shadow shadow-sm p-3 h-80">
@@ -414,6 +413,7 @@
         @endforeach
     </div>
   @endif
+</div>
 
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
@@ -700,7 +700,7 @@
 </div>
 @endif
 <!-- Profile Modal -->
-<div id="profile_info" class="modal custom-modal fade" role="dialog">
+{{-- <div id="profile_info" class="modal custom-modal fade" role="dialog">
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -755,7 +755,7 @@
         </div>
     </div>
 </div>
-</div>
+</div> --}}
 <!-- /Profile Modal -->
 @endsection
 

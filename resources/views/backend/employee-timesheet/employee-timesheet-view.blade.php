@@ -109,14 +109,14 @@
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>Weeks</label>
-                            <select name="week" id="week" class="select">
+                            <select name="week" id="week" class="select weekdate">
                                 <option value="">Select week</option>
-                                <option value="{{ $weeks['w1'][0] . ' , ' . $weeks['w1'][1] }}">Week-1</option>
+                                {{-- <option value="{{ $weeks['w1'][0] . ' , ' . $weeks['w1'][1] }}">Week-1</option>
                                 <option value="{{ $weeks['w2'][0] . ' , ' . $weeks['w2'][1] }}">Week-2</option>
                                 <option value="{{ $weeks['w3'][0] . ' , ' . $weeks['w3'][1] }}">Week-3</option>
-                                <option value="{{ $weeks['w4'][0] . ' , ' . $weeks['w4'][1] }}">Week-4</option>
+                                <option value="{{ $weeks['w4'][0] . ' , ' . $weeks['w4'][1] }}">Week-4</option> --}}
                             </select>
-                        </div>
+                        </div>  
                     </div>
                     {{-- <div class="col-lg-4 mt-2">
                         <div class="form-group">
@@ -294,11 +294,13 @@
                 },
                 success: function(dataResult) {
                     myArray = JSON.parse(dataResult);
-                    console.log(myArray);
+                    // console.log(myArray);
                     $("#week").html(" ");
+                    var count = 1;
                     $.each(myArray.data,function(index,row){
-                        $("#week").append(` <option value="${row.week_start_date} - ${row.week_end_date}">${row.week_start_date}-${row.week_end_date}
+                        $("#week").append(`<option value="${row.week_start_date} , ${row.week_end_date}">week${count}
                             </option>`);
+                        count++;     
                     });
                 }
             });
@@ -309,21 +311,24 @@
         //     opens: 'left'
         // }, function(start, end, label) {
         $("#week").change(function() {
-            var selectedWeek = $(this).children("option:selected").val();
-            console.log(selectedWeek);
+            var selectedWeek = $(this).val();
+            console.log(selectedWeek ,"selected week data");
             selectedWeekDate = selectedWeek.split(',');
-            console.log(selectedWeekDate);
+            // console.log(selectedWeekDate, "selectedWeekDate");
             $("#bodyData").html("");
             // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
             //     .format('YYYY-MM-DD'));
             // var start_date = selectedWeekDate[0].format('YYYY-MM-DD');
             // console.log(start_date ,'start_date');
             // var end_date = selectedWeekDate[1].format('YYYY-MM-DD');
-            var start = new Date(selectedWeekDate[0]);
-            var end = new Date(selectedWeekDate[1]);
+            
+            var startDataData = selectedWeekDate[0].split("-");
+            var endDateData = selectedWeekDate[1].split("-");
+            var start = new Date(startDataData[2], startDataData[1] - 1, startDataData[0])
+            var end = new Date(endDateData[2], endDateData[1] - 1, endDateData[0])
             var bodyData = '';
-            const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            while (start <= end) {
+            const days = ["Sun","Mon","Tue", "Wed", "Thu", "Fri", "Sat"];
+            for(daysLoop = 1; daysLoop <= 7; daysLoop++){
                 var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
                     .getMonth() + 1);
                 var dd = ((start.getDate()) >= 10) ? (start.getDate()) : '0' + (start.getDate());
@@ -331,7 +336,7 @@
                 var day = days[start.getDay()];
                 var readonly = "";
                 var disabled = "";
-                if (day == "Sunday") {
+                if (day == "Sun") {
                     readonly = "readonly";
                     disabled = "disabled";
                 }
@@ -356,9 +361,9 @@
                     '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
                     disabled +
                     ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                    '@endforeach</select></td><td><select name="project_phase_id[]" id="project_phase_id" class="select form-control">' +
-                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>'+
-                    '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10"></textarea></td>';
+                    '@endforeach</select></td><td><select name="project_phase_id[]"  ' + readonly + ' id="project_phase_id" class="select form-control">' +
+                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' + disabled + ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>'+
+                    '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly + '></textarea></td>';
                 bodyData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
             }
