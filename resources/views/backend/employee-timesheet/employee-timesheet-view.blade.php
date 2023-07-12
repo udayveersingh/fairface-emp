@@ -75,7 +75,12 @@
                         // dd($weeks);
                         // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
                         // dd($weeks_merge_data);
-                        
+
+                        $holidays = [];
+                        foreach(getHoliday() as $holiday)
+                        {
+                            $holidays[] = ["name" => $holiday->name, "holiday_date" => $holiday->holiday_date];  
+                        }
                     @endphp
                     <div class="col-lg-4">
                         <div class="form-group">
@@ -277,7 +282,8 @@
     </div>
 @endsection
 @section('scripts')
-    <script>
+
+<script>
         $("#month").change(function() {
             var selectedMonth = $(this).children("option:selected").val();
             console.log("You have selected the month - " + selectedMonth);
@@ -290,6 +296,12 @@
                 },
                 success: function(dataResult) {
                     getData = JSON.parse(dataResult);
+                    // var holidays = []; 
+                    // $.each(getData.holidays, function(index, row) {
+                    //     holidays[] = [row.holiday_date] 
+                    // });
+                    // console.log(holidays);
+                    // $("#week").html(`data-holidays=${holidays[]=[row.holiday_date]}`);
                     // console.log(myArray);
                     $("#week").html("<option value=''>select week</option>");
                     var count = 1;
@@ -408,6 +420,7 @@
                 var date = yyyy + "-" + month + "-" + d;
                 // var day = days[d];
                 var startEndDay = new Date(date);
+                console.log(startEndDay,"startEndDay");
                 var day = days[startEndDay.getDay()];
                 var mm = ((startEndDay.getMonth() + 1) >= 10) ? (startEndDay.getMonth() + 1) : '0' + (startEndDay.getMonth() + 1);
                 var yyyy = startEndDay.getFullYear();

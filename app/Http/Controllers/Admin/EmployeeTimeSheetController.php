@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeTimesheet;
+use App\Models\Holiday;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -93,9 +94,22 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        $start_end_date = explode(" ", $request->week);
-        $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
-        $end_date = date('Y-m-d', strtotime($start_end_date[2]));
+        $year = $request->year;
+        $month = ($request->month >= 10) ? $request->month:'0' . $request->month;
+        $first_date = $year ."-".$month."-01"; 
+        $last_date_find = strtotime(date("Y-m-d", strtotime($first_date)) . ", last day of this month");
+        $last_date = date("Y-m-d",$last_date_find);
+        if($request->week != null)
+        {
+            $start_end_date = explode(" ", $request->week);
+            $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
+            $end_date = date('Y-m-d', strtotime($start_end_date[2]));
+        }else
+        {
+            $start_date = $first_date;
+            $end_date =  $last_date;
+        }
+
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $this->validate($request, [
                 'supervisor_id'   => 'required',
@@ -203,7 +217,6 @@ class EmployeeTimeSheetController extends Controller
     public function getWeekDays(Request $request)
     {
         // $date_days = "";
-
         $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         $month = $request->month;
         $year = date('Y');
@@ -231,9 +244,12 @@ class EmployeeTimeSheetController extends Controller
             }
         }
 
+        // $holidays = [];
+        // foreach(getHoliday() as $value)
+        // {
+        //     $holidays[] = ['holiday_date' => $value->holiday_date];
+        // }
         return json_encode(array('data'=> $weeksData));
-
-
         /*
         $weeks = [];
         $year = 2023;
