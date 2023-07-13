@@ -121,6 +121,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('employee-timesheet-list',[EmployeeTimeSheetController::class,'employeeTimesheetList'])->name('employee-timesheet-list');
     Route::get('employee-timesheet',[EmployeeTimeSheetController::class,'index'])->name('employee-timesheet');
     Route::post('/get-week-days',[EmployeeTimeSheetController::class,'getWeekDays'])->name('get-week-days');
+    Route::post('/get-holiday-days',[EmployeeTimeSheetController::class,'getHolidayDays'])->name('get-holiday-days');
     Route::post('employee-timesheet',[EmployeeTimeSheetController::class,'store']);
     Route::post('timesheet-status-update',[EmployeeTimeSheetController::class,'TimesheetStatusUpdate'])->name('timesheet-status-update');
     Route::delete('employee-timesheet',[EmployeeTimeSheetController::class,'destroy'])->name('employee-timesheet.destroy');

@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeTimesheet;
 use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -17,6 +18,7 @@ use DatePeriod;
 use DateTime;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -47,11 +49,13 @@ class EmployeeTimeSheetController extends Controller
         $title = "Employee TimeSheet";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employees = Employee::get();
+
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+            $employee_leave = Leave::where('employee_id', '=', $employee->id)->get();
             $employee_project = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
             $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $employee->id)->first();
         }
-        return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_project'));
+        return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_project', 'employee_leave'));
     }
 
     /**
@@ -95,17 +99,15 @@ class EmployeeTimeSheetController extends Controller
     public function store(Request $request)
     {
         $year = $request->year;
-        $month = ($request->month >= 10) ? $request->month:'0' . $request->month;
-        $first_date = $year ."-".$month."-01"; 
+        $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
+        $first_date = $year . "-" . $month . "-01";
         $last_date_find = strtotime(date("Y-m-d", strtotime($first_date)) . ", last day of this month");
-        $last_date = date("Y-m-d",$last_date_find);
-        if($request->week != null)
-        {
+        $last_date = date("Y-m-d", $last_date_find);
+        if ($request->week != null) {
             $start_end_date = explode(" ", $request->week);
             $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
             $end_date = date('Y-m-d', strtotime($start_end_date[2]));
-        }else
-        {
+        } else {
             $start_date = $first_date;
             $end_date =  $last_date;
         }
@@ -140,7 +142,7 @@ class EmployeeTimeSheetController extends Controller
                 $employee_timesheet = EmployeeTimesheet::where('calender_date', '=', $calender_date[$key])->first();
                 if (empty($employee_timesheet)) {
                     $emp_timesheet = new EmployeeTimesheet();
-                    $emp_timesheet->timesheet_id = $timesheet_id."-".$calender_date[$key];
+                    $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
                     $emp_timesheet->employee_id = $request->input('employee_id');
                     $emp_timesheet->supervisor_id = $request->input('supervisor_id');
                     $emp_timesheet->project_id = $project_id[$key];
@@ -224,22 +226,22 @@ class EmployeeTimeSheetController extends Controller
         $start_date_day = date("l", strtotime($start_date));
         $start_day_index = array_search($start_date_day, $days);
 
-        if($start_day_index !== 0){
-            $weekStartDate = date("d-m-Y", strtotime($start_date. "+". (7-$start_day_index). "days" ));
-        }else{
+        if ($start_day_index !== 0) {
+            $weekStartDate = date("d-m-Y", strtotime($start_date . "+" . (7 - $start_day_index) . "days"));
+        } else {
             $weekStartDate = date("d-m-Y", strtotime($start_date));
         }
 
         $weeksData = [];
-        for($weeks =0; $weeks <= 5; $weeks++){
-            $week_end_date = date("d-m-Y", strtotime($weekStartDate. "+ 6 days" ));
+        for ($weeks = 0; $weeks <= 5; $weeks++) {
+            $week_end_date = date("d-m-Y", strtotime($weekStartDate . "+ 6 days"));
             $weeksData[] = [
                 'week_start_date' => $weekStartDate,
                 'week_end_date' => $week_end_date
             ];
-            $weekStartDate = date("d-m-Y", strtotime($week_end_date. "+1 day" ));
-            
-            if(date("m", strtotime($weekStartDate)) != $month ){
+            $weekStartDate = date("d-m-Y", strtotime($week_end_date . "+1 day"));
+
+            if (date("m", strtotime($weekStartDate)) != $month) {
                 break;
             }
         }
@@ -249,7 +251,7 @@ class EmployeeTimeSheetController extends Controller
         // {
         //     $holidays[] = ['holiday_date' => $value->holiday_date];
         // }
-        return json_encode(array('data'=> $weeksData));
+        return json_encode(array('data' => $weeksData));
         /*
         $weeks = [];
         $year = 2023;
@@ -288,23 +290,73 @@ class EmployeeTimeSheetController extends Controller
         // echo "<pre>";
         // print_r($weekDates);
         */
+    }
 
-}
 
+    // function get_next_days($date){
+    //     $date = date($date, strtotime('+1 day')); //tomorrow date
+    //     $weekOfdays = array();
+    //     $begin = new DateTime($date);
+    //     $end = new DateTime($date);
+    //     $end = $end->add(new DateInterval('P7D'));
+    //     $interval = new DateInterval('P1D');
+    //     $daterange = new DatePeriod($begin, $interval ,$end);
 
-// function get_next_days($date){
-//     $date = date($date, strtotime('+1 day')); //tomorrow date
-//     $weekOfdays = array();
-//     $begin = new DateTime($date);
-//     $end = new DateTime($date);
-//     $end = $end->add(new DateInterval('P7D'));
-//     $interval = new DateInterval('P1D');
-//     $daterange = new DatePeriod($begin, $interval ,$end);
-    
-//     foreach($daterange as $dt){
-//         $weekOfdays[] = $dt->format('Y-m-d');
-//     }
-//     return $weekOfdays;
-// }
+    //     foreach($daterange as $dt){
+    //         $weekOfdays[] = $dt->format('Y-m-d');
+    //     }
+    //     return $weekOfdays;
+    // }
 
+    public function getHolidayDays(Request $request)
+    {
+        $year = $request->year;
+        $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
+        $first_date = $year . "-" . $month . "-01";
+        $last_date_find = strtotime(date("Y-m-d", strtotime($first_date)) . ", last day of this month");
+        $last_date = date("Y-m-d", $last_date_find);
+        if ($request->selectedWeek != null) {
+            $selectedWeek = explode(',', $request->selectedWeek);
+            $start_date = $selectedWeek[0];
+            $end_date = $selectedWeek[1];
+        } else {
+            $start_date = $first_date;
+            $end_date =  $last_date;
+        }
+        
+        $dates = [];
+        $start = strtotime($start_date);
+        $end = strtotime($end_date);
+        $interval = 1;
+        $out = '';
+        $int = 24 * 60 * 60 * $interval;
+        $count = 0;
+        for ($i = $start; $i <= $end; $i += $int) {
+            $dates[$count] = date('Y-m-d', $i);
+            $i++;
+            $count++;
+        }
+
+        //get holiday data
+        $holiday = [];
+        foreach ($dates as $key => $value) {
+            $holidays = Holiday::where("holiday_date", "=", $value)->first();
+            if (!empty($holidays)) {
+                $holiday[] = ['name' => $holidays->name, 'holiday_date' => $holidays->holiday_date];
+            }
+        }
+        // dd($holiday);
+        //get leaves data
+        $leaves = [];
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+        foreach ($dates as $key => $value) {
+            $employee_leave = Leave::where('employee_id', '=', $employee->id)->where('from', '=', $value)->first();
+            if ($employee_leave != null) {
+                $leaves[] = ["from" => $employee_leave->from, "to" => $employee_leave->to];
+            }
+        }
+
+        // $holiday = Holiday::get();
+        return json_encode(array('data' => $holiday, 'leavesdata' => $leaves));
+    }
 }

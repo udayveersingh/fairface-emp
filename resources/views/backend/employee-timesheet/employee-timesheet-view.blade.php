@@ -75,11 +75,10 @@
                         // dd($weeks);
                         // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
                         // dd($weeks_merge_data);
-
+                        
                         $holidays = [];
-                        foreach(getHoliday() as $holiday)
-                        {
-                            $holidays[] = ["name" => $holiday->name, "holiday_date" => $holiday->holiday_date];  
+                        foreach (getHoliday() as $holiday) {
+                            $holidays[] = ['name' => $holiday->name, 'holiday_date' => $holiday->holiday_date];
                         }
                     @endphp
                     <div class="col-lg-4">
@@ -191,7 +190,7 @@
                         </div>
                     </div> --}}
                     <div class="col-lg-4">
-                        {{-- <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}"> --}}
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="form-group">
                             <label>Months</label>
                             <select name="month" id="year_month" class="select month">
@@ -283,7 +282,7 @@
 @endsection
 @section('scripts')
 
-<script>
+    <script>
         $("#month").change(function() {
             var selectedMonth = $(this).children("option:selected").val();
             console.log("You have selected the month - " + selectedMonth);
@@ -296,12 +295,6 @@
                 },
                 success: function(dataResult) {
                     getData = JSON.parse(dataResult);
-                    // var holidays = []; 
-                    // $.each(getData.holidays, function(index, row) {
-                    //     holidays[] = [row.holiday_date] 
-                    // });
-                    // console.log(holidays);
-                    // $("#week").html(`data-holidays=${holidays[]=[row.holiday_date]}`);
                     // console.log(myArray);
                     $("#week").html("<option value=''>select week</option>");
                     var count = 1;
@@ -318,23 +311,44 @@
         // $('input[name="daterange"]').daterangepicker({
         //     opens: 'left'
         // }, function(start, end, label) {
+
         $("#week").change(function() {
             var selectedWeek = $(this).val();
-            console.log(selectedWeek, "selected week data");
+            $.ajax({
+                type: 'POST',
+                url: '/get-holiday-days',
+                data: {
+                    _token: $("#csrf").val(),
+                    selectedWeek: selectedWeek,
+                },
+                dataType: 'JSON',
+                success: function(dataResult) {
+                    HolidayDataArrayForm = [];
+                    $.each(dataResult.data, function(index, row) {
+                        HolidayDataArrayForm[index] = [row.name, row.holiday_date];
+                    });
+
+                    leavesDataArrayForm = [];
+                    $.each(dataResult.leavesdata, function(index, row) {
+                        leavesDataArrayForm[index] = [row.from, row.to];
+                    });
+                    // console.log(leavesDataArrayForm, " leavesDataArrayForm");
+                    getWeekData(selectedWeek, HolidayDataArrayForm, leavesDataArrayForm);
+                }
+            });
+        });
+
+        function getWeekData(selectedWeek, HolidayDataArrayForm, leavesDataArrayForm) {
+
             selectedWeekDate = selectedWeek.split(',');
             // console.log(selectedWeekDate, "selectedWeekDate");
             $("#bodyData").html("");
-            // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end
-            //     .format('YYYY-MM-DD'));
-            // var start_date = selectedWeekDate[0].format('YYYY-MM-DD');
-            // console.log(start_date ,'start_date');
-            // var end_date = selectedWeekDate[1].format('YYYY-MM-DD');
 
             var startDataData = selectedWeekDate[0].split("-");
             var endDateData = selectedWeekDate[1].split("-");
             var start = new Date(startDataData[2], startDataData[1] - 1, startDataData[0])
             var end = new Date(endDateData[2], endDateData[1] - 1, endDateData[0])
-            var bodyData = '';
+            var TimesheetData = '';
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             for (daysLoop = 1; daysLoop <= 7; daysLoop++) {
                 var mm = ((start.getMonth() + 1) >= 10) ? (start.getMonth() + 1) : '0' + (start
@@ -349,43 +363,71 @@
                     disabled = "disabled";
                 }
                 // console.log(day, "day 1")
-                var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
-                bodyData +=
+                var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
+                var dayColSpan = holidayName = "";
+                if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
+                    $.each(HolidayDataArrayForm, function(index, holidayData) {
+                        if (holidayData[1] == date) {
+                            dayColSpan = "5";
+                            holidayName += holidayData[0] + " ";
+                        }
+                    });
+                }
+
+                var dayColSpan = leave = "";
+                if (leavesDataArrayForm !== false && leavesDataArrayForm != '') {
+                    $.each(leavesDataArrayForm, function(index, leaveData) {
+                        console.log(leaveData, "leaveData");
+                        if (leaveData[0] == date) {
+                            dayColSpan = "5";
+                            leave += "";
+                        }
+                    });
+                }
+
+                TimesheetData +=
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
-                    '<td><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
+                    '<td colspan="' + dayColSpan +
+                    '"><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
                     day +
-                    '"></td>' +
-                    '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
-                    readonly + '></td>' +
-                    '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
-                    readonly + '></td>' +
-                    '<td><select name="hours[]" ' + readonly +
-                    ' id="hours" class="form-control hours" ' +
-                    ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
-                    ' value="half_day">Half Day</option>' +
-                    '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
-                    '<td><select name="project_id[]" ' + readonly +
-                    ' id="edit_project_id" class="select form-control">' +
-                    '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                    disabled +
-                    ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                    '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
-                    readonly + ' id="project_phase_id" class="select form-control">' +
-                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
-                    disabled +
-                    ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
-                    '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
-                    '></textarea></td>';
-                bodyData += "</tr>";
+                    '"></td>';
+                if (dayColSpan == "") {
+                    TimesheetData +=
+                        '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
+                        readonly + '></td>' +
+                        '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
+                        readonly + '></td>' +
+                        '<td><select name="hours[]" ' + readonly +
+                        ' id="hours" class="form-control hours" ' +
+                        ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
+                        ' value="half_day">Half Day</option>' +
+                        '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
+                        '<td><select name="project_id[]" ' + readonly +
+                        ' id="edit_project_id" class="select form-control">' +
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
+                        disabled +
+                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
+                        '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
+                        readonly + ' id="project_phase_id" class="select form-control">' +
+                        '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
+                        disabled +
+                        ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
+                        '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' +
+                        readonly +
+                        '></textarea></td>';
+                } else {
+                    TimesheetData += `<td colspan="2">Holiday:${holidayName}</td>`;
+                }
+                TimesheetData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
             }
-            $("#bodyData").append(bodyData);
-            // });
-        });
+            $("#bodyData").append(TimesheetData);
+        }
+        // });
     </script>
 
-    <!-- monthly script -->
+    <!-- monthly timesheet script script -->
     <script>
         var currentYear = new Date().getFullYear();
         var currentMonth = new Date().getMonth();
@@ -411,21 +453,42 @@
         $("#year_month").change(function() {
             var SelectedMonthValue = $(this).val();
             var SelectedYearValue = $("#year").val();
+            $.ajax({
+                type: 'POST',
+                url: '/get-holiday-days',
+                data: {
+                    _token: $("#csrf").val(),
+                    month: SelectedMonthValue,
+                    year: SelectedYearValue,
+                },
+                dataType: 'JSON',
+                success: function(dataResult) {
+                    HolidayDataArrayForm = [];
+                    $.each(dataResult.data, function(index, row) {
+                        HolidayDataArrayForm[index] = [row.name, row.holiday_date];
+                    });
+                    renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm)
+                }
+            });
+        });
+
+        function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm) {
             //get the last day, so the number of days in that month
             var getdays = new Date(SelectedYearValue, SelectedMonthValue, 0).getDate();
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             for (var d = 1; d <= getdays; d++) {
                 var yyyy = SelectedYearValue;
-                var month = SelectedMonthValue 
+                var month = SelectedMonthValue
                 var date = yyyy + "-" + month + "-" + d;
                 // var day = days[d];
                 var startEndDay = new Date(date);
-                console.log(startEndDay,"startEndDay");
+                console.log(startEndDay, "startEndDay");
                 var day = days[startEndDay.getDay()];
-                var mm = ((startEndDay.getMonth() + 1) >= 10) ? (startEndDay.getMonth() + 1) : '0' + (startEndDay.getMonth() + 1);
+                var mm = ((startEndDay.getMonth() + 1) >= 10) ? (startEndDay.getMonth() + 1) : '0' + (startEndDay
+                    .getMonth() + 1);
                 var yyyy = startEndDay.getFullYear();
                 var dd = ((startEndDay.getDate()) >= 10) ? (startEndDay.getDate()) : '0' + (startEndDay.getDate());
-        
+
                 var readonly = "";
                 var disabled = "";
                 if (day == "Sun") {
@@ -433,36 +496,51 @@
                     disabled = "disabled";
                 }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
+                var dayColSpan = holidayName = "";
+                if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
+                    $.each(HolidayDataArrayForm, function(index, holidayData) {
+                        if (holidayData[1] == dateFormat) {
+                            dayColSpan = "5";
+                            holidayName += holidayData[0] + " ";
+                        }
+                    });
+                }
+
                 bodyData +=
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
-                     dateFormat + '" readonly></td>' +
-                    '<td><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
+                    dateFormat + '" readonly></td>' +
+                    '<td colspan="' + dayColSpan +
+                    '"><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
                     day +
-                    '"></td>' +
-                    '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
-                    readonly + '></td>' +
-                    '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
-                    readonly + '></td>' +
-                    '<td><select name="hours[]" ' + readonly +
-                    ' id="hours" class="form-control hours" ' +
-                    ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
-                    ' value="half_day">Half Day</option>' +
-                    '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
-                    '<td><select name="project_id[]" ' + readonly +
-                    ' id="edit_project_id" class="select form-control">' +
-                    '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                    disabled +
-                    ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                    '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
-                    readonly + ' id="project_phase_id" class="select form-control">' +
-                    '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
-                    disabled +
-                    ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
-                    '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
-                    '></textarea></td>';
+                    '"></td>';
+                if (dayColSpan == "") {
+                    bodyData += '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
+                        readonly + '></td>' +
+                        '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
+                        readonly + '></td>' +
+                        '<td><select name="hours[]" ' + readonly +
+                        ' id="hours" class="form-control hours" ' +
+                        ' ><option selected="selected" value="">Select Day</option><option ' + disabled +
+                        ' value="half_day">Half Day</option>' +
+                        '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
+                        '<td><select name="project_id[]" ' + readonly +
+                        ' id="edit_project_id" class="select form-control">' +
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
+                        disabled +
+                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
+                        '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
+                        readonly + ' id="project_phase_id" class="select form-control">' +
+                        '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
+                        disabled +
+                        ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
+                        '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
+                        '></textarea></td>';
+                } else {
+                    bodyData += `<td colspan="2">Holiday:${holidayName}</td>`;
+                }
                 bodyData += "</tr>";
             }
             $("#bodyData").append(bodyData);
-        });
+        }
     </script>
 @endsection
