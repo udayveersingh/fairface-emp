@@ -312,22 +312,20 @@ class EmployeeTimeSheetController extends Controller
     {
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
-        $first_date = $year . "-" . $month . "-01";
-        $last_date_find = strtotime(date("Y-m-d", strtotime($first_date)) . ", last day of this month");
-        $last_date = date("Y-m-d", $last_date_find);
         if ($request->selectedWeek != null) {
-            $selectedWeek = explode(',', $request->selectedWeek);
-            $start_date = $selectedWeek[0];
-            $end_date = $selectedWeek[1];
+            $selectedWeek = explode(',',$request->selectedWeek);
+            $start_date = date("Y-m-d",strtotime($selectedWeek[0]));
+            $end_date = date("Y-m-d",strtotime($selectedWeek[1]));
         } else {
-            $start_date = $first_date;
-            $end_date =  $last_date;
+            $start_date = $year . "-" . $month . "-01";;
+            $end_date =  date("Y-m-t", strtotime($start_date) );
         }
+
+        // $dates = [];
+        // $start = strtotime($start_date);
+        // $end = strtotime('+1 day', strtotime($end_date));
         
-        $dates = [];
-        $start = strtotime($start_date);
-        $end = strtotime($end_date);
-        $interval = 1;
+        /*$interval = 1;
         $out = '';
         $int = 24 * 60 * 60 * $interval;
         $count = 0;
@@ -335,27 +333,45 @@ class EmployeeTimeSheetController extends Controller
             $dates[$count] = date('Y-m-d', $i);
             $i++;
             $count++;
-        }
+        }*/
 
         //get holiday data
-        $holiday = [];
-        foreach ($dates as $key => $value) {
-            $holidays = Holiday::where("holiday_date", "=", $value)->first();
-            if (!empty($holidays)) {
-                $holiday[] = ['name' => $holidays->name, 'holiday_date' => $holidays->holiday_date];
-            }
-        }
+        $holidaysData = [];
         
-        //get leaves data
-        $leaves = [];
-        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-        foreach ($dates as $key => $value) {
-            $employee_leave = Leave::with('leaveType')->where('employee_id', '=', $employee->id)->where('from', '=', $value)->first();
-            if ($employee_leave != null) {
-                $leaves[] = ["from" => $employee_leave->from, "to" => $employee_leave->to ,"leave_type" =>  !empty($employee_leave->leaveType->type) ? $employee_leave->leaveType->type:'' ,"reason" => $employee_leave->reason];
+        $holidays = Holiday::whereBetween("holiday_date", [$start_date, $end_date])->get();
+        if ($holidays) {
+            foreach($holidays as $holiday){
+                $holidaysData[] = ['type' => 'holiday', 'name' => $holiday->name, 'holiday_date' => $holiday->holiday_date, ];
             }
         }
-        // $holiday = Holiday::get();
-        return json_encode(array('data' => $holiday, 'leavesdata' => $leaves));
+
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+
+
+        $employee_leaves = Leave::with('leaveType')
+            ->where('employee_id', '=', $employee->id)
+            ->where('from', '>=', $start_date)
+            ->where('to', '<=', $end_date)
+            ->get();
+
+        if($employee_leaves){
+            foreach($employee_leaves as $leave){
+
+                $leaveFirstDate = $leave->from;
+
+                $leaveStartDate = new DateTime($leaveFirstDate);
+                $leaveEndDate = new DateTime($leave->to);
+                $interval = $leaveStartDate->diff($leaveEndDate);
+                if($interval->invert == 0 && $interval->days > 0){
+                    for($leavesLoop = 0; $leavesLoop <= $interval->days; $leavesLoop++){
+                        $holidaysData[] = ['type' => 'leave', 'name' => $leave->leaveType->type, 'holiday_date' => $leaveFirstDate, 'reason' => $leave->reason ];
+                        $leaveFirstDate = date("Y-m-d", strtotime($leaveFirstDate." +1 day"));
+                    }
+                }else{
+                    $holidaysData[] = ['type' => 'leave', 'name' => $leave->leaveType->type, 'holiday_date' => $leaveFirstDate, 'reason' => $leave->reason ];
+                }                
+            }
+        }
+        return json_encode(array('data' => $holidaysData));
     }
 }
