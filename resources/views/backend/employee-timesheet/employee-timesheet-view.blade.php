@@ -285,7 +285,7 @@
     <script>
         $("#month").change(function() {
             var selectedMonth = $(this).children("option:selected").val();
-            console.log("You have selected the month - " + selectedMonth);
+            // console.log("You have selected the month - " + selectedMonth);
             $.ajax({
                 type: 'POST',
                 url: '/get-week-days',
@@ -330,7 +330,7 @@
 
                     leavesDataArrayForm = [];
                     $.each(dataResult.leavesdata, function(index, row) {
-                        leavesDataArrayForm[index] = [row.from, row.to];
+                        leavesDataArrayForm[index] = [row.from, row.to, row.leave_type];
                     });
                     // console.log(leavesDataArrayForm, " leavesDataArrayForm");
                     getWeekData(selectedWeek, HolidayDataArrayForm, leavesDataArrayForm);
@@ -380,7 +380,7 @@
                         console.log(leaveData, "leaveData");
                         if (leaveData[0] == date) {
                             dayColSpan = "5";
-                            leave += "";
+                            leave += leaveData[2] + " ";
                         }
                     });
                 }
@@ -416,8 +416,10 @@
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' +
                         readonly +
                         '></textarea></td>';
-                } else {
+                } else if (holidayName != "") {
                     TimesheetData += `<td colspan="2">Holiday:${holidayName}</td>`;
+                } else {
+                    TimesheetData += `<td colspan="2">Leave Type:${leave}</td>`;
                 }
                 TimesheetData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
@@ -467,12 +469,27 @@
                     $.each(dataResult.data, function(index, row) {
                         HolidayDataArrayForm[index] = [row.name, row.holiday_date];
                     });
-                    renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm)
+
+                    leavesDataArrayForm = [];
+                    $.each(dataResult.leavesdata, function(index, row) {
+                        leavesDataArrayForm[index] = [row.from, row.to, row.leave_type,row.reason];
+                    });
+
+                    // getRangeleavedates = [];
+                    // $.each(dataResult.leavesdata, function(index, row) {
+                    //     getRangeleavedates[index] = [row.from, row.to];
+                    // });
+
+                    // console.log(getRangeleavedates[0] ,"getRangeleavedates");
+
+                    renderMonthlyHtml(SelectedMonthValue,SelectedYearValue,HolidayDataArrayForm,leavesDataArrayForm)
                 }
             });
         });
 
-        function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm) {
+        function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm, leavesDataArrayForm) {
+
+            var TimesheetData = '';
             //get the last day, so the number of days in that month
             var getdays = new Date(SelectedYearValue, SelectedMonthValue, 0).getDate();
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -482,7 +499,7 @@
                 var date = yyyy + "-" + month + "-" + d;
                 // var day = days[d];
                 var startEndDay = new Date(date);
-                console.log(startEndDay, "startEndDay");
+                // console.log(startEndDay, "startEndDay");
                 var day = days[startEndDay.getDay()];
                 var mm = ((startEndDay.getMonth() + 1) >= 10) ? (startEndDay.getMonth() + 1) : '0' + (startEndDay
                     .getMonth() + 1);
@@ -506,7 +523,20 @@
                     });
                 }
 
-                bodyData +=
+                var dayColSpan = leave = reason = "";
+                if (leavesDataArrayForm !== false && leavesDataArrayForm != '') {
+                    $.each(leavesDataArrayForm, function(index, leaveData) {
+                        // console.log(leaveData, "leaveData");
+                        if (leaveData[0] == dateFormat) {
+                            dayColSpan = "5";
+                            leave += leaveData[2] + " ";
+                            reason = leaveData[3] + " ";
+                        }
+                    });
+                }
+
+                // console.log(leave ,"leave");
+                TimesheetData +=
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
@@ -514,7 +544,8 @@
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
-                    bodyData += '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
+                    TimesheetData +=
+                        '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
                         readonly + '></td>' +
                         '<td><input name="end_time[]" value="" type="time" class="form-control end_time" ' +
                         readonly + '></td>' +
@@ -535,12 +566,14 @@
                         ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
                         '></textarea></td>';
+                } else if (holidayName != "") {
+                    TimesheetData += `<td colspan="2">Holiday:${holidayName}</td>`;
                 } else {
-                    bodyData += `<td colspan="2">Holiday:${holidayName}</td>`;
+                    TimesheetData += `<td colspan="3">Leave Type:${leave} Leave Reason:${reason}</td>`;
                 }
-                bodyData += "</tr>";
+                TimesheetData += "</tr>";
             }
-            $("#bodyData").append(bodyData);
+            $("#bodyData").append(TimesheetData);
         }
     </script>
 @endsection

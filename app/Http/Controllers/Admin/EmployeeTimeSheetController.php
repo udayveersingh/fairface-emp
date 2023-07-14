@@ -345,17 +345,16 @@ class EmployeeTimeSheetController extends Controller
                 $holiday[] = ['name' => $holidays->name, 'holiday_date' => $holidays->holiday_date];
             }
         }
-        // dd($holiday);
+        
         //get leaves data
         $leaves = [];
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         foreach ($dates as $key => $value) {
-            $employee_leave = Leave::where('employee_id', '=', $employee->id)->where('from', '=', $value)->first();
+            $employee_leave = Leave::with('leaveType')->where('employee_id', '=', $employee->id)->where('from', '=', $value)->first();
             if ($employee_leave != null) {
-                $leaves[] = ["from" => $employee_leave->from, "to" => $employee_leave->to];
+                $leaves[] = ["from" => $employee_leave->from, "to" => $employee_leave->to ,"leave_type" =>  !empty($employee_leave->leaveType->type) ? $employee_leave->leaveType->type:'' ,"reason" => $employee_leave->reason];
             }
         }
-
         // $holiday = Holiday::get();
         return json_encode(array('data' => $holiday, 'leavesdata' => $leaves));
     }
