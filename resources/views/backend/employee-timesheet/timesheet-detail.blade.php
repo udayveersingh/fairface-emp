@@ -31,7 +31,7 @@
         @endphp
         <div class="row">
             <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>{{ Auth::user()->name }}</span></div>
-            <div class="col-md-6"><strong>Month Ending:-</strong> <span>{{ $date->format('d-m-Y') }}</span></div>
+            <div class="col-md-6"><strong>Month Ending:-</strong> <span>{{ $end_date }}</span></div>
         </div>
         <div class="row">
             <div class="col-md-6">

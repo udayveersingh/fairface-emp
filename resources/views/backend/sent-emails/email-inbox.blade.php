@@ -104,6 +104,7 @@
                                                         <option value="">Select from</option>
                                                         @foreach ($employee_jobs as $employee_job)
                                                             @php
+
                                                                 $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
                                                                 $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                                                 $emp_name = $firstname . '  ' . $lastname;
@@ -204,16 +205,17 @@
                             <label>From<span class="text-danger">*</span></label>
                             <select name="from_id" id="from_id" class="form-control">
                                 <option value="">Select from</option>
-                                @foreach ($employee_jobs as $employee_job)
+                                {{-- @foreach ($employee_jobs as $employee_job) --}}
                                     @php
+                                        $from_email = App\Models\EmployeeJOb::with('employee')->where('employee_id','=',$employee->id)->first(); 
                                         $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
                                         $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                         $emp_name = $firstname . '  ' . $lastname;
                                     @endphp
                                     <option value="{{ $employee_job->id }}">
-                                        {{ 'From' . ' ' . $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                        {{ 'From' . ' ' . $emp_name . ' < ' . $from_email->work_email . ' > ' }}
                                     </option>
-                                @endforeach
+                                {{-- @endforeach --}}
                             </select>
                         </div>
                         <div class="form-group">

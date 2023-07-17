@@ -41,7 +41,7 @@ class CompanyEmailController extends Controller
          $employee_jobs = EmployeeJob::with('employee')->get();
          $company_emails = CompanyEmail::with('employeejob')->where('from_id','=',$employee->id)->get();
          }
-         return view('backend.sent-emails.email-inbox', compact('title', 'company_emails','employee_jobs'));
+         return view('backend.sent-emails.email-inbox', compact('title', 'company_emails','employee_jobs','employee'));
      }
 
     /**

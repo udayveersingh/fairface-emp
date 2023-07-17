@@ -362,8 +362,10 @@
                 // console.log(day, "day 1")
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
+                var statusReason = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
+                        // console.log("holidayData" , holidayData);
                         if (holidayData[2] == date && holidayData[0] == "holiday") {
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
@@ -371,6 +373,7 @@
                         }else if(holidayData[2] == date && holidayData[0] == "leave"){
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
+                            statusReason +=holidayData[3] + " ";
                             heading+="Leave";
                         }
                     });
@@ -408,7 +411,7 @@
                         readonly +
                         '></textarea></td>';
                    } else {
-                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</td>`;
+                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${statusReason}</td>`;
                 } 
                 TimesheetData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
@@ -483,6 +486,7 @@
         function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm) {
 
             var TimesheetData = '';
+            $("#bodyData").html(" ");
             //get the last day, so the number of days in that month
             var getdays = new Date(SelectedYearValue, SelectedMonthValue, 0).getDate();
             const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -507,6 +511,7 @@
                 }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
+                var statusReason="";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log(holidayData , "holidayData1");
@@ -517,6 +522,7 @@
                         }else if(holidayData[2] == dateFormat && holidayData[0] == "leave"){
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
+                            statusReason +=holidayData[3] + " ";
                             heading+="Leave";
                         }
                     });
@@ -553,7 +559,7 @@
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
                         '></textarea></td>';
                 } else {
-                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</td>`;
+                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${statusReason}</td>`;
                 } 
                 TimesheetData += "</tr>";
             }

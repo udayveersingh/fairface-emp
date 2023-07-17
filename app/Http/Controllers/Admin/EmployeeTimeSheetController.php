@@ -68,7 +68,7 @@ class EmployeeTimeSheetController extends Controller
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date','end_date'));
     }
 
     /**
@@ -104,9 +104,9 @@ class EmployeeTimeSheetController extends Controller
         $last_date_find = strtotime(date("Y-m-d", strtotime($first_date)) . ", last day of this month");
         $last_date = date("Y-m-d", $last_date_find);
         if ($request->week != null) {
-            $start_end_date = explode(" ", $request->week);
+            $start_end_date = explode(",", $request->week);
             $start_date =  date('Y-m-d', strtotime($start_end_date[0]));
-            $end_date = date('Y-m-d', strtotime($start_end_date[2]));
+            $end_date = date('Y-m-d', strtotime($start_end_date[1]));
         } else {
             $start_date = $first_date;
             $end_date =  $last_date;
