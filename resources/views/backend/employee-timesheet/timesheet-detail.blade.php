@@ -76,13 +76,13 @@
                         @endforeach
                     </tbody>
                 </table> --}}
-                <table border="1px">
+                <table class="table table-bordered">
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Start Time</td>
-                        <td>Finish Time</td>
-                        <td>1/2 or 1 Day</td>
+                        <th></th>
+                        <th></th>
+                        <th>Start Time</th>
+                        <th>Finish Time</th>
+                        <th>1/2 or 1 Day</th>
                     </tr>
                     {{-- @php
                         $count = 0;

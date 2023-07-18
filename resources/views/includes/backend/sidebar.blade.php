@@ -11,14 +11,14 @@
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-files-o"></i> <span>Send TimeSheet</span></a>
+                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Send TimeSheet</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
                                 leave</span></a>
                     </li>
                     <li class="submenu">
-                        <a href="#"><i class="la la-files-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
                         <ul style="display:none;">
                             <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"  href="{{ route('user-email-inbox') }}">Inbox</a></li>
                             <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"  href="{{ route('compose-email') }}">Compose Email</a></li>
@@ -74,7 +74,7 @@
                         <a href="{{ route('employees-list') }}"><i class="la la-user"></i> <span>All Employees</span></a>
                     </li>
                     <li class="{{ route_is('employee-timesheet') ? 'active' : '' }}">
-                        <a href="{{ route('employee-timesheet') }}"><i class="la la-files-o"></i>
+                        <a href="{{ route('employee-timesheet') }}"><i class="la la-calendar"></i>
                             <span>Timesheet</span></a>
                     </li>
                     <!-- <li class="{{ route_is('tickets') ? 'active' : '' }}">
@@ -87,7 +87,7 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee leaves</span></a>
                     </li>
                     <li class="{{ route_is('company-email') ? 'active' : '' }}">
-                        <a href="{{ route('company-email') }}"><i class="la la-bullhorn"></i> <span>Company Email</span></a>
+                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company Email</span></a>
                     </li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
