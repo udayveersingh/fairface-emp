@@ -15,6 +15,14 @@ if (!function_exists('getSupervisor')) {
     }
 }
 
+if (!function_exists('getEmployee')) {
+    function getEmployee()
+    {
+        return Role::where('name', '!=', Role::SUPERADMIN)->get();
+    }
+}
+
+
 
 if (!function_exists('getProjectPhase')) {
     function getProjectPhase()

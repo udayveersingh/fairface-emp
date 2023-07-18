@@ -82,7 +82,7 @@ class EmployeeTimeSheetController extends Controller
             $projects = Project::get();
             $project_phases = ProjectPhase::get();
             $timesheet_statuses = TimesheetStatus::get();
-            $employee_timesheets = DB::table('employee_timesheets')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
+            $employee_timesheets = DB::table('employee_timesheets')->where('employee_id','=', $employee->id)->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
             // $employee_timesheets = EmployeeTimesheet::select('*', DB::raw("CONCAT('start_date', '-','end_date') AS timesheet_date"))->groupBy('timesheet_date')->get();
             // dd($employee_timesheets);
         }

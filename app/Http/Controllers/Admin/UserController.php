@@ -28,9 +28,9 @@ class UserController extends Controller
         $users = User::with('role')->whereHas('role', function (Builder $query) {
             $query->where('name', '!=', Role::SUPERADMIN);
         })->get();
-        $roles = DB::table('roles')->where('name', '!=', 'Super admin')->where('name', '!=', 'Admin')->get();
+        // $roles = DB::table('roles')->where('name', '!=', 'Super admin')->where('name', '!=', 'Admin')->get();
         $countries = Country::get();
-        return view('backend.users', compact('title', 'users', 'roles', 'countries'));
+        return view('backend.users', compact('title', 'users', 'countries'));
     }
 
     /**

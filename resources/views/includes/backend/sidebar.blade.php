@@ -17,8 +17,12 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
                                 leave</span></a>
                     </li>
-                    <li class="">
-                        <a href="{{route('user-email-inbox')}}"><i class="la la-bullhorn"></i> <span>Send Email</span></a>
+                    <li class="submenu">
+                        <a href="#"><i class="la la-files-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
+                        <ul style="display:none;">
+                            <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"  href="{{ route('user-email-inbox') }}">Inbox</a></li>
+                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"  href="{{ route('compose-email') }}">Compose Email</a></li>
+                        </ul>
                     </li>
                 @else
                     <li class="{{ route_is('dashboard') ? 'active' : '' }}">

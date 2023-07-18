@@ -43,7 +43,8 @@
                                 </tr>
                                 <tr>
                                     <th>Main Branch Location</th>
-                                    <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}</td>
+                                    <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Name</th>
@@ -188,7 +189,8 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="col-form-label">Last Name</label>
+                                                        <label class="col-form-label">Last Name <span
+                                                                class="text-danger">*</span></label>
                                                         <input class="form-control edit_lastname" name="lastname"
                                                             value="{{ $employee->lastname }}" type="text">
                                                     </div>
@@ -370,7 +372,7 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="col-form-label">Last Name</label>
+                            <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
                             <input class="form-control" name="lastname" type="text">
                         </div>
                     </div>
@@ -380,16 +382,29 @@
                             <input class="form-control mask_phone_number" name="phone" type="text">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Alternate Phone Number</label>
                             <input class="form-control mask_phone_number" name="al_phone_number" type="text">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
                             <input class="form-control" name="email" type="email">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label>Role<span class="text-danger">*</span></label>
+                            <select name="role_id" class="form-control">
+                                <option value="">Select to</option>
+                                @foreach (getEmployee() as $role)
+                                    <option value="{{ $role->id }}">
+                                        {{ $role->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -454,6 +469,18 @@
                                 <option value="archieve">Archieve</option>
                                 <option value="delete">Delete</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Password <span class="text-danger">*</span></label>
+                            <input class="form-control edit_password" name="password" type="password">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input class="form-control edit_password" name="password_confirmation" type="password">
                         </div>
                     </div>
                 </div>

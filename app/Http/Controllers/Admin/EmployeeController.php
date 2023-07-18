@@ -60,11 +60,13 @@ class EmployeeController extends Controller
             'avatar' => 'file|image|mimes:jpg,jpeg,png,gif',
             'nat_insurance_number' => 'nullable|max:25',
             'passport_number' => 'nullable|max:25',
-            'pass_issue_date' => 'required',
-            'pass_expire_date' => 'required',
+            // 'pass_issue_date' => 'required',
+            // 'pass_expire_date' => 'required',
             'nationality' => 'required',
             'marital_status' => 'required',
             'record_status' => 'required',
+            'role_id' => 'required',
+            'password' => 'required|confirmed|max:200|min:5',
         ]);
         $imageName = Null;
         if ($request->hasFile('avatar')) {
@@ -72,14 +74,14 @@ class EmployeeController extends Controller
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }
 
-        // $user = User::create([
-        //     'name' => $request->firstname . " " . $request->lastname,
-        //     'username' => $request->username,
-        //     'email' => $request->email,
-        //     'password' => Hash::make($request->password),
-        //     'avatar' => $imageName,
-        //     'role_id' => $request->role_id,
-        // ]);
+        $user = User::create([
+            'name' => $request->firstname . " " . $request->lastname,
+            'username' =>  $request->firstname . " " . $request->lastname,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'avatar' => $imageName,
+            'role_id' => $request->role_id,
+        ]);
 
         $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
         $employee = Employee::create([
@@ -88,19 +90,19 @@ class EmployeeController extends Controller
             'firstname' => $request->input('firstname'),
             'lastname' => $request->input('lastname'),
             'email' => $request->input('email'),
-            'phone' => $request->phone,
+            'phone' => $request->input('phone'),
             'avatar' => $imageName,
-            'alternate_phone_number' => $request->al_phone_number,
-            'national_insurance_number' => $request->nat_insurance_number,
-            'country_id' => $request->nationality,
-            'date_of_birth' => $request->date_of_birth,
-            'passport_issue_date' => $request->pass_issue_date,
-            'passport_expiry_date' => $request->pass_expire_date,
-            'marital_status' => $request->marital_status,
-            'record_status' => $request->record_status,
-            'passport_number' => $request->passport_number,
-            'branch_id' => $request->branch_id,
-
+            'alternate_phone_number' => $request->input('al_phone_number'),
+            'national_insurance_number' => $request->input('nat_insurance_number'),
+            'country_id' => $request->input('nationality'),
+            'date_of_birth' => $request->input('date_of_birth'),
+            'passport_issue_date' => $request->input('pass_issue_date'),
+            'passport_expiry_date' => $request->input('pass_expire_date'),
+            'marital_status' => $request->input('marital_status'),
+            'record_status' => $request->input('record_status'),
+            'passport_number' => $request->input('passport_number'),
+            'branch_id' => $request->input('branch_id'),
+            'user_id' => $user->id,
         ]);
         return redirect()->route('employee-detail', $employee->id)->with('success', "Employee has been added");
     }

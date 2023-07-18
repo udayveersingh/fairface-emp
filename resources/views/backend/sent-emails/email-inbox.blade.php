@@ -16,7 +16,7 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_company_email"><i
+            <a href="{{route('compose-email')}}" class="btn add-btn"><i
                     class="fa fa-plus"></i> Compose Email</a>
         </div>
     </div>
@@ -198,14 +198,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
+                    {{-- <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" id="edit_id" name="id">
                         <div class="form-group">
                             <label>From<span class="text-danger">*</span></label>
                             <select name="from_id" id="from_id" class="form-control">
                                 <option value="">Select from</option>
-                                {{-- @foreach ($employee_jobs as $employee_job) --}}
+                                @foreach ($employee_jobs as $employee_job)
                                     @php
                                         $from_email = App\Models\EmployeeJOb::with('employee')->where('employee_id','=',$employee->id)->first(); 
                                         $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -215,7 +215,7 @@
                                     <option value="{{ $employee_job->id }}">
                                         {{ 'From' . ' ' . $emp_name . ' < ' . $from_email->work_email . ' > ' }}
                                     </option>
-                                {{-- @endforeach --}}
+                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -272,7 +272,7 @@
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                         </div>
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         </div>

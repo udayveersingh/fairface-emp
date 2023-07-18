@@ -86,14 +86,17 @@
                             <label>Supervisor</label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
-                                @foreach (getSupervisor() as $employee)
-                                    @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
-                                    @endphp
-                                    <option value="{{ $supervisor->id }}">
-                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
-                                    </option>
-                                @endforeach
+                                @foreach (getSupervisor() as $supervisor)
+                                @php
+                                    $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                    $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
+                                    $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
+                                    $fullname = $firstname." ".$lastname
+                                @endphp
+                                <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
+                                    {{$fullname}}
+                                </option>
+                            @endforeach
                             </select>
                         </div>
                     </div>
@@ -158,18 +161,21 @@
                     </div>
                 </div>
             @elseif ($settings->timesheet_interval == 'monthly')
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label>Supervisor</label>
-                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
-                                <option value="">Select Supervisor</option>
-                                @foreach (getSupervisor() as $employee)
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Supervisor</label>
+                        <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                            <option value="">Select Supervisor</option>
+                            @foreach (getSupervisor() as $supervisor)
                                     @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
+                                        $fullname = $firstname." ".$lastname
                                     @endphp
-                                    <option value="{{ $supervisor->id }}">
-                                        {{ $supervisor->firstname . ' ' . $supervisor->lastname }}
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
+                                        {{$fullname}}
                                     </option>
                                 @endforeach
                             </select>
@@ -299,7 +305,7 @@
                     $("#week").html("<option value=''>select week</option>");
                     var count = 1;
                     $.each(getData.data, function(index, row) {
-                        $("#week").append(`<option value="${row.week_start_date},${row.week_end_date}">week${count}
+                        $("#week").append(`<option value="${row.week_start_date},${row.week_end_date}">week${count}:-Start ${row.week_start_date} End ${row.week_end_date}
                             </option>`);
                         count++;
                     });

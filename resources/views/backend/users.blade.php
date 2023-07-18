@@ -134,7 +134,7 @@
                                     <label>Role<span class="text-danger">*</span></label>
                                     <select name="role_id" class="form-control">
                                         <option value="">Select to</option>
-                                        @foreach ($roles as $role)
+                                        @foreach (getEmployee() as $role)
                                             <option value="{{ $role->id }}">
                                                 {{ $role->name }}
                                             </option>
@@ -258,7 +258,7 @@
                                     <label>Role<span class="text-danger">*</span></label>
                                     <select name="role_id" selected="selected" id="role_id" class="form-control">
                                         <option value="">Select to</option>
-                                        @foreach ($roles as $role)
+                                        @foreach (getEmployee() as $role)
                                             <option value="{{ $role->id }}">
                                                 {{ $role->name }}
                                             </option>

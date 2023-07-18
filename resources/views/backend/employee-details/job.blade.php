@@ -129,10 +129,17 @@
                                 <label>Supervisor<span class="text-danger">*</span></label>
                                 <select name="supervisor" id="supervisor" class="form-control select">
                                     <option value="">Select Supervisor</option>
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}">
-                                            {{ $employee->firstname . ' ' . $employee->lastname }}</option>
-                                    @endforeach
+                                    @foreach (getSupervisor() as $supervisor)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
+                                        $fullname = $firstname." ".$lastname
+                                    @endphp
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
+                                        {{$fullname}}
+                                    </option>
+                                @endforeach
                                 </select>
                             </div>
                         </div>
