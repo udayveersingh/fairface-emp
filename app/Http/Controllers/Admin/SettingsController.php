@@ -41,7 +41,8 @@ class SettingsController extends Controller
         }
         $settings->site_name = $request->site_name;
         $settings->currency_code = !empty($request->currency_code) ? $request->currency_code:'';
-        $settings->currency_symbol = !empty($request->currency_symbol) ? $request->currency_symbol:''  ;
+        $settings->currency_symbol = !empty($request->currency_symbol) ? $request->currency_symbol:'';
+        $settings->theme_color = $request->theme_color;
         $settings->save();
         $notification = notify('theme has been updated');
         return back()->with($notification);
