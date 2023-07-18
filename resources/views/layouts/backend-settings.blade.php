@@ -24,6 +24,9 @@
 		
 		<!-- Select2 CSS -->
 		<link rel="stylesheet" href="{{asset('assets/css/select2.min.css')}}">
+
+		<!-- Theme CSS -->
+        <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
 		
         @yield('styles')
 		

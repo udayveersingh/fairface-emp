@@ -34,6 +34,9 @@
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
 
+		<!-- Theme CSS -->
+        <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
+
         @yield('styles')
 		
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->

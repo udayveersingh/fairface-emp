@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-layout-mode="light"  data-sidebar="light">
 
 <head>
 	<meta charset="utf-8">
@@ -30,6 +30,9 @@
 
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
 	<!-- Page Css -->
 	@yield('styles')
 
