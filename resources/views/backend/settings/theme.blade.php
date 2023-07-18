@@ -43,6 +43,17 @@
                     <input type="text" name="currency_symbol" value="{{$settings->currency_symbol}}" class="form-control">
                 </div>
             </div>
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label class="form-label">Theme Color</label>
+                </div>
+                <div class="col-lg-4">
+                    <input class="form-check-input" type="radio" name="theme_color" value="dark" id="theme_color_dark" {{!empty($settings->theme_color) && $settings->theme_color == "dark" ? 'checked' : ''}}>dark
+                </div>
+                <div class="col-lg-4">
+                    <input class="form-check-input" type="radio" name="theme_color" value="light" id="theme_color_light" {{!empty($settings->theme_color) && $settings->theme_color == "light" ? 'checked' : ''}}>light
+                </div>
+            </div>
             <div class="submit-section">
                 <button type="submit" class="btn btn-primary submit-btn">Save</button>
             </div>
