@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-layout-mode="{{!empty(app(App\Settings\ThemeSettings::class)->theme_color) ? app(App\Settings\ThemeSettings::class)->theme_color:''}}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">

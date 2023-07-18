@@ -82,74 +82,74 @@
   [data-layout-mode="light"] body{ background: #fff;}
   
 
+/* light sidebar*/
+  [data-layout-mode="light"] body .sidebar-menu li a {color: #333333;}
 
-  [data-sidebar="light"] body .sidebar-menu li a {color: #333333;}
-
-    [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-right {
+    [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-right {
         background: #fff;
       }
-      [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-right ul li a.active {
+      [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-right ul li a.active {
         color: #333;
       }
-      [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link {
+      [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link {
         color: #34444c;
         background: #fff;
       }
-      [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link.active {
+      [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link.active {
         color: #333333;
         background: #fff;
       }
-      [data-sidebar="light"] body .sidebar {
+      [data-layout-mode="light"] body .sidebar {
         background-color: #fff;
         box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.9);
       }
-      [data-sidebar="light"] body .sidebar ul li span {
+      [data-layout-mode="light"] body .sidebar ul li span {
         display: inline-block;
         color: #666;
       }
-      [data-sidebar="light"] body .sidebar ul li span:hover {
+      [data-layout-mode="light"] body .sidebar ul li span:hover {
         display: inline-block !important;
       }
-      [data-sidebar="light"] body .sidebar .sidebar-menu {
+      [data-layout-mode="light"] body .sidebar .sidebar-menu {
         padding: 10px 0;
         background: #fff;
       }
-      [data-sidebar="light"] body .sidebar .list-inline-item li a:hover i {
+      [data-layout-mode="light"] body .sidebar .list-inline-item li a:hover i {
         color: #333 !important;
       }
-      [data-sidebar="light"] body .greedys .viewmoremenu {
+      [data-layout-mode="light"] body .greedys .viewmoremenu {
         color: #333;
       }
-      [data-sidebar="light"] body nav.greedy button {
+      [data-layout-mode="light"] body nav.greedy button {
         color: #333 !important;
       }
-      [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-left {
+      [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-left {
         background: #fafafa;
       }
-      [data-sidebar="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link.active {
+      [data-layout-mode="light"] body .sidebar-twocol.sidebar .sidebar-left .nav-link.active {
         background: #34444c;
         color: #fff;
       }
-      [data-sidebar="light"] body .mini-sidebar.expand-menu .sidebar ul li span {
+      [data-layout-mode="light"] body .mini-sidebar.expand-menu .sidebar ul li span {
         display: block !important;
       }
-      [data-sidebar="light"] body .mini-sidebar .sidebar {
+      [data-layout-mode="light"] body .mini-sidebar .sidebar {
         background-color: #fff;
       }
-      [data-sidebar="light"] body .mini-sidebar .sidebar ul li span {
+      [data-layout-mode="light"] body .mini-sidebar .sidebar ul li span {
         display: none !important;
       }
-      [data-sidebar="light"] body nav.greedy button {
+      [data-layout-mode="light"] body nav.greedy button {
         color: #666;
       }
-      [data-sidebar="light"] body .sidebar-menu ul li a:hover, [data-sidebar="light"] body .two-col-bar .sidebar-menu ul li a:hover {
+      [data-layout-mode="light"] body .sidebar-menu ul li a:hover, [data-layout-mode="light"] body .two-col-bar .sidebar-menu ul li a:hover {
         color: #666;
       }
-      [data-sidebar="light"] body .sidebar .sidebar-menu ul li.active a, [data-sidebar="light"] body .two-col-bar .sidebar-menu ul li.active a {
+      [data-layout-mode="light"] body .sidebar .sidebar-menu ul li.active a, [data-layout-mode="light"] body .two-col-bar .sidebar-menu ul li.active a {
         color: #666;
         background-color: transparent;
       }
-      
+      /* light sidebar */
 
 
 
