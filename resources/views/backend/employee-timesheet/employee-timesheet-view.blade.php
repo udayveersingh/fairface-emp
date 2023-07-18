@@ -368,7 +368,8 @@
                 // console.log(day, "day 1")
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
-                var statusReason = "";
+                var leaveReason = "";
+                var width="width:67%";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log("holidayData" , holidayData);
@@ -376,20 +377,21 @@
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
                             heading+="Holiday";
+                            width="width:12%";
                         }else if(holidayData[2] == date && holidayData[0] == "leave"){
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
-                            statusReason +=holidayData[3] + " ";
+                            leaveReason += holidayData[3] + " ";
                             heading+="Leave";
+                            width="width:12%";
                         }
                     });
                 }
-
                 TimesheetData +=
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="'+width+'"class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -417,7 +419,7 @@
                         readonly +
                         '></textarea></td>';
                    } else {
-                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${statusReason}</td>`;
+                    TimesheetData += `<td>${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
                 } 
                 TimesheetData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
@@ -517,7 +519,8 @@
                 }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
-                var statusReason="";
+                var leaveReason="";
+                var width="width:67%";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log(holidayData , "holidayData1");
@@ -525,11 +528,13 @@
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
                             heading+="Holiday";
+                            width="width:12%";
                         }else if(holidayData[2] == dateFormat && holidayData[0] == "leave"){
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
-                            statusReason +=holidayData[3] + " ";
+                            leaveReason +=holidayData[3] + " ";
                             heading+="Leave";
+                            width="width:12%";
                         }
                     });
                 }
@@ -538,7 +543,7 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="width:67%" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="'+ width +'" class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -565,7 +570,7 @@
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
                         '></textarea></td>';
                 } else {
-                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${statusReason}</td>`;
+                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${leaveReason}</td>`;
                 } 
                 TimesheetData += "</tr>";
             }

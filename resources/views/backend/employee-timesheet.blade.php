@@ -29,13 +29,14 @@
                 <table class="table table-striped custom-table mb-0 datatable">
                     <thead>
                         <tr>
+                            <th>Timesheet Id</th>
                             <th>Employee Name</th>
                             <th>Supervisor</th>
                             <th>Project</th>
                             {{-- <th>Project Phase</th> --}}
-                            <th>From Time</th>
-                            <th>To Time</th>
-                            <th style="text-align:center">Status</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
@@ -51,15 +52,17 @@
                                             $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
                                         }
                                     @endphp
+                                    <td>{{$timesheet->timesheet_id}}</td>
                                     <td>{{ $firstname . ' ' . $lastname }}</td>
                                     <td>{{ $supervisor_name }}</td>
                                     <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
                                     {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
                                     {{-- </td> --}}
-                                    <td>{{ $timesheet->from_time }}</td>
-                                    <td>{{ $timesheet->to_time }}</td>
+                                    <td>{{ $timesheet->start_date }}</td>
+                                    <td>{{ $timesheet->end_date }}</td>
+                                    <td>{{!empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status):''}}</td>
                                     {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
-                                    <td class="text-center">
+                                    {{-- <td class="text-center">
                                         <div class="action-label">
                                             <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
                                                 <i
@@ -69,13 +72,16 @@
                                                 data-status="approved" href="#" data-toggle="modal"
                                                 id="statusChecked">Change Status</a>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                     <!-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> -->
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item statusChecked" data-id="{{ $timesheet->id }}"
+                                                    data-status="approved" href="#" data-toggle="modal"
+                                                    id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Status</a>
                                                 <a data-id="{{ $timesheet->id }}"
                                                     data-timesheet_id="{{ $timesheet->timesheet_id }}"
                                                     data-employee_id="{{ $timesheet->employee_id }}"

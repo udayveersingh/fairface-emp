@@ -60,7 +60,7 @@
                     <label><input class="form-check-input" type="radio" name="theme_color" value="purple" id="theme_color_purple" {{!empty($settings->theme_color) && $settings->theme_color == "purple" ? 'checked' : ''}}>Purple</label>
                 </div>
                 <div class="col">
-                    <label><input class="form-check-input" type="radio" name="theme_color" value="blue" id="theme_color_blue" {{!empty($settings->theme_color) && $settings->theme_color == "light" ? 'checked' : ''}}>Blue</label>
+                    <label><input class="form-check-input" type="radio" name="theme_color" value="blue" id="theme_color_blue" {{!empty($settings->theme_color) && $settings->theme_color == "blue" ? 'checked' : ''}}>Blue</label>
                 </div>
             </div>
             <div class="submit-section">

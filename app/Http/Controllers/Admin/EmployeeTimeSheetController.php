@@ -348,11 +348,12 @@ class EmployeeTimeSheetController extends Controller
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
 
 
-        $employee_leaves = Leave::with('leaveType')
+        $employee_leaves = Leave::with('leaveType','time_sheet_status')
             ->where('employee_id', '=', $employee->id)
             ->where('from', '>=', $start_date)
-            ->where('to', '<=', $end_date)
-            ->get();
+            ->where('to', '<=', $end_date)->whereHas('time_sheet_status', function ($q) {
+                $q->where('status', '=', TimesheetStatus::APPROVED);
+            })->get();
 
         if($employee_leaves){
             foreach($employee_leaves as $leave){
