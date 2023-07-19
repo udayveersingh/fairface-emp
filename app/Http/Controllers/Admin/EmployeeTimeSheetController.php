@@ -139,9 +139,12 @@ class EmployeeTimeSheetController extends Controller
                     $total_hours_worked = "";
                 }
                 $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
-                $employee_timesheet = EmployeeTimesheet::where('calender_date', '=', $calender_date[$key])->first();
-                if (empty($employee_timesheet)) {
+                $employee_timesheet = EmployeeTimesheet::where('employee_id','=',$request->employee_id)->where('calender_date','=', $calender_date[$key])->first();
+                if (empty($employee_timesheet)){
                     $emp_timesheet = new EmployeeTimesheet();
+                    }else{
+                    $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
+                     }
                     $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
                     $emp_timesheet->employee_id = $request->input('employee_id');
                     $emp_timesheet->supervisor_id = $request->input('supervisor_id');
@@ -158,14 +161,12 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet->end_date = $end_date;
                     $emp_timesheet->save();
                 }
-            }
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
             $this->validate($request, [
                 'timesheet_id' => 'required|unique:employee_timesheets,timesheet_id,' . $request->id,
                 'employee_id'  => 'required',
             ]);
-
             if (!empty($request->id)) {
                 $employee_timesheet = EmployeeTimesheet::find($request->id);
                 $message = "Employee TimeSheet Data has been updated successfully!!.";

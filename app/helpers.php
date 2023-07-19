@@ -5,11 +5,12 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('getSupervisor')) {
     function getSupervisor()
     {
-        return User::whereHas('role', function ($q) {
+        return User::where('id','!=',Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERVISOR);
         })->get();
     }

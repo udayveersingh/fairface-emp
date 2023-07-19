@@ -13,7 +13,9 @@
         <div class="col">
             <h3 class="page-title">Leaves</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a @if(Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE) href="{{route('dashboard')}}" @else href="{{route('employee-dashboard')}}"  @endif>Dashboard</a></li>
+                <li class="breadcrumb-item"><a
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
+                </li>
                 <li class="breadcrumb-item active">Leaves</li>
             </ul>
         </div>
@@ -39,7 +41,7 @@
                             <th>No of Days</th>
                             <th>Reason</th>
                             <th class="text-center">Status</th>
-                            @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                 <th>Employee</th>
                             @endif
                             <th>Approved Date/Time</th>
@@ -60,14 +62,15 @@
                                     @endphp
                                     {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
                                 </td>
-                                <td>{{ substr($leave->reason, 0, 10) . ' ........' }}</td>
+                                <td><p class="" data-toggle="tooltip" data-html="true" title="{{$leave->reason}}">
+                                    {{ substr($leave->reason, 0, 10) . ' ........' }}</p></td>
                                 <td class="text-center">
                                     <div class="action-label">
                                         <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
                                             <i
                                                 class="fa fa-dot-circle-o text-success"></i>{{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         </a>
-                                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                             <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
                                                 data-status="approved" href="#" data-toggle="modal"
                                                 id="statusChecked">Change Status</a>
@@ -86,7 +89,7 @@
                                             id="statusChecked">Change Status</a> --}}
                                     {{-- </div> --}}
                                 </td>
-                                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                     <td>
                                         <h2 class="table-avatar">
                                             <a href="javascript:void(0)" class="avatar avatar-xs">
@@ -155,7 +158,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>Employee</label>
                                 <select name="employee" class="select">
@@ -169,9 +172,17 @@
                         <div class="form-group">
                             <label>Supervisor</label>
                             <select name="supervisor" class="select">
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->firstname }}
-                                        {{ $employee->lastname }}</option>
+                                @foreach (getSupervisor() as $sup)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    @if (!empty($supervisor))
+                                        <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                            {{ $fullname }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -210,7 +221,7 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" rows="4" class="form-control"></textarea>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" class="select form-control">
@@ -231,14 +242,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                              <label>Status </label>
-                              <select name="status" class="select">
-                              <option value="null" disabled selected>Select Status</option>
-                              <option>Approved</option>
-                              <option>Pending</option>
-                              <option>Declined</option>
-                              </select>
-                              </div> -->
+                                                  <label>Status </label>
+                                                  <select name="status" class="select">
+                                                  <option value="null" disabled selected>Select Status</option>
+                                                  <option>Approved</option>
+                                                  <option>Pending</option>
+                                                  <option>Declined</option>
+                                                  </select>
+                                                  </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -272,7 +283,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>Employee<span class="text-danger">*</span></label>
                                 <select name="employee" class="select2" id="edit_employee">
@@ -286,9 +297,17 @@
                         <div class="form-group">
                             <label>Supervisor</label>
                             <select name="supervisor" id="edit_supervisor_id" class="select">
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}">{{ $employee->firstname }}
-                                        {{ $employee->lastname }}</option>
+                                @foreach (getSupervisor() as $sup)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    @if ($supervisor)
+                                        <option value="{{ $supervisor->id }}">
+                                            {{ $fullname }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -327,7 +346,7 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" rows="4" class="form-control" id="edit_reason"></textarea>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" id="edit_status" class="select form-control">
@@ -350,14 +369,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                  <label>Status </label>
-                                  <select name="status" class="select2 form-control" id="edit_status">
-                                  <option value="null">Select Status</option>
-                                  <option>Approved</option>
-                                  <option>Pending</option>
-                                  <option>Declined</option>
-                                  </select>
-                                  </div> -->
+                                                      <label>Status </label>
+                                                      <select name="status" class="select2 form-control" id="edit_status">
+                                                      <option value="null">Select Status</option>
+                                                      <option>Approved</option>
+                                                      <option>Pending</option>
+                                                      <option>Declined</option>
+                                                      </select>
+                                                      </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>

@@ -655,6 +655,7 @@
                         <th>Year</th>
                         <th>Created</th>
                         <th>Attachment</th>
+                        <th>Action</th>
                         {{-- <th class="text-right">Action</th> --}}
                     </tr>
                 </thead>
@@ -682,14 +683,10 @@
                                             width="100px"></a>
                                 @endif
                             </td>
-                            {{-- <td class="text-right">
-                                            <div class="dropdown dropdown-action">
-                                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a data-id="{{$employee_payslip->id}}" class="dropdown-item detail_delete" href="javascript:void(0);" data-resource_data="Employee Payslip" data-target="data_delete_modal" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                                </div>
-                                            </div>
-                                        </td> --}}
+                            <td>
+                                <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                    target="_blank" download>Download
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

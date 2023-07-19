@@ -29,7 +29,7 @@ class DashboardController extends Controller
     public function EmployeeDashboard()
     {
         $title = 'Employee Dashboard';
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $employee_projects = EmployeeProject::where('employee_id', '=', $employee->id)->get();
             $employee_leaves = Leave::where('employee_id','=',$employee->id)->where('timesheet_status_id','!=',2)->get();

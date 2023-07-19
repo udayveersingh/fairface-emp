@@ -87,16 +87,16 @@
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
-                                @php
-                                    $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
-                                    $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
-                                    $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
-                                    $fullname = $firstname." ".$lastname
-                                @endphp
-                                <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
-                                    {{$fullname}}
-                                </option>
-                            @endforeach
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                        {{ $fullname }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="form-group">
                             <label>Months</label>
-                            <select name="month" id="month" class="select month">
+                            <select name="" id="month" class="select month">
                                 <option value="">Select Month</option>
                                 @foreach (getMonth() as $index => $month)
                                     <option value="{{ $index + 1 }}">{{ $month }}</option>
@@ -161,21 +161,21 @@
                     </div>
                 </div>
             @elseif ($settings->timesheet_interval == 'monthly')
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <label>Supervisor</label>
-                        <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
-                            <option value="">Select Supervisor</option>
-                            @foreach (getSupervisor() as $supervisor)
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Supervisor</label>
+                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                                <option value="">Select Supervisor</option>
+                                @foreach (getSupervisor() as $supervisor)
                                     @php
                                         $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
-                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
-                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
-                                        $fullname = $firstname." ".$lastname
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
                                     @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
-                                        {{$fullname}}
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                        {{ $fullname }}
                                     </option>
                                 @endforeach
                             </select>
@@ -305,7 +305,7 @@
                     $("#week").html("<option value=''>select week</option>");
                     var count = 1;
                     $.each(getData.data, function(index, row) {
-                        $("#week").append(`<option value="${row.week_start_date},${row.week_end_date}">week${count}:-Start ${row.week_start_date} End ${row.week_end_date}
+                        $("#week").append(`<option value="${row.week_start_date},${row.week_end_date}">week-${count}-[${row.week_start_date} To ${row.week_end_date}]
                             </option>`);
                         count++;
                     });
@@ -332,7 +332,9 @@
                     console.log(dataResult)
                     HolidayDataArrayForm = [];
                     $.each(dataResult.data, function(index, row) {
-                        HolidayDataArrayForm[index] = [row.type,row.name,row.holiday_date,row.reason];
+                        HolidayDataArrayForm[index] = [row.type, row.name, row.holiday_date, row
+                            .reason
+                        ];
                     });
 
                     // console.log(leavesDataArrayForm, " leavesDataArrayForm");
@@ -369,21 +371,33 @@
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
-                var width="width:67%";
+                var width = "width:67%";
+                var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log("holidayData" , holidayData);
                         if (holidayData[2] == date && holidayData[0] == "holiday") {
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
-                            heading+="Holiday";
-                            width="width:12%";
-                        }else if(holidayData[2] == date && holidayData[0] == "leave"){
+                            heading += "Holiday";
+                            width = "width:12%";
+                            renderReasonHolidayHtml =
+                                `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                                <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
+                                <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
+                                <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
+                        } else if (holidayData[2] == date && holidayData[0] == "leave") {
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
                             leaveReason += holidayData[3] + " ";
-                            heading+="Leave";
-                            width="width:12%";
+                            heading += "Leave";
+                            width = "width:12%";
+                            renderReasonHolidayHtml = `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                                <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
+                                <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
+                                <input name="notes[]" value="" type="hidden" class="form-control">
+                                ${heading}:${holidayName}</br>Leave Reason:${leaveReason}
+                                </td>`;
                         }
                     });
                 }
@@ -391,7 +405,7 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="'+width+'"class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + '"class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -418,9 +432,9 @@
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' +
                         readonly +
                         '></textarea></td>';
-                   } else {
-                    TimesheetData += `<td>${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
-                } 
+                } else {
+                    TimesheetData += renderReasonHolidayHtml;
+                }
                 TimesheetData += "</tr>";
                 start = new Date(start.setDate(start.getDate() + 1)); //date increase by 1
             }
@@ -467,7 +481,9 @@
                 success: function(dataResult) {
                     HolidayDataArrayForm = [];
                     $.each(dataResult.data, function(index, row) {
-                        HolidayDataArrayForm[index] = [row.type,row.name,row.holiday_date,row.reason];
+                        HolidayDataArrayForm[index] = [row.type, row.name, row.holiday_date, row
+                            .reason
+                        ];
                     });
 
                     console.log(HolidayDataArrayForm, "HolidayDataArrayForm");
@@ -486,7 +502,7 @@
 
                     // console.log(getRangeleavedates[0] ,"getRangeleavedates");
 
-                    renderMonthlyHtml(SelectedMonthValue,SelectedYearValue,HolidayDataArrayForm)
+                    renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm)
                 }
             });
         });
@@ -519,22 +535,31 @@
                 }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
-                var leaveReason="";
-                var width="width:67%";
+                var leaveReason = "";
+                var width = "width:67%";
+                var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log(holidayData , "holidayData1");
                         if (holidayData[2] == dateFormat && holidayData[0] == "holiday") {
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
-                            heading+="Holiday";
-                            width="width:12%";
-                        }else if(holidayData[2] == dateFormat && holidayData[0] == "leave"){
+                            heading += "Holiday";
+                            width = "width:12%";
+                            renderReasonHolidayHtml =`<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                                <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
+                                <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
+                                <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
+                        } else if (holidayData[2] == dateFormat && holidayData[0] == "leave") {
                             dayColSpan = "5";
                             holidayName += holidayData[1] + " ";
-                            leaveReason +=holidayData[3] + " ";
-                            heading+="Leave";
-                            width="width:12%";
+                            leaveReason += holidayData[3] + " ";
+                            heading += "Leave";
+                            width = "width:12%";
+                            renderReasonHolidayHtml = `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                                <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
+                                <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
+                                <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
                         }
                     });
                 }
@@ -543,7 +568,7 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="'+ width +'" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + '" class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -570,8 +595,8 @@
                         '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
                         '></textarea></td>';
                 } else {
-                    TimesheetData += `<td colspan="2">${heading}:${holidayName}</br>Status Reason:${leaveReason}</td>`;
-                } 
+                    TimesheetData += renderReasonHolidayHtml;
+                }
                 TimesheetData += "</tr>";
             }
             $("#bodyData").append(TimesheetData);

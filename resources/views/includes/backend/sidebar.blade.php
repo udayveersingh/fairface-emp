@@ -6,7 +6,7 @@
                 <li class="menu-title">
                     <span>Main</span>
                 </li>
-                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                     <li class="{{ route_is('profile') ? 'active' : '' }}">
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
