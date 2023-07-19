@@ -24,7 +24,7 @@
                         <div class="profile-img-wrap">
                             <div class="profile-img">
                                 <a href="#"><img alt="avatar"
-                                        src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"></a>
+                                        src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"></a>
                             </div>
                         </div>
                         <div class="profile-basic">
@@ -134,7 +134,7 @@
                                 </li>
                                 <li>
                                     <div class="title">Passport Expire Date:</div>
-                                    <div class="text">{{$employee->passport_expiry_date }}</div>
+                                    <div class="text">{{ $employee->passport_expiry_date }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Record Status:</div>
@@ -180,7 +180,7 @@
                                 </tr>
                             </table> --}}
                 </div>
-            {{-- @if (!empty($emergency_contact))
+                {{-- @if (!empty($emergency_contact))
                         <div class="col-md-6">
                             <div class="card card-block shadow shadow-sm p-3 h-80">
                                 <h3 class="card-title">Emergency Contact</h3>
@@ -239,185 +239,187 @@
                             </div>
                         </div>
                     @endif --}}
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card card-block shadow shadow-sm p-3 h-80">
-                    <h3 class="card-title">Bank Information</h3>
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Bank Account Name</th>
-                            <td>{{ !empty($employee_bank->account_name) ? $employee_bank->account_name : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Bank Name</th>
-                            <td>{{ !empty($employee_bank->bank_name) ? $employee_bank->bank_name : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Bank Account Number</th>
-                            <td>{{ !empty($employee_bank->bank_account_number) ? $employee_bank->bank_account_number : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Bank Sort Code</th>
-                            <td>{{ !empty($employee_bank->bank_sort_code) ? $employee_bank->bank_sort_code : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Ifsc Code</th>
-                            <td>{{ !empty($employee_bank->ifsc_code) ? $employee_bank->ifsc_code : '' }}</td>
-                        </tr>
-                    </table>
+                <div class="row">
+                    @if (!empty($employee_bank))
+                        <div class="col-md-6">
+                            <div class="card card-block shadow shadow-sm p-3 h-80">
+                                <h3 class="card-title">Bank Information</h3>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Bank Account Name</th>
+                                        <td>{{ !empty($employee_bank->account_name) ? $employee_bank->account_name : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Name</th>
+                                        <td>{{ !empty($employee_bank->bank_name) ? $employee_bank->bank_name : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Account Number</th>
+                                        <td>{{ !empty($employee_bank->bank_account_number) ? $employee_bank->bank_account_number : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Sort Code</th>
+                                        <td>{{ !empty($employee_bank->bank_sort_code) ? $employee_bank->bank_sort_code : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Ifsc Code</th>
+                                        <td>{{ !empty($employee_bank->ifsc_code) ? $employee_bank->ifsc_code : '' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($employee_address))
+                        <div class="col-md-6">
+                            <div class="card card-block shadow shadow-sm p-3 h-80">
+                                <h3 class="card-title">Address Information</h3>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Address Line 1</th>
+                                        <td>{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Address Line 2</th>
+                                        <td>{{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Post Code</th>
+                                        <td>{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>From Date</th>
+                                        <td>{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>To Date</th>
+                                        <td>{{ !empty($employee_address->to_date) ? $employee_address->to_date : '' }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-            </div>
-            @if (!empty($employee_address))
-                <div class="col-md-6">
-                    <div class="card card-block shadow shadow-sm p-3 h-80">
-                        <h3 class="card-title">Address Information</h3>
-                        <table class="table table-striped">
-                            <tr>
-                                <th>Address Line 1</th>
-                                <td>{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Address Line 2</th>
-                                <td>{{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Post Code</th>
-                                <td>{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>From Date</th>
-                                <td>{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>To Date</th>
-                                <td>{{ !empty($employee_address->to_date) ? $employee_address->to_date : '' }}
-                                </td>
-                            </tr>
-                        </table>
+                <div class="row">
+                    @foreach ($employee_jobs as $index => $job)
+                        @if ($index == 1)
+                        @break;
+                    @endif
+                    @php
+                        if (!empty($job->supervisor)) {
+                            $supervisor = App\Models\Employee::find($job->supervisor);
+                            $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                        } else {
+                            $supervisor_name = '';
+                        }
+                        if (!empty($job->timesheet_approval_incharge)) {
+                            $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                            $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                        } else {
+                            $incharge_name = '';
+                        }
+                    @endphp
+                    <div class="col-md-6">
+                        <div class="card card-block shadow shadow-sm p-3 h-80 ">
+                            <h3 class="card-title">Job Information</h3>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Job Title</th>
+                                    <td>{{ $job->job_title }}</td>
+                                </tr>
+                                <tr>
+                                    <th>supervisor </th>
+                                    <td>{{ $supervisor_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Timesheet Approval Incharge </th>
+                                    <td>{{ $incharge_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Department</th>
+                                    <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Work Email</th>
+                                    <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Work Phone Number</th>
+                                    <td>{{ $job->work_phone_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Start Date</th>
+                                    <td>{{ $job->start_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>End Date</th>
+                                    <td>{{ $job->end_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Job Type</th>
+                                    <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contracted Weekly Hours</th>
+                                    <td>{{ $job->contracted_weekly_hours }}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endforeach
+                @if (!empty($employee_visas->count()))
+                    @foreach ($employee_visas as $index => $visa)
+                        @if ($index == 1)
+                        @break;
+                    @endif
+                    <div class="col-md-6">
+                        <div class="card card-block shadow shadow-sm p-3 h-80">
+                            <h3 class="card-title">Visa Information</h3>
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Visa Type</th>
+                                    <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Cos Number</th>
+                                    <td>{{ $visa->cos_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cos Issue Date</th>
+                                    <td>{{ $visa->cos_issue_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cos Expire Date</th>
+                                    <td>{{ $visa->cos_expiry_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Visa Issue Date</th>
+                                    <td>{{ $visa->visa_issue_date }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Visa Expiry Date</th>
+                                    <td>{{ $visa->visa_expiry_date }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                @endforeach
         </div>
-        <div class="row">
-            @foreach ($employee_jobs as $index => $job)
-                @if ($index == 1)
-                @break;
-            @endif
-            @php
-                if (!empty($job->supervisor)) {
-                    $supervisor = App\Models\Employee::find($job->supervisor);
-                    $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                } else {
-                    $supervisor_name = '';
-                }
-                if (!empty($job->timesheet_approval_incharge)) {
-                    $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
-                } else {
-                    $incharge_name = '';
-                }
-            @endphp
-            <div class="col-md-6">
-                <div class="card card-block shadow shadow-sm p-3 h-80 ">
-                    <h3 class="card-title">Job Information</h3>
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Job Title</th>
-                            <td>{{ $job->job_title }}</td>
-                        </tr>
-                        <tr>
-                            <th>supervisor </th>
-                            <td>{{ $supervisor_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Timesheet Approval Incharge </th>
-                            <td>{{ $incharge_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Department</th>
-                            <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Work Email</th>
-                            <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Work Phone Number</th>
-                            <td>{{ $job->work_phone_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Start Date</th>
-                            <td>{{ $job->start_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>End Date</th>
-                            <td>{{ $job->end_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>Job Type</th>
-                            <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Contracted Weekly Hours</th>
-                            <td>{{ $job->contracted_weekly_hours }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        @endforeach
-        @if (!empty($employee_visas->count()))
-            @foreach ($employee_visas as $index => $visa)
-                @if ($index == 1)
-                @break;
-            @endif
-            <div class="col-md-6">
-                <div class="card card-block shadow shadow-sm p-3 h-80">
-                    <h3 class="card-title">Visa Information</h3>
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Visa Type</th>
-                            <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Cos Number</th>
-                            <td>{{ $visa->cos_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cos Issue Date</th>
-                            <td>{{ $visa->cos_issue_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>Cos Expire Date</th>
-                            <td>{{ $visa->cos_expiry_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>Visa Issue Date</th>
-                            <td>{{ $visa->visa_issue_date }}</td>
-                        </tr>
-                        <tr>
-                            <th>Visa Expiry Date</th>
-                            <td>{{ $visa->visa_expiry_date }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        @endforeach
-    </div>
-  @endif
+@endif
 </div>
 
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
- <div class="card profile-box flex-fill">
+<div class="card profile-box flex-fill">
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped custom-table mb-0">
@@ -472,7 +474,7 @@
             </table>
         </div>
     </div>
-  </div>
+</div>
 </div>
 <!-- Employee Document -->
 
@@ -587,7 +589,7 @@
             </div>
         </div>
     @endforeach
-  </div>
+</div>
 </div>
 <!-- Employee Visa -->
 <!-- Employee Project  -->
@@ -694,13 +696,13 @@
             </table>
         </div>
     </div>
- </div>
+</div>
 </div>
 <!-- Employee Payslip -->
 </div>
 @endif
-<!-- Profile Modal -->
-{{-- <div id="profile_info" class="modal custom-modal fade" role="dialog">
+<!-- admin Profile Modal -->
+<div id="profile_info" class="modal custom-modal fade" role="dialog">
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
         <div class="modal-header">
@@ -755,7 +757,7 @@
         </div>
     </div>
 </div>
-</div> --}}
+</div>
 <!-- /Profile Modal -->
 @endsection
 

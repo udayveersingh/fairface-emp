@@ -15,7 +15,7 @@
 		</ul>
 	</div>
 	<div class="col-auto float-right ml-auto">
-		<a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a>
+		<a href="{{route('employee-detail')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
 		<div class="view-icons">
 			<a href="{{route('employees')}}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
 			<a href="{{route('employees-list')}}" class="list-view btn btn-link"><i class="fa fa-bars"></i></a>
@@ -170,7 +170,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Record Status <span class="text-danger">*</span></label>
+								<label>Record Status<span class="text-danger">*</span></label>
 								<select name="record_status" class="form-control select">
 									<option value="">Select Record Status</option>
 									<option value="active">Active</option>
@@ -325,7 +325,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="submit-section">
 						<button class="btn btn-primary submit-btn">Submit</button>
 					</div>

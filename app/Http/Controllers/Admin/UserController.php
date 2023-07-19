@@ -111,7 +111,7 @@ class UserController extends Controller
         $imageName = $user->avatar;
         if ($request->hasFile('avatar')) {
             $imageName = time() . '.' . $request->avatar->extension();
-            $request->avatar->move(public_path('storage/users'), $imageName);
+            $request->avatar->move(public_path('storage/employees'), $imageName);
         }
         $password = $user->password;
         if ($request->password) {
@@ -142,6 +142,7 @@ class UserController extends Controller
         $employee->country_id = $request->input('nationality');
         $employee->employee_id = $request->input('employee_id');
         $employee->user_id = $user->id;
+        $employee->avatar = $imageName;
         $employee->save();
         return back()->with('success', "User has been updated!!!");
     }

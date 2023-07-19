@@ -69,7 +69,7 @@
 
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img src="{{!empty(auth()->user()->avatar) ? asset('storage/users/'.auth()->user()->avatar) : asset('assets/img/user.jpg')}}" alt="user">
+                <span class="user-img"><img src="{{!empty(auth()->user()->avatar) ? asset('storage/employees/'.auth()->user()->avatar) : asset('assets/img/user.jpg')}}" alt="user">
                 <span class="status online"></span></span>
                 <span>{{auth()->user()->username}}</span>
             </a>

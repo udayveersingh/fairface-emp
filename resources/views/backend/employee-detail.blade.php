@@ -213,7 +213,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Email <span
                                                                 class="text-danger">*</span></label>
@@ -223,12 +223,25 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Date of Birth</label>
                                                         <input class="form-control edit_date_of_birth"
                                                             name="date_of_birth" value="{{ $employee->date_of_birth }}"
                                                             type="date">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>Role<span class="text-danger">*</span></label>
+                                                        <select name="role_id" class="form-control">
+                                                            <option value="">Select to</option>
+                                                            @foreach (getEmployee() as $role)
+                                                                <option value="{{ $role->id }}" {{old('role_id', $role->id) ? 'selected' : '' }}>
+                                                                    {{ $role->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -344,7 +357,7 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
-                            <input class="form-control" name="employee_id" type="text">
+                            <input class="form-control" name="employee_id" value="{{old('employee_id')}}" type="text">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -353,7 +366,7 @@
                             <select name="branch_id" class="form-control select">
                                 <option value="">Select Main Work Location</option>
                                 @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}">{{ $branch->branch_code }}</option>
+                                    <option value="{{ $branch->id }}"{{old('branch_id', $branch->id) ? 'selected' : '' }}>{{ $branch->branch_code }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -367,31 +380,31 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
-                            <input class="form-control" name="firstname" type="text">
+                            <input class="form-control" name="firstname" value="{{old('firstname')}}" type="text">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
-                            <input class="form-control" name="lastname" type="text">
+                            <input class="form-control" name="lastname" value="{{old('lastname')}}" type="text">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Phone Number Main </label>
-                            <input class="form-control mask_phone_number" name="phone" type="text">
+                            <input class="form-control mask_phone_number" value="{{old('phone')}}" name="phone" type="text">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Alternate Phone Number</label>
-                            <input class="form-control mask_phone_number" name="al_phone_number" type="text">
+                            <input class="form-control mask_phone_number" name="al_phone_number" value="{{old('al_phone_number')}}" type="text">
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Email <span class="text-danger">*</span></label>
-                            <input class="form-control" name="email" type="email">
+                            <input class="form-control" name="email" value="{{old('email')}}" type="email">
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -400,7 +413,7 @@
                             <select name="role_id" class="form-control">
                                 <option value="">Select to</option>
                                 @foreach (getEmployee() as $role)
-                                    <option value="{{ $role->id }}">
+                                    <option value="{{ $role->id }}" {{old('role_id', $role->id) ? 'selected' : '' }}>
                                         {{ $role->name }}
                                     </option>
                                 @endforeach
@@ -410,13 +423,13 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Date of Birth</label>
-                            <input class="form-control edit_date_of_birth" name="date_of_birth" type="date">
+                            <input class="form-control edit_date_of_birth" value="{{old('date_of_birth')}}" name="date_of_birth" type="date">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">National Insurance Number</label>
-                            <input class="form-control edit_insurance_number" name="nat_insurance_number" type="text">
+                            <input class="form-control edit_insurance_number" value="{{old('nat_insurance_number')}}" name="nat_insurance_number" type="text">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -425,7 +438,7 @@
                             <select name="nationality" class="form-control select">
                                 <option value="">Select Nationality</option>
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                    <option value="{{ $country->id }}" {{old('nationality', $country->id) ? 'selected' : '' }}>{{ $country->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -433,19 +446,19 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Passport Number</label>
-                            <input class="form-control edit_passport_number" name="passport_number" type="text">
+                            <input class="form-control edit_passport_number" value="{{old('passport_number')}}" name="passport_number" type="text">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Passport Issue Date</label>
-                            <input class="form-control edit_pass_issue_date" name="pass_issue_date" type="date">
+                            <input class="form-control edit_pass_issue_date" name="pass_issue_date" value="{{old('pass_issue_date')}}" type="date">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Passport Expire Date</label>
-                            <input class="form-control edit_pass_expire_date" name="pass_expire_date" type="date">
+                            <input class="form-control edit_pass_expire_date" name="pass_expire_date" value="{{old('pass_expire_date')}}" type="date">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -453,10 +466,10 @@
                             <label>Marital Status <span class="text-danger">*</span></label>
                             <select name="marital_status" class="form-control select">
                                 <option value="">Select Marital Status</option>
-                                <option value="married">Married</option>
-                                <option value="unmarried">Unmarried</option>
-                                <option value="divorced">Divorced</option>
-                                <option value="widowed">Widowed</option>
+                                <option value="married" {{old('marital_status', 'married') ? 'selected' : '' }}>Married</option>
+                                <option value="unmarried"{{old('marital_status', 'unmarried') ? 'selected' : ''}}>Unmarried</option>
+                                <option value="divorced" {{old('marital_status', 'divorced') ? 'selected' : ''}}>Divorced</option>
+                                <option value="widowed" {{old('marital_status', 'widowed') ? 'selected' : ''}}>Widowed</option>
                             </select>
                         </div>
                     </div>
@@ -465,9 +478,9 @@
                             <label>Record Status <span class="text-danger">*</span></label>
                             <select name="record_status" class="form-control select">
                                 <option value="">Select Record Status</option>
-                                <option value="active">Active</option>
-                                <option value="archieve">Archieve</option>
-                                <option value="delete">Delete</option>
+                                <option value="active" {{old('marital_status', 'active') ? 'selected' : '' }}>Active</option>
+                                <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>
+                                <option value="delete" {{old('record_status', 'delete') ? 'selected' : '' }}>Delete</option>
                             </select>
                         </div>
                     </div>
@@ -479,7 +492,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Confirm Password</label>
+                            <label>Confirm Password <span class="text-danger">*</span></label>
                             <input class="form-control edit_password" name="password_confirmation" type="password">
                         </div>
                     </div>

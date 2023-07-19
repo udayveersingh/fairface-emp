@@ -127,13 +127,13 @@
 								<input class="form-control mask_phone_number" name="phone" type="text">
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Alternate Phone Number</label>
 								<input class="form-control mask_phone_number" name="al_phone_number" type="text">
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Email <span class="text-danger">*</span></label>
 								<input class="form-control" name="email" type="email">
@@ -271,17 +271,30 @@
 								<input class="form-control mask_phone_number edit_phone" name="phone" type="text">
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Alternate Phone Number</label>
 								<input class="form-control mask_phone_number edit_al_phone_number" name="al_phone_number" type="text">
 							</div>
 						</div>
 
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="form-group">
 								<label class="col-form-label">Email <span class="text-danger">*</span></label>
 								<input class="form-control edit_email" name="email" type="email">
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label>Role<span class="text-danger">*</span></label>
+								<select name="role_id" class="form-control">
+									<option value="">Select to</option>
+									@foreach (getEmployee() as $role)
+										<option value="{{ $role->id }}">
+											{{ $role->name }}
+										</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="col-sm-6">

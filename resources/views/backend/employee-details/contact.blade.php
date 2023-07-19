@@ -72,7 +72,7 @@
 @else
     <div class="btn-group text-center col-auto" style="max-width: 200px;">
         <a class="btn btn-primary add-btn w-100 " id="employee_contact_btn" href="javascript:void(0)"
-            data-toggle="modal"><i class="fa fa-plus m-r-5"></i>Add Emergency Contact</a>
+            data-toggle="modal"><i class="fa fa-plus m-r-5"></i>Contact</a>
     </div>
 @endif
 <div id="edit_contact_detail" class="modal custom-modal fade" role="dialog">

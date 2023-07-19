@@ -150,6 +150,15 @@ class EmployeeController extends Controller
             $imageName = $employee->avatar;
         }
 
+        $user = User::find($employee->user_id);
+        $user->update([
+            'name' => $request->firstname . " " . $request->lastname,
+            'username' =>  $request->firstname . " " . $request->lastname,
+            'email' => $request->email,
+            'avatar' => $imageName,
+            'role_id' => $request->role_id,
+        ]);
+        
         $employee->update([
             'uuid' => $employee->uuid,
             'employee_id' => $request->employee_id,
@@ -168,6 +177,7 @@ class EmployeeController extends Controller
             'marital_status' => $request->marital_status,
             'record_status' => $request->record_status,
             'passport_number' => $request->passport_number,
+            'user_id' => $user->id,
         ]);
         return redirect()->route('employees-list')->with('success', "Employee details has been updated");
     }

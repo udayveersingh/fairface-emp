@@ -49,7 +49,7 @@ class UserProfileController extends Controller
         $imageName = auth()->user()->avatar;
         if ($request->hasFile('avatar')) {
             $imageName = time() . '.' . $request->avatar->extension();
-            $request->avatar->move(public_path('storage/users'), $imageName);
+            $request->avatar->move(public_path('storage/employees'), $imageName);
         }
         auth()->user()->update([
             'name' => $request->name,
