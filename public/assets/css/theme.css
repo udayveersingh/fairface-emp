@@ -700,6 +700,11 @@
         border: 1px solid #2e3840;
       }
       /*Layout Purple */
+   
+        [data-layout-mode="purple"]  .add-btn {
+          background: linear-gradient(to right, #667eea 0%, #764ba2 100%);;
+          border: 1px solid #667eea;
+      }
       [data-layout-mode="purple"] .header {
         background: #667eea;
         background: linear-gradient(to right, #667eea 0%, #764ba2 100%);
@@ -757,8 +762,8 @@
         background-color: #667eea !important;
       }
       [data-layout-mode="purple"] .btn-primary {
-        background-color: #667eea;
-        border: 1px solid #667eea;
+        background: linear-gradient(to right, #667eea 0%, #764ba2 100%);;
+          border: 1px solid #667eea;
       }
       [data-layout-mode="purple"] .roles-menu ul li.active a {
         border-color: #667eea;
@@ -768,6 +773,10 @@
         background-color: #667eea;
       }
       /*Layout Maroon */
+      [data-layout-mode="maroon"]  .add-btn {
+        background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+        border: 1px solid #f43b48;
+    }
       [data-layout-mode="maroon"] .header {
         background: #f43b48;
         background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
@@ -803,8 +812,9 @@
       [data-layout-mode="maroon"] .sidebar-twocol.sidebar .sidebar-right ul li a.active {
         color: #f43b48;
       }
-      [data-layout-mode="maroon"] .bg-primary, [data-layout-mode="maroon"] .badge-primary {
-        background-color: #f43b48 !important;
+      [data-layout-mode="maroon"] .bg-primary, [data-layout-mode="maroon"] .badge-primary {       
+        background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+        border: 1px solid #f43b48;
       }
       [data-layout-mode="maroon"] .dash-widget .card-body .dash-widget-icon {
         background-color: rgba(244, 59, 72, 0.2);
@@ -833,6 +843,10 @@
         background-color: #f43b48;
       }
       /*Layout Blue */
+      [data-layout-mode="blue"]  .add-btn {
+        background: linear-gradient(to right, #00c5fb 0%, #0253cc 100%);
+        border: 1px solid #00c5fb;
+    }
       [data-layout-mode="blue"] .header {
         background: #00c5fb;
         background: linear-gradient(to right, #00c5fb 0%, #0253cc 100%);
@@ -887,7 +901,7 @@
         border: 5px solid #00c5fb;
       }
       [data-layout-mode="blue"] .btn-primary {
-        background-color: #00c5fb;
+        background: linear-gradient(to right, #00c5fb 0%, #0253cc 100%);
         border: 1px solid #00c5fb;
       }
       [data-layout-mode="blue"] .roles-menu ul li.active a {

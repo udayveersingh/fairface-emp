@@ -62,8 +62,8 @@
                                     @endphp
                                     {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
                                 </td>
-                                <td><p class="" data-toggle="tooltip" data-html="true" title="{{$leave->reason}}">
-                                    {{ substr($leave->reason, 0, 10) . ' ........' }}</p></td>
+                                <td><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$leave->reason}}">
+                                    {{ substr($leave->reason, 0, 10) . ' ...' }}</p></td>
                                 <td class="text-center">
                                     <div class="action-label">
                                         <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
