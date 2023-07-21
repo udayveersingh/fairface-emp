@@ -261,7 +261,7 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="form-group">
-								<label class="col-form-label">Last Name</label>
+								<label class="col-form-label">Last Name<span class="text-danger">*</span></label>
 								<input class="form-control edit_lastname" name="lastname" type="text">
 							</div>
 						</div>

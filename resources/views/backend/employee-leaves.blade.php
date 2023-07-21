@@ -223,7 +223,7 @@
                         </div>
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
-                                <label>TimeSheet Status<span class="text-danger">*</span></label>
+                                <label>Leave Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" class="select form-control">
                                     <option value="">Select TimeSheet Status</option>
                                     @foreach ($timesheet_statuses as $time_status)
@@ -402,9 +402,9 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>TimeSheet Status<span class="text-danger">*</span></label>
+                                    <label>Leave Status<span class="text-danger">*</span></label>
                                     <select name="timesheet_status" id="" class="select form-control">
-                                        <option value="">Select TimeSheet Status</option>
+                                        <option value="">Select Status</option>
                                         @foreach ($timesheet_statuses as $time_status)
                                             <option value="{{ $time_status->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
@@ -412,7 +412,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Status Reason <span class="text-danger">*</span></label>
+                                    <label>Leave Reason <span class="text-danger">*</span></label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>

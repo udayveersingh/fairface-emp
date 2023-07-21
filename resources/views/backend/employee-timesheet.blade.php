@@ -42,7 +42,7 @@
                     </thead>
                     <tbody>
                         @if (!empty($employee_timesheets->count()))
-                            @foreach ($employee_timesheets as $index => $timesheet)
+                        @foreach ($employee_timesheets as $index => $timesheet)
                                 <tr>
                                     @php
                                         $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
@@ -51,16 +51,19 @@
                                         if (!empty($supervisor)) {
                                             $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
                                         }
+                                        $start_date = explode(',',$timesheet->start_date);
+                                        $end_date = explode(',',$timesheet->end_date);
                                     @endphp
-                                    <td>{{$timesheet->timesheet_id}}</td>
+                                    <td>{{ $timesheet->timesheet_id }}</td>
                                     <td>{{ $firstname . ' ' . $lastname }}</td>
                                     <td>{{ $supervisor_name }}</td>
                                     <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
                                     {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
                                     {{-- </td> --}}
-                                    <td>{{ $timesheet->start_date }}</td>
-                                    <td>{{ $timesheet->end_date }}</td>
-                                    <td>{{!empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status):''}}</td>
+                                    <td>{{ $start_date[0]}}</td>
+                                    <td>{{ $end_date[0] }}</td>
+                                    <td>{{ !empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status) : '' }}
+                                    </td>
                                     {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
                                     {{-- <td class="text-center">
                                         <div class="action-label">
@@ -79,7 +82,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item statusChecked" data-id="{{ $timesheet->id }}"
+                                                {{-- <a class="dropdown-item statusChecked" data-id="{{ $timesheet->id }}"
                                                     data-status="approved" href="#" data-toggle="modal"
                                                     id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Status</a>
                                                 <a data-id="{{ $timesheet->id }}"
@@ -101,7 +104,8 @@
                                                     data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                                 <a data-id="{{ $timesheet->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
-                                                    data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
+                                                    <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>View</a>    
                                             </div>
                                         </div>
                                     </td>
@@ -486,50 +490,6 @@
         </div>
     </div>
     <!-- Add Employee Timesheet Modal -->
-
-    <!-- update Employee Timsheet status Model-->
-    <div class="modal custom-modal fade" id="update_timesheet_status" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="form-header">
-                        <h3>Update {{ ucfirst($title) }} data</h3>
-                        <p>Are you sure want to update status?</p>
-                    </div>
-                    <form action="{{ route('timesheet-status-update') }}" method="post">
-                        @csrf
-                        <input type="hidden" id="timesheet_id" name="id">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                    <select name="timesheet_status" id="" class="select form-control">
-                                        <option value="">Select TimeSheet Status</option>
-                                        @foreach ($timesheet_statuses as $time_status)
-                                            <option value="{{ $time_status->id }}">
-                                                {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-btn delete-action">
-                            <div class="row">
-                                <div class="col-6">
-                                    <button class="btn btn-primary continue-btn btn-block" type="submit">Update</button>
-                                </div>
-                                <div class="col-6">
-                                    <button data-dismiss="modal"
-                                        class="btn btn-primary cancel-btn btn-block">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- update Employee Timsheet status Model-->
 @endsection
 
 @section('scripts')

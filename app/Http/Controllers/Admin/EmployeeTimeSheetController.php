@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class EmployeeTimeSheetController extends Controller
 {
@@ -36,7 +37,9 @@ class EmployeeTimeSheetController extends Controller
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
         $timesheet_statuses = TimesheetStatus::get();
-        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->orderBy('id', 'desc')->get();
+        // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->orderBy('id', 'desc')->get();
+        $employee_timesheets =EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
+
         return view('backend.employee-timesheet', compact('title', 'employee_timesheets', 'employees', 'projects', 'project_phases', 'timesheet_statuses'));
     }
 
@@ -59,16 +62,29 @@ class EmployeeTimeSheetController extends Controller
     }
 
     /**
+     * Employee Timesheet Edit View
+     */
+     public function empTimesheetEditView(CompanySettings $settings,$id, $start_date, $end_date)
+     {
+        $title = "Edit Employee TimeSheet";
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->get();
+        $employee_project = EmployeeProject::with('projects')->where('employee_id', $id)->get();
+        return view('backend.employee-timesheet.timesheet-edit-view', compact('employee_timesheets', 'title','settings','start_date','end_date','id','employee_project'));
+
+     }
+    
+    /**
      * Employee Timesheet Detail
      */
     public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->get();
+        $timesheet_statuses = TimesheetStatus::get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date','end_date'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date','end_date','timesheet_statuses','id'));
     }
 
     /**
@@ -89,6 +105,7 @@ class EmployeeTimeSheetController extends Controller
 
         return view('backend.employee-timesheet.timesheet-list', compact('title', 'projects', 'project_phases', 'timesheet_statuses', 'employee_timesheets'));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -130,6 +147,8 @@ class EmployeeTimeSheetController extends Controller
             $project_id = $request->input('project_id');
             $project_phase_id = $request->input('project_phase_id');
             $notes = $request->input('notes');
+           $timesheet_id = "ISL-TM-".Str::random(6);
+            // $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
             foreach ($start_time as $key => $value) {
                 if (!empty($hours[$key]) && $hours[$key] == "full_day") {
                     $total_hours_worked = "8 hours";
@@ -138,14 +157,15 @@ class EmployeeTimeSheetController extends Controller
                 } else {
                     $total_hours_worked = "";
                 }
-                $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
                 $employee_timesheet = EmployeeTimesheet::where('employee_id','=',$request->employee_id)->where('calender_date','=', $calender_date[$key])->first();
                 if (empty($employee_timesheet)){
                     $emp_timesheet = new EmployeeTimesheet();
                     }else{
                     $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
                      }
-                    $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
+                    // $emp_timesheet->timesheet_id = $timesheet_id;
+                    // $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
+                    $emp_timesheet->timesheet_id = $timesheet_id;
                     $emp_timesheet->employee_id = $request->input('employee_id');
                     $emp_timesheet->supervisor_id = $request->input('supervisor_id');
                     $emp_timesheet->project_id = $project_id[$key];
@@ -211,9 +231,16 @@ class EmployeeTimeSheetController extends Controller
         $this->validate($request, [
             'timesheet_status' => 'required',
         ]);
-        $employee_timesheet = EmployeeTimesheet::find($request->id);
-        $employee_timesheet->timesheet_status_id =  $request->input('timesheet_status');
-        $employee_timesheet->save();
+        $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->emp_id)->where('start_date', '=',$request->start_date)->where('end_date','=',$request->end_date)->get();
+        if(!empty($employee_timesheet)){
+            foreach($employee_timesheet as $timesheet)
+            {
+              $employee_timesheet = EmployeeTimesheet::find($timesheet->id);
+              $employee_timesheet->timesheet_status_id =  $request->input('timesheet_status');
+              $employee_timesheet->save();
+            }
+        }
+
         return back()->with('success', "Employee TimeSheet status has been updated successfully!!.");
     }
 

@@ -118,6 +118,7 @@ Route::group(['middleware'=>['auth']], function (){
 
     Route::get('employee-timesheet-detail/{id}/{start_date}/{end_date}',[EmployeeTimeSheetController::class,'employeeTimeSheetDetail'])->name('employee-timesheet-detail');
     Route::get('employee-timesheet-view',[EmployeeTimeSheetController::class,'employeeTimesheetView'])->name('employee-timesheet-view');
+    Route::get('employee-timesheet-edit/{id}/{start_date}/{end_date}',[EmployeeTimeSheetController::class,'empTimesheetEditView'])->name('employee-timesheet-edit');
     Route::get('employee-timesheet-list',[EmployeeTimeSheetController::class,'employeeTimesheetList'])->name('employee-timesheet-list');
     Route::get('employee-timesheet',[EmployeeTimeSheetController::class,'index'])->name('employee-timesheet');
     Route::post('/get-week-days',[EmployeeTimeSheetController::class,'getWeekDays'])->name('get-week-days');

@@ -141,6 +141,7 @@ class EmployeeController extends Controller
             'nationality' => 'required',
             'marital_status' => 'required',
             'record_status' => 'required',
+            'role_id' => 'required',
         ]);
         $employee = Employee::find($request->id);
         if ($request->hasFile('avatar')) {
