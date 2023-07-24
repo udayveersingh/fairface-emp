@@ -45,7 +45,7 @@ class EmployeeLeaveController extends Controller
      */
     public function store(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
             $timesheet_status = TimesheetStatus::where('status','pending approval')->first();

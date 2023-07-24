@@ -32,7 +32,7 @@
                                 <div class="col-md-5">
                                     <div class="profile-info-left">
                                         <h3 class="user-name m-t-0 mb-0">{{ auth()->user()->name }}</h3>
-                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                                             <h5 class="user-name m-t-0 mb-0">Employee ID:{{ $employee->employee_id }}</h5>
                                             <div class="text">Date of Join
                                                 :{{ date_format(date_create($employee->created_at), 'd M,Y') }}</div>
@@ -49,7 +49,7 @@
                                             <div class="title">Email:</div>
                                             <div class="text">{{ auth()->user()->email }}</div>
                                         </li>
-                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                        @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                                             <li>
                                                 <div class="title">Birthday:</div>
                                                 <div class="text">{{ $employee->date_of_birth }}</div>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+    @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
         @php
             $tabs = [
                 'document' => 'Document',

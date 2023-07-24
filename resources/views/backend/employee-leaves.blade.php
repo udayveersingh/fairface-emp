@@ -60,7 +60,11 @@
                                         $start = new DateTime($leave->to);
                                         $end_date = new DateTime($leave->from);
                                     @endphp
+                                     @if($start == $end_date)
+                                     {{"1 Days"}}
+                                     @else
                                     {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
+                                    @endif
                                 </td>
                                 <td><i class="la la-info-circle"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$leave->reason}}">
                                     {{ substr($leave->reason, 0, 10) . ' ...' }}</p></i></td>

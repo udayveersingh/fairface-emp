@@ -49,7 +49,7 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimesheetView(CompanySettings $settings)
     {
         $title = "Employee TimeSheet";
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employees = Employee::get();
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_leave = Leave::where('employee_id', '=', $employee->id)->get();
@@ -91,12 +91,12 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimesheetList()
     {
         $title = "Employee TimeSheet";
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $projects = Project::get();
             $project_phases = ProjectPhase::get();
             $timesheet_statuses = TimesheetStatus::get();
-            $employee_timesheets = DB::table('employee_timesheets')->where('employee_id','=', $employee->id)->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
+            $employee_timesheets = DB::table('employee_timesheets')->where('employee_id','=', $employee->id)->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->orderBy("created_at", "desc")->get();
             // $employee_timesheets = EmployeeTimesheet::select('*', DB::raw("CONCAT('start_date', '-','end_date') AS timesheet_date"))->groupBy('timesheet_date')->get();
             // dd($employee_timesheets);
         }
@@ -127,7 +127,7 @@ class EmployeeTimeSheetController extends Controller
             $end_date =  $last_date;
         }
 
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $this->validate($request, [
                 'supervisor_id'   => 'required',
                 'calender_date.*' => 'required',
