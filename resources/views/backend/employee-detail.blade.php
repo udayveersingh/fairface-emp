@@ -237,7 +237,15 @@
                                                         <select name="role_id" class="form-control">
                                                             <option value="">Select to</option>
                                                             @foreach (getEmployee() as $role)
-                                                                <option value="{{ $role->id }}" {{old('role_id', $role->id) ? 'selected' : '' }}>
+                                                            @php
+                                                                $role_id ="";
+                                                                if(!empty($employee->user->role_id)){
+                                                                    $role_id = $employee->user->role_id;
+                                                                }else{
+                                                                    $role_id = old('role_id');
+                                                                }
+                                                            @endphp
+                                                                <option value="{{ $role->id }}" {{$role_id == $role->id ? 'selected':''}}>
                                                                     {{ $role->name }}
                                                                 </option>
                                                             @endforeach

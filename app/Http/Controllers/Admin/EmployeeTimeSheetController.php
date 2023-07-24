@@ -228,6 +228,7 @@ class EmployeeTimeSheetController extends Controller
     {
         $this->validate($request, [
             'timesheet_status' => 'required',
+            'status_reason' => 'required',
         ]);
         $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->emp_id)->where('start_date', '=',$request->start_date)->where('end_date','=',$request->end_date)->get();
         if(!empty($employee_timesheet)){
@@ -235,9 +236,10 @@ class EmployeeTimeSheetController extends Controller
             {
               $employee_timesheet = EmployeeTimesheet::find($timesheet->id);
               $employee_timesheet->timesheet_status_id =  $request->input('timesheet_status');
+              $employee_timesheet->status_reason = $request->input('status_reason');
               $employee_timesheet->save();
             }
-        }
+        }   
 
         return back()->with('success', "Employee TimeSheet status has been updated successfully!!.");
     }

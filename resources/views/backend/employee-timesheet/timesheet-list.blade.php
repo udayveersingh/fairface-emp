@@ -34,6 +34,7 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Status</th>
+                            <th>Reason</th>
                             {{-- <th>To Time</th> --}}
                             {{-- <th style="text-align:center">Status</th> --}}
                             <th class="text-right">Action</th>
@@ -47,13 +48,17 @@
                                 $end_date = explode(',',$timesheet->end_date);
                                 $status = App\Models\TimesheetStatus::find($timesheet->timesheet_status_id);
                             @endphp
+                             @if($start_date[0] != null && $end_date[0] != null)
                                 <tr> 
                                      <td>{{$timesheet->timesheet_id}}</td>
                                      <td>{{ date('Y-m-d', strtotime($start_date[0]))}}</td>
                                      <td>{{ date('Y-m-d', strtotime($end_date[0]))}}</td>
-                                     <td>{{ucfirst($status->status)}}</td>
+                                     <td>{{ucfirst(!empty($status->status) ? $status->status:'')}}</td>
+                                     <td><i class="la la-info-circle"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$timesheet->status_reason}}">
+                                        {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p></i></td>
                                      {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                                     <td class="text-right">
+                                        @if($start_date[0] != null && $end_date[0] != null)
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -62,8 +67,10 @@
                                                 <a class="dropdown-item editbtn" href="{{route('employee-timesheet-edit',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>Edit</a>
                                             </div>
                                         </div>
+                                        @endif
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                             <x-modals.delete :route="'employee-timesheet.destroy'" :title="'Employee Timesheet'" />
                         @endif

@@ -25,7 +25,7 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch')->get();
+        $employees = Employee::with('branch','user.role')->get();
         return view('backend.employees',compact('title', 'employees', 'branches', 'countries'));
     }
 
@@ -39,7 +39,7 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch')->orderBy('created_at', 'desc')->get();
+        $employees = Employee::with('branch','user.role')->orderBy('created_at', 'desc')->get();
         return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
     }
 

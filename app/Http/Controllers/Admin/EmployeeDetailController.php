@@ -31,7 +31,7 @@ class EmployeeDetailController extends Controller
     {
         $title = 'Employee Detail';
         if(!empty($id)){
-        $employee = Employee::with('department', 'designation','country','branch')->find($id);
+        $employee = Employee::with('department', 'designation','country','branch','user')->find($id);
         $designations = Designation::get();
         $departments = Department::get();
         $branches = Branch::get();

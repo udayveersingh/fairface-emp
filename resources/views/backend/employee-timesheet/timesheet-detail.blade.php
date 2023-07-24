@@ -91,7 +91,7 @@
                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                     <a class="dropdown-item btn btn-primary continue-btn btn-block" data-emp_id="{{ $id }}"
                         data-start_date="{{ $start_date }}" data-end_date="{{ $end_date }}" data-status="approved"
-                        href="#" data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Timesheet
+                        href="#" data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Timesheet
                         Status</a>
                 @endif
             </div>
@@ -129,7 +129,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Timesheet status Reason</label>
+                                    <label>Timesheet status Reason<span class="text-danger">*</span></label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>

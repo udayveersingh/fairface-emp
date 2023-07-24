@@ -74,7 +74,7 @@
                         <a href="{{ route('employees-list') }}"><i class="la la-user"></i> <span>All Employees</span></a>
                     </li>
                     <li class="{{ route_is('employee-timesheet') ? 'active' : '' }}">
-                        <a href="{{ route('employee-timesheet') }}"><i class="la la-calendar"></i>
+                        <a href="{{ route('employee-timesheet')}}"><i class="la la-calendar"></i>
                             <span>Timesheet</span></a>
                     </li>
                     <!-- <li class="{{ route_is('tickets') ? 'active' : '' }}">

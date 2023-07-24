@@ -37,13 +37,13 @@
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Status</th>
+                            <th>Reason</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if (!empty($employee_timesheets->count()))
                         @foreach ($employee_timesheets as $index => $timesheet)
-                                <tr>
                                     @php
                                         $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
                                         $lastname = !empty($timesheet->employee->lastname) ? $timesheet->employee->lastname : '';
@@ -54,6 +54,8 @@
                                         $start_date = explode(',',$timesheet->start_date);
                                         $end_date = explode(',',$timesheet->end_date);
                                     @endphp
+                        @if($start_date[0] != null && $end_date[0] != null)
+                                <tr>
                                     <td>{{ $timesheet->timesheet_id }}</td>
                                     <td>{{ $firstname . ' ' . $lastname }}</td>
                                     <td>{{ $supervisor_name }}</td>
@@ -76,7 +78,8 @@
                                                 id="statusChecked">Change Status</a>
                                         </div>
                                     </td> --}}
-                                    <!-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> -->
+                                    <td><i class="la la-info-circle"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$timesheet->status_reason}}">
+                                        {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p></i></td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -105,11 +108,14 @@
                                                 <a data-id="{{ $timesheet->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
-                                                    <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>View</a>    
+                                                    @if($start_date[0] != null && $end_date[0] != null) 
+                                                    <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id ,'start_date'=> $start_date[0] ,'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>View</a>    
+                                                    @endif
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                             <x-modals.delete :route="'employee-timesheet.destroy'" :title="'Employee Timesheet'" />
                             <!-- Edit Employee Timesheet Status Modal -->
