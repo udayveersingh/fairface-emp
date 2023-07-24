@@ -39,7 +39,6 @@ class EmployeeTimeSheetController extends Controller
         $timesheet_statuses = TimesheetStatus::get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->orderBy('id', 'desc')->get();
         $employee_timesheets =EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date')->latest()->get();
-
         return view('backend.employee-timesheet', compact('title', 'employee_timesheets', 'employees', 'projects', 'project_phases', 'timesheet_statuses'));
     }
 
@@ -52,7 +51,6 @@ class EmployeeTimeSheetController extends Controller
         $title = "Employee TimeSheet";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employees = Employee::get();
-
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_leave = Leave::where('employee_id', '=', $employee->id)->get();
             $employee_project = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
@@ -67,7 +65,7 @@ class EmployeeTimeSheetController extends Controller
      public function empTimesheetEditView(CompanySettings $settings,$id, $start_date, $end_date)
      {
         $title = "Edit Employee TimeSheet";
-        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->get();
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy("calender_date", "asc")->get();
         $employee_project = EmployeeProject::with('projects')->where('employee_id', $id)->get();
         return view('backend.employee-timesheet.timesheet-edit-view', compact('employee_timesheets', 'title','settings','start_date','end_date','id','employee_project'));
 
@@ -79,7 +77,7 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
-        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->get();
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->latest()->get();
         $timesheet_statuses = TimesheetStatus::get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
