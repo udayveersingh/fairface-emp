@@ -83,7 +83,7 @@
                     @endphp
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label>Supervisor</label>
+                            <label>Supervisor<span class="text-danger">*</span></label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
@@ -164,7 +164,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label>Supervisor</label>
+                            <label>Supervisor<span class="text-danger">*</span></label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
@@ -371,28 +371,31 @@
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
-                var width = "width:67%";
+                var bgcolor ="";
+                var width = "width:70%";
                 var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log("holidayData" , holidayData);
                         if (holidayData[2] == date && holidayData[0] == "holiday") {
-                            dayColSpan = "5";
+                            dayColSpan = "1";
                             holidayName += holidayData[1] + " ";
                             heading += "Holiday";
-                            width = "width:12%";
+                            width = "width:70%";
+                            bgcolor = "background-color: #e9ecef";
                             renderReasonHolidayHtml =
-                                `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                                `<td colspan="" style='background-color:#e9ecef;'><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
                         } else if (holidayData[2] == date && holidayData[0] == "leave") {
-                            dayColSpan = "5";
+                            dayColSpan = "1";
                             holidayName += holidayData[1] + " ";
                             leaveReason += holidayData[3] + " ";
                             heading += "Leave";
-                            width = "width:12%";
-                            renderReasonHolidayHtml = `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            width = "width:70%";
+                            bgcolor = "background-color: #e9ecef";
+                            renderReasonHolidayHtml = `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">
@@ -405,7 +408,7 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="' + width + '"class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="'+ width +';'+ bgcolor + '"class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -536,27 +539,30 @@
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
-                var width = "width:67%";
+                var bgcolor = " ";
+                var width = "width:50%";
                 var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
                         // console.log(holidayData , "holidayData1");
                         if (holidayData[2] == dateFormat && holidayData[0] == "holiday") {
-                            dayColSpan = "5";
+                            dayColSpan = "1";
                             holidayName += holidayData[1] + " ";
                             heading += "Holiday";
-                            width = "width:12%";
+                            width = "width:52%";
+                            bgcolor = "background-color: #e9ecef";
                             renderReasonHolidayHtml =`<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
                         } else if (holidayData[2] == dateFormat && holidayData[0] == "leave") {
-                            dayColSpan = "5";
+                            dayColSpan = "1";
                             holidayName += holidayData[1] + " ";
                             leaveReason += holidayData[3] + " ";
                             heading += "Leave";
-                            width = "width:12%";
-                            renderReasonHolidayHtml = `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            width = "width:52%";
+                            bgcolor = "background-color: #e9ecef";
+                            renderReasonHolidayHtml = `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
@@ -568,7 +574,7 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="' + width + '" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width +';'+ bgcolor + '" class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
