@@ -54,7 +54,7 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $from }}</td>
+                                    <td><a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}">{{ $from }}</a></td>
                                     <td>{{ $to }}</td>
                                     <td>{{ $cc }}</td>
                                     <td>{{ $company_email->date }}</td>
@@ -64,7 +64,7 @@
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a data-id="{{ $company_email->id }}"
+                                                {{-- <a data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
                                                     data-email_cc="{{ $company_email->company_cc }}"
@@ -74,7 +74,7 @@
                                                     data-email_body="{{ $company_email->body }}"
                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                     class="dropdown-item editbtn" href="javascript:void(0);"
-                                                    data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                    data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
                                                 <a data-id="{{ $company_email->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
@@ -109,8 +109,8 @@
                                                                 $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                                                 $emp_name = $firstname . '  ' . $lastname;
                                                             @endphp
-                                                            <option value="{{ $employee_job->id }}">
-                                                                {{ 'From' . ' ' . $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                                            <option value="{{ !empty($employee_job->id) ? $employee_job->id:'' }}">
+                                                                {{ 'From' . ' ' . !empty($emp_name) ? $emp_name:''  . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -125,8 +125,8 @@
                                                                 $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                                                 $emp_name = $firstname . '  ' . $lastname;
                                                             @endphp
-                                                            <option value="{{ $employee_job->id }}">
-                                                                {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                                            <option value="{{ !empty($employee_job->id) ? $employee_job->id:''  }}">
+                                                                {{ !empty($emp_name) ? $emp_name:'' . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -141,8 +141,8 @@
                                                                 $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                                                 $emp_name = $firstname . '  ' . $lastname;
                                                             @endphp
-                                                            <option value="{{ $employee_job->id }}">
-                                                                {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                                            <option value="{{ !empty($employee_job->id) ? $employee_job->id:'' }}">
+                                                                {{ !empty($emp_name) ? $emp_name:'' . ' < ' . $employee_job->work_email . ' > ' }}
                                                             </option>
                                                         @endforeach
                                                     </select>

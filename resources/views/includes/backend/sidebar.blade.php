@@ -21,7 +21,8 @@
                         <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
                         <ul style="display:none;">
                             <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"  href="{{ route('user-email-inbox') }}">Inbox</a></li>
-                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"  href="{{ route('compose-email') }}">Compose Email</a></li>
+                            <li><a class="{{ route_is('sent-email') ? 'active' : '' }}" href="{{ route('sent-email') }}">Sent Mail</a></li>
+                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}" href="{{ route('compose-email') }}">Compose Email</a></li>
                         </ul>
                     </li>
                 @else

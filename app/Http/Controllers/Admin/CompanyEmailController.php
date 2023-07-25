@@ -37,12 +37,12 @@ class CompanyEmailController extends Controller
     public function emailInbox()
     {
         $title = "User Email";
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            $employee_jobs = EmployeeJob::with('employee')->whereHas('employee',function(Builder $query){
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+            $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
-            $company_emails = CompanyEmail::with('employeejob')->where('from_id','=', $employee_jobs->id)->get();
-            return view('backend.sent-emails.email-inbox', compact('title','company_emails', 'employee_jobs'));
+            $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
+            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs'));
         }
     }
 
@@ -58,7 +58,7 @@ class CompanyEmailController extends Controller
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_jobs = EmployeeJob::with('employee')->get();
         }
-        return view('backend.sent-emails.compose-email', compact('title','employee','employee_jobs'));
+        return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs'));
     }
 
     /**
@@ -99,12 +99,12 @@ class CompanyEmailController extends Controller
         //  $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
 
 
-        $cc_ids = explode(',', $cc);
-        $cc_value = [];
-        foreach ($cc_ids as $cc_id) {
-            $cc_email =  EmployeeJob::where('id', '=',  $cc_id)->value('work_email');
-            $cc_value[] = "'" . $cc_email . "'";
-        }
+        // $cc_ids = explode(',', $cc);
+        // $cc_value = [];
+        // foreach ($cc_ids as $cc_id) {
+        //     $cc_email =  EmployeeJob::where('id', '=',  $cc_id)->value('work_email');
+        //     $cc_value[] = "'" . $cc_email . "'";
+        // }
 
         //  $multi_cc_value = implode(',', $cc_value);
 
@@ -133,5 +133,30 @@ class CompanyEmailController extends Controller
         $company_email = CompanyEmail::find($request->id);
         $company_email->delete();
         return back()->with('success', "Company Email has been deleted successfully!!.");
+    }
+
+    /**
+     * sent emails
+     */
+    public function sentEmail()
+    {
+        $title = "User Email";
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+            $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
+                $query->where('user_id', '=', Auth::user()->id);
+            })->first();
+            $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->latest()->get();
+            return view('backend.emails.sent-email', compact('title', 'company_emails', 'employee_jobs'));
+        }
+    }
+
+    /**
+     * check mail detail 
+     */
+    public function mailDetail($from_id,$to_id)
+    {
+          $title = "mail";
+          $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->where('to_id','=',$to_id)->get();
+          return view('backend.emails.mail-detail',compact('company_emails','title')); 
     }
 }

@@ -25,11 +25,11 @@
                 <div class="col-md-12 mt-2">
                     <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" id="edit_id" name="id">
+                        {{-- <input type="hidden" id="edit_id" name="id"> --}}
                         <div class="form-group">
                             <label>From<span class="text-danger">*</span></label>
                             <select name="from_id" id="from_id" class="form-control">
-                                <option value="">Select from</option>
+                                {{-- <option value="">Select from</option> --}}
                                 @php
                                     $from_email = App\Models\EmployeeJOb::with('employee')
                                         ->where('employee_id', '=', $employee->id)
@@ -39,7 +39,7 @@
                                     $emp_name = $firstname . '  ' . $lastname;
                                 @endphp
                                 <option value="{{ $from_email->id }}">
-                                    {{ 'From' . ' ' . $emp_name . ' < ' . $from_email->work_email . ' > ' }}
+                                    {{ucfirst($emp_name) . ' < ' . $from_email->work_email . ' > ' }}
                                 </option>
                             </select>
                         </div>
