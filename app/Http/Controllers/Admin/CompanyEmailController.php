@@ -12,6 +12,7 @@ use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CompanyEmailController extends Controller
 {
@@ -41,7 +42,8 @@ class CompanyEmailController extends Controller
             $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
-            $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
+            // $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',$employee_jobs->id)->orwhere('to_id','=',$employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
             return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs'));
         }
     }
@@ -155,8 +157,29 @@ class CompanyEmailController extends Controller
      */
     public function mailDetail($from_id,$to_id)
     {
+        
           $title = "mail";
-          $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->where('to_id','=',$to_id)->get();
-          return view('backend.emails.mail-detail',compact('company_emails','title')); 
+          if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+            $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
+                $query->where('user_id', '=', Auth::user()->id);
+            })->first();
+        //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
+
+          $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('from_id','=',$to_id)->get();
+          return view('backend.emails.mail-detail',compact('company_emails','title','employee_job')); 
+        }
+    }
+
+    /**
+     * reply store function
+     */
+    public function replyStore(Request $request)
+    {
+        $company_email = new CompanyEmail();
+        $company_email->from_id = $request->from_id;
+        $company_email->to_id  = $request->to_id;
+        $company_email->body = $request->email_body;
+        $company_email->save();
+        return back();
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EmployeeJob;
 use App\Models\Holiday;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -49,6 +50,15 @@ if(!function_exists('getHoliday'))
     function getHoliday()
     {
         return Holiday::get(); 
+    }
+}
+
+
+if(!function_exists('getEmployeeJob'))
+{
+    function getEmployeeJob()
+    {
+        return EmployeeJob::with('employee')->get();
     }
 }
 

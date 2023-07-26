@@ -153,9 +153,11 @@ class EmployeeLeaveController extends Controller
         $this->validate($request, [
             'timesheet_status' => 'required',
         ]);
+        $date = date('Y-m-d');
         $employee_leave_status = Leave::find($request->id);
         $employee_leave_status->timesheet_status_id =  $request->input('timesheet_status');
         $employee_leave_status->status_reason = $request->input('status_reason');
+        $employee_leave_status->approved_date_time =  $date;
         $employee_leave_status->save();
         return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
     }
