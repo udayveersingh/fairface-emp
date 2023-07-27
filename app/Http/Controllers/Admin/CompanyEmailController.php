@@ -43,7 +43,11 @@ class CompanyEmailController extends Controller
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
             // $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',$employee_jobs->id)->orwhere('to_id','=',$employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+            foreach($company_emails as $value)
+            {
+                // dd($value);
+            }
             return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs'));
         }
     }
@@ -155,18 +159,18 @@ class CompanyEmailController extends Controller
     /**
      * check mail detail 
      */
-    public function mailDetail($from_id,$to_id)
+    public function mailDetail($from_id, $to_id)
     {
-        
-          $title = "mail";
-          if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+
+        $title = "mail";
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
-        //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
-
-          $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('from_id','=',$to_id)->get();
-          return view('backend.emails.mail-detail',compact('company_emails','title','employee_job')); 
+            //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->orwhere('from_id', '=', $to_id)->get();
+            
+            return view('backend.emails.mail-detail', compact('company_emails', 'title', 'employee_job'));
         }
     }
 
@@ -175,10 +179,17 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
+        $imageName = Null;
+        if ($request->hasFile('email_attachment')) {
+            $imageName = time() . '.' . $request->email_attachment->extension();
+            $request->email_attachment->move(public_path('storage/company_email/attachment'), $imageName);
+        }
         $company_email = new CompanyEmail();
         $company_email->from_id = $request->from_id;
         $company_email->to_id  = $request->to_id;
         $company_email->body = $request->email_body;
+        $company_email->subject = $request->subject;
+        $company_email->attachment = $imageName;
         $company_email->save();
         return back();
     }

@@ -170,7 +170,7 @@
                                                     <label>Attachment</label>
                                                     <input class="form-control" type="file" name="email_attachment"
                                                         id="edit_attachment">
-                                                </div>
+                                                </div>  
                                                 <div class="submit-section">
                                                     <button type="submit"
                                                         class="btn btn-primary submit-btn">Submit</button>

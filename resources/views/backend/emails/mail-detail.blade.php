@@ -51,7 +51,7 @@
                                         <span
                                             class="text">From{{ ucfirst($from_emp_name) . ' < ' . $from_email . ' > ' }}</span>
                                     </h5> --}}
-                                    {{-- <input type="hidden" name="to_id" value="{{ $company_email->to_id }}"> --}}
+                                    <input type="hidden" name="subject" value="{{ $company_email->subject}}">
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>From</label>
@@ -82,6 +82,12 @@
                                                 {{  ucfirst($emp_name) . ' < ' . $from_email . ' > ' }}
                                             </option> --}}
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label>Attachment</label>
+                                            <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
