@@ -101,7 +101,7 @@
                                         @endif
                                         {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         </a>
-                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
                                             <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
                                                 data-status="approved" href="#" data-toggle="modal"
                                                 id="statusChecked">Change Status</a>

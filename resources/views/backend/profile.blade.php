@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
+    @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
         @php
             $tabs = [
                 'document' => 'Document',
@@ -113,7 +113,7 @@
                                 </li>
                                 <li>
                                     <div class="title">Alternate Phone Number:</div>
-                                    <div class="text">{{ $employee->alternate_phone_number }}</div>
+                                    <div class="text">{{ !empty($employee->alternate_phone_number) ? $employee->alternate_phone_number:''  }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Nationality:</div>
@@ -122,23 +122,23 @@
                                 </li>
                                 <li>
                                     <div class="title">National Insurance Number:</div>
-                                    <div class="text">{{ $employee->national_insurance_number }}</div>
+                                    <div class="text">{{ !empty($employee->national_insurance_number) ? $employee->national_insurance_number:'' }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Number:</div>
-                                    <div class="text">{{ $employee->passport_number }}</div>
+                                    <div class="text">{{ !empty($employee->passport_number) ? $employee->passport_number:''  }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Issue Date:</div>
-                                    <div class="text">{{ $employee->passport_issue_date }}</div>
+                                    <div class="text">{{ !empty($employee->passport_issue_date) ? $employee->passport_issue_date:'' }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Expire Date:</div>
-                                    <div class="text">{{ $employee->passport_expiry_date }}</div>
+                                    <div class="text">{{ !empty($employee->passport_expiry_date) ? $employee->passport_issue_date:''}}</div>
                                 </li>
                                 <li>
                                     <div class="title">Record Status:</div>
-                                    <div class="text">{{ $employee->record_status }}</div>
+                                    <div class="text">{{ !empty($employee->record_status) ? $employee->record_status:''  }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -309,11 +309,12 @@
                     @endif
                 </div>
                 <div class="row">
+                    @if(!empty($employee_jobs))
                     @foreach ($employee_jobs as $index => $job)
                         @if ($index == 1)
                         @break;
-                    @endif
-                    @php
+                        @endif
+                        @php
                         if (!empty($job->supervisor)) {
                             $supervisor = App\Models\Employee::find($job->supervisor);
                             $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
@@ -326,7 +327,7 @@
                         } else {
                             $incharge_name = '';
                         }
-                    @endphp
+                        @endphp
                     <div class="col-md-6">
                         <div class="card card-block shadow shadow-sm p-3 h-80 ">
                             <h3 class="card-title">Job Information</h3>
@@ -375,7 +376,8 @@
                         </div>
                     </div>
                 @endforeach
-                @if (!empty($employee_visas->count()))
+                @endif
+                @if (!empty($employee_visas))
                     @foreach ($employee_visas as $index => $visa)
                         @if ($index == 1)
                         @break;
@@ -419,6 +421,7 @@
 
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+@if(!empty($employee_documents))
 <div class="card profile-box flex-fill">
     <div class="row">
         <div class="col-md-12">
@@ -475,12 +478,14 @@
         </div>
     </div>
 </div>
+@endif
 </div>
 <!-- Employee Document -->
 
 <!-- Employee Job -->
 <div class="tab-pane fade" id="job" role="tabpanel" aria-labelledby="job-tab">
 <div class="row">
+    @if(!empty($employee_jobs))
     @foreach ($employee_jobs as $job)
         @php
             if (!empty($job->supervisor)) {
@@ -550,12 +555,14 @@
             </div>
         </div>
     @endforeach
+    @endif
 </div>
 </div>
 <!-- Employee Job -->
 <!-- Emplolyee Visa -->
 <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
 <div class="row">
+    @if(!empty($employee_visas))
     @foreach ($employee_visas as $visa)
         <div class="col-md-12 mb-4">
             <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
@@ -589,12 +596,13 @@
             </div>
         </div>
     @endforeach
+    @endif
 </div>
 </div>
 <!-- Employee Visa -->
 <!-- Employee Project  -->
 <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
-@if (!empty($employee_projects->count()))
+@if (!empty($employee_projects))
     <div class="row">
         @foreach ($employee_projects as $project)
             <div class="col-md-12 mb-4">
@@ -660,6 +668,7 @@
                     </tr>
                 </thead>
                 <tbody id="bodyData">
+                    @if(!empty($employee_payslips))
                     @foreach ($employee_payslips as $index => $employee_payslip)
                         <tr>
                             <td>{{ $index + 1 }}</td>
@@ -689,6 +698,7 @@
                             </td>
                         </tr>
                     @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

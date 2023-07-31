@@ -26,6 +26,8 @@
                     <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         {{-- <input type="hidden" id="edit_id" name="id"> --}}
+                        <input class="form-control" value="{{date('Y-m-d')}}" type="hidden" name="email_date" id="">
+                        <input class="form-control" value="{{date('H:i:s')}}" type="hidden" name="email_time" id="">
                         <div class="form-group">
                             <label>From<span class="text-danger">*</span></label>
                             <select name="from_id" id="from_id" class="form-control">
@@ -77,11 +79,11 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label>Date</label>
-                                    <input class="form-control datetimepicker" type="text" name="email_date" id="">
+                                    <input class="form-control" type="text" name="email_date" id="">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -90,7 +92,7 @@
                                     <input class="form-control " type="time" name="email_time" id="">
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label>Subject</label>
                             <input class="form-control" type="text" name="email_subject" id="">

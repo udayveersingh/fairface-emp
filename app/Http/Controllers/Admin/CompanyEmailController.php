@@ -43,11 +43,13 @@ class CompanyEmailController extends Controller
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
             // $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
-            foreach($company_emails as $value)
+            if(empty($employee_jobs))
             {
-                // dd($value);
+                $errorMessageDuration = 'Please add job information from admin side Or contact admin.';
+                return view('backend.emails.email-inbox',compact('title','errorMessageDuration'));
+                // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
             return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs'));
         }
     }
@@ -190,6 +192,16 @@ class CompanyEmailController extends Controller
         $company_email->body = $request->email_body;
         $company_email->subject = $request->subject;
         $company_email->attachment = $imageName;
+        // $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
+        // $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
+        // $emp_job_detail = ([
+        //          'to'   =>  $to_email,
+        //          'from' => $form_email,
+        //          'cc_email' => "",
+        //          'subject' => $request->email_subject,
+        //          'attachment' => $imageName
+        //         ]);
+        // Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
         $company_email->save();
         return back();
     }

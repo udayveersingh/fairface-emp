@@ -17,12 +17,18 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
                                 leave</span></a>
                     </li>
+                            @php
+                                 $employee = App\Models\Employee::where('user_id','=',Auth::user()->id)->first();
+                                 $employee_job = App\Models\EmployeeJob::where('employee_id','=',$employee->id)->first();
+                            @endphp
                     <li class="submenu">
                         <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
                         <ul style="display:none;">
                             <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"  href="{{ route('user-email-inbox') }}">Inbox</a></li>
+                             @if(!empty($employee_job))
                             <li><a class="{{ route_is('sent-email') ? 'active' : '' }}" href="{{ route('sent-email') }}">Sent Mail</a></li>
                             <li><a class="{{ route_is('compose-email') ? 'active' : '' }}" href="{{ route('compose-email') }}">Compose Email</a></li>
+                            @endif
                         </ul>
                     </li>
                 @else

@@ -15,14 +15,23 @@
                 <li class="breadcrumb-item active">Email</li>
             </ul>
         </div>
+        @if(!empty($employee_jobs))
         <div class="col-auto float-right ml-auto">
             <a href="{{route('compose-email')}}" class="btn add-btn"><i
                     class="fa fa-plus"></i> Compose Email</a>
         </div>
+        @endif
     </div>
+    @if(isset($errorMessageDuration))
+         <div class="alert alert-danger">
+             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+             {{ $errorMessageDuration }}
+         </div>
+@endif
 @endsection
 
 @section('content')
+@if(!empty($employee_jobs))
     <div class="row">
         <div class="col-md-12">
             <div>
@@ -187,6 +196,7 @@
             </div>
         </div>
     </div>
+    @endif
     <!-- Add Company Email Modal -->
     <div id="add_company_email" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">

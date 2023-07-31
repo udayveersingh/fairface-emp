@@ -77,7 +77,7 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
-        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->latest()->get();
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy('calender_date','ASC')->get();
         $timesheet_statuses = TimesheetStatus::get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);

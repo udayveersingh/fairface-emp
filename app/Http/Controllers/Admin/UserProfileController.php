@@ -21,7 +21,6 @@ class UserProfileController extends Controller
     public function index()
     {
         $title = 'user Profile';
-        
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();

@@ -35,22 +35,32 @@
         <div class="row">
             <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>
                     @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                        {{ $employee_name }} @else{{ Auth::user()->name }}
+                        {{ ucfirst($employee_name) }} @else{{ ucfirst(Auth::user()->name) }}
                     @endif
                 </span></div>
-            <div class="col-md-6"><strong>Month Ending:-</strong> <span>{{ $end_date }}</span></div>
+            <div class="col-md-6"></div>
         </div>
         <div class="row">
             <div class="col-md-6">
                 <p class="mx-0"><strong>Month starting:-</strong>{{ $start_date }}</p>
                 <p class="mx-0"></p>
+            </div>
+            <div class="col-md-6">
+                <p class="mx-0"><strong>Month Ending:-</strong><span>{{ $end_date }}</span></p>
+                <p class="mx-0"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
                 <table class="table table-bordered">
                     <tr>
-                        <th></th>
-                        <th></th>
+                        <th>Date</th>
+                        <th>Day</th>
+                        <th>Project</th>
                         <th>Start Time</th>
                         <th>Finish Time</th>
                         <th>1/2 or 1 Day</th>
+                        <th>Comments</th>
                     </tr>
                     {{-- @php
                         $count = 0;
@@ -74,11 +84,19 @@
                                 $from_time = date('H:i', strtotime($timesheet->from_time));
                                 $to_time = date('H:i', strtotime($timesheet->to_time));
                             @endphp
-                            <td>{{ $timesheet->calender_day }}</td>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ !empty($from_time) ? $from_time : '' }}</td>
-                            <td>{{ !empty($to_time) ? $to_time : '' }}</td>
-                            <td>{{ $timesheet_hours }}</td>
+                            <td>{{$timesheet->calender_date}}</td>
+                            <td>{{$timesheet->calender_day }}</td>
+                            <td>{{!empty($timesheet->project->name) ? ucfirst($timesheet->project->name):'______'}}</td>
+                            <td>{{!empty($from_time) ? $from_time : '' }}</td>
+                            <td>{{!empty($to_time) ? $to_time : '' }}</td>
+                            <td>{{$timesheet_hours }}</td>
+                            <td class="d-flex" style="
+                                align-items: center;">
+                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
+                                        title="{{$timesheet->notes}}">
+                                        {{ substr($timesheet->notes, 0, 10) . ' ...' }}</p>
+                                    <i class="la la la-eye"></i>
+                                </td>
                         </tbody>
                     @endforeach
                     {{-- <tr>
