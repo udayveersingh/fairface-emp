@@ -35,23 +35,39 @@
                     <thead>
                         <tr>
                             <th>Sr No.</th>
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                <th>Employee</th>
+                            @endif
                             <th>Leave Type</th>
                             <th>From</th>
                             <th>To</th>
                             <th>No of Days</th>
                             <th>Reason</th>
                             <th class="text-center">Status</th>
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                                <th>Employee</th>
-                            @endif
+                            <th>status reason</th>
                             <th>Approved Date/Time</th>
-                            <th class="text-right">Actions</th>
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                <th class="text-right">Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($leaves as $index => $leave)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                    <td>
+                                        <h2 class="table-avatar">
+                                            <a href="javascript:void(0)" class="avatar avatar-xs">
+                                                <img alt="avatar"
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </a>
+                                            <a href="#">{{ !empty($leave->employee->firstname) ? $leave->employee->firstname : '' }}
+                                                {{ !empty($leave->employee->lastname) ? $leave->employee->lastname : '' }}
+                                            </a>
+                                        </h2>
+                                    </td>
+                                @endif
                                 <td>{{ $leave->leaveType->type }}</td>
                                 <td>{{ date_format(date_create($leave->from), 'd M, Y') }}</td>
                                 <td>{{ date_format(date_create($leave->to), 'd M, Y') }}</td>
@@ -59,20 +75,31 @@
                                     @php
                                         $start = new DateTime($leave->to);
                                         $end_date = new DateTime($leave->from);
+                                        $timesheet_status = App\Models\TimesheetStatus::find($leave->timesheet_status_id);
                                     @endphp
-                                     @if($start == $end_date)
-                                     {{"1 Days"}}
-                                     @else
-                                    {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
+                                    @if ($start == $end_date)
+                                        {{ '1 Days' }}
+                                    @else
+                                        {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
                                     @endif
                                 </td>
-                                <td><i class="la la-info-circle"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$leave->reason}}">
-                                    {{ substr($leave->reason, 0, 10) . ' ...' }}</p></i></td>
+                                <td class="d-flex" style="
+                                align-items: center;">
+                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
+                                        title="{{ $leave->reason }}">
+                                        {{ substr($leave->reason, 0, 10) . ' ...' }}</p>
+                                    <i class="la la la-eye"></i>
+                                </td>
                                 <td class="text-center">
                                     <div class="action-label">
-                                        <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
-                                            <i
-                                                class="fa fa-dot-circle-o text-success"></i>{{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
+                                        @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
+                                            <a class="btn btn-warning btn-sm btn-rounded" href="javascript:void(0);">
+                                            @elseif ($timesheet_status->status == App\Models\TimesheetStatus::APPROVED)
+                                                <a class="btn btn-success btn-sm btn-rounded" href="javascript:void(0);">
+                                                @else
+                                                    <a class="btn btn-danger btn-sm btn-rounded" href="javascript:void(0);">
+                                        @endif
+                                        {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         </a>
                                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                             <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
@@ -93,43 +120,40 @@
                                             id="statusChecked">Change Status</a> --}}
                                     {{-- </div> --}}
                                 </td>
+                                <td class="d-flex" style="
+                                align-items: center;">
+                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
+                                        title="{{ $leave->status_reason }}">
+                                        {{ substr($leave->status_reason, 0, 10) . ' ...' }}</p>
+                                    <i class="la la la-eye"></i>
+                                </td>
+                                <td>{{ $leave->approved_date_time }}</td>
                                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                                    <td>
-                                        <h2 class="table-avatar">
-                                            <a href="javascript:void(0)" class="avatar avatar-xs">
-                                                <img alt="avatar"
-                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
-                                            </a>
-                                            <a href="#">{{ !empty($leave->employee->firstname) ? $leave->employee->firstname : '' }}
-                                                {{ !empty($leave->employee->lastname) ? $leave->employee->lastname : '' }}
-                                            </a>
-                                        </h2>
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a data-id="{{ $leave->id }}"
+                                                    data-leave_type="{{ $leave->leave_type_id }}"
+                                                    data-employee="{{ $leave->employee_id }}"
+                                                    data-supervisor="{{ $leave->supervisor_id }}"
+                                                    data-project="{{ $leave->project_id }}"
+                                                    data-project_phase="{{ $leave->project_phase_id }}"
+                                                    data-from="{{ $leave->from }}" data-to="{{ $leave->to }}"
+                                                    data-leave_reason="{{ $leave->reason }}"
+                                                    data-status_reason="{{ $leave->status_reason }}"
+                                                    data-approved_date_time="{{ $leave->approved_date_time }}"
+                                                    data-timesheet_status_id="{{ $leave->timesheet_status_id }}"
+                                                    class="dropdown-item editbtn" href="javascript:void(0)"
+                                                    data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a data-id="{{ $leave->id }}" class="dropdown-item deletebtn"
+                                                    href="javascript:void(0)" data-toggle="modal"><i
+                                                        class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                            </div>
+                                        </div>
                                     </td>
                                 @endif
-                                <td>{{ $leave->approved_date_time }}</td>
-                                <td class="text-right">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a data-id="{{ $leave->id }}" data-leave_type="{{ $leave->leave_type_id }}"
-                                                data-employee="{{ $leave->employee_id }}"
-                                                data-supervisor="{{ $leave->supervisor_id }}"
-                                                data-project="{{ $leave->project_id }}"
-                                                data-project_phase="{{ $leave->project_phase_id }}"
-                                                data-from="{{ $leave->from }}" data-to="{{ $leave->to }}"
-                                                data-leave_reason="{{ $leave->reason }}"
-                                                data-status_reason="{{ $leave->status_reason }}"
-                                                data-approved_date_time="{{ $leave->approved_date_time }}"
-                                                data-timesheet_status_id="{{ $leave->timesheet_status_id }}"
-                                                class="dropdown-item editbtn" href="javascript:void(0)"
-                                                data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                            <a data-id="{{ $leave->id }}" class="dropdown-item deletebtn"
-                                                href="javascript:void(0)" data-toggle="modal"><i
-                                                    class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
                             </tr>
                         @endforeach
                         <!-- delete Leave Modal -->
@@ -246,14 +270,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                                                  <label>Status </label>
-                                                  <select name="status" class="select">
-                                                  <option value="null" disabled selected>Select Status</option>
-                                                  <option>Approved</option>
-                                                  <option>Pending</option>
-                                                  <option>Declined</option>
-                                                  </select>
-                                                  </div> -->
+                                                          <label>Status </label>
+                                                          <select name="status" class="select">
+                                                          <option value="null" disabled selected>Select Status</option>
+                                                          <option>Approved</option>
+                                                          <option>Pending</option>
+                                                          <option>Declined</option>
+                                                          </select>
+                                                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -355,7 +379,7 @@
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" id="edit_status" class="select form-control">
                                     <option value="">Select TimeSheet Status</option>
-                                    @foreach ($timesheet_statuses as $time_status)
+                                    @foreach (getLeaveStatus() as $time_status)
                                         <option value="{{ $time_status->id }}">
                                             {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                     @endforeach
@@ -373,14 +397,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                      <label>Status </label>
-                                                      <select name="status" class="select2 form-control" id="edit_status">
-                                                      <option value="null">Select Status</option>
-                                                      <option>Approved</option>
-                                                      <option>Pending</option>
-                                                      <option>Declined</option>
-                                                      </select>
-                                                      </div> -->
+                                                              <label>Status </label>
+                                                              <select name="status" class="select2 form-control" id="edit_status">
+                                                              <option value="null">Select Status</option>
+                                                              <option>Approved</option>
+                                                              <option>Pending</option>
+                                                              <option>Declined</option>
+                                                              </select>
+                                                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -409,7 +433,7 @@
                                     <label>Leave Status<span class="text-danger">*</span></label>
                                     <select name="timesheet_status" id="" class="select form-control">
                                         <option value="">Select Status</option>
-                                        @foreach ($timesheet_statuses as $time_status)
+                                        @foreach (getLeaveStatus() as $time_status)
                                             <option value="{{ $time_status->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach

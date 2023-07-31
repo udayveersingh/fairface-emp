@@ -54,8 +54,8 @@
                                      <td>{{ date('Y-m-d', strtotime($start_date[0]))}}</td>
                                      <td>{{ date('Y-m-d', strtotime($end_date[0]))}}</td>
                                      <td>{{ucfirst(!empty($status->status) ? $status->status:'')}}</td>
-                                     <td><i class="la la-info-circle"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$timesheet->status_reason}}">
-                                        {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p></i></td>
+                                     <td class="d-flex"style="align-items: center;"><p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true" title="{{$timesheet->status_reason}}">
+                                        {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p><i class="la la la-eye"></i></td>
                                      {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                                     <td class="text-right">
                                         @if($start_date[0] != null && $end_date[0] != null)

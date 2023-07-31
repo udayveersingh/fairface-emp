@@ -4,6 +4,7 @@ use App\Models\EmployeeJob;
 use App\Models\Holiday;
 use App\Models\ProjectPhase;
 use App\Models\Role;
+use App\Models\TimesheetStatus;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,14 @@ if(!function_exists('getEmployeeJob'))
     function getEmployeeJob()
     {
         return EmployeeJob::with('employee')->get();
+    }
+}
+
+if(!function_exists('getLeaveStatus'))
+{
+    function getLeaveStatus()
+    {
+        return TimesheetStatus::where('status','!=',TimesheetStatus::SUBMITTED)->get();
     }
 }
 
