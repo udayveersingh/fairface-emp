@@ -134,7 +134,9 @@
                             </li>
                         @endif
                         <div class="col-auto float-right ml-auto">
-                       {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$company_email->created_at)->format('H:i:A');}}
+                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$company_email->created_at)->format('H:i:A')}}
+                            <br>
+                            {{'('.Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$company_email->created_at)->format('Y-m-d').')'}}    
                         </div>
                     </ul>
 

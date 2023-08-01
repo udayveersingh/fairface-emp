@@ -45,7 +45,7 @@
                                 <td>
                                     <h2 class="table-avatar">
                                         <a href="javascript:void(0)" class="avatar"><img
-                                                src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . $user->avatar) : asset('assets/img/user.jpg') }}"
+                                                src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . $user->avatar) : asset('assets/img/user.jpg') }}"
                                                 alt="user"></a>
                                         {{ $user->name }}
                                     </h2>

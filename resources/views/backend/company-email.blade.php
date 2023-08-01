@@ -54,7 +54,7 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $from }}</td>
+                                    <td><a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}">{{ $from }}</a></td>
                                     <td>{{ $to }}</td>
                                     <td>{{ $cc }}</td>
                                     <td>{{ $company_email->date }}</td>
