@@ -31,14 +31,17 @@ class CompanyEmailController extends Controller
         // $company_emails = CompanyEmail::with('employeejob')->get();
 
         $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
-        $notifications = DB::table('notifications')->get();
+        $notifications = DB::table('notifications')->where('type','=','App\Notifications\newMailNotification')->get();
         $array_data = [];
         foreach($notifications as $index=>$notification)
         {
-            $array_data[$index] = $notification->data;
+           $array_data[$index] = json_decode($notification->data);
         }
+
+        foreach($array_data as $value){
+        } 
        // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data'));
     }
 
     /**
@@ -137,9 +140,14 @@ class CompanyEmailController extends Controller
         //     ]);
         //    Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
         $company_email->save();
+        $company_email->notify(new newMailNotification($company_email));
 
         //    dd("Mail Sent Successfully!");
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
         return redirect()->route('user-email-inbox')->with('success', $message);
+        }else{
+            return redirect()->route('company-email')->with('success', $message);
+        }
     }
 
     /**

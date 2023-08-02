@@ -40,10 +40,17 @@
                     </thead>
                     <tbody>
                         @if (!empty($company_emails->count()))
+
                             @foreach ($company_emails as $index => $company_email)
                                 @php
-                                    $from = App\Models\EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
-                                    $to = App\Models\EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
+                                    $from = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->from_id)->first();
+                                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname:'';
+                                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname:'';
+                                    $fullname = $from_first_name." ".$from_last_name;
+                                    $to = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->to_id)->first();
+                                    $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname:'';
+                                    $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname:'';
+                                    $to_fullname = $to_first_name." ".$to_last_name;
                                     $multiple_cc = explode(',', $company_email->company_cc);
                                     $cc_emails = [];
                                     foreach ($multiple_cc as $value) {
@@ -54,8 +61,8 @@
                                 @endphp
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td><a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}">{{ $from }}</a></td>
-                                    <td>{{ $to }}</td>
+                                    <td>{{"<".$fullname.">"}}<a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}">{{$from->work_email }}</a></td>
+                                    <td>{{"<". $to_last_name.">".$to->work_email}}</td>
                                     <td>{{ $cc }}</td>
                                     <td>{{ $company_email->date }}</td>
                                     <td>{{ $company_email->subject }}</td>

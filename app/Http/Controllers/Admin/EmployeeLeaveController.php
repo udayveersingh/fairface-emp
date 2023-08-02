@@ -11,6 +11,8 @@ use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
+use App\Notifications\EmployeeLeaveApprovedNotification;
+use App\Notifications\NewLeaveNotification;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeLeaveController extends Controller
@@ -66,7 +68,7 @@ class EmployeeLeaveController extends Controller
             'reason' => 'required',
             'timesheet_status' => $timesheet_status_field
         ]);
-        Leave::create([
+      $leave = Leave::create([
             'leave_type_id' => $request->leave_type,
             'employee_id' => $employee_id,
             'supervisor_id' => $request->supervisor,
@@ -79,6 +81,7 @@ class EmployeeLeaveController extends Controller
             'status_reason' => $request->status_reason,
             'approved_date_time' => $request->approved_date_time,
         ]);
+        $leave->notify(new NewLeaveNotification($leave)); 
         $notification = notify("Employee leave has been added");
         return back()->with($notification);
     }
@@ -159,6 +162,8 @@ class EmployeeLeaveController extends Controller
         $employee_leave_status->status_reason = $request->input('status_reason');
         $employee_leave_status->approved_date_time =  $date;
         $employee_leave_status->save();
+
+        $employee_leave_status->notify(new EmployeeLeaveApprovedNotification($employee_leave_status)); 
         return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
     }
 }

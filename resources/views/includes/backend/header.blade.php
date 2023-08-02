@@ -31,16 +31,21 @@
         <!-- Notifications -->
         <li class="nav-item dropdown">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <i class="fa fa-bell-o"></i> <span class="badge badge-pill">{{auth()->user()->notifications->count()}}</span>
+                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                <i class="fa fa-bell-o"></i><span class="badge badge-pill">{{count(getNewNotification())}}</span>
+                @else
+                <i class="fa fa-bell-o"></i><span class="badge badge-pill"></span>
+                @endif
+                {{-- {{auth()->user()->notifications->count()}} --}}
             </a>
             <div class="dropdown-menu notifications">
                 <div class="topnav-dropdown-header">
                     <span class="notification-title">Notifications</span>
-                    <a href="{{route('clear-all')}}" class="clear-noti"> Clear All </a>
+                    <a href="{{route('clear-all')}}" class="clear-noti"> Clear All</a>
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
-                        @foreach (auth()->user()->unreadNotifications as $notification)
+                        {{-- @foreach (auth()->user()->unreadNotifications as $notification)
                             <li class="notification-message">
                                 <a href="{{route('activity')}}">
                                     <div class="media">
@@ -55,7 +60,30 @@
                                     </div>
                                 </a>
                             </li>
-                        @endforeach
+                        @endforeach --}}
+                    @foreach(getNewLeaveNotifiaction() as $notification)
+					@php
+						$leave = App\Models\Leave::with('leaveType','employee', 'time_sheet_status')->find($notification->leave);
+						$emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname:'';
+						$emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname:'';
+						$emp_full_name = $emp_first_name." ".$emp_last_name;
+					@endphp
+					 <li class="notification-message">
+                        <a href="{{route('activity')}}">
+                            <div class="media">
+                                <span class="avatar">
+                                    <img src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                </span>
+                                <div class="media-body">
+                                    <p class="noti-details"><span class="noti-title">{{ucfirst($emp_full_name)}}</span>
+                                         <span class="noti-title">added new casual leave.</span></p>
+                                    <p class="noti-time"><span class="notification-time">{{$leave->created_at->diffForHumans()}}</span></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+					@endforeach
+
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">

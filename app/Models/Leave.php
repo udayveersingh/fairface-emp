@@ -7,9 +7,11 @@ use App\Models\LeaveType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
 
 class Leave extends Model
 {
+    use Notifiable;
     use HasFactory,SoftDeletes;
 
     protected $fillable = [

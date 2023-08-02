@@ -2,12 +2,14 @@
 
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
+use App\Models\Leave;
 use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 if (!function_exists('getSupervisor')) {
     function getSupervisor()
@@ -71,4 +73,30 @@ if(!function_exists('getLeaveStatus'))
     }
 }
 
+//new leave notifiaction
+if(!function_exists('getNewLeaveNotifiaction'))
+{
+    function getNewLeaveNotifiaction()
+    {
+        $new_leave_notifi=[];
+        $new_leave_notifiactions =  DB::table('notifications')->where('type','=','App\Notifications\newLeaveNotification')->get();
+        foreach($new_leave_notifiactions as $index=>$notification)
+        {
+           $new_leave_notifi[$index] = json_decode($notification->data);
+        }
+        return $new_leave_notifi;
+        // $leave=[];
+        // foreach($new_leave_notifi as $index=>$value){
+        //  return $leave[$index] = Leave::with('leaveType','employee', 'time_sheet_status')->find($value->leave);
+        // }
+    }
+}
 
+
+//new notifiaction admin side 
+if(!function_exists('getNewNotification')){
+    function getNewNotification()
+    {
+         return DB::table('notifications')->get();
+    }
+}

@@ -22,20 +22,29 @@
 		<div class="activity">
 			<div class="activity-box">
 				<ul class="activity-list">
+                    {{-- @dd(getNewLeaveNotifiaction()); --}}
+					@foreach(getNewLeaveNotifiaction() as $notification)
+					@php
+						$leave = App\Models\Leave::with('leaveType','employee', 'time_sheet_status')->find($notification->leave);
+						$emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname:'';
+						$emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname:'';
+						$emp_full_name = $emp_first_name." ".$emp_last_name;
+					@endphp
 					<li>
 						<div class="activity-user">
 							<a href="profile.html" title="Lesley Grauer" data-toggle="tooltip" class="avatar">
-								<img src="assets/img/profiles/avatar-01.jpg" alt="">
+								<img src="{{!empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}" alt="">
 							</a>
 						</div>
 						<div class="activity-content">
 							<div class="timeline-content">
-								<a href="profile.html" class="name">Lesley Grauer</a> added new task <a href="#">Hospital Administration</a>
-								<span class="time">4 mins ago</span>
+								<a href="" class="name">{{ucfirst($emp_full_name)}}</a> added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:''}} on date from {{$notification->from_date}} to {{$notification->to_date}}
+								<span class="time">{{$leave->created_at->diffForHumans()}}</span>
 							</div>
 						</div>
 					</li>
-					<li>
+					@endforeach
+					{{-- <li>
 						<div class="activity-user">
 							<a href="profile.html" class="avatar" title="Jeffery Lalor" data-toggle="tooltip">
 								<img src="assets/img/profiles/avatar-16.jpg" alt="">
@@ -99,7 +108,7 @@
 								<span class="time">7 days ago</span>
 							</div>
 						</div>
-					</li>
+					</li> --}}
 				</ul>
 			</div>
 		</div>
