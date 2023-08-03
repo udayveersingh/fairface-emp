@@ -21,8 +21,10 @@
 	<div class="col-md-12">
 		<div class="activity">
 			<div class="activity-box">
+
 				<ul class="activity-list">
                     {{-- @dd(getNewLeaveNotifiaction()); --}}
+					@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
 					@foreach(getNewLeaveNotifiaction() as $notification)
 					@php
 						$leave = App\Models\Leave::with('leaveType','employee', 'time_sheet_status')->find($notification->leave);
@@ -44,6 +46,7 @@
 						</div>
 					</li>
 					@endforeach
+					@endif
 					{{-- <li>
 						<div class="activity-user">
 							<a href="profile.html" class="avatar" title="Jeffery Lalor" data-toggle="tooltip">

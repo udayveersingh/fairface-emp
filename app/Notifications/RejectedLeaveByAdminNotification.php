@@ -8,9 +8,10 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class EmployeeLeaveApprovedNotification extends Notification
+class RejectedLeaveByAdminNotification extends Notification
 {
     use Queueable;
+
     public $leave_status;
 
     /**
@@ -21,6 +22,8 @@ class EmployeeLeaveApprovedNotification extends Notification
     public function __construct($leave_status)
     {
         $this->leave_status = $leave_status;
+
+        dd($leave_status);
     }
 
     /**

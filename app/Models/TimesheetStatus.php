@@ -14,4 +14,5 @@ class TimesheetStatus extends Model
     const PENDING_APPROVED = 'pending approval';
     const APPROVED = 'approved';
     const SUBMITTED = 'submitted';
+    const REJECTED = 'rejected';
 }

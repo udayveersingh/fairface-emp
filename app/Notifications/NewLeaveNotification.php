@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class NewLeaveNotification extends Notification
 {
@@ -63,6 +64,7 @@ class NewLeaveNotification extends Notification
             'subject' => $this->leave['reason'],
             'from_date' => $this->leave['from'],
             'to_date' => $this->leave['to'],
+            'user_id' => Auth::user()->id,
         ];
     }
 }
