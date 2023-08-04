@@ -8,20 +8,19 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class SendTimesheetNotificationToAdmin extends Notification
+class RejectedTimesheetByAdminNotification extends Notification
 {
     use Queueable;
-
-    public $emp_timesheet;
+    public $notification_message;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($emp_timesheet)
+    public function __construct($notification_message)
     {
-        $this->emp_timesheet = $emp_timesheet;
+        $this->notification_message = $notification_message;
     }
 
     /**
@@ -44,9 +43,9 @@ class SendTimesheetNotificationToAdmin extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->emp_timesheet['timesheet_id'])
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        ->line($this->notification_message['message'])
+        ->action('Notification Action', url('/'))
+        ->line('Thank you for using our application!');
     }
 
     /**
@@ -58,12 +57,12 @@ class SendTimesheetNotificationToAdmin extends Notification
     public function toArray($notifiable)
     {
         return [
-            'from' => $this->emp_timesheet['employee_id'],
-            'to' => $this->emp_timesheet['supervisor_id'],
-            'from_date' => $this->emp_timesheet['start_date'],
-            'to_date' => $this->emp_timesheet['end_date'],
+            'from' => $this->notification_message['from'],
+            'to' => $this->notification_message['to'],
+            'message' => $this->notification_message['message'],
+            'approved_date_time' =>$this->notification_message['approved_date_time'],
             'user_id' => Auth::user()->id,
-            'created_at' =>date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
         ];
     }
 }

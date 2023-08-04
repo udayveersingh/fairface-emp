@@ -52,6 +52,7 @@ use App\Http\Controllers\Admin\JobTitleController;
 use App\Http\Controllers\Admin\ProjectPhaseController;
 use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
+use App\Http\Controllers\AnnoucementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +139,11 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('visa-type',[VisaController::class,'store']);
     Route::put('visa-type',[VisaController::class,'update']);
     Route::delete('visa-type',[VisaController::class,'destroy'])->name('visa.destroy');
+
+    Route::get('announcement',[AnnoucementController::class,'index'])->name('announcement');
+    Route::post('announcement',[AnnoucementController::class,'store']);
+    Route::put('announcement',[AnnoucementController::class,'update']);
+    Route::delete('announcement',[AnnoucementController::class,'destroy'])->name('announcement.destroy');
 
     Route::get('employee/emergency-contact/{id}',[EmployeeEmergencyContactController::class,'index'])->name('emergency-contact');
     Route::post('employee/emergency-contact',[EmployeeEmergencyContactController::class,'store'])->name('emergency-contact.store');

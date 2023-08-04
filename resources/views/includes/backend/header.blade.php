@@ -49,7 +49,7 @@
                     <input type="hidden" name="notification" id="notifiactions" value="{{getNewNotification()}}">
                     <button type="submit" class="clear-noti" style="line-height:none">Clear All</button>
                     </form> --}}
-                    <a href="{{route('clear-all')}}" class="clear-noti"> Clear All</a>
+                    <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a>
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list">
@@ -97,6 +97,33 @@
                                     </a>
                                 </li>
                             @endforeach
+                            @foreach (sendNewTimeSheetNotifiaction() as $notification)
+                                @php
+                                    $employee = App\Models\Employee::find($notification->from);
+                                    $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
+                                    $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
+                                    $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
+                                @endphp
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img
+                                                    src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">{{ $emp_full_name }}</span>
+                                                    <span class="noti-title">added new TimeSheet.</span>
+                                                </p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
                         @else
                             @foreach (getEmployeeLeaveApprovedNotification() as $notification)
                                 <li class="notification-message">
@@ -117,25 +144,64 @@
                                     </a>
                                 </li>
                             @endforeach
-                            @foreach(getRejectedLeaveByAdminNotification() as $notification)
-                            <li class="notification-message">
-                                <a href="{{ route('activity')}}">
-                                    <div class="media">
-                                        <span class="avatar">
-                                            <img
-                                                src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
-                                        </span>
-                                        <div class="media-body">
-                                            <p class="noti-details"><span
-                                                    class="noti-title">{{ $notification->message }}</span>
-                                                <span class="noti-title"></span>
-                                            </p>
-                                            <p class="noti-time"><span class="notification-time"></span></p>
+                            @foreach (getRejectedLeaveByAdminNotification() as $notification)
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">{{ $notification->message }}</span>
+                                                    <span class="noti-title"></span>
+                                                </p>
+                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </a>
-                            </li>
+                                    </a>
+                                </li>
                             @endforeach
+
+                            @foreach (getEmployeeTimesheetApprovedNotification() as $notification)
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">{{ $notification->message }}</span>
+                                                    <span class="noti-title"></span>
+                                                </p>
+                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                            @foreach (getEmployeeTimesheetRejectedNotification() as $notification)
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">{{ $notification->message }}</span>
+                                                    <span class="noti-title"></span>
+                                                </p>
+                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach()
                         @endif
                     </ul>
                 </div>

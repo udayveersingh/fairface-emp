@@ -149,18 +149,46 @@ if (!function_exists('getRejectedLeaveByAdminNotification')) {
 }
 
 //new leave notifiaction
-if (!function_exists('getNewTimeSheetNotifiaction')) {
-    function getNewTimeSheetNotifiaction()
+if (!function_exists('sendNewTimeSheetNotifiaction')) {
+    function sendNewTimeSheetNotifiaction()
     {
         $new_timesheet_notifi = [];
-        $new_timesheet_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\newLeaveNotification')->whereNull('read_at')->get();
-        foreach ($new_timesheet_notifiactions as $index => $notification) {
+        $new_timesheet_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\SendTimesheetNotificationToAdmin')->whereNull('read_at')->get();
+        foreach ($new_timesheet_notifications as $index => $notification) {
             $new_timesheet_notifi[$index] = json_decode($notification->data);
         }
         return $new_timesheet_notifi;
-        // $leave=[];
-        // foreach($new_leave_notifi as $index=>$value){
-        //  return $leave[$index] = Leave::with('leaveType','employee', 'time_sheet_status')->find($value->leave);
-        // }
     }
 }
+
+
+//notification of Timesheet approved by admin
+if (!function_exists('getEmployeeTimesheetApprovedNotification')) {
+    function getEmployeeTimesheetApprovedNotification()
+    {
+        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $leave_approved_notifi = [];
+        $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\ApprovedTimesheetByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
+        foreach ($leave_approved_notifiactions as $index => $notification) {
+            $leave_approved_notifi[$index] = json_decode($notification->data);
+        }
+        return $leave_approved_notifi;
+    }
+}
+
+//notification of Timesheet Rejected by admin
+if (!function_exists('getEmployeeTimesheetRejectedNotification')) {
+    function getEmployeeTimesheetRejectedNotification()
+    {
+        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $leave_approved_notifi = [];
+        $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\RejectedTimesheetByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
+        foreach ($leave_approved_notifiactions as $index => $notification) {
+            $leave_approved_notifi[$index] = json_decode($notification->data);
+        }
+        return $leave_approved_notifi;
+    }
+}
+
+
+

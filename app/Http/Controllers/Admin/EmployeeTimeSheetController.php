@@ -13,6 +13,8 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Settings\CompanySettings;
 use App\Models\TimesheetStatus;
+use App\Notifications\ApprovedTimesheetByAdminNotification;
+use App\Notifications\RejectedTimesheetByAdminNotification;
 use App\Notifications\SendTimesheetNotificationToAdmin;
 use DateInterval;
 use DatePeriod;
@@ -183,8 +185,6 @@ class EmployeeTimeSheetController extends Controller
                 }
                  $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
 
-
-
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
             $this->validate($request, [
@@ -245,7 +245,23 @@ class EmployeeTimeSheetController extends Controller
               $employee_timesheet->status_reason = $request->input('status_reason');
               $employee_timesheet->save();
             }
-        }   
+        } 
+        $timesheet_status = TimesheetStatus::find($request->timesheet_status);
+        $employee_timesheet = EmployeeTimesheet::with('employee')->where('employee_id', '=', $request->emp_id)->where('start_date', '=',$request->start_date)->where('end_date','=',$request->end_date)->first();
+        $notification_message = ([
+            'to'   => $employee_timesheet->employee_id,
+            'from' => $employee_timesheet->supervisor_id,
+            'timesheet_id' => $employee_timesheet->timesheet_id,
+            'message' => 'Your' ." ".'TimeSheet has been' . " " . $timesheet_status->status . " " . 'by Admin' . " " . ucfirst(Auth::user()->name),
+            'approved_date_time' => $employee_timesheet->approved_date_time,
+            'start_date' => $employee_timesheet->start_date,
+            'end_date' => $employee_timesheet->end_date,
+        ]); 
+        if ($timesheet_status->status == TimesheetStatus::APPROVED) {
+            $employee_timesheet->notify(new ApprovedTimesheetByAdminNotification($notification_message));
+        } elseif ($timesheet_status->status == TimesheetStatus::REJECTED) {
+            $employee_timesheet->notify(new RejectedTimesheetByAdminNotification($notification_message));
+        }
 
         return back()->with('success', "Employee TimeSheet status has been updated successfully!!.");
     }
