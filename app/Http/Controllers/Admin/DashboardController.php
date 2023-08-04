@@ -8,8 +8,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\EmployeeLeave;
 use App\Models\EmployeeProject;
+use App\Models\EmployeeTimesheet;
 use App\Models\Leave;
+use App\Models\Project;
 use App\Models\Role;
+use App\Models\TimesheetStatus;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -19,10 +22,27 @@ class DashboardController extends Controller
         $title = 'Dashboard';
         $clients_count = Client::count();
         $employee_count = Employee::count();
+        $project_count =Project::count();
+        $timesheet_approval_count = EmployeeTimesheet::whereHas('timesheet_status', function ($q) {
+            $q->where('status', '=',TimesheetStatus::APPROVED);
+        })->count();
+
+        $timesheet_pending_app_count = EmployeeTimesheet::whereHas('timesheet_status', function ($q) {
+            $q->where('status', '=',TimesheetStatus::PENDING_APPROVED);
+        })->count();
+
+        $timesheet_rejected_count = EmployeeTimesheet::whereHas('timesheet_status', function ($q) {
+            $q->where('status', '=',TimesheetStatus::REJECTED);
+        })->count();
+
         return view('backend.dashboard', compact(
             'title',
             'clients_count',
-            'employee_count'
+            'employee_count',
+            'project_count',
+            'timesheet_approval_count',
+            'timesheet_pending_app_count',
+            'timesheet_rejected_count'
         ));
     }
 
@@ -33,7 +53,10 @@ class DashboardController extends Controller
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $employee_projects = EmployeeProject::where('employee_id', '=', $employee->id)->get();
             $employee_leaves = Leave::where('employee_id','=',$employee->id)->where('timesheet_status_id','!=',2)->get();
-            return view('includes.frontend.employee-dashboard', compact('title', 'employee','employee_projects','employee_leaves'));
+            $timesheet_submitted_count = EmployeeTimesheet::where('employee_id','=',$employee->id)->whereHas('timesheet_status', function ($q) {
+                $q->where('status', '=',TimesheetStatus::SUBMITTED);
+            })->count();
+            return view('includes.frontend.employee-dashboard', compact('title', 'employee','employee_projects','employee_leaves','timesheet_submitted_count'));
         }
     }
 }

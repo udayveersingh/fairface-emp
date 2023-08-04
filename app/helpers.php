@@ -4,6 +4,7 @@ use App\Models\Employee;
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
 use App\Models\Leave;
+use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
@@ -25,6 +26,13 @@ if (!function_exists('getEmployee')) {
     function getEmployee()
     {
         return Role::where('name', '!=', Role::SUPERADMIN)->get();
+    }
+}
+
+if (!function_exists('getProject')) {
+    function getProject()
+    {
+        return Project::get();
     }
 }
 
