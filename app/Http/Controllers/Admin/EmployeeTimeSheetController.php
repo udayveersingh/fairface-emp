@@ -13,6 +13,7 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Settings\CompanySettings;
 use App\Models\TimesheetStatus;
+use App\Notifications\SendTimesheetNotificationToAdmin;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -180,6 +181,10 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet->end_date = $end_date;
                     $emp_timesheet->save();
                 }
+                 $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
+
+
+
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
             $this->validate($request, [

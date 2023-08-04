@@ -37,7 +37,7 @@ class EmployeeLeaveController extends Controller
         $employees = Employee::get();
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
-        return view('backend.employee-leaves', compact('title','leaves','leave_types','employees','projects','timesheet_statuses','project_phases'));
+        return view('backend.employee-leaves', compact('title', 'leaves', 'leave_types', 'employees', 'projects', 'timesheet_statuses', 'project_phases'));
     }
 
     /**
@@ -51,7 +51,7 @@ class EmployeeLeaveController extends Controller
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
-            $timesheet_status = TimesheetStatus::where('status','pending approval')->first();
+            $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
             $timesheet_status_field = 'nullable';
@@ -69,7 +69,7 @@ class EmployeeLeaveController extends Controller
             'reason' => 'required',
             'timesheet_status' => $timesheet_status_field
         ]);
-      $leave = Leave::create([
+        $leave = Leave::create([
             'leave_type_id' => $request->leave_type,
             'employee_id' => $employee_id,
             'supervisor_id' => $request->supervisor,
@@ -82,7 +82,7 @@ class EmployeeLeaveController extends Controller
             'status_reason' => $request->status_reason,
             'approved_date_time' => $request->approved_date_time,
         ]);
-        $leave->notify(new NewLeaveNotification($leave)); 
+        $leave->notify(new NewLeaveNotification($leave));
         $notification = notify("Employee leave has been added");
         return back()->with($notification);
     }
@@ -100,7 +100,7 @@ class EmployeeLeaveController extends Controller
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
-            $timesheet_status = TimesheetStatus::where('status','pending approval')->first();
+            $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
             $timesheet_status_field = 'nullable';
@@ -132,7 +132,7 @@ class EmployeeLeaveController extends Controller
             'status_reason' => $request->status_reason,
             'timesheet_status_id' => $timesheet_status_id,
             'approved_date_time' => $request->approved_date_time,
-            
+
         ]);
         $notification = notify("Employee leave has been updated");;
         return back()->with($notification);
@@ -158,32 +158,26 @@ class EmployeeLeaveController extends Controller
             'timesheet_status' => 'required',
         ]);
         $date = date('Y-m-d');
-        $employee_leave_status = Leave::with('leaveType','time_sheet_status')->find($request->id);
+        $employee_leave_status = Leave::with('leaveType', 'time_sheet_status')->find($request->id);
         $employee_leave_status->timesheet_status_id =  $request->input('timesheet_status');
         $employee_leave_status->status_reason = $request->input('status_reason');
-        $employee_leave_status->approved_date_time =  $date;
-        //  $timesheet_status = TimesheetStatus::find($employee_leave_status->time_sheet_status->id);
-        //  if($timesheet_status->status == TimesheetStatus::APPROVED){
-            //      $employee_leave_status->notify(new EmployeeLeaveApprovedNotification($leave_status)); 
-            //  }elseif($timesheet_status->status == TimesheetStatus::REJECTED){
-                //     $employee_leave_status->notify(new RejectedLeaveByAdminNotification($leave_status));
-                //  }            
-                $employee_leave_status->save();
-                $leave_status = ([
-                         'to'   => $employee_leave_status->employee_id,
-                         'from' => $employee_leave_status->supervisor_id,
-                         'leave_id' => $employee_leave_status->id,
-                         'message' => 'your'." ".$employee_leave_status->leaveType->type." ".'has been'." ".'approved by'." ". ucfirst(Auth::user()->name),
-                         'type' => $employee_leave_status->leaveType->type,
-                         'approved_date_time' => $employee_leave_status->approved_date_time
-                         ]);
-                //  $timesheet_status = TimesheetStatus::find($employee_leave_status->time_sheet_status->id);
-                //  if($timesheet_status->status == TimesheetStatus::APPROVED){
-                     $employee_leave_status->notify(new EmployeeLeaveApprovedNotification($leave_status)); 
-                //  }
-                //  elseif($timesheet_status->status == TimesheetStatus::REJECTED){
-                //     $employee_leave_status->notify(new RejectedLeaveByAdminNotification($leave_status));
-                //  }     
+        $employee_leave_status->approved_date_time =  $date;   
+        $timesheet_status = TimesheetStatus::find($request->timesheet_status);
+        
+        $leave_status = ([
+            'to'   => $employee_leave_status->employee_id,
+            'from' => $employee_leave_status->supervisor_id,
+            'leave_id' => $employee_leave_status->id,
+            'message' => 'your' . " " . $employee_leave_status->leaveType->type . " " . 'has been' . " " . $timesheet_status->status . " " . 'by' . " " . ucfirst(Auth::user()->name),
+            'type' => $employee_leave_status->leaveType->type,
+            'approved_date_time' => $employee_leave_status->approved_date_time
+        ]);
+        if ($timesheet_status->status == TimesheetStatus::APPROVED) {
+            $employee_leave_status->notify(new EmployeeLeaveApprovedNotification($leave_status));
+        } elseif ($timesheet_status->status == TimesheetStatus::REJECTED) {
+            $employee_leave_status->notify(new RejectedLeaveByAdminNotification($leave_status));
+        }
+        $employee_leave_status->save();
         return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
     }
 }

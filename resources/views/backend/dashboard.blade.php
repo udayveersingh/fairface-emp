@@ -174,7 +174,7 @@
                             <span class="d-block">Total Submitted Time sheet Past Month</span>
                         </div>
                     </div>
-                    <p class="mb-0"><h4>10</h4></p>
+                    <p class="mb-0"><h4>{{$timesheet_submitted_count}}</h4></p>
                 </div>
             </div>
         

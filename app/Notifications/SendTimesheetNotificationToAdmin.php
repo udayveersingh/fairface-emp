@@ -8,20 +8,20 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class RejectedLeaveByAdminNotification extends Notification
+class SendTimesheetNotificationToAdmin extends Notification
 {
     use Queueable;
 
-    public $leave_status;
+    public $emp_timesheet;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($leave_status)
+    public function __construct($emp_timesheet)
     {
-        $this->leave_status = $leave_status;
+        $this->emp_timesheet = $emp_timesheet;
     }
 
     /**
@@ -44,7 +44,7 @@ class RejectedLeaveByAdminNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->leave_status['type'])
+                    ->line($this->emp_timesheet['timesheet_id'])
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
@@ -58,10 +58,10 @@ class RejectedLeaveByAdminNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'from' => $this->leave_status['from'],
-            'to' => $this->leave_status['to'],
-            'message' => $this->leave_status['message'],
-            'approved_date_time' =>$this->leave_status['approved_date_time'],
+            'from' => $this->emp_timesheet['employee_id'],
+            'to' => $this->emp_timesheet['supervisor_id'],
+            'from_date' => $this->emp_timesheet['start_date'],
+            'to_date' => $this->emp_timesheet['end_date'],
             'user_id' => Auth::user()->id,
         ];
     }

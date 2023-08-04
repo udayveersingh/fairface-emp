@@ -37,7 +37,7 @@
                     {{-- @dd(getNewNotification()) --}}
                 @else
                     <i class="fa fa-bell-o"></i><span
-                        class="badge badge-pill">{{ count(getEmployeeLeaveApprovedNotification()) }}</span>
+                        class="badge badge-pill">{{ count(getEmployeeNewNotification()) }}</span>
                 @endif
                 {{-- {{auth()->user()->notifications->count()}} --}}
             </a>

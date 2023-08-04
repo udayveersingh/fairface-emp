@@ -83,9 +83,25 @@ if (!function_exists('getLeaveStatus')) {
 if (!function_exists('getNewNotification')) {
     function getNewNotification()
     {
-        return DB::table('notifications')->whereNull('read_at')->get();
+        $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
+            $q->where('name', '=', Role::SUPERADMIN);
+        })->first();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',$user->id)->get();
     }
 }
+
+
+//get new notification employee side 
+if (!function_exists('getEmployeeNewNotification')) {
+    function getEmployeeNewNotification()
+    {
+        $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
+            $q->where('name', '!=', Role::SUPERADMIN);
+        })->first();
+          return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',$user->id)->get();
+    }
+}
+
 
 //new leave notifiaction
 if (!function_exists('getNewLeaveNotifiaction')) {
@@ -110,7 +126,7 @@ if (!function_exists('getEmployeeLeaveApprovedNotification')) {
     {
         $employee = Employee::where('user_id','=',Auth::user()->id)->first();
         $leave_approved_notifi = [];
-        $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\EmployeeLeaveApprovedNotification')->whereNull('read_at')->whereJsonContains('data->to', $employee->id)->get();
+        $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\EmployeeLeaveApprovedNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_approved_notifiactions as $index => $notification) {
             $leave_approved_notifi[$index] = json_decode($notification->data);
         }
@@ -124,10 +140,27 @@ if (!function_exists('getRejectedLeaveByAdminNotification')) {
     {
         $employee = Employee::where('user_id','=',Auth::user()->id)->first();
         $leave_rejected_notifi = [];
-        $leave_rejected_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\RejectedLeaveByAdminNotification')->whereNull('read_at')->whereJsonContains('data->to', $employee->id)->get();
+        $leave_rejected_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\RejectedLeaveByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_rejected_notifications as $index => $notification) {
             $leave_rejected_notifi[$index] = json_decode($notification->data);
         }
         return $leave_rejected_notifi;
+    }
+}
+
+//new leave notifiaction
+if (!function_exists('getNewTimeSheetNotifiaction')) {
+    function getNewTimeSheetNotifiaction()
+    {
+        $new_timesheet_notifi = [];
+        $new_timesheet_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\newLeaveNotification')->whereNull('read_at')->get();
+        foreach ($new_timesheet_notifiactions as $index => $notification) {
+            $new_timesheet_notifi[$index] = json_decode($notification->data);
+        }
+        return $new_timesheet_notifi;
+        // $leave=[];
+        // foreach($new_leave_notifi as $index=>$value){
+        //  return $leave[$index] = Leave::with('leaveType','employee', 'time_sheet_status')->find($value->leave);
+        // }
     }
 }

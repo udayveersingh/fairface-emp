@@ -13,6 +13,7 @@ use App\Models\Leave;
 use App\Models\Project;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
@@ -35,6 +36,10 @@ class DashboardController extends Controller
             $q->where('status', '=',TimesheetStatus::REJECTED);
         })->count();
 
+        $timesheet_submitted_count = EmployeeTimesheet::where('created_at', '>=', Carbon::now()->subMonth()->toDateTimeString())->whereHas('timesheet_status',function ($q){
+            $q->where('status','=',TimesheetStatus::SUBMITTED);
+        })->count();
+
         return view('backend.dashboard', compact(
             'title',
             'clients_count',
@@ -42,7 +47,8 @@ class DashboardController extends Controller
             'project_count',
             'timesheet_approval_count',
             'timesheet_pending_app_count',
-            'timesheet_rejected_count'
+            'timesheet_rejected_count',
+            'timesheet_submitted_count'
         ));
     }
 
@@ -53,7 +59,7 @@ class DashboardController extends Controller
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $employee_projects = EmployeeProject::where('employee_id', '=', $employee->id)->get();
             $employee_leaves = Leave::where('employee_id','=',$employee->id)->where('timesheet_status_id','!=',2)->get();
-            $timesheet_submitted_count = EmployeeTimesheet::where('employee_id','=',$employee->id)->whereHas('timesheet_status', function ($q) {
+            $timesheet_submitted_count = EmployeeTimesheet::where('employee_id','=',$employee->id)->where( 'created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString())->whereHas('timesheet_status', function ($q) {
                 $q->where('status', '=',TimesheetStatus::SUBMITTED);
             })->count();
             return view('includes.frontend.employee-dashboard', compact('title', 'employee','employee_projects','employee_leaves','timesheet_submitted_count'));
