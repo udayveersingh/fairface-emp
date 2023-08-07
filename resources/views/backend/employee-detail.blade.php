@@ -236,7 +236,7 @@
                                                         <label>Role<span class="text-danger">*</span></label>
                                                         <select name="role_id" class="form-control">
                                                             <option value="">Select to</option>
-                                                            @foreach (getEmployee() as $role)
+                                                            @foreach (getEmployeeRole() as $role)
                                                             @php
                                                                 $role_id ="";
                                                                 if(!empty($employee->user->role_id)){
@@ -428,7 +428,7 @@
                                     $role_id = old('role_id');
                                 }
                               @endphp
-                                @foreach (getEmployee() as $role)
+                                @foreach (getEmployeeRole() as $role)
                                     <option value="{{ $role->id }}" {{old('role_id', $role_id) ? 'selected' : '' }}>
                                         {{ $role->name }}
                                     </option>

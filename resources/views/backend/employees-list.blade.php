@@ -328,7 +328,7 @@
                                     <label>Role<span class="text-danger">*</span></label>
                                     <select name="role_id" id="role_id" class="form-control">
                                         <option value="">Select to</option>
-                                        @foreach (getEmployee() as $role)
+                                        @foreach (getEmployeeRole() as $role)
                                             <option value="{{ $role->id }}">
                                                 {{ $role->name }}
                                             </option>

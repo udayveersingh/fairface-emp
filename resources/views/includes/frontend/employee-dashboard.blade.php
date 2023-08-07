@@ -97,14 +97,16 @@
                         <div class="dash-info-list">
                             <a href="#" class="dash-card">
                                 <div class="row">
+                                    @foreach (getAnnouncement() as $announcement)
                                     <div class="col-6">
                                         <div class="dash-card-content">
                                             <div class="dash-card-icon">
                                                 <i class="fa fa-suitcase"></i>
                                             </div>
-                                            <p>You are away today</p>
+                                            <p>{{$announcement->description}}</p>
                                         </div>
-                                    </div>
+                                    </div> 
+                                    @endforeach
                                     <div class="col-6 text-right">
                                         <div class="">
                                             <span class="badge bg-inverse-success">Annoucement</span>

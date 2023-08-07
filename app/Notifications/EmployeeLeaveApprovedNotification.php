@@ -62,6 +62,7 @@ class EmployeeLeaveApprovedNotification extends Notification
             'message' => $this->leave_status['message'],
             'approved_date_time' =>$this->leave_status['approved_date_time'],
             'user_id' => Auth::user()->id,
+            'created_at' =>date('Y-m-d H:i:s'),
         ];
     }
 }

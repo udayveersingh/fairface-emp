@@ -8,20 +8,19 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class RejectedLeaveByAdminNotification extends Notification
+class NewAnnouncementByAdminNotification extends Notification
 {
     use Queueable;
-
-    public $leave_status;
+    public $annoucement;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($leave_status)
+    public function __construct($annoucement)
     {
-        $this->leave_status = $leave_status;
+        $this->annoucement = $annoucement;
     }
 
     /**
@@ -44,7 +43,7 @@ class RejectedLeaveByAdminNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->leave_status['type'])
+                    ->line($this->annoucement['description'])
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
@@ -58,12 +57,10 @@ class RejectedLeaveByAdminNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'from' => $this->leave_status['from'],
-            'to' => $this->leave_status['to'],
-            'message' => $this->leave_status['message'],
-            'approved_date_time' =>$this->leave_status['approved_date_time'],
+            'from' => Auth::user()->id,
+            'message' => $this->annoucement['description'],
             'user_id' => Auth::user()->id,
-            'created_at' =>date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
         ];
     }
 }

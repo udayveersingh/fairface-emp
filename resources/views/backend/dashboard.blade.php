@@ -56,7 +56,7 @@
             <div class="card-body">
                 <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                 <div class="dash-widget-info">
-                    <h3>{{$clients_count}}</h3>
+                    <h3>{{count(getNewAnnouncementNotification())}}</h3>
                     <span>Annoucements</span>
                 </div>
             </div>

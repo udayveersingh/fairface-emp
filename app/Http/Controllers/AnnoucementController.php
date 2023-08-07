@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Annoucement;
+use App\Models\Employee;
+use App\Notifications\NewAnnouncementByAdminNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AnnoucementController extends Controller
 {
@@ -16,7 +19,8 @@ class AnnoucementController extends Controller
     {
         $title = 'Annoucement';
         $announcements = Annoucement::latest()->get();
-        return view('backend.announcement',compact('title','announcements'));
+        $employees= Employee::where('user_id','!=',Auth::user()->id)->get();
+        return view('backend.announcement',compact('title','announcements','employees'));
     }
 
     /**
@@ -41,11 +45,13 @@ class AnnoucementController extends Controller
             'announcement' => 'required',
             'status'=> 'required',
         ]);
-    
+        
         $annoucement = new Annoucement();
         $annoucement->description = $request->input('announcement');
         $annoucement->status = $request->input('status');
+        $annoucement->user_id = Auth::user()->id;
         $annoucement->save();
+        $annoucement->notify(new NewAnnouncementByAdminNotification($annoucement));
         return back()->with('success',"Announcement has been added");    
     }
 

@@ -65,6 +65,7 @@ class NewLeaveNotification extends Notification
             'from_date' => $this->leave['from'],
             'to_date' => $this->leave['to'],
             'user_id' => Auth::user()->id,
+            'created_at' =>date('Y-m-d H:i:s'),
         ];
     }
 }

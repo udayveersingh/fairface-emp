@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Annoucement;
 use App\Models\Employee;
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
@@ -22,12 +23,17 @@ if (!function_exists('getSupervisor')) {
     }
 }
 
-if (!function_exists('getEmployee')) {
-    function getEmployee()
+if (!function_exists('getEmployeeRole')) {
+    function getEmployeeRole()
     {
         return Role::where('name', '!=', Role::SUPERADMIN)->get();
     }
 }
+
+
+
+
+
 
 if (!function_exists('getProject')) {
     function getProject()
@@ -35,8 +41,6 @@ if (!function_exists('getProject')) {
         return Project::get();
     }
 }
-
-
 
 if (!function_exists('getProjectPhase')) {
     function getProjectPhase()
@@ -79,6 +83,14 @@ if (!function_exists('getLeaveStatus')) {
     }
 }
 
+//get announcements
+if (!function_exists('getAnnouncement')) {
+    function getAnnouncement()
+    {
+        return Annoucement::where('status', '=',Annoucement::ACTIVE)->get();
+    }
+}
+
 //new notifiaction admin side 
 if (!function_exists('getNewNotification')) {
     function getNewNotification()
@@ -86,7 +98,7 @@ if (!function_exists('getNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',$user->id)->get();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',!empty($user->id) ? $user->id:'' )->get();
     }
 }
 
@@ -189,6 +201,21 @@ if (!function_exists('getEmployeeTimesheetRejectedNotification')) {
         return $leave_approved_notifi;
     }
 }
+
+
+//notification of announcement
+if(!function_exists('getNewAnnouncementNotification')){
+    function getNewAnnouncementNotification()
+    {
+        $announcement_notifi = [];
+        $announcement_notifications = DB::Table('notifications')->where('type','=','App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->get();
+        foreach ($announcement_notifications as $index => $notification) {
+            $announcement_notifi[$index] = json_decode($notification->data);
+        }
+        return $announcement_notifi;
+    }
+}
+
 
 
 

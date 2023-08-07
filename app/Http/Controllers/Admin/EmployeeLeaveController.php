@@ -168,7 +168,7 @@ class EmployeeLeaveController extends Controller
             'to'   => $employee_leave_status->employee_id,
             'from' => $employee_leave_status->supervisor_id,
             'leave_id' => $employee_leave_status->id,
-            'message' => 'your' . " " . $employee_leave_status->leaveType->type . " " . 'has been' . " " . $timesheet_status->status . " " . 'by' . " " . ucfirst(Auth::user()->name),
+            'message' => 'Your' . " " . $employee_leave_status->leaveType->type . " " . 'has been' . " " . $timesheet_status->status . " " . 'by Admin' . " " . ucfirst(Auth::user()->name),
             'type' => $employee_leave_status->leaveType->type,
             'approved_date_time' => $employee_leave_status->approved_date_time
         ]);

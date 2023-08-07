@@ -202,6 +202,25 @@
                                     </a>
                                 </li>
                             @endforeach()
+
+                            @foreach (getNewAnnouncementNotification() as $notification)
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img src="{{ asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">'{{ $notification->message }}' By Admin.</span>
+                                                    <span class="noti-title"></span>
+                                                </p>
+                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
                         @endif
                     </ul>
                 </div>
@@ -211,8 +230,6 @@
             </div>
         </li>
         <!-- /Notifications -->
-
-
 
         <li class="nav-item dropdown has-arrow main-drop">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -251,23 +268,3 @@
     </div>
     <!-- /Mobile Menu -->
 </div>
-<!-- /Header -->
-{{-- @section('scripts')
-    <script>
-        $('.clear-noti').on('click', function() {
-            alert('hello');
-            var notifiactions = $("#notifiactions").val();
-            console.log(notifiactions,"notifiactions");
-            $.ajax({
-                type: 'POST',
-                url: '/clear-activity',
-                data: {
-                    _token: $("#csrf").val(),
-                    notifiactions:notifiactions
-                },
-                dataType: 'JSON',
-                success: function(dataResult) {}
-            });
-        });
-    </script>
-@endsection --}}
