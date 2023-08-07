@@ -8,15 +8,15 @@
 @section('page-header')
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Leave Type</h3>
+            <h3 class="page-title">Annocements</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item active">Leave Type</li>
+                <li class="breadcrumb-item active">Announcement</li>
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_leavetype"><i
-                    class="fa fa-plus"></i> Add Leave Type</a>
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_announcement"><i
+                    class="fa fa-plus"></i> Add Annoucement</a>
         </div>
     </div>
 @endsection
@@ -29,29 +29,29 @@
                     <thead>
                         <tr>
                             <th>Sr No.</th>
-                            <th>Leave Type</th>
-                            <th>Leave Days</th>
+                            <th>Annoucement</th>
+                            <th>Status</th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if (!empty($leave_types->count()))
-                            @foreach ($leave_types as $index => $leave_type)
+                        @if (!empty($announcements->count()))
+                            @foreach ($announcements as $index => $announce)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $leave_type->type }}</td>
-                                    <td>{{ $leave_type->days . ' ' . 'days' }}</td>
+                                    <td>{{ $announce->description }}</td>
+                                    <td>{{ $announce->status}}</td>
 
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a data-id="{{ $leave_type->id }}" data-type="{{ $leave_type->type }}"
-                                                    data-days="{{ $leave_type->days }}" class="dropdown-item editbtn"
+                                                <a data-id="{{ $announce->id }}" data-description="{{ $announce->description }}"
+                                                    data-status="{{ $announce->status }}" class="dropdown-item editbtn"
                                                     href="#" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i>
                                                     Edit</a>
-                                                <a data-id="{{ $leave_type->id }}" class="dropdown-item deletebtn"
+                                                <a data-id="{{ $announce->id }}" class="dropdown-item deletebtn"
                                                     data-target="#deletebtn" href="#" data-toggle="modal"><i
                                                         class="fa fa-trash-o m-r-5"></i> Delete</a>
                                             </div>
@@ -59,7 +59,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            <x-modals.delete :route="'leave-type.destroy'" :title="'Leave Type'" />
+                            <x-modals.delete :route="'announcement.destroy'" :title="'Announcement'" />
                         @endif
                     </tbody>
                 </table>
@@ -67,26 +67,31 @@
         </div>
     </div>
 
-    <!-- Add Leavetype Modal -->
-    <div id="add_leavetype" class="modal custom-modal fade" role="dialog">
+    <!-- Add Annoucement Modal -->
+    <div id="add_announcement" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Leave Type</h5>
+                    <h5 class="modal-title">Add Announcement</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('leave-type') }}" method="POST">
+                    <form action="{{ route('announcement') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="user_id" value="">
                         <div class="form-group">
-                            <label>Leave Type <span class="text-danger">*</span></label>
-                            <input class="form-control" name="type" type="text">
+                            <label>Announcement<span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="" name="announcement" rows="4" cols="50"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Number of days <span class="text-danger">*</span></label>
-                            <input class="form-control" name="days" type="number">
+                            <label>Status <span class="text-danger">*</span></label>
+                            <select name="status" selected="selected" id="status" class="form-control">
+                                <option value="">Select Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
                         </div>
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
@@ -96,30 +101,34 @@
             </div>
         </div>
     </div>
-    <!-- /Add Leavetype Modal -->
+    <!-- /Add Announcement Modal -->
 
-    <!-- Edit Leavetype Modal -->
-    <div id="edit_leavetype" class="modal custom-modal fade" role="dialog">
+    <!-- Edit Annoucement Modal -->
+    <div id="edit_announcement" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Leave Type</h5>
+                    <h5 class="modal-title">Edit Announcement</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('leave-type') }}">
+                    <form method="POST" action="{{ route('announcement') }}">
                         @csrf
                         @method('PUT')
                         <input id="edit_id" type="hidden" name="id">
                         <div class="form-group">
-                            <label>Leave Type <span class="text-danger">*</span></label>
-                            <input class="form-control edit_type" name="type" type="text">
+                            <label>Announcement<span class="text-danger">*</span></label>
+                            <textarea class="form-control edit_description" id="edit_description" name="announcement" rows="4" cols="50"></textarea>
                         </div>
                         <div class="form-group">
-                            <label>Number of days <span class="text-danger">*</span></label>
-                            <input class="form-control edit_days" name="days" type="number">
+                            <label>Status <span class="text-danger">*</span></label>
+                            <select name="status" selected="selected" id="edit_status" class="form-control">
+                                <option value="">Select Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -129,7 +138,7 @@
             </div>
         </div>
     </div>
-    <!-- /Edit Leavetype Modal -->
+    <!-- /Edit Annoucement Modal -->
 @endsection
 
 @section('scripts')
@@ -140,15 +149,14 @@
         $(document).ready(function() {
 
             $('.editbtn').on('click', function() {
-                $('#edit_leavetype').modal('show');
+                $('#edit_announcement').modal('show');
                 var id = $(this).data('id');
-                var type = $(this).data('type');
-                var days = $(this).data('days');
+                var description = $(this).data('description');
+                var status = $(this).data('status');
 
                 $('#edit_id').val(id);
-                $('.edit_type').val(type);
-                $('.edit_days').val(days);
-
+                $('.edit_description').val(description);
+                $('#edit_status').val(status);
             });
         });
     </script>

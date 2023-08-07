@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Annoucement extends Model
 {
-    use HasFactory;
+    protected $fillable = ['description','status','user_id'];
+    
 }

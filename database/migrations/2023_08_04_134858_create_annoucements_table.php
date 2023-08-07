@@ -17,7 +17,7 @@ class CreateAnnoucementsTable extends Migration
             $table->id();
             $table->text('description')->nullable();
             $table->enum('status',['active', 'Inactive'])->nullable();
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

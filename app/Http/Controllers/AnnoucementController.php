@@ -37,7 +37,15 @@ class AnnoucementController extends Controller
      */
     public function store(Request $request)
     {
-        Annoucement::create($request->all());
+        $this->validate($request, [
+            'announcement' => 'required',
+            'status'=> 'required',
+        ]);
+    
+        $annoucement = new Annoucement();
+        $annoucement->description = $request->input('announcement');
+        $annoucement->status = $request->input('status');
+        $annoucement->save();
         return back()->with('success',"Announcement has been added");    
     }
 
@@ -70,9 +78,18 @@ class AnnoucementController extends Controller
      * @param  \App\Models\Annoucement  $annoucement
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Annoucement $annoucement)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'announcement' => 'required',
+            'status'=> 'required',
+        ]);
+
+        $annoucement = Annoucement::find($request->id);
+        $annoucement->description = $request->input('announcement');
+        $annoucement->status = $request->input('status');
+        $annoucement->save();
+        return back()->with('success',"Announcement has been updated");
     }
 
     /**
@@ -81,8 +98,10 @@ class AnnoucementController extends Controller
      * @param  \App\Models\Annoucement  $annoucement
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Annoucement $annoucement)
+    public function destroy(Request $request)
     {
-        //
+        $annoucement = Annoucement::find($request->id);
+        $annoucement->delete();
+        return back()->with('success',"Announcement has been deleted successfully!!");
     }
 }

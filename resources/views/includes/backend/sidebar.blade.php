@@ -68,6 +68,8 @@
                                     href="{{ route('designations') }}">Designations</a></li>
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
+                            <li><a class="{{ route_is('announcement') ? 'active' : '' }}"
+                                        href="{{ route('announcement') }}">Announcement</a></li>
 
                             <!-- <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{ route('overtime') }}">Overtime</a></li> -->
 
