@@ -87,7 +87,7 @@
                                             <div class="media-body">
                                                 <p class="noti-details"><span
                                                         class="noti-title">{{ ucfirst($emp_full_name) }}</span>
-                                                    <span class="noti-title">added new casual leave.</span>
+                                                    <span class="noti-title">added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:'' }}.</span>
                                                 </p>
                                                 <p class="noti-time"><span
                                                         class="notification-time">{{ $leave->created_at->diffForHumans() }}</span>
@@ -113,7 +113,7 @@
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span
-                                                        class="noti-title">{{ $emp_full_name }}</span>
+                                                        class="noti-title">{{ Ucfirst($emp_full_name) }}</span>
                                                     <span class="noti-title">added new TimeSheet.</span>
                                                 </p>
                                                 <p class="noti-time"><span
@@ -130,15 +130,14 @@
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
                                             <span class="avatar">
-                                                <img
-                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                                <img src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
                                             </div>
                                         </div>
                                     </a>
@@ -157,7 +156,7 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
                                             </div>
                                         </div>
                                     </a>
@@ -177,7 +176,7 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
                                             </div>
                                         </div>
                                     </a>
@@ -196,7 +195,7 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time"></span></p>
+                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
                                             </div>
                                         </div>
                                     </a>

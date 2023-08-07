@@ -98,7 +98,19 @@ if (!function_exists('getNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',!empty($user->id) ? $user->id:'' )->get();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',!empty($user->id) ? $user->id:'')->where('data->supervisor_id','!=',$user->id)->get();
+    }
+}
+
+//new notification supervisor side
+if (!function_exists('getSuperNewNotification')) {
+    function getSuperNewNotification()
+    {
+        $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
+            $q->where('name', '=', Role::SUPERVISOR);
+        })->first();
+        $employee = Employee::where('user_id','=', $user->id)->first();
+        return DB::table('notifications')->whereNull('read_at')->where('data->supervisor_id','=',$employee->id)->get();
     }
 }
 

@@ -16,6 +16,7 @@ use App\Models\TimesheetStatus;
 use App\Notifications\ApprovedTimesheetByAdminNotification;
 use App\Notifications\RejectedTimesheetByAdminNotification;
 use App\Notifications\SendTimesheetNotificationToAdmin;
+use App\Notifications\SendTimeSheetToSupervisorNotification;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -184,7 +185,7 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet->save();
                 }
                  $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
-
+                 $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
             $this->validate($request, [
