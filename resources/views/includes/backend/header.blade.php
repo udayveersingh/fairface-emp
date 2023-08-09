@@ -201,7 +201,6 @@
                                     </a>
                                 </li>
                             @endforeach()
-
                             @foreach (getNewAnnouncementNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">

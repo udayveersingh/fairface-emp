@@ -30,11 +30,6 @@ if (!function_exists('getEmployeeRole')) {
     }
 }
 
-
-
-
-
-
 if (!function_exists('getProject')) {
     function getProject()
     {
@@ -87,7 +82,7 @@ if (!function_exists('getLeaveStatus')) {
 if (!function_exists('getAnnouncement')) {
     function getAnnouncement()
     {
-        return Annoucement::where('status', '=',Annoucement::ACTIVE)->get();
+        return Annoucement::where('status', '=', Annoucement::ACTIVE)->get();
     }
 }
 
@@ -98,7 +93,9 @@ if (!function_exists('getNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',!empty($user->id) ? $user->id:'')->where('data->supervisor_id','!=',$user->id)->get();
+        if(!empty($user)){
+            return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->supervisor_id', '!=', $user->id)->get();
+        }
     }
 }
 
@@ -109,8 +106,10 @@ if (!function_exists('getSuperNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERVISOR);
         })->first();
-        $employee = Employee::where('user_id','=', $user->id)->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->supervisor_id','=',$employee->id)->get();
+        $employee = Employee::where('user_id', '=', $user->id)->first();
+        if (!empty($employee)) {
+            return DB::table('notifications')->whereNull('read_at')->where('data->supervisor_id', '=', $employee->id)->get();
+        }
     }
 }
 
@@ -122,7 +121,7 @@ if (!function_exists('getEmployeeNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '!=', Role::SUPERADMIN);
         })->first();
-          return DB::table('notifications')->whereNull('read_at')->where('data->user_id','!=',$user->id)->get();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->get();
     }
 }
 
@@ -148,7 +147,7 @@ if (!function_exists('getNewLeaveNotifiaction')) {
 if (!function_exists('getEmployeeLeaveApprovedNotification')) {
     function getEmployeeLeaveApprovedNotification()
     {
-        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $leave_approved_notifi = [];
         $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\EmployeeLeaveApprovedNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_approved_notifiactions as $index => $notification) {
@@ -162,7 +161,7 @@ if (!function_exists('getEmployeeLeaveApprovedNotification')) {
 if (!function_exists('getRejectedLeaveByAdminNotification')) {
     function getRejectedLeaveByAdminNotification()
     {
-        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $leave_rejected_notifi = [];
         $leave_rejected_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\RejectedLeaveByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_rejected_notifications as $index => $notification) {
@@ -190,7 +189,7 @@ if (!function_exists('sendNewTimeSheetNotifiaction')) {
 if (!function_exists('getEmployeeTimesheetApprovedNotification')) {
     function getEmployeeTimesheetApprovedNotification()
     {
-        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $leave_approved_notifi = [];
         $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\ApprovedTimesheetByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_approved_notifiactions as $index => $notification) {
@@ -204,7 +203,7 @@ if (!function_exists('getEmployeeTimesheetApprovedNotification')) {
 if (!function_exists('getEmployeeTimesheetRejectedNotification')) {
     function getEmployeeTimesheetRejectedNotification()
     {
-        $employee = Employee::where('user_id','=',Auth::user()->id)->first();
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $leave_approved_notifi = [];
         $leave_approved_notifiactions =  DB::table('notifications')->where('type', '=', 'App\Notifications\RejectedTimesheetByAdminNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
         foreach ($leave_approved_notifiactions as $index => $notification) {
@@ -216,18 +215,14 @@ if (!function_exists('getEmployeeTimesheetRejectedNotification')) {
 
 
 //notification of announcement
-if(!function_exists('getNewAnnouncementNotification')){
+if (!function_exists('getNewAnnouncementNotification')) {
     function getNewAnnouncementNotification()
     {
         $announcement_notifi = [];
-        $announcement_notifications = DB::Table('notifications')->where('type','=','App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->get();
+        $announcement_notifications = DB::Table('notifications')->where('type', '=', 'App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->get();
         foreach ($announcement_notifications as $index => $notification) {
             $announcement_notifi[$index] = json_decode($notification->data);
         }
         return $announcement_notifi;
     }
 }
-
-
-
-

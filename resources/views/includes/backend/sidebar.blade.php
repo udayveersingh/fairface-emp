@@ -68,8 +68,6 @@
                                     href="{{ route('designations') }}">Designations</a></li>
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
-                            <li><a class="{{ route_is('announcement') ? 'active' : '' }}"
-                                        href="{{ route('announcement') }}">Announcement</a></li>
 
                             <!-- <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{ route('overtime') }}">Overtime</a></li> -->
 
@@ -97,6 +95,9 @@
                     </li>
                     <li class="{{ route_is('company-email') ? 'active' : '' }}">
                         <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company Email</span></a>
+                    </li>
+                    <li class="{{ route_is('announcement') ? 'active' : '' }}">
+                        <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i> <span>Announcement</span></a>
                     </li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
