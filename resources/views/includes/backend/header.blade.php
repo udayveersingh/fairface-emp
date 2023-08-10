@@ -28,6 +28,8 @@
     <!-- Header Menu -->
     <ul class="nav user-menu">
 
+            {{-- @dd(getNewLeaveNotifiaction()); --}}
+        {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getRejectedLeaveByAdminNotification()); --}}
         <!-- Notifications -->
         <li class="nav-item dropdown">
@@ -115,6 +117,9 @@
                                                 <p class="noti-details"><span
                                                         class="noti-title">{{ Ucfirst($emp_full_name) }}</span>
                                                     <span class="noti-title">added new TimeSheet.</span>
+                                                </p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
                                                 </p>
                                             </div>
                                         </div>

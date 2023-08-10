@@ -62,8 +62,9 @@ class SendTimesheetNotificationToAdmin extends Notification
             'to' => $this->emp_timesheet['supervisor_id'],
             'from_date' => $this->emp_timesheet['start_date'],
             'to_date' => $this->emp_timesheet['end_date'],
+            'timesheet_id' => $this->emp_timesheet['timesheet_id'],
             'user_id' => Auth::user()->id,
-            'created_at' =>date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
         ];
     }
 }

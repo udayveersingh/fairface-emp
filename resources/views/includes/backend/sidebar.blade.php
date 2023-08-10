@@ -3,10 +3,13 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
+                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                 <li class="menu-title">
                     <span>Main</span>
                 </li>
-                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
+                    <li class="{{ route_is('employee-dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('employee-dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+                    </li>
                     <li class="{{ route_is('profile') ? 'active' : '' }}">
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
@@ -32,6 +35,9 @@
                         </ul>
                     </li>
                 @else
+                    <li class="menu-title">
+                        <span>Main</span>
+                    </li>
                     <li class="{{ route_is('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
                     </li>

@@ -47,19 +47,19 @@
                 <div class="col-12">
                     <label class="form-label">Theme Color</label>
                 </div>
-                <div class="col-12">
+                <div class="col-4">
                     <label><input class="form-check-input mt-3" type="radio" name="theme_color" value="dark" id="theme_color_dark" {{!empty($settings->theme_color) && $settings->theme_color == "dark" ? 'checked' : ''}}><div class="dark_box_bg"></div></label>
                 </div>
-                <div class="col-12">
+                <div class="col-4">
                     <label><input class="form-check-input mt-3" type="radio" name="theme_color" value="light" id="theme_color_light" {{!empty($settings->theme_color) && $settings->theme_color == "light" ? 'checked' : ''}}><div class="light_box_bg"></div></label>
                 </div>
-                <div class="col-12">
+                <div class="col-4">
                     <label><input class="form-check-input mt-3" type="radio" name="theme_color" value="maroon" id="theme_color_maroon" {{!empty($settings->theme_color) && $settings->theme_color == "maroon" ? 'checked' : ''}}><div class="maroon_box_bg"></div></label>
                 </div>
-                <div class="col-12">
+                <div class="col-4">
                     <label><input class="form-check-input mt-3" type="radio" name="theme_color" value="purple" id="theme_color_purple" {{!empty($settings->theme_color) && $settings->theme_color == "purple" ? 'checked' : ''}}><div class="purple_box_bg"></div></label>
                 </div>
-                <div class="col-12">
+                <div class="col-4">
                     <label><input class="form-check-input mt-3" type="radio" name="theme_color" value="blue" id="theme_color_blue" {{!empty($settings->theme_color) && $settings->theme_color == "blue" ? 'checked' : ''}}><div class="blue_box_bg"></div></label>
                 </div>
             </div>

@@ -39,7 +39,7 @@ class DashboardController extends Controller
         $timesheet_submitted_count = EmployeeTimesheet::where('created_at', '>=', Carbon::now()->subMonth()->toDateTimeString())->whereHas('timesheet_status',function ($q){
             $q->where('status','=',TimesheetStatus::SUBMITTED);
         })->count();
-
+        
         return view('backend.dashboard', compact(
             'title',
             'clients_count',

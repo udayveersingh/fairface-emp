@@ -11,7 +11,7 @@
         <div class="col">
             {{-- <h3 class="page-title">Email</h3> --}}
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('employee-dashboard') }}">Dashboard</a></li>
                 <li class="breadcrumb-item active">Email</li>
             </ul>
         </div>
@@ -84,6 +84,7 @@
                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                     class="dropdown-item editbtn" href="javascript:void(0);"
                                                     data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
+                                                    <a class="dropdown-item viewbtn" href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}"><i class="fa fa-pencil m-r-5"></i> View</a>
                                                 <a data-id="{{ $company_email->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>

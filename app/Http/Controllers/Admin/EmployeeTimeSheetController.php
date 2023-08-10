@@ -185,7 +185,7 @@ class EmployeeTimeSheetController extends Controller
                     $emp_timesheet->save();
                 }
                  $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
-                 $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
+                //  $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
             return redirect()->route('employee-timesheet-list')->with('success', "Employee TimeSheet Data has been added successfully!");
         } else {
             $this->validate($request, [
