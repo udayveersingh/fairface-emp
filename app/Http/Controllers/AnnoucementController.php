@@ -6,7 +6,9 @@ use App\Models\Annoucement;
 use App\Models\Employee;
 use App\Notifications\NewAnnouncementByAdminNotification;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AnnoucementController extends Controller
 {
@@ -95,6 +97,10 @@ class AnnoucementController extends Controller
         $annoucement->description = $request->input('announcement');
         $annoucement->status = $request->input('status');
         $annoucement->save();
+        $notification = DB::table('notifications')->where('data->announcement_id', '=', $annoucement->id)->first();
+        if (!empty($notification)) {
+            DB::table('notifications')->where('id', '=', $notification->id)->update(['data->status' => $request->status]);
+        }
         return back()->with('success',"Announcement has been updated");
     }
 
@@ -108,6 +114,10 @@ class AnnoucementController extends Controller
     {
         $annoucement = Annoucement::find($request->id);
         $annoucement->delete();
+        $notification = DB::table('notifications')->where('data->announcement_id', '=', $request->id)->first();
+        if(!empty($notification)){
+            DB::table('notifications')->where('id','=', $notification->id)->delete();
+        }
         return back()->with('success',"Announcement has been deleted successfully!!");
     }
 }

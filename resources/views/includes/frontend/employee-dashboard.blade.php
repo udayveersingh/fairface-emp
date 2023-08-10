@@ -95,10 +95,10 @@
                             </a>
                         </div>
                         @if(count(getAnnouncement()) > 0)
+                        @foreach (getAnnouncement() as $announcement)
                         <div class="dash-info-list">
                             <a href="#" class="dash-card">
                                 <div class="row">
-                                    @foreach (getAnnouncement() as $announcement)
                                     <div class="col-9">
                                         <div class="dash-card-content">
                                             <div class="dash-card-icon">
@@ -107,7 +107,6 @@
                                             <p>{{$announcement->description}}</p>
                                         </div>
                                     </div> 
-                                    @endforeach
                                     <div class="col-3 text-right">
                                         <div class="">
                                             <span class="badge bg-inverse-success">Annoucement</span>
@@ -116,6 +115,7 @@
                                 </div>
                             </a>
                         </div>
+                         @endforeach
                         @endif
                         {{-- <div class="dash-info-list">
                             <a href="#" class="dash-card">

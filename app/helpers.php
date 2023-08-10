@@ -219,7 +219,7 @@ if (!function_exists('getNewAnnouncementNotification')) {
     function getNewAnnouncementNotification()
     {
         $announcement_notifi = [];
-        $announcement_notifications = DB::Table('notifications')->where('type', '=', 'App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->get();
+        $announcement_notifications = DB::Table('notifications')->where('type', '=', 'App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->where('data->status',Annoucement::ACTIVE)->get();
         foreach ($announcement_notifications as $index => $notification) {
             $announcement_notifi[$index] = json_decode($notification->data);
         }

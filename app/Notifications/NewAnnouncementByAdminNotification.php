@@ -60,6 +60,8 @@ class NewAnnouncementByAdminNotification extends Notification
             'from' => Auth::user()->id,
             'message' => $this->annoucement['description'],
             'user_id' => Auth::user()->id,
+            'status' => $this->annoucement['status'],
+            'announcement_id' => $this->annoucement['id'],
             'created_at' => date('Y-m-d H:i:s'),
         ];
     }
