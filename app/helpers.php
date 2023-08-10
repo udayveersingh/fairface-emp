@@ -121,7 +121,7 @@ if (!function_exists('getEmployeeNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '!=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->get();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->status','=','active')->get();
     }
 }
 

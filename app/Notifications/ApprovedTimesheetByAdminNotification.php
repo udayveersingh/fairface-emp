@@ -63,6 +63,7 @@ class ApprovedTimesheetByAdminNotification extends Notification
             'approved_date_time' =>$this->notification_message['approved_date_time'],
             'user_id' => Auth::user()->id,
             'created_at' => date('Y-m-d H:i:s'),
+            'status' =>'active',
         ];
      }
   }

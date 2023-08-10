@@ -63,6 +63,7 @@ class EmployeeLeaveApprovedNotification extends Notification
             'approved_date_time' =>$this->leave_status['approved_date_time'],
             'user_id' => Auth::user()->id,
             'created_at' =>date('Y-m-d H:i:s'),
+            'status' => 'active',
         ];
     }
 }
