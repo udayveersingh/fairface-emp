@@ -334,8 +334,7 @@
                                             src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
                                     <div class="media-body">
                                         <div class="text-sm my-0">{{ ucfirst($emp_fullname) }} submitted new
-                                            timesheet <a
-                                                href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . $notification->timesheet_id . '>' }}</a>
+                                            timesheet <a href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . !empty($notification->timesheet_id) ? $notification->timesheet_id:'' . '>' }}</a>
                                             on date:
                                             {{ date_format(date_create($notification->created_at), 'd M,Y') }}</div>
                                     </div>
