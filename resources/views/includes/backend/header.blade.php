@@ -118,8 +118,16 @@
                                                         class="noti-title">{{ Ucfirst($emp_full_name) }}</span>
                                                     <span class="noti-title">added new TimeSheet.</span>
                                                 </p>
-                                                <p class="noti-time"><span
-                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                <p class="noti-time">
+                                                    {{-- @php
+                                                        $created_at=""
+                                                        if(!empty($notification->created_at)){
+                                                            $created_at = Carbon\Carbon::parse($notification->created_at)->diffForHumans();
+                                                        }else{
+                                                            $created_at="";
+                                                        }
+                                                    @endphp --}}
+                                                    <span class="notification-time"></span>
                                                 </p>
                                             </div>
                                         </div>

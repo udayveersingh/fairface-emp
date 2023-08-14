@@ -327,11 +327,17 @@
                                     $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
                                     $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
                                     $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
-                                    $timesheet_id ="";
-                                    if(isset($notification->timesheet_id)){
-                                        $timesheet_id = $notification->timesheet_id ;
-                                    }else{
-                                        $timesheet_id="";
+                                    $timesheet_id = '';
+                                    if (isset($notification->timesheet_id)) {
+                                        $timesheet_id = $notification->timesheet_id;
+                                    } else {
+                                        $timesheet_id = '';
+                                    }
+                                    $created_at='';
+                                    if (isset($notification->created_at)) {
+                                        $created_at = date_format(date_create($notification->created_at), 'd M,Y');
+                                    } else {
+                                        $created_at = '';
                                     }
                                 @endphp
                                 <div class="leave-info-box">
@@ -341,9 +347,10 @@
                                                 src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
                                         <div class="media-body">
                                             <div class="text-sm my-0">{{ ucfirst($emp_fullname) }} submitted new
-                                                timesheet <a href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . $timesheet_id . '>' }}</a>
+                                                timesheet <a
+                                                    href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . $timesheet_id . '>' }}</a>
                                                 on date:
-                                                {{ date_format(date_create($notification->created_at), 'd M,Y') }}</div>
+                                                {{$created_at }}</div>
                                         </div>
                                     </div>
                                     {{-- <div class="row align-items-center mt-3">
@@ -426,31 +433,37 @@
                     <h4 class="card-title">Recent Emails <span class="badge bg-inverse-danger ml-2"></span></h4>
                     <div class="card-scroll p-1">
                         @foreach (getEmailCounts() as $company_email)
-                        @php
-                        $from = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->from_id)->first();
-                        $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname:'';
-                        $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname:'';
-                        $fullname = $from_first_name." ".$from_last_name;
-                        $to = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->to_id)->first();
-                        $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname:'';
-                        $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname:'';
-                        $to_fullname = $to_first_name." ".$to_last_name;
-                        @endphp
+                            @php
+                                $from = App\Models\EmployeeJob::with('employee')
+                                    ->where('id', '=', $company_email->from_id)
+                                    ->first();
+                                $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                                $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                                $fullname = $from_first_name . ' ' . $from_last_name;
+                                $to = App\Models\EmployeeJob::with('employee')
+                                    ->where('id', '=', $company_email->to_id)
+                                    ->first();
+                                $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                                $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                                $to_fullname = $to_first_name . ' ' . $to_last_name;
+                            @endphp
                             <div class="leave-info-box">
                                 <div class="media align-items-center">
                                     <a href="profile.html" class="avatar"><img alt=""
                                             src="assets/img/user.jpg"></a>
                                     <div class="media-body">
-                                        <div class="text-sm my-0">{{ucfirst($fullname)}}</div>
+                                        <div class="text-sm my-0">{{ ucfirst($fullname) }}</div>
                                     </div>
                                 </div>
                                 <div class="row align-items-center mt-3">
                                     <div class="col-6">
-                                        <h6 class="mb-0">{{ date_format($company_email->created_at,"Y-m-d")}}</h6>
+                                        <h6 class="mb-0">{{ date_format($company_email->created_at, 'Y-m-d') }}</h6>
                                         {{-- <span class="text-sm text-muted">Leave Date</span> --}}
                                     </div>
                                     <div class="col-6 text-right">
-                                       <a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}"><span class="badge bg-inverse-danger">Read More</span></a>
+                                        <a
+                                            href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }}"><span
+                                                class="badge bg-inverse-danger">Read More</span></a>
                                     </div>
                                 </div>
                             </div>
