@@ -96,8 +96,10 @@ class CompanyEmailController extends Controller
             'from_id' => 'required',
             'to_id' => 'required',
         ]);
-
-        $cc = implode(",", $request->cc);
+        $cc =Null;
+        if(!empty($request->cc)){
+            $cc = implode(",", $request->cc);
+        }
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();

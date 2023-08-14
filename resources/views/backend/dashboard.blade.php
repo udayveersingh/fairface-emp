@@ -319,27 +319,29 @@
             <div class="card flex-fill">
                 <div class="card-body">
                     <h4 class="card-title">Recent Timesheet<span class="badge bg-inverse-danger ml-2"></span></h4>
-                    @if (count(sendNewTimeSheetNotifiaction()) > 0)
-                        @foreach (sendNewTimeSheetNotifiaction() as $notification)
-                            @php
-                                $employee = App\Models\Employee::find($notification->from);
-                                $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
-                                $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
-                                $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
-                            @endphp
-                            <div class="leave-info-box">
-                                <div class="media align-items-center">
-                                    <a href="profile.html" class="avatar">
-                                        <img
-                                            src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
-                                    <div class="media-body">
-                                        <div class="text-sm my-0">{{ ucfirst($emp_fullname) }} submitted new
-                                            timesheet <a href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . !empty($notification->timesheet_id) ? $notification->timesheet_id:'' . '>' }}</a>
-                                            on date:
-                                            {{ date_format(date_create($notification->created_at), 'd M,Y') }}</div>
+                    <div class="card-scroll p-1">
+                        @if (count(sendNewTimeSheetNotifiaction()) > 0)
+                            @foreach (sendNewTimeSheetNotifiaction() as $notification)
+                                @php
+                                    $employee = App\Models\Employee::find($notification->from);
+                                    $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
+                                    $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
+                                    $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
+                                @endphp
+                                <div class="leave-info-box">
+                                    <div class="media align-items-center">
+                                        <a href="profile.html" class="avatar">
+                                            <img
+                                                src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
+                                        <div class="media-body">
+                                            <div class="text-sm my-0">{{ ucfirst($emp_fullname) }} submitted new
+                                                timesheet <a
+                                                    href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . !empty($notification->timesheet_id) ? $notification->timesheet_id : '' . '>' }}</a>
+                                                on date:
+                                                {{ date_format(date_create($notification->created_at), 'd M,Y') }}</div>
+                                        </div>
                                     </div>
-                                </div>
-                                {{-- <div class="row align-items-center mt-3">
+                                    {{-- <div class="row align-items-center mt-3">
                                 <div class="col-6">
                                     <h6 class="mb-0">4 Sep 2019</h6>
                                     <span class="text-sm text-muted">Leave Date</span>
@@ -348,33 +350,14 @@
                                     <span class="badge bg-inverse-danger">Notification</span>
                                 </div>
                             </div> --}}
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="media align-items-center">
+                                <div class="text-sm my-0">No record</div>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="media align-items-center">
-                            <div class="text-sm my-0">No record</div>
-                        </div>
-                    @endif
-                    {{-- <div class="leave-info-box">
-                        <div class="media align-items-center">
-                            <a href="profile.html" class="avatar"><img alt="" src="assets/img/user.jpg"></a>
-                            <div class="media-body">
-                                <div class="text-sm my-0">Martin Lewis</div>
-                            </div>
-                        </div>
-                        <div class="row align-items-center mt-3">
-                            <div class="col-6">
-                                <h6 class="mb-0">4 Sep 2019</h6>
-                                <span class="text-sm text-muted">Leave Date</span>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span class="badge bg-inverse-success">Annoucement</span>
-                            </div>
-                        </div>
-                    </div> --}}
-                    {{-- <div class="load-more text-center">
-                        <a class="text-dark" href="javascript:void(0);">Load More</a>
-                    </div> --}}
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -382,49 +365,53 @@
             <div class="card flex-fill">
                 <div class="card-body">
                     <h4 class="card-title">Notifications/Alert<span class="badge bg-inverse-danger ml-2"></span></h4>
-                    @if (count(sendNewTimeSheetNotifiaction()) > 0)
-                        @foreach (sendNewTimeSheetNotifiaction() as $notification)
+                    <div class="card-scroll p-1">
+                        @if (count(sendNewTimeSheetNotifiaction()) > 0)
+                            @foreach (sendNewTimeSheetNotifiaction() as $notification)
+                                @php
+                                    $employee = App\Models\Employee::find($notification->from);
+                                    $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
+                                    $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
+                                    $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
+                                @endphp
+                                <div class="leave-info-box">
+                                    <div class="media align-items-center">
+                                        <a href="" class="avatar">
+                                            <img
+                                                src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
+                                        <div class="media-body">
+                                            <p class="noti-details"><span
+                                                    class="noti-title">{{ Ucfirst($emp_fullname) }}</span>
+                                                <span class="noti-title">added new TimeSheet.</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                        @foreach (getNewLeaveNotifiaction() as $notification)
                             @php
-                                $employee = App\Models\Employee::find($notification->from);
-                                $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
-                                $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
-                                $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
+                                $leave = App\Models\Leave::with('leaveType', 'employee', 'time_sheet_status')->find($notification->leave);
+                                $emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname : '';
+                                $emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
+                                $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
                             @endphp
                             <div class="leave-info-box">
                                 <div class="media align-items-center">
                                     <a href="" class="avatar">
                                         <img
-                                            src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
+                                            src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}"></a>
                                     <div class="media-body">
                                         <p class="noti-details"><span
-                                                class="noti-title">{{ Ucfirst($emp_fullname) }}</span>
-                                            <span class="noti-title">added new TimeSheet.</span>
+                                                class="noti-title">{{ ucfirst($emp_full_name) }}</span>
+                                            <span class="noti-title">added new
+                                                {{ !empty($leave->leaveType->type) ? $leave->leaveType->type : '' }}.</span>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
-                    @endif
-                    @foreach (getNewLeaveNotifiaction() as $notification)
-                        @php
-                            $leave = App\Models\Leave::with('leaveType', 'employee', 'time_sheet_status')->find($notification->leave);
-                            $emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname : '';
-                            $emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
-                            $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
-                        @endphp
-                        <div class="leave-info-box">
-                            <div class="media align-items-center">
-                                <a href="" class="avatar">
-                                  <img src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}"></a>
-                                  <div class="media-body">
-                                    <p class="noti-details"><span
-                                            class="noti-title">{{ ucfirst($emp_full_name) }}</span>
-                                        <span class="noti-title">added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:'' }}.</span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -432,22 +419,37 @@
             <div class="card flex-fill">
                 <div class="card-body">
                     <h4 class="card-title">Recent Emails <span class="badge bg-inverse-danger ml-2"></span></h4>
-                    <div class="leave-info-box">
-                        <div class="media align-items-center">
-                            <a href="profile.html" class="avatar"><img alt="" src="assets/img/user.jpg"></a>
-                            <div class="media-body">
-                                <div class="text-sm my-0">Martin Lewis</div>
+                    <div class="card-scroll p-1">
+                        @foreach (getEmailCounts() as $company_email)
+                        @php
+                        $from = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->from_id)->first();
+                        $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname:'';
+                        $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname:'';
+                        $fullname = $from_first_name." ".$from_last_name;
+                        $to = App\Models\EmployeeJob::with('employee')->where('id', '=', $company_email->to_id)->first();
+                        $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname:'';
+                        $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname:'';
+                        $to_fullname = $to_first_name." ".$to_last_name;
+                        @endphp
+                            <div class="leave-info-box">
+                                <div class="media align-items-center">
+                                    <a href="profile.html" class="avatar"><img alt=""
+                                            src="assets/img/user.jpg"></a>
+                                    <div class="media-body">
+                                        <div class="text-sm my-0">{{$fullname}}</div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mt-3">
+                                    <div class="col-6">
+                                        <h6 class="mb-0">{{ date_format($company_email->created_at,"Y-m-d")}}</h6>
+                                        {{-- <span class="text-sm text-muted">Leave Date</span> --}}
+                                    </div>
+                                    <div class="col-6 text-right">
+                                       <a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}"><span class="badge bg-inverse-danger">Read More</span></a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row align-items-center mt-3">
-                            <div class="col-6">
-                                <h6 class="mb-0">4 Sep 2019</h6>
-                                <span class="text-sm text-muted">Leave Date</span>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span class="badge bg-inverse-danger">Notification</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                     {{-- <div class="leave-info-box">
                         <div class="media align-items-center">

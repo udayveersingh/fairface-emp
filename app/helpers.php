@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Annoucement;
+use App\Models\CompanyEmail;
 use App\Models\Employee;
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
@@ -125,6 +126,13 @@ if (!function_exists('getEmployeeNewNotification')) {
     }
 }
 
+//get company mails counts
+if(!function_exists('getEmailCounts'))
+{
+    function getEmailCounts(){
+       return CompanyEmail::with('employeejob.employee')->whereDate('created_at', Carbon::today())->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+    }
+}
 
 //new leave notifiaction
 if (!function_exists('getNewLeaveNotifiaction')) {

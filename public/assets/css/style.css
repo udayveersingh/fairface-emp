@@ -8202,3 +8202,12 @@ ul.comment-list li ul.children {
     width: 100px;
 	border: 1px solid #ddd;
 }
+.card-scroll {
+    overflow-y: scroll;
+    height: 272px;
+}
+
+.scroll-timesheet {
+    overflow-y: scroll;
+    height: 208px;
+}

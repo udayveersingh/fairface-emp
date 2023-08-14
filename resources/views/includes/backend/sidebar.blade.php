@@ -17,8 +17,7 @@
                         <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Send TimeSheet</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
-                                leave</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply leave</span></a>
                     </li>
                             @php
                                  $employee = App\Models\Employee::where('user_id','=',Auth::user()->id)->first();
@@ -100,7 +99,7 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee leaves</span></a>
                     </li>
                     <li class="{{ route_is('company-email') ? 'active' : '' }}">
-                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company Email</span></a>
+                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company Email</span> <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
                     </li>
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
                         <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i> <span>Announcement</span></a>
