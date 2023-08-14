@@ -327,6 +327,12 @@
                                     $emp_first_name = !empty($employee->firstname) ? $employee->firstname : '';
                                     $emp_last_name = !empty($employee->lastname) ? $employee->lastname : '';
                                     $emp_fullname = $emp_first_name . ' ' . $emp_last_name;
+                                    $timesheet_id ="";
+                                    if(isset($notification->timesheet_id)){
+                                        $timesheet_id = $notification->timesheet_id ;
+                                    }else{
+                                        $timesheet_id="";
+                                    }
                                 @endphp
                                 <div class="leave-info-box">
                                     <div class="media align-items-center">
@@ -335,8 +341,7 @@
                                                 src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"></a>
                                         <div class="media-body">
                                             <div class="text-sm my-0">{{ ucfirst($emp_fullname) }} submitted new
-                                                timesheet <a
-                                                    href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . !empty($notification->timesheet_id) ? $notification->timesheet_id : '' . '>' }}</a>
+                                                timesheet <a href="{{ route('employee-timesheet-detail', ['id' => $notification->from, 'start_date' => $notification->from_date, 'end_date' => $notification->to_date]) }}">{{ '<' . $timesheet_id . '>' }}</a>
                                                 on date:
                                                 {{ date_format(date_create($notification->created_at), 'd M,Y') }}</div>
                                         </div>
@@ -436,7 +441,7 @@
                                     <a href="profile.html" class="avatar"><img alt=""
                                             src="assets/img/user.jpg"></a>
                                     <div class="media-body">
-                                        <div class="text-sm my-0">{{$fullname}}</div>
+                                        <div class="text-sm my-0">{{ucfirst($fullname)}}</div>
                                     </div>
                                 </div>
                                 <div class="row align-items-center mt-3">
