@@ -79,6 +79,7 @@
                                     $emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
                                     $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
                                 @endphp
+                                @if(!empty($leave))
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -91,13 +92,14 @@
                                                         class="noti-title">{{ ucfirst($emp_full_name) }}</span>
                                                     <span class="noti-title">added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:'' }}.</span>
                                                 </p>
-                                                <p class="noti-time"><span
-                                                        class="notification-time">{{ $leave->created_at->diffForHumans() }}</span>
+                                                <p class="noti-time">
+                                                    <span class="notification-time">{{ $leave->created_at->diffForHumans() }}</span>
                                                 </p>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
+                                @endif
                             @endforeach
                             @foreach (sendNewTimeSheetNotifiaction() as $notification)
                                 @php

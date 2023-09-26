@@ -1,48 +1,50 @@
-@if(!empty($employee_address))
-<div class="row">
-    <div class="col-md-8">
-        <div class="card card-block shadow shadow-sm p-3 h-100">
-            <table class="table table-striped">
-                <tr>
-                    <th>Address Line 1</th>
-                    <td>{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Address Line 2</th>
-                    <td>{{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Post Code</th>
-                    <td>{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}</td>
-                </tr>
-                <tr>
-                    <th>From Date</th>
-                    <td>{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}</td>
-                </tr>
-                <tr>
-                    <th>To Date</th>
-                    <td>{{ !empty($employee_address->to_date) ? $employee_address->to_date : '' }}</td>
-                </tr>
-            </table>
-            <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
-                <a class="btn btn-primary w-100 " id="employee_address_btn" href="javascript:void(0)" data-toggle="modal"><i
-                        class="fa fa-pencil m-r-5"></i> Edit</a>
+@if (!empty($employee_address))
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card card-block shadow shadow-sm p-3 h-100">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Address Line 1</th>
+                        <td>{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Address Line 2</th>
+                        <td>{{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Post Code</th>
+                        <td>{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>From Date</th>
+                        <td>{{ !empty($employee_address->from_date) ? date('d-m-Y', strtotime($employee_address->from_date)) : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>To Date</th>
+                        <td>{{ !empty($employee_address->to_date) ? date('d-m-Y', strtotime($employee_address->to_date)) : '' }}
+                        </td>
+                    </tr>
+                </table>
+                <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+                    <a class="btn btn-primary w-100 " id="employee_address_btn" href="javascript:void(0)"
+                        data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 @else
-<div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
-    <a class="btn btn-primary w-100  add-btn " id="employee_address_btn" href="javascript:void(0)" data-toggle="modal"><i
-            class="fa fa-plus m-r-5"></i>Add Address</a>
-</div>
+    <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+        <a class="btn btn-primary w-100  add-btn " id="employee_address_btn" href="javascript:void(0)"
+            data-toggle="modal"><i class="fa fa-plus m-r-5"></i>Add Address</a>
+    </div>
 @endif
 
 <div id="edit_address_detail" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content ml-5">
             <div class="modal-header">
                 <h5 class="modal-title">Employee Address</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

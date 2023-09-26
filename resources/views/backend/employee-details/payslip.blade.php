@@ -70,7 +70,7 @@
                     <td>{{$index+1}}</td>
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
-                    <td>{{!empty(date("Y-m-d", strtotime($employee_payslip->created_at) ))? date("Y-m-d", strtotime($employee_payslip->created_at)):''}}</td>
+                    <td>{{!empty($employee_payslip->created_at) ? date("d-m-Y", strtotime($employee_payslip->created_at)):''}}</td>
                     @php
                         $extension = pathinfo(storage_path('storage/payslips/'.$employee_payslip->attachment), PATHINFO_EXTENSION);
                     @endphp

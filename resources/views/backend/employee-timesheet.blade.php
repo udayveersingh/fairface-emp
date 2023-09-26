@@ -15,10 +15,10 @@
                 <li class="breadcrumb-item active">Employee TimeSheet</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
+        {{-- <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_timesheet"><i
                     class="fa fa-plus"></i>Add Employee TimeSheet</a>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -62,8 +62,8 @@
                                     <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
                                     {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
                                     {{-- </td> --}}
-                                    <td>{{ $start_date[0]}}</td>
-                                    <td>{{ $end_date[0] }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($start_date[0]))}}</td>
+                                    <td>{{ date('d-m-Y',strtotime($end_date[0])) }}</td>
                                     <td>{{ !empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status) : '' }}
                                     </td>
                                     {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}

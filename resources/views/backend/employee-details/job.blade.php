@@ -61,11 +61,11 @@
                         </tr>
                         <tr>
                             <th>Start Date</th>
-                            <td>{{ $job->start_date }}</td>
+                            <td>{{ !empty($job->start_date) ? date('d-m-Y',strtotime($job->start_date)):''}}</td>
                         </tr>
                         <tr>
                             <th>End Date</th>
-                            <td>{{ $job->end_date }}</td>
+                            <td>{{!empty($job->end_date) ? date('d-m-Y',strtotime($job->end_date)):'' }}</td>
                         </tr>
                         <tr>
                             <th>Job Type</th>

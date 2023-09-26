@@ -15,10 +15,10 @@
                 <li class="breadcrumb-item active">Company Email</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
+        {{-- <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_company_email"><i
                     class="fa fa-plus"></i> Add Company Email</a>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -64,7 +64,7 @@
                                     <td>{{"<".$fullname.">"}}<a href="{{route('mail-detail',['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id])}}">{{$from->work_email }}</a></td>
                                     <td>{{"<". $to_last_name.">".$to->work_email}}</td>
                                     <td>{{ $cc }}</td>
-                                    <td>{{ $company_email->date }}</td>
+                                    <td>{{ !empty($company_email->date) ? date('d-m-Y',strtotime($company_email->date)):''}}</td>
                                     <td>{{ $company_email->subject }}</td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">

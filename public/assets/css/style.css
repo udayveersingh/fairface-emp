@@ -1071,6 +1071,8 @@ table.dataTable thead > tr > td.sorting {
 .custom-modal .modal-content {
 	border: 0;
     border-radius: 10px;
+	/*26-09-2023*/
+	margin-top:37px;
 }
 .custom-modal .modal-footer {
 	border: 0;
@@ -8211,3 +8213,6 @@ ul.comment-list li ul.children {
     overflow-y: scroll;
     height: 208px;
 }
+
+
+

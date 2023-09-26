@@ -66,12 +66,13 @@ class EmployeeEmergencyContactController extends Controller
      */
     public function update(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
-            // 'name' => 'required',
-            // 'address' => 'required|max:200',
+            'name' => 'required',
+            'address' => 'required|max:300',
             // 'overseas_name' => 'required',
             // 'overseas_address' => 'required|max:200',
-            // 'phone_number_1' => 'nullable|max:25',
+            'phone_number_1' => 'required|max:25',
             // 'phone_number_2' => 'nullable|max:25',
             // 'overseas_phone_number_1' => 'nullable|max:25',
             // 'overseas_phone_number_2' => 'nullable|max:25',

@@ -127,7 +127,7 @@
                                         {{ substr($leave->status_reason, 0, 10) . ' ...' }}</p>
                                     <i class="la la la-eye"></i>
                                 </td>
-                                <td>{{ $leave->approved_date_time }}</td>
+                                <td>{{ !empty($leave->approved_date_time) ? date('d-m-Y',strtotime($leave->approved_date_time)):''}}</td>
                                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">

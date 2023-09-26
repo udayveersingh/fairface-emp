@@ -42,11 +42,11 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="mx-0"><strong>Month starting:-</strong>{{ $start_date }}</p>
+                <p class="mx-0"><strong>Month starting:-</strong>{{!empty($start_date) ? date('d-m-Y', strtotime($start_date)):'' }}</p>
                 <p class="mx-0"></p>
             </div>
             <div class="col-md-6">
-                <p class="mx-0"><strong>Month Ending:-</strong><span>{{ $end_date }}</span></p>
+                <p class="mx-0"><strong>Month Ending:-</strong><span>{{ date('d-m-Y', strtotime($end_date)) }}</span></p>
                 <p class="mx-0"></p>
             </div>
         </div>
@@ -84,19 +84,19 @@
                                 $from_time = date('H:i', strtotime($timesheet->from_time));
                                 $to_time = date('H:i', strtotime($timesheet->to_time));
                             @endphp
-                            <td>{{$timesheet->calender_date}}</td>
-                            <td>{{$timesheet->calender_day }}</td>
-                            <td>{{!empty($timesheet->project->name) ? ucfirst($timesheet->project->name):'______'}}</td>
-                            <td>{{!empty($from_time) ? $from_time : '' }}</td>
-                            <td>{{!empty($to_time) ? $to_time : '' }}</td>
-                            <td>{{$timesheet_hours }}</td>
+                            <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)):'' }}</td>
+                            <td>{{ $timesheet->calender_day }}</td>
+                            <td>{{ !empty($timesheet->project->name) ? ucfirst($timesheet->project->name) : '______' }}</td>
+                            <td>{{ !empty($from_time) ? $from_time : '' }}</td>
+                            <td>{{ !empty($to_time) ? $to_time : '' }}</td>
+                            <td>{{ $timesheet_hours }}</td>
                             <td class="d-flex" style="
                                 align-items: center;">
-                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
-                                        title="{{$timesheet->notes}}">
-                                        {{ substr($timesheet->notes, 0, 10) . ' ...' }}</p>
-                                    <i class="la la la-eye"></i>
-                                </td>
+                                <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
+                                    title="{{ $timesheet->notes }}">
+                                    {{ substr($timesheet->notes, 0, 10) . ' ...' }}</p>
+                                <i class="la la la-eye"></i>
+                            </td>
                         </tbody>
                     @endforeach
                     {{-- <tr>
@@ -109,17 +109,23 @@
                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                     <a class="dropdown-item btn btn-primary continue-btn btn-block" data-emp_id="{{ $id }}"
                         data-start_date="{{ $start_date }}" data-end_date="{{ $end_date }}" data-status="approved"
-                        href="#" data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Timesheet
-                        Status</a>
+                        href="#" data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change
+                        Timesheet Status</a>
                 @endif
             </div>
         </div>
     </div>
 
     <!-- update Employee Timsheet status Model-->
+    {{-- @dd($timesheet_statuses); --}}
     <div class="modal custom-modal fade" id="update_timesheet_status" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="modal-body">
                     <div class="form-header">
                         <h3>Update {{ ucfirst($title) }} data</h3>
@@ -147,7 +153,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Timesheet status Reason<span class="text-danger">*</span></label>
+                                    <label>To Reason</label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>

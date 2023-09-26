@@ -17,10 +17,10 @@ class AddEmployeeIdToEmployees extends Migration
             $table->string('employee_id')->unique();
             $table->dropForeign('employees_designation_id_foreign');
             $table->dropColumn('designation_id');
-            $table->dropForeign('employees_branch_id_foreign');
-            $table->dropColumn('branch_id');
+            // $table->dropForeign('employees_branch_id_foreign');
+            // $table->dropColumn('branch_id');
+            $table->foreignId('branch_id')->nullable();
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->foreignId('branch_id')->nullable()->change();
             $table->dropForeign('employees_department_id_foreign');
             $table->dropColumn('department_id');
             $table->dropColumn('company');

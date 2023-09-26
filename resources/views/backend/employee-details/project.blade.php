@@ -25,11 +25,11 @@
                         </tr>
                         <tr>
                             <th>Start Date</th>
-                            <td>{{ $project->start_date }}</td>
+                            <td>{{ !empty($project->start_date) ? date('d-m-Y',strtotime($project->start_date)):'' }}</td>
                         </tr>
                         <tr>
                             <th>End Date</th>
-                            <td>{{ $project->end_date }}</td>
+                            <td>{{ !empty($project->end_date) ? date('d-m-Y',strtotime($project->end_date)):''}}</td>
                         </tr>
                         <tr>
                             <th>status</th>

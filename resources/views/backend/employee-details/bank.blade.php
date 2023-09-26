@@ -43,7 +43,7 @@
 
 <div id="edit_bank_detail" class="modal custom-modal fade" role="dialog">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content ml-5">
             <div class="modal-header">
                 <h5 class="modal-title">Employee Bank</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

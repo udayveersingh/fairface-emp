@@ -29,19 +29,19 @@
                         </tr>
                         <tr>
                             <th>Cos Issue Date</th>
-                            <td>{{ $visa->cos_issue_date }}</td>
+                            <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y',strtotime($visa->cos_issue_date)):''}}</td>
                         </tr>
                         <tr>
                             <th>Cos Expire Date</th>
-                            <td>{{ $visa->cos_expiry_date }}</td>
+                            <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y',strtotime($visa->cos_expiry_date)):''}}</td>
                         </tr>
                         <tr>
                             <th>Visa Issue Date</th>
-                            <td>{{ $visa->visa_issue_date }}</td>
+                            <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y',strtotime($visa->visa_issue_date)):''}}</td>
                         </tr>
                         <tr>
                             <th>Visa Expiry Date</th>
-                            <td>{{ $visa->visa_expiry_date }}</td>
+                            <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y',strtotime($visa->visa_expiry_date)):''}}</td>
                         </tr>
                     </table>
                     <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
@@ -117,13 +117,13 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Visa Issue Date</label>
+                                <label>Visa Issue Date<span class="text-danger">*</span></label>
                                 <input class="form-control" name="visa_issue_date" id="visa_issue_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Visa Expiry Date</label>
+                                <label>Visa Expiry Date<span class="text-danger">*</span></label>
                                 <input class="form-control" name="visa_expiry_date" id="visa_expiry_date"
                                     type="date">
                             </div>

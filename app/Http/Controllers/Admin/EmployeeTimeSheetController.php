@@ -82,7 +82,8 @@ class EmployeeTimeSheetController extends Controller
     {
         $title = "Employee TimeSheet";
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy('calender_date','ASC')->get();
-        $timesheet_statuses = TimesheetStatus::get();
+        // $timesheet_statuses = TimesheetStatus::get();
+        $timesheet_statuses = TimesheetStatus::where('status','=',TimesheetStatus::APPROVED)->Orwhere('status','=',TimesheetStatus::REJECTED)->get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
@@ -233,9 +234,15 @@ class EmployeeTimeSheetController extends Controller
 
     public function TimesheetStatusUpdate(Request $request)
     {
+        $timesheet_status = TimesheetStatus::find($request->timesheet_status);
+        $status_reason ='';
+        if(!empty($timesheet_status->status) && $timesheet_status->status == TimesheetStatus::REJECTED)
+        {
+            $status_reason ='required';
+        }
         $this->validate($request, [
             'timesheet_status' => 'required',
-            'status_reason' => 'required',
+            'status_reason' =>  $status_reason,
         ]);
         $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->emp_id)->where('start_date', '=',$request->start_date)->where('end_date','=',$request->end_date)->get();
         if(!empty($employee_timesheet)){

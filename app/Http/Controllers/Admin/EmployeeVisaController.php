@@ -42,9 +42,13 @@ class EmployeeVisaController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
-            'visa_type' => 'nullable|max:80',
-            'cos_number' => 'required|max:100',
+            'visa_type' => 'required',
+            'visa_issue_date' => 'required',
+            'visa_expiry_date'=> 'required'
+            // 'cos_number' => 'required|max:100',
+
         ]);
         EmployeeVisa::create([
             'employee_id' => $request->emp_id,
@@ -68,8 +72,10 @@ class EmployeeVisaController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'visa_type' => 'nullable|max:80',
-            'cos_number' => 'required|max:100',
+            'visa_type' => 'required',
+            'visa_issue_date' => 'required',
+            'visa_expiry_date'=> 'required'
+            // 'cos_number' => 'required|max:100',
         ]);
 
         $employee_visa = EmployeeVisa::find($request->edit_id);
