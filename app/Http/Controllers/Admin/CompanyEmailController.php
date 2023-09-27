@@ -187,7 +187,7 @@ class CompanyEmailController extends Controller
     {
         $title = "mail";
         $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->orwhere('from_id', '=', $to_id)->get();
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {    
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();

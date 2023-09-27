@@ -42,7 +42,7 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="mx-0"><strong>Month starting:-</strong>{{!empty($start_date) ? date('d-m-Y', strtotime($start_date)):'' }}</p>
+                <p class="mx-0"><strong>Month starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
                 <p class="mx-0"></p>
             </div>
             <div class="col-md-6">
@@ -84,7 +84,8 @@
                                 $from_time = date('H:i', strtotime($timesheet->from_time));
                                 $to_time = date('H:i', strtotime($timesheet->to_time));
                             @endphp
-                            <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)):'' }}</td>
+                            <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)) : '' }}
+                            </td>
                             <td>{{ $timesheet->calender_day }}</td>
                             <td>{{ !empty($timesheet->project->name) ? ucfirst($timesheet->project->name) : '______' }}</td>
                             <td>{{ !empty($from_time) ? $from_time : '' }}</td>

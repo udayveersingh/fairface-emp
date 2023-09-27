@@ -4,32 +4,39 @@
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
-                <li class="menu-title">
-                    <span>Main</span>
-                </li>
+                    <li class="menu-title">
+                        <span>Main</span>
+                    </li>
                     <li class="{{ route_is('employee-dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('employee-dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+                        <a href="{{ route('employee-dashboard') }}"><i class="la la-dashboard"></i> <span>
+                                Dashboard</span></a>
                     </li>
                     <li class="{{ route_is('profile') ? 'active' : '' }}">
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Send TimeSheet</span></a>
+                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Send
+                                TimeSheet</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply leave</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
+                                leave</span></a>
                     </li>
-                            @php
-                                 $employee = App\Models\Employee::where('user_id','=',Auth::user()->id)->first();
-                                 $employee_job = App\Models\EmployeeJob::where('employee_id','=',$employee->id)->first();
-                            @endphp
+                    @php
+                        $employee = App\Models\Employee::where('user_id', '=', Auth::user()->id)->first();
+                        $employee_job = App\Models\EmployeeJob::where('employee_id', '=', $employee->id)->first();
+                    @endphp
                     <li class="submenu">
-                        <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span class="menu-arrow"></span></a>
+                        <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span
+                                class="menu-arrow"></span></a>
                         <ul style="display:none;">
-                            <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"  href="{{ route('user-email-inbox') }}">Inbox</a></li>
-                             @if(!empty($employee_job))
-                            <li><a class="{{ route_is('sent-email') ? 'active' : '' }}" href="{{ route('sent-email') }}">Sent Mail</a></li>
-                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}" href="{{ route('compose-email') }}">Compose Email</a></li>
+                            <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
+                                    href="{{ route('user-email-inbox') }}">Inbox</a></li>
+                            @if (!empty($employee_job))
+                                <li><a class="{{ route_is('sent-email') ? 'active' : '' }}"
+                                        href="{{ route('sent-email') }}">Sent Mail</a></li>
+                                <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"
+                                        href="{{ route('compose-email') }}">Compose Email</a></li>
                             @endif
                         </ul>
                     </li>
@@ -60,7 +67,8 @@
                                     href="{{ route('holidays') }}">Public Holidays</a></li>
                             <li><a class="{{ route_is('leave-type') ? 'active' : '' }}"
                                     href="{{ route('leave-type') }}">Leave Type</a></li>
-                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa Type</a></li>
+                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa
+                                    Type</a></li>
                             <li><a class="{{ route_is('departments') ? 'active' : '' }}"
                                     href="{{ route('departments') }}">Departments</a></li>
                             <li><a class="{{ route_is(['projects', 'project-list']) ? 'active' : '' }}"
@@ -82,11 +90,38 @@
 
                         </ul>
                     </li>
-                    <li class="{{ route_is('employees-list') ? 'active' : '' }}">
+                    {{-- <li class="{{ route_is('employees-list') ? 'active' : '' }}">
                         <a href="{{ route('employees-list') }}"><i class="la la-user"></i> <span>All Employees</span></a>
+                        
+                    </li> --}}
+                    <li class="submenu">
+                        <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
+                                class="la la-user"></i><span> All Employees</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li>
+                                @php
+                                    $status = implode(',', request()->route()->parameters);
+                                    $active_class = '';
+                                    $archeive_class = '';
+                                    if ($status == 'active') {
+                                        $active_class = 'active';
+                                    } else {
+                                        $archeive_class = 'active';
+                                    }
+                                @endphp
+                                <a class="{{ !empty($active_class) ? $active_class : '' }} "
+                                    href="{{ route('employees-list', ['status' => 'active']) }}">Active
+                                    Employee</a>
+                            </li>
+                            <li><a class="{{ !empty($archeive_class) ? $archeive_class : '' }}"
+                                    href="{{ route('employees-list', ['status' => 'archieve']) }}">Archived
+                                    Employee</a>
+                            </li>
+                        </ul>
                     </li>
+
                     <li class="{{ route_is('employee-timesheet') ? 'active' : '' }}">
-                        <a href="{{ route('employee-timesheet')}}"><i class="la la-calendar"></i>
+                        <a href="{{ route('employee-timesheet') }}"><i class="la la-calendar"></i>
                             <span>Timesheet</span></a>
                     </li>
                     <!-- <li class="{{ route_is('tickets') ? 'active' : '' }}">
@@ -96,13 +131,16 @@
                     <a href="{{ route('tickets') }}"><i class="la la-bell"></i> <span>Leaves</span></a>
                 </li> -->
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee leaves</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee
+                                leaves</span></a>
                     </li>
                     <li class="{{ route_is('company-email') ? 'active' : '' }}">
-                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company Email</span> <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
+                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company
+                                Email</span> <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
                     </li>
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
-                        <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i> <span>Announcement</span></a>
+                        <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
+                            <span>Announcement</span></a>
                     </li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>

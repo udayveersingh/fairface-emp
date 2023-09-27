@@ -34,13 +34,16 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function list()
+    public function list($status)
     {
+        // dd($status);
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch','user.role')->orderBy('created_at', 'desc')->get();
-        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
+        $employees = Employee::with('branch','user.role')->where('record_status','=',$status)->orderBy('created_at', 'desc')->get();
+        return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
+
+        // return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
     }
 
     /**
@@ -180,7 +183,7 @@ class EmployeeController extends Controller
             'passport_number' => $request->passport_number,
             'user_id' => $user->id,
         ]);
-        return redirect()->route('employees-list')->with('success', "Employee details has been updated");
+        return back()->with('success', "Employee details has been updated");
     }
 
     /**
