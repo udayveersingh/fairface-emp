@@ -41,9 +41,9 @@ class EmployeeController extends Controller
         $branches = Branch::get();
         $countries = Country::get();
         $employees = Employee::with('branch','user.role')->where('record_status','=',$status)->orderBy('created_at', 'desc')->get();
-        return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
+        // return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
 
-        // return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
+        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
     }
 
     /**

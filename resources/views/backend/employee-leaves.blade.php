@@ -26,7 +26,6 @@
     </div>
 @endsection
 
-
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -44,8 +43,8 @@
                             <th>No of Days</th>
                             <th>Reason</th>
                             <th class="text-center">Status</th>
-                            <th>status reason</th>
-                            <th>Approved Date/Time</th>
+                            {{-- <th>status reason</th> --}}
+                            {{-- <th>Approved Date/Time</th> --}}
                             @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                 <th class="text-right">Actions</th>
                             @endif
@@ -68,7 +67,7 @@
                                         </h2>
                                     </td>
                                 @endif
-                                <td>{{ $leave->leaveType->type }}</td>
+                                <td>{{!empty($leave->leaveType->type) ? $leave->leaveType->type:''}}</td>
                                 <td>{{ date_format(date_create($leave->from), 'd M, Y') }}</td>
                                 <td>{{ date_format(date_create($leave->to), 'd M, Y') }}</td>
                                 <td>
@@ -101,11 +100,11 @@
                                         @endif
                                         {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         </a>
-                                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
+                                        {{-- @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
                                             <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
                                                 data-status="approved" href="#" data-toggle="modal"
                                                 id="statusChecked">Change Status</a>
-                                        @endif
+                                        @endif --}}
                                     </div>
                                     {{-- <div class="action-label">
                                         <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
@@ -120,20 +119,22 @@
                                             id="statusChecked">Change Status</a> --}}
                                     {{-- </div> --}}
                                 </td>
-                                <td class="d-flex" style="
+                                {{-- <td class="d-flex" style="
                                 align-items: center;">
                                     <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
                                         title="{{ $leave->status_reason }}">
                                         {{ substr($leave->status_reason, 0, 10) . ' ...' }}</p>
                                     <i class="la la la-eye"></i>
-                                </td>
-                                <td>{{ !empty($leave->approved_date_time) ? date('d-m-Y',strtotime($leave->approved_date_time)):''}}</td>
+                                </td> --}}
+                                {{-- <td>{{!empty($leave->approved_date_time) ? date('d-m-Y', strtotime($leave->approved_date_time)) : '' }}</td> --}}
                                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" data-id="{{ $leave->id }}"
+                                                    data-status="approved" href="{{route('employee-leave-view',$leave->id)}}" id=""><i class="fa fa-eye m-r-5" aria-hidden="true"></i>View</a>
                                                 <a data-id="{{ $leave->id }}"
                                                     data-leave_type="{{ $leave->leave_type_id }}"
                                                     data-employee="{{ $leave->employee_id }}"
@@ -150,6 +151,9 @@
                                                 <a data-id="{{ $leave->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0)" data-toggle="modal"><i
                                                         class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                <a class="dropdown-item statusChecked" data-id="{{ $leave->id }}"
+                                                    data-status="approved" href="#" data-toggle="modal"
+                                                    id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Status</a>
                                             </div>
                                         </div>
                                     </td>
@@ -270,14 +274,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                                                          <label>Status </label>
-                                                          <select name="status" class="select">
-                                                          <option value="null" disabled selected>Select Status</option>
-                                                          <option>Approved</option>
-                                                          <option>Pending</option>
-                                                          <option>Declined</option>
-                                                          </select>
-                                                          </div> -->
+                                                                          <label>Status </label>
+                                                                          <select name="status" class="select">
+                                                                          <option value="null" disabled selected>Select Status</option>
+                                                                          <option>Approved</option>
+                                                                          <option>Pending</option>
+                                                                          <option>Declined</option>
+                                                                          </select>
+                                                                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -397,14 +401,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                              <label>Status </label>
-                                                              <select name="status" class="select2 form-control" id="edit_status">
-                                                              <option value="null">Select Status</option>
-                                                              <option>Approved</option>
-                                                              <option>Pending</option>
-                                                              <option>Declined</option>
-                                                              </select>
-                                                              </div> -->
+                                                                              <label>Status </label>
+                                                                              <select name="status" class="select2 form-control" id="edit_status">
+                                                                              <option value="null">Select Status</option>
+                                                                              <option>Approved</option>
+                                                                              <option>Pending</option>
+                                                                              <option>Declined</option>
+                                                                              </select>
+                                                                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -419,6 +423,9 @@
     <div class="modal custom-modal fade" id="update_leave_status" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
                 <div class="modal-body">
                     <div class="form-header">
                         <h3>Update {{ ucfirst($title) }} data</h3>
@@ -440,7 +447,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Leave Reason <span class="text-danger">*</span></label>
+                                    <label>Leave Reason</label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                 </div>
                             </div>

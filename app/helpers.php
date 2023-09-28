@@ -75,7 +75,7 @@ if (!function_exists('getEmployeeJob')) {
 if (!function_exists('getLeaveStatus')) {
     function getLeaveStatus()
     {
-        return TimesheetStatus::where('status', '!=', TimesheetStatus::SUBMITTED)->get();
+        return TimesheetStatus::where('status', '!=', TimesheetStatus::SUBMITTED)->where('status', '!=', TimesheetStatus::PENDING_APPROVED)->get();
     }
 }
 

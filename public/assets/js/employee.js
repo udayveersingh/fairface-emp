@@ -131,8 +131,25 @@ $(document).ready(function() {
     });
 
     //Edit Employee Address form
-    $(document).on('click', '#employee_address_btn', function() {
-        $('#edit_address_detail').modal("show");
+    $(document).on('click', '#edit_btn_employee_address', function() {
+        $('#edit_employee_address').modal("show");
+        var id = $(this).data('id');
+        var emp_id = $(this).data('employee_id');
+        var address_line_1 = $(this).data('home_address_line_1');
+        var address_line_2 = $(this).data('home_address_line_2');
+        var post_code = $(this).data('post_code');
+        var from_date = $(this).data('from_date');
+        console.log(from_date , 'from_date');
+        var to_date = $(this).data('to_date');
+        $('#edit_emp_address_id').val(id);
+        $('#address_employee_id').val(emp_id);
+        $('.edit_address_line_1').text(address_line_1);
+        $('.edit_address_line_2').val(address_line_2);
+        $('.edit_post_code').val(post_code);
+        $('.edit_from_date').val(from_date);
+        $('.edit_to_date').val(to_date);
+        $('.select').select2('destroy').select2();
+
     });
 
     //Edit Employee Bank Detail form

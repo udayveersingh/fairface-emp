@@ -115,7 +115,7 @@
                                         
                                     @endphp
                                     <tr>
-                                        <td width="13%"><input type="text" class="form-control" name="calender_date[]"
+                                        <td width="14%"><input type="text" class="form-control" name="calender_date[]"
                                                 value="{{ $timesheet->calender_date }}" readonly></td>
                                         <td><input type="text" style="" class="form-control" name="calender_day[]"
                                                 value="{{ $timesheet->calender_day }}" readonly></td>

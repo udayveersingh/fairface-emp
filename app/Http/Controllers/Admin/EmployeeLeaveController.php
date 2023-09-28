@@ -40,6 +40,15 @@ class EmployeeLeaveController extends Controller
         return view('backend.employee-leaves', compact('title', 'leaves', 'leave_types', 'employees', 'projects', 'timesheet_statuses', 'project_phases'));
     }
 
+    public function LeaveView($id)
+    {
+        $title = "employee leave";
+        $leave = Leave::with('leaveType', 'employee', 'time_sheet_status')->find($id);
+        return view('backend.leave-view', compact('leave','title'));
+    }
+
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -154,8 +163,14 @@ class EmployeeLeaveController extends Controller
 
     public function LeaveStatusUpdate(Request $request)
     {
+        $timesheet_status = TimesheetStatus::find($request->timesheet_status);
+        $status_reason = '';
+        if (!empty($timesheet_status->status) && $timesheet_status->status == TimesheetStatus::REJECTED) {
+            $status_reason = 'required';
+        }
         $this->validate($request, [
             'timesheet_status' => 'required',
+            'status_reason' =>  $status_reason,
         ]);
         $date = date('Y-m-d');
         $employee_leave_status = Leave::with('leaveType', 'time_sheet_status')->find($request->id);

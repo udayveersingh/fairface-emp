@@ -16,10 +16,10 @@
                 <li class="breadcrumb-item active">Employee</li>
             </ul>
         </div>
-        <div class="col-auto float-right ml-auto">
+        {{-- <div class="col-auto float-right ml-auto">
             <a href="{{ route('employee-detail') }}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
             {{-- <a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a> --}}
-            <div class="view-icons">
+            {{-- <div class="view-icons">
                 <a href="{{ route('employees') }}"
                     class="grid-view btn btn-link {{ route_is(['employees', 'employees-list']) ? 'active' : '' }}"><i
                         class="fa fa-th"></i></a>
@@ -27,7 +27,7 @@
                     class="list-view btn btn-link {{ route_is(['employees', 'employees-list']) ? 'active' : '' }}"><i
                         class="fa fa-bars"></i></a>
             </div>
-        </div>
+        </div> --}}
     </div>
 @endsection
 
@@ -65,34 +65,26 @@
                                 <td>{{ date_format(date_create($employee->created_at), 'd M,Y') }}</td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
-                                        <a href="javascript:void(0)" class="action-icon dropdown-toggle"
-                                            data-toggle="dropdown" aria-expanded="false"><i
-                                                class="material-icons">more_vert</i></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item editbtn" href="javascript:void(0)"
-                                                data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
-                                                data-employee_id="{{ $employee->employee_id }}"
-                                                data-firstname="{{ $employee->firstname }}"
-                                                data-lastname="{{ $employee->lastname }}"
-                                                data-email="{{ $employee->email }}"
-                                                data-role="{{ !empty($employee->user->role_id) ? $employee->user->role_id : '' }}"
-                                                data-phone="{{ $employee->phone }}" data-avatar="{{ $employee->avatar }}"
-                                                data-company="{{ $employee->company }}"
-                                                data-main_work_loc="{{ !empty($employee->branch->id) ? $employee->branch->id : '' }}"
-                                                data-phone_number="{{ $employee->alternate_phone_number }}"
-                                                data-national_insurance_number="{{ $employee->national_insurance_number }}"
-                                                data-nationality="{{ $employee->country_id }}"
-                                                data-passport_number="{{ $employee->passport_number }}"
-                                                data-marital_status="{{ $employee->marital_status }}"
-                                                data-record_status="{{ $employee->record_status }}"
-                                                data-date_of_birth="{{ $employee->date_of_birth }}"
-                                                data-passport_issue_date="{{ $employee->passport_issue_date }}"
-                                                data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
-                                                data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                            <a data-id="{{ $employee->id }}" class="dropdown-item deletebtn"
-                                                href="javascript:void(0)" data-toggle="modal" data-target="#deletebtn"><i
-                                                    class="fa fa-trash-o m-r-5"></i> Delete</a>
-                                        </div>
+                                            data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
+                                            data-employee_id="{{ $employee->employee_id }}"
+                                            data-firstname="{{ $employee->firstname }}"
+                                            data-lastname="{{ $employee->lastname }}"
+                                            data-email="{{ $employee->email }}"
+                                            data-role="{{ !empty($employee->user->role_id) ? $employee->user->role_id : '' }}"
+                                            data-phone="{{ $employee->phone }}" data-avatar="{{ $employee->avatar }}"
+                                            data-company="{{ $employee->company }}"
+                                            data-main_work_loc="{{ !empty($employee->branch->id) ? $employee->branch->id : '' }}"
+                                            data-phone_number="{{ $employee->alternate_phone_number }}"
+                                            data-national_insurance_number="{{ $employee->national_insurance_number }}"
+                                            data-nationality="{{ $employee->country_id }}"
+                                            data-passport_number="{{ $employee->passport_number }}"
+                                            data-marital_status="{{ $employee->marital_status }}"
+                                            data-record_status="{{ $employee->record_status }}"
+                                            data-date_of_birth="{{ $employee->date_of_birth }}"
+                                            data-passport_issue_date="{{ $employee->passport_issue_date }}"
+                                            data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
+                                            data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                     </div>
                                 </td>
                             </tr>

@@ -98,6 +98,8 @@
                         <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
                                 class="la la-user"></i><span> All Employees</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
+                            <li><a class="{{ route_is('employee-detail') ? 'active' : '' }}" href="{{ route('employee-detail') }}">Add New Employee</a>
+                            </li>
                             <li>
                                 @php
                                     $status = implode(',', request()->route()->parameters);
@@ -105,7 +107,7 @@
                                     $archeive_class = '';
                                     if ($status == 'active') {
                                         $active_class = 'active';
-                                    } else {
+                                    } else if($status == 'archieve') {
                                         $archeive_class = 'active';
                                     }
                                 @endphp

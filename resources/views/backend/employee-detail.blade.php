@@ -495,8 +495,8 @@
                             <select name="record_status" class="form-control select">
                                 <option value="">Select Record Status</option>
                                 <option value="active" {{old('marital_status', 'active') ? 'selected' : '' }}>Active</option>
-                                <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>
-                                <option value="delete" {{old('record_status', 'delete') ? 'selected' : '' }}>Delete</option>
+                                {{-- <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>
+                                <option value="delete" {{old('record_status', 'delete') ? 'selected' : '' }}>Delete</option> --}}
                             </select>
                         </div>
                     </div>

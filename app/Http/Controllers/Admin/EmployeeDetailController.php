@@ -38,7 +38,7 @@ class EmployeeDetailController extends Controller
         // $employee = Employee::find($id);
         $countries = Country::get();
         $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
-        $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
+        $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
         $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
         $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
         $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
