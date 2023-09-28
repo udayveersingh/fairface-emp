@@ -79,6 +79,7 @@
     @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
         @php
             $tabs = [
+                'address' => 'Address',
                 'document' => 'Document',
                 'job' => 'Job',
                 'visa' => 'Visa',
@@ -113,7 +114,9 @@
                                 </li>
                                 <li>
                                     <div class="title">Alternate Phone Number:</div>
-                                    <div class="text">{{ !empty($employee->alternate_phone_number) ? $employee->alternate_phone_number:''  }}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->alternate_phone_number) ? $employee->alternate_phone_number : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Nationality:</div>
@@ -122,63 +125,35 @@
                                 </li>
                                 <li>
                                     <div class="title">National Insurance Number:</div>
-                                    <div class="text">{{ !empty($employee->national_insurance_number) ? $employee->national_insurance_number:'' }}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->national_insurance_number) ? $employee->national_insurance_number : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Number:</div>
-                                    <div class="text">{{ !empty($employee->passport_number) ? $employee->passport_number:''  }}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->passport_number) ? $employee->passport_number : '' }}</div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Issue Date:</div>
-                                    <div class="text">{{ !empty($employee->passport_issue_date) ? $employee->passport_issue_date:'' }}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->passport_issue_date) ? $employee->passport_issue_date : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Passport Expire Date:</div>
-                                    <div class="text">{{ !empty($employee->passport_expiry_date) ? $employee->passport_issue_date:''}}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->passport_expiry_date) ? $employee->passport_issue_date : '' }}
+                                    </div>
                                 </li>
                                 <li>
                                     <div class="title">Record Status:</div>
-                                    <div class="text">{{ !empty($employee->record_status) ? $employee->record_status:''  }}</div>
+                                    <div class="text">
+                                        {{ !empty($employee->record_status) ? $employee->record_status : '' }}</div>
                                 </li>
                             </ul>
                         </div>
                     </div>
-
-                    {{-- <table class="table table-striped">
-                                <tr>
-                                    <th>Main Branch Location</th>
-                                    <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Alternate Phone Number</th>
-                                    <td>{{ $employee->alternate_phone_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nationality</th>
-                                    <td>{{ !empty($employee->country->name) ? $employee->country->name : '' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>National Insurance Number</th>
-                                    <td>{{ $employee->national_insurance_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Passport Number</th>
-                                    <td>{{ $employee->passport_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Passport Issue Date</th>
-                                    <td>{{ $employee->passport_issue_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Passport Expire Date</th>
-                                    <td>{{ $employee->passport_expiry_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Record Status</th>
-                                    <td>{{ $employee->record_status }}</td>
-                                </tr>
-                            </table> --}}
                 </div>
                 {{-- @if (!empty($emergency_contact))
                         <div class="col-md-6">
@@ -309,73 +284,73 @@
                     @endif
                 </div>
                 <div class="row">
-                    @if(!empty($employee_jobs))
-                    @foreach ($employee_jobs as $index => $job)
-                        @if ($index == 1)
-                        @break;
+                    @if (!empty($employee_jobs))
+                        @foreach ($employee_jobs as $index => $job)
+                            @if ($index == 1)
+                            @break;
                         @endif
                         @php
-                        if (!empty($job->supervisor)) {
-                            $supervisor = App\Models\Employee::find($job->supervisor);
-                            $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                        } else {
-                            $supervisor_name = '';
-                        }
-                        if (!empty($job->timesheet_approval_incharge)) {
-                            $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                            $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
-                        } else {
-                            $incharge_name = '';
-                        }
+                            if (!empty($job->supervisor)) {
+                                $supervisor = App\Models\Employee::find($job->supervisor);
+                                $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                            } else {
+                                $supervisor_name = '';
+                            }
+                            if (!empty($job->timesheet_approval_incharge)) {
+                                $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                                $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                            } else {
+                                $incharge_name = '';
+                            }
                         @endphp
-                    <div class="col-md-6">
-                        <div class="card card-block shadow shadow-sm p-3 h-80 ">
-                            <h3 class="card-title">Job Information</h3>
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Job Title</th>
-                                    <td>{{ $job->job_title }}</td>
-                                </tr>
-                                <tr>
-                                    <th>supervisor </th>
-                                    <td>{{ $supervisor_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Timesheet Approval Incharge </th>
-                                    <td>{{ $incharge_name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Department</th>
-                                    <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Work Email</th>
-                                    <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Work Phone Number</th>
-                                    <td>{{ $job->work_phone_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Start Date</th>
-                                    <td>{{ $job->start_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>End Date</th>
-                                    <td>{{ $job->end_date }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Job Type</th>
-                                    <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Contracted Weekly Hours</th>
-                                    <td>{{ $job->contracted_weekly_hours }}</td>
-                                </tr>
-                            </table>
+                        <div class="col-md-6">
+                            <div class="card card-block shadow shadow-sm p-3 h-80 ">
+                                <h3 class="card-title">Job Information</h3>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Job Title</th>
+                                        <td>{{ $job->job_title }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>supervisor </th>
+                                        <td>{{ $supervisor_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Timesheet Approval Incharge </th>
+                                        <td>{{ $incharge_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Department</th>
+                                        <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Work Email</th>
+                                        <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Work Phone Number</th>
+                                        <td>{{ $job->work_phone_number }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Start Date</th>
+                                        <td>{{ $job->start_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>End Date</th>
+                                        <td>{{ $job->end_date }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Job Type</th>
+                                        <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contracted Weekly Hours</th>
+                                        <td>{{ $job->contracted_weekly_hours }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
                 @endif
                 @if (!empty($employee_visas))
                     @foreach ($employee_visas as $index => $visa)
@@ -419,50 +394,99 @@
 @endif
 </div>
 
+<!-- Employee Address-->
+<div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
+@if (!empty($employee_addresses))
+    <div class="card profile-box flex-fill">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped custom-table mb-0">
+                    <thead>
+                        <tr>
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px;">Sr No.</th>
+                                    <th>Address Line 1</th>
+                                    <th>Address Line 2</th>
+                                    <th>Post Code</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    {{-- <th class="text-right">Action</th> --}}
+                                </tr>
+                            </thead>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($employee_addresses as $index => $address)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $address->home_address_line_1 }}</td>
+                                <td>{{ $address->home_address_line_2 }}</td>
+                                <td>{{ $address->post_code }}</td>
+                                <td>{{ $address->from_date }}</td>
+                                <td>{{ $address->to_date }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
+                        class="fa fa-plus"></i>
+                    Add New Address</a>
+            </div>
+        </div>
+    </div>
+@endif
+</div>
+<!-- Employee address -->
+
 <!-- Employee Document -->
 <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
-@if(!empty($employee_documents))
-<div class="card profile-box flex-fill">
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped custom-table mb-0">
-                <thead>
-                    <tr>
-                        <thead>
-                            <tr>
-                                <th style="width: 30px;">Sr No.</th>
-                                <th>Document Name</th>
-                                <th>Created</th>
-                                <th>Attachment</th>
-                                {{-- <th class="text-right">Action</th> --}}
-                            </tr>
-                        </thead>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($employee_documents as $index => $document)
+@if (!empty($employee_documents))
+    <div class="card profile-box flex-fill">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped custom-table mb-0">
+                    <thead>
                         <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $document->name }}</td>
-                            <td>{{ !empty(date('Y-m-d', strtotime($document->created_at))) ? date('Y-m-d', strtotime($document->created_at)) : '' }}
-                            </td>
-                            @php
-                                $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <td>
-                                @if (!empty($extension) && $extension == 'pdf')
-                                    <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                            width="100px"></a>
-                                @else
-                                    <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                            width="100px"></a>
-                                @endif
-                            </td>
-                            {{-- <td class="text-right">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30px;">Sr No.</th>
+                                    <th>Document Name</th>
+                                    <th>Created</th>
+                                    <th>Attachment</th>
+                                    {{-- <th class="text-right">Action</th> --}}
+                                </tr>
+                            </thead>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($employee_documents as $index => $document)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $document->name }}</td>
+                                <td>{{ !empty(date('Y-m-d', strtotime($document->created_at))) ? date('Y-m-d', strtotime($document->created_at)) : '' }}
+                                </td>
+                                @php
+                                    $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
+                                @endphp
+                                <td>
+                                    @if (!empty($extension) && $extension == 'pdf')
+                                        <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                            target="_blank"><img
+                                                src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                                width="100px"></a>
+                                    @else
+                                        <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                            target="_blank"><img
+                                                src="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                                width="100px"></a>
+                                    @endif
+                                </td>
+                                {{-- <td class="text-right">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
@@ -470,14 +494,14 @@
                                                 </div>
                                             </div>
                                         </td> --}}
-                        </tr>
-                    @endforeach
-                    <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
-                </tbody>
-            </table>
+                            </tr>
+                        @endforeach
+                        <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 @endif
 </div>
 <!-- Employee Document -->
@@ -485,76 +509,76 @@
 <!-- Employee Job -->
 <div class="tab-pane fade" id="job" role="tabpanel" aria-labelledby="job-tab">
 <div class="row">
-    @if(!empty($employee_jobs))
-    @foreach ($employee_jobs as $job)
-        @php
-            if (!empty($job->supervisor)) {
-                $supervisor = App\Models\Employee::find($job->supervisor);
-                $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-            } else {
-                $supervisor_name = '';
-            }
-            if (!empty($job->timesheet_approval_incharge)) {
-                $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
-            } else {
-                $incharge_name = '';
-            }
-        @endphp
-        <div class="col-md-6 d-flex">
-            <div class="card profile-box flex-fill">
-                <div class="card-body">
-                    <h3 class="card-title">Employee Job</h3>
-                    <ul class="personal-info">
-                        <li>
-                            <div class="title">Job Title</div>
-                            <div class="text">{{ $job->job_title }}</div>
-                        </li>
-                        <li>
-                            <div class="title">supervisor</div>
-                            <div class="text">{{ $supervisor_name }}</div>
-                        </li>
-                        <li>
-                            <div class="title">Timesheet Approval Incharge</div>
-                            <div class="text">
-                                {{ $incharge_name }}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="title">Department</div>
-                            <div class="text">
-                                {{ !empty($job->department->name) ? $job->department->name : '' }}</div>
-                        </li>
-                        <li>
-                            <div class="title">Work Email</div>
-                            <div class="text">{{ !empty($job->work_email) ? $job->work_email : '' }}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="title">Work Phone Number</div>
-                            <div class="text">{{ $job->work_phone_number }}</div>
-                        </li>
-                        <li>
-                            <div class="title">Start Date</div>
-                            <div class="text">{{ $job->start_date }}</div>
-                        </li>
-                        <li>
-                            <div class="title">End Date</div>
-                            <div class="text">{{ $job->end_date }}</div>
-                        </li>
-                        <li>
-                            <div class="title">Job Type</div>
-                            <div class="text">{{ str_replace('_', ' ', $job->job_type) }}</div>
-                        </li>
-                        <li>
-                            <div class="title">Contracted Weekly Hours</div>
-                            <div class="text">{{ $job->contracted_weekly_hours }}</div>
-                        </li>
-                    </ul>
+    @if (!empty($employee_jobs))
+        @foreach ($employee_jobs as $job)
+            @php
+                if (!empty($job->supervisor)) {
+                    $supervisor = App\Models\Employee::find($job->supervisor);
+                    $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                } else {
+                    $supervisor_name = '';
+                }
+                if (!empty($job->timesheet_approval_incharge)) {
+                    $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                } else {
+                    $incharge_name = '';
+                }
+            @endphp
+            <div class="col-md-6 d-flex">
+                <div class="card profile-box flex-fill">
+                    <div class="card-body">
+                        <h3 class="card-title">Employee Job</h3>
+                        <ul class="personal-info">
+                            <li>
+                                <div class="title">Job Title</div>
+                                <div class="text">{{ $job->job_title }}</div>
+                            </li>
+                            <li>
+                                <div class="title">supervisor</div>
+                                <div class="text">{{ $supervisor_name }}</div>
+                            </li>
+                            <li>
+                                <div class="title">Timesheet Approval Incharge</div>
+                                <div class="text">
+                                    {{ $incharge_name }}
+                                </div>
+                            </li>
+                            <li>
+                                <div class="title">Department</div>
+                                <div class="text">
+                                    {{ !empty($job->department->name) ? $job->department->name : '' }}</div>
+                            </li>
+                            <li>
+                                <div class="title">Work Email</div>
+                                <div class="text">{{ !empty($job->work_email) ? $job->work_email : '' }}
+                                </div>
+                            </li>
+                            <li>
+                                <div class="title">Work Phone Number</div>
+                                <div class="text">{{ $job->work_phone_number }}</div>
+                            </li>
+                            <li>
+                                <div class="title">Start Date</div>
+                                <div class="text">{{ $job->start_date }}</div>
+                            </li>
+                            <li>
+                                <div class="title">End Date</div>
+                                <div class="text">{{ $job->end_date }}</div>
+                            </li>
+                            <li>
+                                <div class="title">Job Type</div>
+                                <div class="text">{{ str_replace('_', ' ', $job->job_type) }}</div>
+                            </li>
+                            <li>
+                                <div class="title">Contracted Weekly Hours</div>
+                                <div class="text">{{ $job->contracted_weekly_hours }}</div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
     @endif
 </div>
 </div>
@@ -562,40 +586,40 @@
 <!-- Emplolyee Visa -->
 <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
 <div class="row">
-    @if(!empty($employee_visas))
-    @foreach ($employee_visas as $visa)
-        <div class="col-md-12 mb-4">
-            <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Visa Type</th>
-                        <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Cos Number</th>
-                        <td>{{ $visa->cos_number }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cos Issue Date</th>
-                        <td>{{ $visa->cos_issue_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cos Expire Date</th>
-                        <td>{{ $visa->cos_expiry_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>Visa Issue Date</th>
-                        <td>{{ $visa->visa_issue_date }}</td>
-                    </tr>
-                    <tr>
-                        <th>Visa Expiry Date</th>
-                        <td>{{ $visa->visa_expiry_date }}</td>
-                    </tr>
-                </table>
+    @if (!empty($employee_visas))
+        @foreach ($employee_visas as $visa)
+            <div class="col-md-12 mb-4">
+                <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Visa Type</th>
+                            <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Cos Number</th>
+                            <td>{{ $visa->cos_number }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cos Issue Date</th>
+                            <td>{{ $visa->cos_issue_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cos Expire Date</th>
+                            <td>{{ $visa->cos_expiry_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Visa Issue Date</th>
+                            <td>{{ $visa->visa_issue_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Visa Expiry Date</th>
+                            <td>{{ $visa->visa_expiry_date }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
-    @endforeach
+        @endforeach
     @endif
 </div>
 </div>
@@ -668,36 +692,36 @@
                     </tr>
                 </thead>
                 <tbody id="bodyData">
-                    @if(!empty($employee_payslips))
-                    @foreach ($employee_payslips as $index => $employee_payslip)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ !empty($employee_payslip->month) ? $employee_payslip->month : '' }}</td>
-                            <td>{{ !empty($employee_payslip->year) ? $employee_payslip->year : '' }}</td>
-                            <td>{{ !empty(date('Y-m-d', strtotime($employee_payslip->created_at))) ? date('Y-m-d', strtotime($employee_payslip->created_at)) : '' }}
-                            </td>
-                            @php
-                                $extension = pathinfo(storage_path('storage/payslips/' . $employee_payslip->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <td>
-                                @if ($extension == 'pdf')
+                    @if (!empty($employee_payslips))
+                        @foreach ($employee_payslips as $index => $employee_payslip)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ !empty($employee_payslip->month) ? $employee_payslip->month : '' }}</td>
+                                <td>{{ !empty($employee_payslip->year) ? $employee_payslip->year : '' }}</td>
+                                <td>{{ !empty(date('Y-m-d', strtotime($employee_payslip->created_at))) ? date('Y-m-d', strtotime($employee_payslip->created_at)) : '' }}
+                                </td>
+                                @php
+                                    $extension = pathinfo(storage_path('storage/payslips/' . $employee_payslip->attachment), PATHINFO_EXTENSION);
+                                @endphp
+                                <td>
+                                    @if ($extension == 'pdf')
+                                        <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                            target="_blank"><img
+                                                src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                                width="100px"></a>
+                                    @else
+                                        <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                            target="_blank"><img
+                                                src="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                                width="100px"></a>
+                                    @endif
+                                </td>
+                                <td>
                                     <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                            width="100px"></a>
-                                @else
-                                    <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                            width="100px"></a>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                    target="_blank" download>Download
-                            </td>
-                        </tr>
-                    @endforeach
+                                        target="_blank" download>Download
+                                </td>
+                            </tr>
+                        @endforeach
                     @endif
                 </tbody>
             </table>
@@ -765,7 +789,10 @@
     </div>
 </div>
 </div>
+@if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN) 
 <!-- /Profile Modal -->
+@include("backend.profile-models.employee-address")
+@endif
 @endsection
 
 @section('scripts')

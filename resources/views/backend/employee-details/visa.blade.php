@@ -1,19 +1,21 @@
-@if (!empty($employee_visas->count()))
-<div class="row align-items-center mb-2">
-    <div class="col-auto float-right ml-auto">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i>
-            Add Visa</a>
+@if (!empty($employee_visas->count()) && $employee_visas->count() > 0)
+    <div class="row align-items-center mb-2">
+        <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i
+                    class="fa fa-plus"></i>
+                Add Visa</a>
+        </div>
     </div>
-</div>
 @else
-<div class="row align-items-center mb-2">
-    <div class="">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i class="fa fa-plus"></i>
-            Add Visa</a>
+    <div class="row align-items-center mb-2">
+        <div class="">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_visa"><i
+                    class="fa fa-plus"></i>
+                Add Visa</a>
+        </div>
     </div>
-</div>
 @endif
-@if (!empty($employee_visas->count()))
+@if (!empty($employee_visas->count()) && $employee_visas->count() > 0)
     <div class="row">
         @foreach ($employee_visas as $visa)
             <div class="col-md-12 mb-4">
@@ -29,19 +31,23 @@
                         </tr>
                         <tr>
                             <th>Cos Issue Date</th>
-                            <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y',strtotime($visa->cos_issue_date)):''}}</td>
+                            <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y', strtotime($visa->cos_issue_date)) : '' }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Cos Expire Date</th>
-                            <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y',strtotime($visa->cos_expiry_date)):''}}</td>
+                            <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y', strtotime($visa->cos_expiry_date)) : '' }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Visa Issue Date</th>
-                            <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y',strtotime($visa->visa_issue_date)):''}}</td>
+                            <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y', strtotime($visa->visa_issue_date)) : '' }}
+                            </td>
                         </tr>
                         <tr>
                             <th>Visa Expiry Date</th>
-                            <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y',strtotime($visa->visa_expiry_date)):''}}</td>
+                            <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y', strtotime($visa->visa_expiry_date)) : '' }}
+                            </td>
                         </tr>
                     </table>
                     <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
@@ -118,7 +124,8 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Issue Date<span class="text-danger">*</span></label>
-                                <input class="form-control" name="visa_issue_date" id="visa_issue_date" type="date">
+                                <input class="form-control" name="visa_issue_date" id="visa_issue_date"
+                                    type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">

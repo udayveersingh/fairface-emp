@@ -25,13 +25,13 @@ class UserProfileController extends Controller
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
             $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
-            $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->first();
+            $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_jobs = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
             $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
             $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
-            return view('backend.profile', compact('title', 'employee', 'emergency_contact', 'employee_bank', 'employee_address', 'employee_documents', 'employee_jobs', 'employee_visas','employee_projects','employee_payslips'));
+            return view('backend.profile', compact('title', 'employee', 'emergency_contact', 'employee_bank', 'employee_addresses', 'employee_documents', 'employee_jobs', 'employee_visas','employee_projects','employee_payslips'));
         } else {
             return view('backend.profile', compact('title'));
         }

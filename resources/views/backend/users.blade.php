@@ -30,8 +30,7 @@
                 <table class="table table-striped custom-table datatable">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Username</th>
+                            <th>User Name</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Created Date</th>
@@ -47,10 +46,9 @@
                                         <a href="javascript:void(0)" class="avatar"><img
                                                 src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . $user->avatar) : asset('assets/img/user.jpg') }}"
                                                 alt="user"></a>
-                                        {{ $user->name }}
+                                        {{ ucfirst($user->name) }}
                                     </h2>
                                 </td>
-                                <td>{{ $user->username }}</td>
                                 <td>{{ $user->email }}</td>
                                 @php
                                     $role = $query = DB::table('roles')

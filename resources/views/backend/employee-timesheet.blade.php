@@ -87,7 +87,7 @@
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             @if($start_date[0] != null && $end_date[0] != null) 
-                                            <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id ,'start_date'=> $start_date[0] ,'end_date' => $end_date[0]])}}"><i class="fa fa-eye" aria-hidden="true"></i>View</a>    
+                                            <a class="btn-sm btn-primary" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id ,'start_date'=> $start_date[0] ,'end_date' => $end_date[0]])}}"><i class="fa fa-eye" aria-hidden="true"></i>View</a>    
                                             @endif
                                             {{-- <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>

@@ -171,52 +171,57 @@
 
 {{-- @dd($employee_address); --}}
 {{-- <div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped custom-table mb-0 datatable">
-            <thead>
-                <tr>
-                    <th style="width: 30px;">Sr No.</th>
-                    <th>Address Line 1</th>
-                    <th>Address Line 2</th>
-                    <th>Post Code</th>
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th class="text-right">Action</th>
-                </tr>
-            </thead>
-            <tbody id="bodyData">
-
-                <tr>
-                    <td></td>
-                    <td>{{!empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    </td>
-                    <td class="text-right">
-                        <div class="dropdown dropdown-action">
-                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a data-id="{{ $employee_address->id }}" class="dropdown-item detail_delete"
-                                    href="javascript:void(0);" data-resource_data="Employee Payslip"
-                                    data-target="data_delete_modal" data-toggle="modal"><i
-                                        class="fa fa-trash-o m-r-5"></i> Delete</a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div> --}}
-@if (!empty($employee_address->count()))
+        @if (!empty($employee_addresses))
+        <div class="card profile-box flex-fill">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped custom-table mb-0">
+                        <thead>
+                            <tr>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30px;">Sr No.</th>
+                                        <th>Address Line 1</th>
+                                        <th>Address Line 2</th>
+                                        <th>Post Code</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                        {{-- <th class="text-right">Action</th> --}}
+                                    {{-- </tr>
+                                </thead>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($employee_addresses as $index => $address)
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $address->home_address_line_1 }}</td>
+                                    <td>{{ $address->home_address_line_2 }}</td>
+                                    <td>{{ $address->post_code }}</td>
+                                    <td>{{ $address->from_date }}</td>
+                                    <td>{{ $address->to_date }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
+                            class="fa fa-plus"></i>
+                        Add New Address</a>
+                </div>
+            </div>
+        </div>
+    @endif
+</div> --}} 
+@if (!empty($employee_addresses->count()) && $employee_addresses->count() > 0 )
     <div class="row align-items-center mb-2">
         <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
                     class="fa fa-plus"></i>
-                Add Employee Address</a>
+                Add New Address</a>
         </div>
     </div>
 @else
@@ -228,9 +233,9 @@
         </div>
     </div>
 @endif
-@if (!empty($employee_address->count()))
+@if (!empty($employee_addresses->count()) && $employee_addresses->count() > 0)
     <div class="row">
-        @foreach ($employee_address as $address)
+        @foreach ($employee_addresses as $address)
             <div class="col-md-12 mb-4">
                 <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
                     <table class="table table-striped">

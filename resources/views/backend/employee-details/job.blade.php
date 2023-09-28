@@ -1,4 +1,4 @@
-@if (!empty($employee_jobs->count()))
+@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0 )
     <div class="row align-items-center mb-2">
         <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
@@ -15,7 +15,7 @@
         </div>
     </div>
 @endif
-@if (!empty($employee_jobs->count()))
+@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0 )
     <div class="row">
         @foreach ($employee_jobs as $job)
             @php

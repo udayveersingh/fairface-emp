@@ -54,7 +54,7 @@
                                     <h2 class="table-avatar">
                                         <a href="javascript:void(0)" class="avatar"><img alt="avatar"
                                                 src="@if (!empty($employee->avatar)) {{ asset('storage/employees/' . $employee->avatar) }} @else assets/img/profiles/default.jpg @endif"></a>
-                                        <a href="{{ route('employee-detail', $employee->id) }}">{{ $employee->firstname }}
+                                        <a href="{{ route('employee-detail', $employee->id) }}">{{ ucfirst($employee->firstname) }}
                                             {{ $employee->lastname }}</a>
                                     </h2>
                                 </td>
@@ -64,8 +64,8 @@
 								<td>{{ !empty($employee->user->role->name) ? $employee->user->role->name:''}}</td>
                                 <td>{{ date_format(date_create($employee->created_at), 'd M,Y') }}</td>
                                 <td class="text-right">
-                                    <div class="dropdown dropdown-action">
-                                            <a class="dropdown-item editbtn" href="javascript:void(0)"
+                                    {{-- <div class="dropdown dropdown-action"> --}}
+                                            <a class="btn-sm btn-primary editbtn" href="javascript:void(0)"
                                             data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
                                             data-employee_id="{{ $employee->employee_id }}"
                                             data-firstname="{{ $employee->firstname }}"
@@ -85,7 +85,7 @@
                                             data-passport_issue_date="{{ $employee->passport_issue_date }}"
                                             data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
                                             data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    </div>
+                                    {{-- </div> --}}
                                 </td>
                             </tr>
                         @endforeach
