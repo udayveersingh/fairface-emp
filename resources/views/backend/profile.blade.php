@@ -431,12 +431,12 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-3">
-                <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
-                        class="fa fa-plus"></i>
-                    Add New Address</a>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
+                    class="fa fa-plus"></i>
+                Add New Address</a>
         </div>
     </div>
 @endif

@@ -468,13 +468,13 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Passport Issue Date</label>
-                            <input class="form-control edit_pass_issue_date" name="pass_issue_date" value="{{old('pass_issue_date')}}" type="date">
+                            <input class="form-control datetimepicker edit_pass_issue_date" name="pass_issue_date" value="{{old('pass_issue_date')}}" type="text">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label class="col-form-label">Passport Expire Date</label>
-                            <input class="form-control edit_pass_expire_date" name="pass_expire_date" value="{{old('pass_expire_date')}}" type="date">
+                            <input class="form-control datetimepicker edit_pass_expire_date" name="pass_expire_date" value="{{old('pass_expire_date')}}" type="text">
                         </div>
                     </div>
                     <div class="col-md-6">

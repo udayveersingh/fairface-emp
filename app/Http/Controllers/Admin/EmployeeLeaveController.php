@@ -14,6 +14,8 @@ use App\Models\TimesheetStatus;
 use App\Notifications\EmployeeLeaveApprovedNotification;
 use App\Notifications\NewLeaveNotification;
 use App\Notifications\RejectedLeaveByAdminNotification;
+use DateTime;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
 class EmployeeLeaveController extends Controller
@@ -57,9 +59,21 @@ class EmployeeLeaveController extends Controller
      */
     public function store(Request $request)
     {
+        $start = new DateTime($request->from);
+        $end_date = new DateTime($request->to);
+        $days = $start->diff($end_date, '%d')->days;
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
+            $total_leaves = LeaveType::where('id','=',$request->leave_type)->value('days');
+            $old_leaves = Leave::where('leave_type_id','=',$request->leave_type)->where('employee_id','=',$employee_id)->sum('no_of_days');
+            // $pending_leave = (int)$total_leaves - (int)$old_leaves;
+            $new_leaves = (int)$old_leaves + (int)$days;
+             if($new_leaves >  $total_leaves)
+             {
+                return back()->with('success', "Your leave has been completed. Therefore you cannot take any more leave.");
+             }
+
             $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
@@ -90,6 +104,7 @@ class EmployeeLeaveController extends Controller
             'timesheet_status_id' =>  $timesheet_status_id,
             'status_reason' => $request->status_reason,
             'approved_date_time' => $request->approved_date_time,
+            'no_of_days' => $days,
         ]);
         $leave->notify(new NewLeaveNotification($leave));
         $notification = notify("Employee leave has been added");

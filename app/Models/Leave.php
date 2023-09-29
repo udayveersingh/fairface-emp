@@ -15,7 +15,7 @@ class Leave extends Model
     use HasFactory,SoftDeletes;
 
     protected $fillable = [
-        'leave_type_id','employee_id','from','to','reason','timesheet_status_id','supervisor_id','project_id','project_phase_id','status_reason','approved_date_time'
+        'leave_type_id','employee_id','from','to','reason','timesheet_status_id','supervisor_id','project_id','project_phase_id','status_reason','approved_date_time','no_of_days'
     ];
 
     public function leaveType(){

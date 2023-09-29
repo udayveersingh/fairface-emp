@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
 use App\Models\Leave;
+use App\Models\LeaveType;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -31,6 +32,7 @@ if (!function_exists('getEmployeeRole')) {
     }
 }
 
+//Get Projects
 if (!function_exists('getProject')) {
     function getProject()
     {
@@ -42,6 +44,13 @@ if (!function_exists('getProjectPhase')) {
     function getProjectPhase()
     {
         return ProjectPhase::get();
+    }
+}
+
+if (!function_exists('getLeaveTypes')) {
+    function getLeaveTypes()
+    {
+        return LeaveType::get();
     }
 }
 
@@ -94,7 +103,7 @@ if (!function_exists('getNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
-        if(!empty($user)){
+        if (!empty($user)) {
             return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->get();
         }
     }
@@ -122,15 +131,15 @@ if (!function_exists('getEmployeeNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '!=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->status','=','active')->get();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->status', '=', 'active')->get();
     }
 }
 
 //get company mails counts
-if(!function_exists('getEmailCounts'))
-{
-    function getEmailCounts(){
-       return CompanyEmail::with('employeejob.employee')->whereDate('created_at', Carbon::today())->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+if (!function_exists('getEmailCounts')) {
+    function getEmailCounts()
+    {
+        return CompanyEmail::with('employeejob.employee')->whereDate('created_at', Carbon::today())->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
     }
 }
 
@@ -227,7 +236,7 @@ if (!function_exists('getNewAnnouncementNotification')) {
     function getNewAnnouncementNotification()
     {
         $announcement_notifi = [];
-        $announcement_notifications = DB::Table('notifications')->where('type', '=', 'App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->where('data->status',Annoucement::ACTIVE)->get();
+        $announcement_notifications = DB::Table('notifications')->where('type', '=', 'App\Notifications\NewAnnouncementByAdminNotification')->whereNull('read_at')->where('data->status', Annoucement::ACTIVE)->get();
         foreach ($announcement_notifications as $index => $notification) {
             $announcement_notifi[$index] = json_decode($notification->data);
         }
