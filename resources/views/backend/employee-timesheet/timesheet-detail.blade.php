@@ -13,6 +13,18 @@
         }
     </style> --}}
 @section('content')
+    @php
+        //Monthly ending date
+        $date = new DateTime('now');
+        $date->modify('last day of this month');
+        
+        //display week starting date
+        $week_starting = new DateTime('now');
+        $week_starting->modify('first day of this month');
+        $first_name = App\Models\Employee::where('id', '=', $id)->value('firstname');
+        $last_name = App\Models\Employee::where('id', '=', $id)->value('lastname');
+        $employee_name = ucfirst($first_name) . ' ' . $last_name;
+    @endphp
     <div class="container my-4">
         <div class="row mb-3">
             <div class="col-md-2"><img src="" alt="" /></div>
@@ -20,25 +32,15 @@
                 <h1 class="text-left">Employee Timesheet Details</h1>
             </div>
         </div>
-        @php
-            //Monthly ending date
-            $date = new DateTime('now');
-            $date->modify('last day of this month');
-            
-            //display week starting date
-            $week_starting = new DateTime('now');
-            $week_starting->modify('first day of this month');
-            $first_name = App\Models\Employee::where('id', '=', $id)->value('firstname');
-            $last_name = App\Models\Employee::where('id', '=', $id)->value('lastname');
-            $employee_name = ucfirst($first_name) . ' ' . $last_name;
-        @endphp
         <div class="row">
             <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>
                     @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                         {{ ucfirst($employee_name) }} @else{{ ucfirst(Auth::user()->name) }}
                     @endif
                 </span></div>
-            <div class="col-md-6"></div>
+            <div class="col-md-6 mt-2">
+                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-6">
@@ -120,8 +122,9 @@
                         <div class="col-lg-6">
                             <a class="dropdown-item btn btn-primary continue-btn btn-block"
                                 data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
-                                data-end_date="{{ $end_date }}" data-status="approved" href="{{route('employee-timesheet-edit',['id' => $timesheet->employee_id,'start_date'=> $start_date,'end_date' => $end_date])}}"
-                                 id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Edit 
+                                data-end_date="{{ $end_date }}" data-status="approved"
+                                href="{{ route('employee-timesheet-edit', ['id' => $timesheet->employee_id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
+                                id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Edit
                                 Timesheet</a>
                         </div>
                     </div>
