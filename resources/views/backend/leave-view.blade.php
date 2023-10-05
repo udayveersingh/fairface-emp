@@ -19,6 +19,11 @@
                 <li class="breadcrumb-item active">Leave Details</li>
             </ul>
             <h3 class="page-title">Leave details</h3>
+            @if (!empty($leave))
+            <div class="col-auto float-right ml-auto mt-2">
+                <a href="{{route('print-employee-leave',$leave->id)}}" class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
+            </div>
+        @endif
         </div>
     </div>
 @endsection

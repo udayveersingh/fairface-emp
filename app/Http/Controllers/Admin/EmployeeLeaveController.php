@@ -50,6 +50,13 @@ class EmployeeLeaveController extends Controller
     }
 
 
+    // public function leavePdf()
+    // {
+    //     $mpdf = new \Mpdf\Mpdf();
+    //     $mpdf->WriteHTML('Hello World');
+    //     $mpdf->Output();
+    // }
+
 
     /**
      * Store a newly created resource in storage.

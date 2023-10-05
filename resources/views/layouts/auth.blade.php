@@ -37,7 +37,7 @@
 				
 					<!-- Account Logo -->
 					<div class="account-logo">
-						<a href=""><img src="{{!empty(app(App\Settings\ThemeSettings::class)->logo) ? asset('storage/settings/'.app(App\Settings\ThemeSettings::class)->logo):asset('assets/img/logo.png')}}" alt="logo"></a>
+						<a href=""><img src="{{!empty(app(App\Settings\ThemeSettings::class)->logo) ? asset('storage/settings/theme/'.app(App\Settings\ThemeSettings::class)->logo):asset('assets/img/logo.png')}}" alt="logo"></a>
 					</div>
 					<!-- /Account Logo -->
 					

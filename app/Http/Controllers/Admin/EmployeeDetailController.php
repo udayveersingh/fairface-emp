@@ -19,6 +19,8 @@ use App\Models\EmployeeVisa;
 use App\Models\Project;
 use App\Models\Visa;
 use Illuminate\Http\Request;
+use PDF;
+use Mpdf\Mpdf;
 
 class EmployeeDetailController extends Controller
 {
@@ -76,6 +78,7 @@ class EmployeeDetailController extends Controller
             return view('backend.employee-detail',compact('title','employee','employees','departments','branches','visa_types','projects','countries'));
         }
     }
+
     
     public function EmployeePayslipUpload(Request $request)
     {

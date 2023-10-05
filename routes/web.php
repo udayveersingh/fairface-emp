@@ -53,6 +53,7 @@ use App\Http\Controllers\Admin\ProjectPhaseController;
 use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
 use App\Http\Controllers\AnnoucementController;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -250,6 +251,12 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('employee-document-detail',[EmployeeDetailController::class,'EmployeeDocumentUpload'])->name('employee-document-update');
     Route::post('employee-payslip-detail',[EmployeeDetailController::class,'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete',[EmployeeDetailController::class,'DeleteResource'])->name('employee.detail.delete');
+    
+  
+    //generate pdf
+    Route::get('print-employee-detail/{id}',[PdfController::class,'employeeDetailPdf'])->name('print-employee-detail');
+    Route::get('print-employee-leave/{id}',[PdfController::class,'employeeLeavePdf'])->name('print-employee-leave');
+    Route::get('print-timesheet-detail/{id}/{start_date}/{end_date}',[PdfController::class,'employeeTimeSheetDetailPdf'])->name('print-timesheet-detail');
 
     // Route::get('employees',[EmployeeController::class,'index'])->name('employees');
     Route::post('employees',[EmployeeController::class,'store'])->name('employee.add');
@@ -284,6 +291,7 @@ Route::group(['middleware'=>['auth']], function (){
     
     Route::get('employee-leave',[EmployeeLeaveController::class,'index'])->name('employee-leave');
     Route::get('employee-leave-view/{id}',[EmployeeLeaveController::class,'LeaveView'])->name('employee-leave-view');
+    // Route::get('print-leave-detail',[EmployeeLeaveController::class,'leavePdf'])->name('print-leave-detail');
     Route::post('employee-leave',[EmployeeLeaveController::class,'store']);
     Route::put('employee-leave',[EmployeeLeaveController::class,'update']);
     Route::post('leave-status-update',[EmployeeLeaveController::class,'LeaveStatusUpdate'])->name('leave-status-update');
