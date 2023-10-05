@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
-    <link rel="stylesheet" href="{{asset('assets/css/bootstrap-datetimepicker.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
 @endsection
 @section('page-header')
     <div class="row align-items-center">
@@ -26,28 +26,48 @@
                     <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         {{-- <input type="hidden" id="edit_id" name="id"> --}}
-                        <input class="form-control" value="{{date('Y-m-d')}}" type="hidden" name="email_date" id="">
-                        <input class="form-control" value="{{date('H:i:s')}}" type="hidden" name="email_time" id="">
-                        <div class="form-group">
-                            <label>From<span class="text-danger">*</span></label>
-                            <select name="from_id" id="from_id" class="form-control">
-                                {{-- <option value="">Select from</option> --}}
-                                @php
-                                    $from_email = App\Models\EmployeeJOb::with('employee')
-                                        ->where('employee_id', '=', $employee->id)
-                                        ->first();
-                                    $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
-                                    $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
-                                    $emp_name = $firstname . '  ' . $lastname;
-                                @endphp
-                                <option value="{{ $from_email->id }}">
-                                    {{ucfirst($emp_name) . ' < ' . $from_email->work_email . ' > ' }}
-                                </option>
-                            </select>
-                        </div>
+                        <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
+                            id="">
+                        <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
+                            id="">
                         @php
                             $to_email_ids = App\Models\EmployeeJOb::with('employee')->get();
                         @endphp
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    {{-- <option value="">Select from</option> --}}
+                                    @php
+                                        $from_email = App\Models\EmployeeJOb::with('employee')
+                                            ->where('employee_id', '=', $employee->id)
+                                            ->first();
+                                        $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                        $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $from_email->id }}">
+                                        {{ ucfirst($emp_name) . ' < ' . $from_email->work_email . ' > ' }}
+                                    </option>
+                                </select>
+                            </div>
+                        @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                            <div class="form-group">
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    <option value="">Select to</option>
+                                    @foreach ($to_email_ids as $from_email)
+                                        @php
+                                            $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                            $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $from_email->id }}">
+                                            {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label>To<span class="text-danger">*</span></label>
                             <select name="to_id" id="to_id" class="form-control">

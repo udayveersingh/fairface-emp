@@ -80,8 +80,11 @@ class CompanyEmailController extends Controller
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_jobs = EmployeeJob::with('employee')->get();
+            return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs'));
+        }else if(Auth::check() && Auth::user()->role->name == Role::SUPERADMIN){
+            $employee_jobs = EmployeeJob::with('employee')->get();
+            return view('backend.emails.compose-email', compact('title','employee_jobs'));
         }
-        return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs'));
     }
 
     /**

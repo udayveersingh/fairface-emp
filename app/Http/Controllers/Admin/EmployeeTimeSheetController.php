@@ -63,6 +63,13 @@ class EmployeeTimeSheetController extends Controller
         return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_project', 'employee_leave'));
     }
 
+    public function TimesheetView(CompanySettings $settings)
+    {
+        $title = "Employee TimeSheet";
+        $employee_project = EmployeeProject::with('projects')->get();
+        return view('backend.employee-timesheet.timesheet-view', compact('title','settings','employee_project'));
+    }
+
     /**
      * Employee Timesheet Edit View
      */
