@@ -98,7 +98,8 @@
                         <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
                                 class="la la-user"></i><span> All Employees</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
-                            <li><a class="{{ route_is('employee-detail') ? 'active' : '' }}" href="{{ route('employee-detail') }}">Add New Employee</a>
+                            <li><a class="{{ route_is('employee-detail') ? 'active' : '' }}"
+                                    href="{{ route('employee-detail') }}">Add New Employee</a>
                             </li>
                             <li>
                                 @php
@@ -107,13 +108,12 @@
                                     $archeive_class = '';
                                     if ($status == 'active') {
                                         $active_class = 'active';
-                                    } else if($status == 'archieve') {
+                                    } elseif ($status == 'archieve') {
                                         $archeive_class = 'active';
                                     }
                                 @endphp
                                 <a class="{{ !empty($active_class) ? $active_class : '' }} "
-                                    href="{{ route('employees-list', ['status' => 'active']) }}">Active
-                                    Employee</a>
+                                    href="{{ route('employees-list', ['status' => 'active']) }}">Active Employee</a>
                             </li>
                             <li><a class="{{ !empty($archeive_class) ? $archeive_class : '' }}"
                                     href="{{ route('employees-list', ['status' => 'archieve']) }}">Archived
@@ -121,10 +121,19 @@
                             </li>
                         </ul>
                     </li>
-
-                    <li class="{{ route_is('employee-timesheet') ? 'active' : '' }}">
-                        <a href="{{ route('employee-timesheet') }}"><i class="la la-calendar"></i>
-                            <span>Timesheet</span></a>
+                    <li class="submenu">
+                        <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
+                                class="la la-calendar"></i><span>Timesheet</span> <span class="menu-arrow"></span></a>
+                        <ul style="display: none;">
+                            <li>
+                                <a class="{{ route_is('timesheet-view') ? 'active' : '' }}"
+                                    href="{{ route('timesheet-view') }}">Add New Timesheet</a>
+                            </li>
+                            <li>
+                                <a class="{{ route_is('employee-timesheet') ? 'active' : '' }}"
+                                    href="{{ route('employee-timesheet') }}">Employee Timesheet List</a>
+                            </li>
+                        </ul>
                     </li>
                     <!-- <li class="{{ route_is('tickets') ? 'active' : '' }}">
                     <a href="{{ route('tickets') }}"><i class="la la-files-o"></i> <span>Timesheet</span></a>
@@ -136,9 +145,19 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee
                                 leaves</span></a>
                     </li>
-                    <li class="{{ route_is('company-email') ? 'active' : '' }}">
-                        <a href="{{ route('company-email') }}"><i class="la la-envelope"></i> <span>Company
-                                Email</span> <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
+                    <li class="submenu">
+                        <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"> <i
+                                class="la la-envelope-o"></i> <span>Company Email </span> <span
+                                class="menu-arrow"></span></a>
+                        <ul style="display:none;">
+                            <li>
+                                <a class="{{ route_is('company-email') ? 'active' : '' }}"
+                                    href="{{ route('company-email') }}"><span>Emails</span> <span
+                                        class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
+                            </li>
+                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"
+                                    href="{{ route('compose-email') }}">Compose Email</a></li>
+                        </ul>
                     </li>
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
                         <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
