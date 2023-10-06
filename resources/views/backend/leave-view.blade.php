@@ -21,7 +21,7 @@
             <h3 class="page-title">Leave details</h3>
             @if (!empty($leave))
             <div class="col-auto float-right ml-auto mt-2">
-                <a href="{{route('print-employee-leave',$leave->id)}}" class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
+                <a href="{{route('print-employee-leave',$leave->id)}}" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF</a>
             </div>
         @endif
         </div>

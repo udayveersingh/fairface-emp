@@ -57,6 +57,10 @@
             <td colspan="2" class="bg_title"><h3 >Basic Information</h3></td>            
         </tr>
         <tr>
+            <th>Profile Picture</th>
+            <td><img src="https://img.freepik.com/premium-photo/man-with-orange-shirt-is-circle-with-man-orange_745528-3525.jpg" alt="profile" border="0" style="height:40px; vertical-align:middle;margin-right:5px; vertical-align:middle;"></td>
+        </tr>
+        <tr>
             <th>Employee Id</th>
             <td>{{ $employee->employee_id }}</td>
         </tr>
@@ -154,9 +158,17 @@
                 </td>
             </tr>
         </table>
-        <p>Need to add reminder as well</p>
-        __________________________________
-        <p>Also, we need to send Auto reminder emails for the Passport & Visa expiration.. to Candidates also to the admin in an email. monthly remainders from 6 months.</p>
+        <table style="border:none;margin-top:20px;">
+            <tr>
+                <td style="border:none;">Need to add reminder as well</td>
+            </tr>
+            <tr>
+                <td style="border:none;">------------------------------------------</td>
+            </tr>
+            <tr>
+                <td style="border:none;">Also, we need to send Auto reminder emails for the Passport & Visa expiration.. to Candidates also to the admin in an email. monthly remainders from 6 months.</td>
+            </tr>
+        </table>       
     @endforeach
 
     <div>
