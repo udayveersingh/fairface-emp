@@ -6,11 +6,7 @@
 @endsection
 @section('content')
 
-    @if (!empty($employee))
-        <div class="col-auto float-right ml-auto mt-2">
-            <a href="{{route('print-employee-detail',$employee->id)}}" class="btn add-btn"><i class="fa fa-download"></i>Download Details</a>
-        </div>
-    @endif
+   
     <?php
     $tabs = [
         'document' => 'Document',
@@ -34,6 +30,13 @@
                         role="tab" aria-controls="{{ $index }}" aria-selected="true">{{ $tab }}</a>
                 </li>
             @endforeach
+
+            @if (!empty($employee))
+            <li class="nav-item ml-auto">                
+                    <a href="{{route('print-employee-detail',$employee->id)}}" class="text-white btn add-btn rounded-pill"><i class="fa fa-download"></i>Print</a>
+            </li>
+            @endif
+
         </ul>
 
     @if (!empty($employee))

@@ -98,19 +98,19 @@
     <table style="border:none; border-top:30px solid #fff;">
         <tr>
             <td style="border:none;">Total Days to be paid for Month Ending:-</td>
-            <td style="border:none; text-align:right;" align="end"></td>
+            <td style="border:none; text-align:right;" align="right">_______</td>
         </tr>
         <tr>
             <td style="border:none;"><strong>Employee Confirmation:</strong><br/>I confirm that this is an accurate record of the times I have worked</td>
-            <td style="border:none; text-align:right;" align="end"><strong>Signature:</strong> <br/>Lavanya Kolli</td>
+            <td style="border:none; text-align:right;" align="right"><strong>Signature:</strong> <br/>Lavanya Kolli</td>
         </tr>
         <tr>
-            <td colspan="2" style="border:none;"><strong>Client Manager Confirmation:</strong><br/>I confirm that the total days shown here shall be payable.</td>
+            <td style="border:none;"><strong>Client Manager Confirmation:</strong><br/>I confirm that the total days shown here shall be payable.</td>
+            <td style="border:none; text-align:right;" align="right"><strong>Signature:</strong> <br/>Lavanya Kolli</td>
+        </tr>
+        <tr>
+            <td style="border:none;"><strong>Name:</strong> _______</td>
             
-        </tr>
-        <tr>
-            <td style="border:none;">Name: </td>
-            <td style="border:none; text-align:right;" align="end"><strong>Signature:</strong> <br/>Lavanya Kolli</td>
         </tr>
         			
     </table>
