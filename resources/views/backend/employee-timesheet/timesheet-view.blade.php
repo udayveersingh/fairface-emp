@@ -81,7 +81,26 @@
                             $holidays[] = ['name' => $holiday->name, 'holiday_date' => $holiday->holiday_date];
                         }
                     @endphp
-                    <div class="col-lg-4">
+                     <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Employee<span class="text-danger">*</span></label>
+                            <select name="employee_id" id="employee_id" class="select form-control">
+                                <option value="">Select Employee</option>
+                                @foreach (getSupervisor() as $supervisor)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                        {{ $fullname }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
                         <div class="form-group">
                             <label>Supervisor<span class="text-danger">*</span></label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
@@ -100,7 +119,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="form-group">
                             <label>Months</label>
@@ -113,7 +132,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <div class="form-group">
                             <label>Weeks</label>
                             <select name="week" id="week" class="select weekdate">
@@ -259,7 +278,9 @@
 @section('scripts')
     <script>
         $("#month").change(function() {
-            var selectedMonth = $(this).children("option:selected").val();
+            var selectedMonth = $(this).children("option:selected").val(); 
+            var employeeId = $('#employee_id').find('option:selected').text();
+            console.log(employeeId, 'employeeId');
             // console.log("You have selected the month - " + selectedMonth);
             $.ajax({
                 type: 'POST',
@@ -267,6 +288,7 @@
                 data: {
                     _token: $("#csrf").val(),
                     month: selectedMonth,
+                    employeeId:employeeId,
                 },
                 success: function(dataResult) {
                     getData = JSON.parse(dataResult);
@@ -288,6 +310,9 @@
         // }, function(start, end, label) {
 
         $("#week").change(function() {
+            // var employeeId = $('#employee_id').find('option:selected').text();
+           var employeeId = $('#employee_id option:selected').val();
+            console.log(employeeId, 'employeeId');
             var selectedWeek = $(this).val();
             $.ajax({
                 type: 'POST',
@@ -295,6 +320,7 @@
                 data: {
                     _token: $("#csrf").val(),
                     selectedWeek: selectedWeek,
+                    employeeId:employeeId,
                 },
                 dataType: 'JSON',
                 success: function(dataResult) {

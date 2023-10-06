@@ -414,11 +414,14 @@ class EmployeeTimeSheetController extends Controller
             }
         }
 
-        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN){
+            $employeeID = Employee::where('user_id', '=', Auth::user()->id)->value('id');
+        }else{
+            $employeeID = $request->employeeId;
+        }
 
         $employee_leaves = Leave::with('leaveType', 'time_sheet_status')
-            ->where('employee_id', '=', $employee->id)
+            ->where('employee_id', '=', $employeeID)
             ->where('from', '>=', $start_date)
             ->where('to', '<=', $end_date)->whereHas('time_sheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::APPROVED);
