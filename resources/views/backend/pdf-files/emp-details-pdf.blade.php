@@ -24,13 +24,20 @@
         padding: 8px;
         text-align: left;
     }
-    .bg_title{background:#34444c; color:#fff; padding:8px 12px; margin-bottom:0;}
+    .bg_title{background:#dee6eb; color:#4c5860; padding:8px 12px; margin-bottom:0; font-size:14px;}
+    
 </style>
 <div class="header">
-    <table style="border:none;" bgcolor="#f8f8f8" cellpadding="0" cellspacing="0">
+    <table style="border:none;"  cellpadding="0" cellspacing="0">
         <tr>
-            <td align="middle" style="font-weight:bold; border:none;"><div style="width: 5cm;"><img src="https://i.ibb.co/1ntZs9x/logo2.png" alt="logo2" border="0" style="height:30px; vertical-align:middle;margin-right:5px; "> Fairface-Emp</div></td>
-            <td  style="border:none; background:#34444c; color:#fff; font-size:22px; font-weight:bold;">Employee Details</td>
+            <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
+                <table style="border:none;padding-bottom:10px;"  cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="border:none; width:1cm; "><img src="https://i.ibb.co/1ntZs9x/logo2.png" alt="logo2" border="0" style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;"></td>
+                        <td style="border:none;"><span style="color:#4c5860; font-size:22px; font-weight:bold;">FAIRFACE EMP <br><span style="color:#333; font-size:14px; font-weight:normal; display:block; width:100%;">4667 Mount Tabor Monsey, NY, 10952 United States</span></span></td>
+                    </tr>
+                </table>                
+            </td>
         </tr>
         
         <tr>
