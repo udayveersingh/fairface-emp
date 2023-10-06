@@ -106,8 +106,6 @@
                 <a href="#" class="list-group-item border-0"><span class="fa fa-circle text-pink mr-2"></span>Friends</a>
                 <a href="#" class="list-group-item border-0"><span class="fa fa-circle text-success mr-2"></span>Family</a>
             </div> --}}
-
-
             </div>
         </div>
 
@@ -216,7 +214,7 @@
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
                                     </td>
-                                    <td class="text-right mail-time">
+                                    <td class="mail-time">
                                         {{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}
                                     </td>
                                 </tr>
