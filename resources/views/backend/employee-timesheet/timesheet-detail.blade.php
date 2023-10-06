@@ -39,7 +39,8 @@
                     @endif
                 </span></div>
             <div class="col-md-6 mt-2">
-                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
+                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
+                    class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
             </div>
         </div>
         <div class="row">
@@ -128,6 +129,15 @@
                                 Timesheet</a>
                         </div>
                     </div>
+                @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a class="dropdown-item btn btn-primary continue-btn btn-block"
+                                data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
+                                data-end_date="{{ $end_date }}" data-status="approved" href="#"
+                                data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change
+                                Timesheet Status</a>
+                        </div>
                 @endif
             </div>
         </div>

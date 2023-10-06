@@ -51,9 +51,13 @@
 		@include('includes.backend.header')
 		<!-- /Header -->
 
+		@if(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
 		<!-- Sidebar -->
-		@include('includes.backend.sidebar')
+		@include('includes.backend.admin-sidebar')
 		<!-- /Sidebar -->
+		@else
+	    @include('includes.backend.sidebar')
+		@endif
 
 		<!-- Page Wrapper -->
 		<div class="page-wrapper">

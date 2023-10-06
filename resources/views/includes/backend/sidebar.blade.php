@@ -3,7 +3,7 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
+                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN )
                     <li class="menu-title">
                         <span>Main</span>
                     </li>

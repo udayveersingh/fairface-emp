@@ -15,4 +15,5 @@ class Role extends Model
     const EMPLOYEE = 'Employee';
     const SUPERADMIN = 'Super admin';
     Const SUPERVISOR = 'Supervisor';
+    Const ADMIN = 'Admin';
 }

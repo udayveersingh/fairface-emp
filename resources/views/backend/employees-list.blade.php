@@ -43,7 +43,7 @@
                             <th>Email</th>
                             <th>Mobile</th>
 							<th>Role</th>
-                            <th class="text-nowrap">Join Date</th>
+                            <th class="text-nowrap">Created Date</th>
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>

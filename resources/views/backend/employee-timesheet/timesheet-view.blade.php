@@ -81,44 +81,7 @@
                             $holidays[] = ['name' => $holiday->name, 'holiday_date' => $holiday->holiday_date];
                         }
                     @endphp
-                     <div class="col-lg-3">
-                        <div class="form-group">
-                            <label>Employee<span class="text-danger">*</span></label>
-                            <select name="employee_id" id="employee_id" class="select form-control">
-                                <option value="">Select Employee</option>
-                                @foreach (getSupervisor() as $supervisor)
-                                    @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
-                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
-                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
-                                        $fullname = $firstname . ' ' . $lastname;
-                                    @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
-                                        {{ $fullname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="form-group">
-                            <label>Supervisor<span class="text-danger">*</span></label>
-                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
-                                <option value="">Select Supervisor</option>
-                                @foreach (getSupervisor() as $supervisor)
-                                    @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
-                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
-                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
-                                        $fullname = $firstname . ' ' . $lastname;
-                                    @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
-                                        {{ $fullname }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+
                     <div class="col-lg-3">
                         <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="form-group">
@@ -141,6 +104,44 @@
                                 <option value="{{ $weeks['w2'][0] . ' , ' . $weeks['w2'][1] }}">Week-2</option>
                                 <option value="{{ $weeks['w3'][0] . ' , ' . $weeks['w3'][1] }}">Week-3</option>
                                 <option value="{{ $weeks['w4'][0] . ' , ' . $weeks['w4'][1] }}">Week-4</option> --}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Employee<span class="text-danger">*</span></label>
+                            <select name="employee_id" id="employee_id" class="select form-control">
+                                <option value="">Select Employee</option>
+                                @foreach (getEmployee() as $employee)
+                                    @php
+                                        $employee = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                        $firstname = !empty($employee->firstname) ? $employee->firstname : '';
+                                        $lastname = !empty($employee->lastname) ? $employee->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    <option value="{{ !empty($employee->id) ? $employee->id : '' }}">
+                                        {{ ucfirst($fullname) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Supervisor<span class="text-danger">*</span></label>
+                            <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
+                                <option value="">Select Supervisor</option>
+                                @foreach (getSupervisor() as $supervisor)
+                                    @php
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                        {{ $fullname }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -181,7 +182,49 @@
                 </div>
             @elseif ($settings->timesheet_interval == 'monthly')
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Year</label>
+                            <select name="year" id="year" class="form-control">
+                                <option value="">Select Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    {{-- <div class="col-lg-4 mt-2">
+                        <div class="form-group">
+                            <label>Week starting</label>
+                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
+                        </div>
+                    </div> --}}
+                    <div class="col-lg-3">
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
+                        <div class="form-group">
+                            <label>Months</label>
+                            <select name="month" id="year_month" class="select month">
+                                <option value="">Select Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Employee<span class="text-danger">*</span></label>
+                            <select name="employee_id" id="employee_id" class="select form-control">
+                                <option value="">Select Employee</option>
+                                @foreach (getEmployee() as $employee)
+                                    @php
+                                        $employee = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                        $firstname = !empty($employee->firstname) ? $employee->firstname : '';
+                                        $lastname = !empty($employee->lastname) ? $employee->lastname : '';
+                                        $fullname = $firstname . ' ' . $lastname;
+                                    @endphp
+                                    <option value="{{ !empty($employee->id) ? $employee->id : '' }}">
+                                        {{ ucfirst($fullname) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
                         <div class="form-group">
                             <label>Supervisor<span class="text-danger">*</span></label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
@@ -197,29 +240,6 @@
                                         {{ $fullname }}
                                     </option>
                                 @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label>Year</label>
-                            <select name="year" id="year" class="form-control">
-                                <option value="">Select Year</option>
-                            </select>
-                        </div>
-                    </div>
-                    {{-- <div class="col-lg-4 mt-2">
-                        <div class="form-group">
-                            <label>Week starting</label>
-                            <input type="text" name="daterange" class="form-control" id="enter_date" value="" />
-                        </div>
-                    </div> --}}
-                    <div class="col-lg-4">
-                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
-                        <div class="form-group">
-                            <label>Months</label>
-                            <select name="month" id="year_month" class="select month">
-                                <option value="">Select Month</option>
                             </select>
                         </div>
                     </div>
@@ -278,7 +298,7 @@
 @section('scripts')
     <script>
         $("#month").change(function() {
-            var selectedMonth = $(this).children("option:selected").val(); 
+            var selectedMonth = $(this).children("option:selected").val();
             var employeeId = $('#employee_id').find('option:selected').text();
             console.log(employeeId, 'employeeId');
             // console.log("You have selected the month - " + selectedMonth);
@@ -288,7 +308,7 @@
                 data: {
                     _token: $("#csrf").val(),
                     month: selectedMonth,
-                    employeeId:employeeId,
+                    employeeId: employeeId,
                 },
                 success: function(dataResult) {
                     getData = JSON.parse(dataResult);
@@ -311,7 +331,7 @@
 
         $("#week").change(function() {
             // var employeeId = $('#employee_id').find('option:selected').text();
-           var employeeId = $('#employee_id option:selected').val();
+            var employeeId = $('#employee_id option:selected').val();
             console.log(employeeId, 'employeeId');
             var selectedWeek = $(this).val();
             $.ajax({
@@ -320,7 +340,7 @@
                 data: {
                     _token: $("#csrf").val(),
                     selectedWeek: selectedWeek,
-                    employeeId:employeeId,
+                    employeeId: employeeId,
                 },
                 dataType: 'JSON',
                 success: function(dataResult) {
@@ -335,6 +355,29 @@
                     // console.log(leavesDataArrayForm, " leavesDataArrayForm");
                     getWeekData(selectedWeek, HolidayDataArrayForm);
                 }
+            });
+        });
+
+        $("#employee_id").change(function() {
+            // var employeeId = $('#employee_id').find('option:selected').text();
+            var selectedEmployee = $(this).val();
+            $.ajax({
+                type: 'POST',
+                url: '/get-employee-projects',
+                data: {
+                    _token: $("#csrf").val(),
+                    employeeId: selectedEmployee,
+                },
+                dataType: 'JSON',
+                success: function(dataResult) {
+                    // console.log(dataResult);
+                    // console.log(myArray);
+                    $("#edit_project_id").html("<option value=''>select projects</option>");
+                    $.each(dataResult.data, function(index, row) {
+                        console.log(row.projects,'row');
+                        $(".edit_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
+                    });
+                },
             });
         });
 
@@ -366,7 +409,7 @@
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
-                var bgcolor ="";
+                var bgcolor = "";
                 var width = "width:70%";
                 var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
@@ -403,7 +446,8 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="'+ width +';'+ bgcolor + '"class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + ';' + bgcolor +
+                    '"class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -418,7 +462,7 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control">' +
+                        ' id="edit_project_id" class="select form-control edit_project_id">' +
                         '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
                         disabled +
                         ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
@@ -530,7 +574,8 @@
                             heading += "Holiday";
                             width = "width:52%";
                             bgcolor = "background-color: #e9ecef";
-                            renderReasonHolidayHtml =`<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            renderReasonHolidayHtml =
+                                `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
@@ -541,7 +586,8 @@
                             heading += "Leave";
                             width = "width:52%";
                             bgcolor = "background-color: #e9ecef";
-                            renderReasonHolidayHtml = `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            renderReasonHolidayHtml =
+                                `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
@@ -553,7 +599,8 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="' + width +';'+ bgcolor + '" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + ';' + bgcolor +
+                    '" class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -568,7 +615,7 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control">' +
+                        ' id="edit_project_id" class="select form-control edit_project_id">' +
                         '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
                         disabled +
                         ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +

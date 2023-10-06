@@ -66,9 +66,9 @@ class EmployeeTimeSheetController extends Controller
     public function TimesheetView(CompanySettings $settings)
     {
         $title = "Employee TimeSheet";
-        dd(getEmployeeRole());
+        // dd(getEmployeeRole());
         $employee_project = EmployeeProject::with('projects')->get();
-        return view('backend.employee-timesheet.timesheet-view', compact('title','settings','employee_project'));
+        return view('backend.employee-timesheet.timesheet-view', compact('title', 'settings', 'employee_project'));
     }
 
     /**
@@ -142,66 +142,66 @@ class EmployeeTimeSheetController extends Controller
         }
 
         // if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
-            $this->validate($request, [
-                'supervisor_id'   => 'required',
-                'calender_date.*' => 'required',
-                'calender_day.*'  => 'required',
-                'start_time.*'    => 'nullable',
-                'end_time.*'      => 'nullable',
-                'hours.*'         => 'nullable',
-            ]);
-            $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
-            $calender_date = $request->input('calender_date');
-            $calender_day = $request->input('calender_day');
-            $start_time = $request->input('start_time');
-            $end_time = $request->input('end_time');
-            $hours = $request->input('hours');
-            $project_id = $request->input('project_id');
-            $project_phase_id = $request->input('project_phase_id');
-            $notes = $request->input('notes');
-            $timesheet_id = "ISL-TM-" . Str::random(6);
-            // $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
-            foreach ($start_time as $key => $value) {
-                if (!empty($hours[$key]) && $hours[$key] == "full_day") {
-                    $total_hours_worked = "8 hours";
-                } elseif (!empty($hours[$key]) && $hours[$key] == "half_day") {
-                    $total_hours_worked = "4 hours";
-                } else {
-                    $total_hours_worked = "";
-                }
-                $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $calender_date[$key])->first();
-                if (empty($employee_timesheet)) {
-                    $emp_timesheet = new EmployeeTimesheet();
-                    $message = "Employee TimeSheet Data has been added successfully!!.";
-                } else {
-                    $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
-                    $message = "Employee TimeSheet Data has been updated successfully!!.";
-                }
-                // $emp_timesheet->timesheet_id = $timesheet_id;
-                // $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
-                $emp_timesheet->timesheet_id = $timesheet_id;
-                $emp_timesheet->employee_id = $request->input('employee_id');
-                $emp_timesheet->supervisor_id = $request->input('supervisor_id');
-                $emp_timesheet->project_id = $project_id[$key];
-                $emp_timesheet->project_phase_id  = $project_phase_id[$key];
-                $emp_timesheet->calender_day = $calender_day[$key];
-                $emp_timesheet->calender_date = $calender_date[$key];
-                $emp_timesheet->from_time = $value;
-                $emp_timesheet->to_time = $end_time[$key];
-                $emp_timesheet->notes =  $notes[$key];
-                $emp_timesheet->total_hours_worked = $total_hours_worked;
-                $emp_timesheet->timesheet_status_id = $timesheet_status->id;
-                $emp_timesheet->start_date = $start_date;
-                $emp_timesheet->end_date = $end_date;
-                $emp_timesheet->save();
+        $this->validate($request, [
+            'supervisor_id'   => 'required',
+            'calender_date.*' => 'required',
+            'calender_day.*'  => 'required',
+            'start_time.*'    => 'nullable',
+            'end_time.*'      => 'nullable',
+            'hours.*'         => 'nullable',
+        ]);
+        $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
+        $calender_date = $request->input('calender_date');
+        $calender_day = $request->input('calender_day');
+        $start_time = $request->input('start_time');
+        $end_time = $request->input('end_time');
+        $hours = $request->input('hours');
+        $project_id = $request->input('project_id');
+        $project_phase_id = $request->input('project_phase_id');
+        $notes = $request->input('notes');
+        $timesheet_id = "ISL-TM-" . Str::random(6);
+        // $timesheet_id = IdGenerator::generate(['table' => 'employee_timesheets', 'field' => 'timesheet_id', 'length' => 7, 'prefix' => 'ISL-TM-']);
+        foreach ($start_time as $key => $value) {
+            if (!empty($hours[$key]) && $hours[$key] == "full_day") {
+                $total_hours_worked = "8 hours";
+            } elseif (!empty($hours[$key]) && $hours[$key] == "half_day") {
+                $total_hours_worked = "4 hours";
+            } else {
+                $total_hours_worked = "";
             }
-            $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
-            //  $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
-            if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN){
-                return redirect()->route('employee-timesheet-list')->with('success', $message);
-            }else{
-                return redirect()->route('employee-timesheet-detail',['id' => $emp_timesheet->employee_id ,'start_date'=> $start_date ,'end_date' => $end_date])->with('success', $message);
+            $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $calender_date[$key])->first();
+            if (empty($employee_timesheet)) {
+                $emp_timesheet = new EmployeeTimesheet();
+                $message = "Employee TimeSheet Data has been added successfully!!.";
+            } else {
+                $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
+                $message = "Employee TimeSheet Data has been updated successfully!!.";
             }
+            // $emp_timesheet->timesheet_id = $timesheet_id;
+            // $emp_timesheet->timesheet_id = $timesheet_id . "-" . $calender_date[$key];
+            $emp_timesheet->timesheet_id = $timesheet_id;
+            $emp_timesheet->employee_id = $request->input('employee_id');
+            $emp_timesheet->supervisor_id = $request->input('supervisor_id');
+            $emp_timesheet->project_id = $project_id[$key];
+            $emp_timesheet->project_phase_id  = $project_phase_id[$key];
+            $emp_timesheet->calender_day = $calender_day[$key];
+            $emp_timesheet->calender_date = $calender_date[$key];
+            $emp_timesheet->from_time = $value;
+            $emp_timesheet->to_time = $end_time[$key];
+            $emp_timesheet->notes =  $notes[$key];
+            $emp_timesheet->total_hours_worked = $total_hours_worked;
+            $emp_timesheet->timesheet_status_id = $timesheet_status->id;
+            $emp_timesheet->start_date = $start_date;
+            $emp_timesheet->end_date = $end_date;
+            $emp_timesheet->save();
+        }
+        $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
+        //  $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+            return redirect()->route('employee-timesheet-list')->with('success', $message);
+        } else {
+            return redirect()->route('employee-timesheet-detail', ['id' => $emp_timesheet->employee_id, 'start_date' => $start_date, 'end_date' => $end_date])->with('success', $message);
+        }
         // } else {
         //     $this->validate($request, [
         //         'timesheet_id' => 'required|unique:employee_timesheets,timesheet_id,' . $request->id,
@@ -230,7 +230,7 @@ class EmployeeTimeSheetController extends Controller
         //     $employee_timesheet->approved_date_time = $request->input('approved_date_time');
         //     $employee_timesheet->save();
         //     return back()->with('success', $message);
-        }
+    }
     // }
 
     /**
@@ -282,8 +282,7 @@ class EmployeeTimeSheetController extends Controller
         } elseif ($timesheet_status->status == TimesheetStatus::REJECTED) {
             $employee_timesheet->notify(new RejectedTimesheetByAdminNotification($notification_message));
         }
-
-        return back()->with('success', "Employee TimeSheet status has been updated successfully!!.");
+        return redirect()->route('employee-timesheet')->with('success', "Employee TimeSheet status has been updated successfully!!.");
     }
 
     public function getWeekDays(Request $request)
@@ -415,9 +414,9 @@ class EmployeeTimeSheetController extends Controller
             }
         }
 
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN){
+        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employeeID = Employee::where('user_id', '=', Auth::user()->id)->value('id');
-        }else{
+        } else {
             $employeeID = $request->employeeId;
         }
 
@@ -447,5 +446,12 @@ class EmployeeTimeSheetController extends Controller
             }
         }
         return json_encode(array('data' => $holidaysData));
+    }
+
+
+    public function getEmployeeProjects(Request $request)
+    {
+        $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $request->employeeId)->get();
+        return json_encode(array('data' => $emp_projects));
     }
 }

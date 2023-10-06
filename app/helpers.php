@@ -25,6 +25,16 @@ if (!function_exists('getSupervisor')) {
     }
 }
 
+
+if (!function_exists('getEmployee')) {
+    function getEmployee()
+    {
+        return User::where('id', '!=', Auth::user()->id)->whereHas('role', function ($q) {
+            $q->where('name', '=', Role::EMPLOYEE);
+        })->get();
+    }
+}
+
 if (!function_exists('getEmployeeRole')) {
     function getEmployeeRole()
     {
