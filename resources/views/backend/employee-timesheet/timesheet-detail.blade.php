@@ -39,8 +39,7 @@
                     @endif
                 </span></div>
             <div class="col-md-6 mt-2">
-                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
-                    class="btn add-btn"><i class="fa fa-download"></i>Download PDF File</a>
+                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
             </div>
         </div>
         <div class="row">

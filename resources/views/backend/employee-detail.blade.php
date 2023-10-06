@@ -33,7 +33,7 @@
 
             @if (!empty($employee))
             <li class="nav-item ml-auto">                
-                    <a href="{{route('print-employee-detail',$employee->id)}}" class="text-white btn add-btn rounded-pill"><i class="fa fa-download"></i>Print</a>
+                    <a href="{{route('print-employee-detail',$employee->id)}}" class="text-white btn add-btn rounded-pill" target="_blank"><i class="fa fa-download"></i>Print PDF</a>
             </li>
             @endif
 
