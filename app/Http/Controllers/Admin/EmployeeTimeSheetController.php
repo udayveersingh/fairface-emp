@@ -66,6 +66,7 @@ class EmployeeTimeSheetController extends Controller
     public function TimesheetView(CompanySettings $settings)
     {
         $title = "Employee TimeSheet";
+        dd(getEmployeeRole());
         $employee_project = EmployeeProject::with('projects')->get();
         return view('backend.employee-timesheet.timesheet-view', compact('title','settings','employee_project'));
     }

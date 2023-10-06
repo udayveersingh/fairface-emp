@@ -41,12 +41,8 @@
         </tr>
         
         <tr>
-            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Name:</strong> {{ $employee->firstname . ' ' . $employee->lastname }}</td>
-            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Designation:</strong> </td>
-        </tr>
-        <tr>
-            <td style="border:none;"><strong>Emp ID:</strong> {{ $employee->employee_id }}</td>
-            <td style="border:none;"><strong>Department:</strong> </td>
+            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Name:</strong> {{ ucfirst($employee->firstname) . ' ' . $employee->lastname }}</td>
+            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Emp Id:</strong>{{ $employee->employee_id }} </td>
         </tr>
     </table>
 </div>
