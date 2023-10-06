@@ -14,7 +14,7 @@
             <h3 class="page-title">Leaves</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN ) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Leaves</li>
             </ul>
@@ -34,7 +34,7 @@
                     <thead>
                         <tr>
                             <th>Sr No.</th>
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                                 <th>Employee</th>
                             @endif
                             <th>Leave Type</th>
@@ -45,7 +45,7 @@
                             <th class="text-center">Status</th>
                             {{-- <th>status reason</th> --}}
                             {{-- <th>Approved Date/Time</th> --}}
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                                 <th class="text-right">Actions</th>
                             @endif
                         </tr>
@@ -54,7 +54,7 @@
                         @foreach ($leaves as $index => $leave)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                                     <td>
                                         <h2 class="table-avatar">
                                             <a href="javascript:void(0)" class="avatar avatar-xs">
@@ -127,7 +127,7 @@
                                     <i class="la la la-eye"></i>
                                 </td> --}}
                                 {{-- <td>{{!empty($leave->approved_date_time) ? date('d-m-Y', strtotime($leave->approved_date_time)) : '' }}</td> --}}
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -190,7 +190,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                             <div class="form-group">
                                 <label>Employee</label>
                                 <select name="employee" class="select">
@@ -253,7 +253,7 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" rows="4" class="form-control"></textarea>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                             <div class="form-group">
                                 <label>Leave Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" class="select form-control">
@@ -315,7 +315,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                        @if (Auth::check() && Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
                                 <label>Employee<span class="text-danger">*</span></label>
                                 <select name="employee" class="select2" id="edit_employee">

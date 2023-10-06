@@ -32,31 +32,9 @@ class PdfController extends Controller
     public function employeeDetailPdf($id)
     {
         if (!empty($id)) {
-            $employee = Employee::with('department', 'designation', 'country', 'branch', 'user')->find($id);
+            $employee = Employee::with('country', 'branch', 'user')->find($id);
             $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
-            // $departments = Department::get();
-            // $branches = Branch::get();
-            // // $employee = Employee::find($id);
-            // $countries = Country::get();
-            // $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
-            // $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
-            // $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
-            // $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
-            // $visa_types = Visa::get();
-            // $projects = Project::where('status', '=', 1)->get();
-            // $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
-            // $employees = Employee::get();
-            // $employee_jobs  = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
-
-            //     $imagePath = public_path('storage/employees/' . $employee->avatar);
-            //     $htmlContent = "<img src='{$imagePath}' width='200' />";
-            // </div>";
-            // $mpdf = new Mpdf();
-
-            // $content = view('backend.employee-details.pdf', compact('employee'))->render();
-            // $mpdf->WriteHTML($content);
-            // $mpdf->Output('employee-detail.pdf', 'I');
             try {
                 $mpdf = new \Mpdf\Mpdf();
                 $content = view('backend.pdf-files.emp-details-pdf', compact('employee','employee_addresses','employee_visas'))->render();
@@ -88,9 +66,10 @@ class PdfController extends Controller
     public function employeeTimeSheetDetailPdf($id, $start_date, $end_date)
     {
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy('calender_date', 'ASC')->get();
+        $employee = Employee::find($id);
         try {
             $mpdf = new \Mpdf\Mpdf();
-            $content = view('backend.pdf-files.timesheet-details-pdf', compact('employee_timesheets'))->render();
+            $content = view('backend.pdf-files.timesheet-details-pdf', compact('employee_timesheets','employee'))->render();
             $mpdf->SetTitle('timesheet Detail');
             $mpdf->WriteHTML($content);
             $mpdf->Output('employeeTimesheetDetail.pdf', 'I');

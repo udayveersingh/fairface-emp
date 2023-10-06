@@ -28,7 +28,7 @@ class EmployeeLeaveController extends Controller
     public function index()
     {
         $title = "employee leave";
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->orderBy('id', 'desc')->get();
         } else {
