@@ -8,7 +8,7 @@
     }
 
     .content {
-        padding: 20px;
+        padding: 20px 0;
         margin: 20px 0;
     }
 
@@ -20,19 +20,47 @@
     table,
     th,
     td {
-        border: 1px solid #333;
+        border: 1px solid #ddd;
         padding: 8px;
         text-align: left;
     }
+    .bg_title{background:#dee6eb; color:#4c5860; padding:8px 12px; margin-bottom:0; font-size:14px;}
 </style>
+
+<div class="header">
+    <table style="border:none;"  cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
+                <table style="border:none;padding-bottom:10px;"  cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="border:none; width:1cm; "><img src="https://i.ibb.co/1ntZs9x/logo2.png" alt="logo2" border="0" style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;"></td>
+                        <td style="border:none;"><span style="color:#4c5860; font-size:22px; font-weight:bold;">FAIRFACE EMP <br><span style="color:#333; font-size:14px; font-weight:normal; display:block; width:100%;">4667 Mount Tabor Monsey, NY, 10952 United States</span></span></td>
+                    </tr>
+                </table>                
+            </td>
+        </tr>
+        
+        <tr>
+            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Name:</strong> </td>
+            <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Designation:</strong> </td>
+        </tr>
+        <tr>
+            <td style="border:none;"><strong>Emp ID:</strong></td>
+            <td style="border:none;"><strong>Department:</strong> </td>
+        </tr>
+    </table>
+</div>
+
 @php
     $first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname : '';
     $last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
     $full_name = $first_name . ' ' . $last_name;
 @endphp
 <div class="content">
-    <h3>Employee Leave Details</h3>
             <table>
+            <tr>
+                <td colspan="2" class="bg_title"><h3 >Employee Leave Details</h3></td>            
+            </tr>
                 <tr>
                     <th>Employee</th>
                     <td>{{ ucfirst($full_name) }}</td>
