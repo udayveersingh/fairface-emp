@@ -133,7 +133,7 @@
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
                                     @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->where('record_status','=','active')->first();
                                         $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
                                         $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                         $fullname = $firstname . ' ' . $lastname;
@@ -212,7 +212,7 @@
                                 <option value="">Select Employee</option>
                                 @foreach (getEmployee() as $employee)
                                     @php
-                                        $employee = App\Models\Employee::where('user_id', '=', $employee->id)->first();
+                                        $employee = App\Models\Employee::where('user_id', '=', $employee->id)->where('record_status','=','active')->first();
                                         $firstname = !empty($employee->firstname) ? $employee->firstname : '';
                                         $lastname = !empty($employee->lastname) ? $employee->lastname : '';
                                         $fullname = $firstname . ' ' . $lastname;
@@ -231,7 +231,7 @@
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
                                     @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->where('record_status','=','active')->first();
                                         $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
                                         $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                         $fullname = $firstname . ' ' . $lastname;

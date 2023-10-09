@@ -31,7 +31,9 @@
                         <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
                             id="">
                         @php
-                            $to_email_ids = App\Models\EmployeeJOb::with('employee')->get();
+                            $to_email_ids = App\Models\EmployeeJOb::with('employee')->whereHas('employee', function ($q) {
+                            $q->where('record_status', '=', 'active');
+                        })->get();
                         @endphp
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                             <div class="form-group">
@@ -51,7 +53,7 @@
                                     </option>
                                 </select>
                             </div>
-                        @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                        @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
                                 <label>From<span class="text-danger">*</span></label>
                                 <select name="from_id" id="from_id" class="form-control">

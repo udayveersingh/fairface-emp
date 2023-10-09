@@ -53,7 +53,7 @@ class CompanyEmailController extends Controller
     public function emailInbox()
     {
         $title = "User Email";
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
@@ -81,8 +81,10 @@ class CompanyEmailController extends Controller
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_jobs = EmployeeJob::with('employee')->get();
             return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs'));
-        }else if(Auth::check() && Auth::user()->role->name == Role::SUPERADMIN){
-            $employee_jobs = EmployeeJob::with('employee')->get();
+        }else if(Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN ){
+            $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function ($q) {
+                $q->where('record_status', '=', 'active');
+            })->get();
             return view('backend.emails.compose-email', compact('title','employee_jobs'));
         }
     }
@@ -148,7 +150,7 @@ class CompanyEmailController extends Controller
         $company_email->notify(new newMailNotification($company_email));
 
         //    dd("Mail Sent Successfully!");
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE ) {
         return redirect()->route('user-email-inbox')->with('success', $message);
         }else{
             return redirect()->route('company-email')->with('success', $message);

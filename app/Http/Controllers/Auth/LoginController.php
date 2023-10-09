@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -23,9 +24,14 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
         $authenticate = auth()->attempt($request->only('email', 'password'));
-        Log::info('User Logged in Successful whose id:'. Auth::id());
+    //    $user_log= Log::info('User Logged in Successful whose id:'. Auth::id());
         if (!$authenticate) {
             return back()->with('login_error', "Invalid Login Credentials");
+        }else{
+            $user_log = new UserLog();
+            $user_log->user_id = Auth::user()->id;
+            $user_log->location_ip = $request->ip();
+            $user_log->save();
         }
         if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
            

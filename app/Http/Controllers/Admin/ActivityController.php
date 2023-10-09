@@ -28,7 +28,7 @@ class ActivityController extends Controller
         //     $data[$index] =  json_decode($value->data);
         // }
         $user_id = '';
-        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN ) {
             $user_id = Auth::user()->id;
             $notifications = DB::table('notifications')->whereNull('read_at')->where('data->user_id',$user_id)->get();
         } elseif (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
@@ -39,7 +39,7 @@ class ActivityController extends Controller
             }
         }
         foreach ($notifications as $notifi) {
-            if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
+            if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN ) {
                 $notification = DB::table('notifications')->where('id', '!=', $notifi->id)->whereNull('read_at')->first();
             } else {
                 $notification = DB::table('notifications')->where('id', '=', $notifi->id)->whereNull('read_at')->first();
