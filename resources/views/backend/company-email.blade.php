@@ -46,9 +46,9 @@
                 <div class="modal-body">
 
                     <div class="card-box">
-                        <h5 class="mt-0"><b>Hi Bro, How are you?</b></h5>
+                        {{-- <h5 class="mt-0"><b>Hi Bro, How are you?</b></h5>
 
-                        <hr>
+                        <hr> --}}
 
                         <div class="media mb-4">
                             <a href="#" class="float-left mr-2">
@@ -56,18 +56,22 @@
                                     class="media-object avatar-sm rounded-circle">
                             </a>
                             <div class="media-body">
-                                <span class="media-meta float-right">07:23 AM</span>
-                                <h5 class="text-primary font-16 m-0">Jonathan Smith</h5>
-                                <small class="text-muted">From: jonathan@domain.com</small>
+                                {{-- <span class="media-meta float-right" id="time">07:23 AM</span> --}}
+                                <span class="media-meta float-right" id="time"></span>
+                                <h5 class="text-primary font-16 m-0" id="from_id"></h5>
+                                {{-- <h5 class="text-primary font-16 m-0" >Jonathan Smith</h5> --}}
+                                <small class="text-muted" id="from_work_email">From: jonathan@domain.com</small>
+                                <br>
+                                <small class="text-muted" id="to_work_email">TO: jonathan@domain.com</small>
                             </div>
                         </div>
                         <!-- media -->
 
-                        <p><b>Hi Bro...</b></p>
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                        <p id="email-subject"><b>Hi Bro...</b></p>
+                        <p id="edit_body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
                             Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
                             mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
-                        <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
+                        {{-- <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
                             arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu
                             pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.</p>
                         <p>Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac,
@@ -75,7 +79,7 @@
                             ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue.
                             Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget
                             condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam
-                            nunc, blandit vel, luctus pulvinar,</p>
+                            nunc, blandit vel, luctus pulvinar,</p> --}}
 
                     </div>
 
@@ -200,11 +204,12 @@
                                     </td>
 
                                     <td>
-                                        {{ '<' . $fullname . '>' }}<a href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
-                                            class="email-name">{{ $from->work_email }}</a>
+                                        {{ '<' . $fullname . '>' }}<a data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
+                                            id="" >{{ $from->work_email }}</a>
                                     </td>
                                     <td class="d-none d-lg-inline-block">
-                                        <a href="" class="email-msg"> {{$company_email->subject}}</a>
+                                        <a data-toggle="modal" data-target="#email_read" data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
+                                            id="email-info" >{{ $company_email->subject }}</a>
                                     </td> 
 
                                     {{-- <td class="d-none d-lg-inline-block">
@@ -508,27 +513,56 @@
     <script>
         $(document).ready(function() {
             $('.table').on('click', '.editbtn', function() {
-                $('#edit_company_email').modal('show');
+                // $('#edit_company_email').modal('show');
+                // var id = $(this).data('id');
+                // var edit_from_id = $(this).data('email_from');
+                // var edit_email_to = $(this).data('email_to');
+                // var edit_cc_id = $(this).data('email_cc');
+                // var cc_id = edit_cc_id.split(",");
+                // //  console.log(cc_id.length);
+                // var edit_date = $(this).data('email_date');
+                // var edit_time = $(this).data('email_time');
+                // var edit_subject = $(this).data('email_subject');
+                // var edit_body = $(this).data('email_body');
+                // var edit_attachment = $(this).data('email_attachment');
+                // $('#edit_id').val(id);
+                // $('#from_id').val(edit_from_id);
+                // $('#to_id').val(edit_email_to);
+                // $('#cc').val(cc_id);
+                // $('#edit_date').val(edit_date);
+                // $('#edit_time').val(edit_time);
+                // $('#edit_subject').val(edit_subject);
+                // $('#edit_body').val(edit_body);
+                // $('#edit_attachment').val(edit_attachment);
+            });
+
+            $('.table').on('click', '#email-info', function() {
+                // $('#edit_company_email').modal('show');
                 var id = $(this).data('id');
-                var edit_from_id = $(this).data('email_from');
+                var edit_from = $(this).data('email_from');
+                var edit_work_email = $(this).data('work_email');
                 var edit_email_to = $(this).data('email_to');
-                var edit_cc_id = $(this).data('email_cc');
-                var cc_id = edit_cc_id.split(",");
+                // var edit_cc_id = $(this).data('email_cc');
+                // var cc_id = edit_cc_id.split(",");
                 //  console.log(cc_id.length);
                 var edit_date = $(this).data('email_date');
                 var edit_time = $(this).data('email_time');
                 var edit_subject = $(this).data('email_subject');
                 var edit_body = $(this).data('email_body');
-                var edit_attachment = $(this).data('email_attachment');
+                // var edit_attachment = $(this).data('email_attachment');
                 $('#edit_id').val(id);
-                $('#from_id').val(edit_from_id);
+                $('#from_id').html(edit_from);
+                $('#from_work_email').html("From:" + edit_work_email);
+                $('#to_work_email').html("To:" + edit_email_to)
                 $('#to_id').val(edit_email_to);
-                $('#cc').val(cc_id);
-                $('#edit_date').val(edit_date);
-                $('#edit_time').val(edit_time);
+                // $('#cc').val(cc_id);
+                $('#time').html(edit_date);
+                $('#email-subject').html("<b>Subject:</b>" + edit_subject);
+                // $('#time').append(edit_time);
                 $('#edit_subject').val(edit_subject);
-                $('#edit_body').val(edit_body);
-                $('#edit_attachment').val(edit_attachment);
+                $('#edit_body').html("<b>Body:</b>" + edit_body);
+                // $('#edit_attachment').val(edit_attachment);
+
             });
         });
     </script>
