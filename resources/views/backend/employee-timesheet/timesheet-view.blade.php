@@ -372,10 +372,10 @@
                 success: function(dataResult) {
                     // console.log(dataResult);
                     // console.log(myArray);
-                    $(".edit_project_id").html("<option value=''>select projects</option>");
+                    $(".emp_project_id").html("<option value=''>select projects</option>");
                     $.each(dataResult.data, function(index, row) {
                         console.log(row.projects,'row');
-                        $(".edit_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
+                        $(".emp_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
                     });
                 },
             });
@@ -462,8 +462,8 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control edit_project_id">' +
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
+                        ' id="edit_project_id" class="select form-control emp_project_id">' +
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project)'+' <option ' +
                         disabled +
                         ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
                         '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
@@ -615,10 +615,8 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control edit_project_id">' +
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                        disabled +
-                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
+                        ' id="edit_project_id" class="select form-control emp_project_id">' +
+                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' + disabled +' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
                         '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
                         readonly + ' id="project_phase_id" class="select form-control">' +
                         '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
