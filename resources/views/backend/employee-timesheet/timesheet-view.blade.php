@@ -372,7 +372,7 @@
                 success: function(dataResult) {
                     // console.log(dataResult);
                     // console.log(myArray);
-                    $("#edit_project_id").html("<option value=''>select projects</option>");
+                    $(".edit_project_id").html("<option value=''>select projects</option>");
                     $.each(dataResult.data, function(index, row) {
                         console.log(row.projects,'row');
                         $(".edit_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
