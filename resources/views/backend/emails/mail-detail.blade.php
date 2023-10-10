@@ -23,15 +23,18 @@
 
 @section('content')
     @if (count($company_emails) > 0)
-        @foreach ($company_emails as $company_email)
-            @php    
+        @foreach ($company_emails as $index => $company_email)
+            @php
+                if ($index > 0) {
+                    break;
+                }
                 $from_email = !empty($company_email->employeejob->work_email) ? $company_email->employeejob->work_email : '';
                 $firstname = !empty($company_email->employeejob->employee->firstname) ? $company_email->employeejob->employee->firstname : '';
                 $lastname = !empty($company_email->employeejob->employee->lastname) ? $company_email->employeejob->employee->lastname : '';
                 $from_emp_name = $firstname . ' ' . $lastname;
-                $user_first_name = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname:'';
-                $user_last_name = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname:'';
-                $emp_name = $user_first_name." ".$user_last_name;
+                $user_first_name = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                $user_last_name = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                $emp_name = $user_first_name . ' ' . $user_last_name;
             @endphp
             <!-- open reply model -->
             <div id="reply_mail" class="modal custom-modal fade" role="dialog">
@@ -51,13 +54,17 @@
                                         <span
                                             class="text">From{{ ucfirst($from_emp_name) . ' < ' . $from_email . ' > ' }}</span>
                                     </h5> --}}
-                                    <input type="hidden" name="subject" value="{{ $company_email->subject}}">
+                                    <input type="hidden" name="subject" value="{{ $company_email->subject }}">
+                                    <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
+                                        id="">
+                                    <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
+                                        id="">
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>From</label>
                                             <select name="from_id" id="from_id" class="form-control">
-                                                <option value="{{$employee_job->id}}">
-                                                    {{ucfirst($emp_name) . ' < ' . $employee_job->work_email . ' > ' }}
+                                                <option value="{{ $employee_job->id }}">
+                                                    {{ ucfirst($emp_name) . ' < ' . $employee_job->work_email . ' > ' }}
                                                 </option>
                                             </select>
                                         </div>
@@ -87,7 +94,8 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label>Attachment</label>
-                                            <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
+                                            <input class="form-control" type="file" name="email_attachment"
+                                                id="edit_attachment">
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
@@ -114,7 +122,7 @@
                     <ul class="personal-info">
                         <li>
                             <h5 class="user-name m-t-0 mb-0">
-                                <span class="text">{{ ucfirst($from_emp_name) . ' < ' . $from_email . ' > ' }}</span>
+                                <span class="text">From:{{ ucfirst($from_emp_name) . ' < ' . $from_email . ' > ' }}</span>
                             </h5>
                         </li>
                         <li>
@@ -134,9 +142,9 @@
                             </li>
                         @endif
                         <div class="col-auto float-right ml-auto">
-                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$company_email->created_at)->format('H:i:A')}}
+                            {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $company_email->created_at)->format('H:i:A') }}
                             <br>
-                            {{'('.Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$company_email->created_at)->format('d-m-Y').')'}}    
+                            {{ '(' . Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $company_email->created_at)->format('d-m-Y') . ')' }}
                         </div>
                     </ul>
 

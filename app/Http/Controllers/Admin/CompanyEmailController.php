@@ -30,7 +30,9 @@ class CompanyEmailController extends Controller
         $employee_jobs = EmployeeJob::with('employee')->get();
         // $company_emails = CompanyEmail::with('employeejob')->get();
 
-        $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+        // $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+        $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
+        $count_emails = CompanyEmail::count();
         $notifications = DB::table('notifications')->where('type','=','App\Notifications\newMailNotification')->get();
         $array_data = [];
         foreach($notifications as $index=>$notification)
@@ -41,7 +43,7 @@ class CompanyEmailController extends Controller
         foreach($array_data as $value){
         } 
        // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails'));
     }
 
     /**
@@ -97,6 +99,7 @@ class CompanyEmailController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
@@ -191,7 +194,7 @@ class CompanyEmailController extends Controller
     public function mailDetail($from_id, $to_id)
     {
         $title = "mail";
-        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->orwhere('from_id', '=', $to_id)->get();
+        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->orwhere('from_id', '=', $to_id)->latest()->get();
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {    
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
@@ -220,6 +223,8 @@ class CompanyEmailController extends Controller
         $company_email->body = $request->email_body;
         $company_email->subject = $request->subject;
         $company_email->attachment = $imageName;
+        $company_email->date = $request->email_date;
+        $company_email->time = $request->email_time;
         // $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
         // $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
         // $emp_job_detail = ([
