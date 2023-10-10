@@ -306,6 +306,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
     Route::post('company-email',[CompanyEmailController::class,'store']);
     Route::post('reply-mail',[CompanyEmailController::class,'replyStore'])->name('reply-mail');
+    Route::post('/email-read',[CompanyEmailController::class,'emailRead'])->name('email-read');
     // Route::put('company-email',[CompanyEmailController::class,'update']);
     Route::delete('company-email',[CompanyEmailController::class,'destroy'])->name('company-email.destroy');
 

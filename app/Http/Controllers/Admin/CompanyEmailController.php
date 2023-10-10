@@ -238,4 +238,14 @@ class CompanyEmailController extends Controller
         // Notification::send($company_email, new newMailNotification($company_email));
         return back();
     }
+
+    public function emailRead(Request $request)
+    {
+        $data = $request->all();
+        // $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->where('id','=',$request['id'])->latest()->first();
+
+        // dd($company_emails);
+
+        return json_encode(array('data' => $data));     
+    }
 }

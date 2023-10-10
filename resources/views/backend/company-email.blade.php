@@ -68,7 +68,8 @@
                         <!-- media -->
 
                         <p id="email-subject"><b>Hi Bro...</b></p>
-                        <p id="edit_body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                        <p id="edit_body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+                            eget dolor.
                             Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
                             mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
                         {{-- <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
@@ -90,18 +91,18 @@
     <!---->
 
     <div class="table-box bg-white row">
-        <div class="table-detail col-md-3">
-            <div class="p-4">
+        {{-- <div class="table-detail col-md-3"> --}}
+        {{-- <div class="p-4">
                 <a href="{{route('compose-email')}}"
-                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
+                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a> --}}
 
-                {{-- <div class="list-group mail-list mt-3">
+        {{-- <div class="list-group mail-list mt-3">
                     <a href="#" class="list-group-item border-0 text-success"><i --}}
-                            {{-- class="fas fa-eye font-13 mr-2"></i>View </a> --}}
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Starred</a> --}}
-                {{-- </div> --}}
+        {{-- class="fas fa-eye font-13 mr-2"></i>View </a> --}}
+        {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Starred</a> --}}
+        {{-- </div> --}}
 
-                {{-- <h5 class="mt-4 text-uppercase hidden-xxs">Labels</h5>
+        {{-- <h5 class="mt-4 text-uppercase hidden-xxs">Labels</h5>
 
             <div class="list-group border-0 mail-list hidden-xxs">
                 <a href="#" class="list-group-item border-0"><span class="fa fa-circle text-info mr-2"></span>Web App</a>
@@ -110,10 +111,10 @@
                 <a href="#" class="list-group-item border-0"><span class="fa fa-circle text-pink mr-2"></span>Friends</a>
                 <a href="#" class="list-group-item border-0"><span class="fa fa-circle text-success mr-2"></span>Family</a>
             </div> --}}
-            </div>
-        </div>
+        {{-- </div> --}}
+        {{-- </div> --}}
 
-        <div class="table-detail mail-right col-md-9">
+        <div class="table-detail mail-right col-md-6">
             {{-- <div class="row">
             <div class="col-lg-12">
                 <div class="btn-toolbar mt-4" role="toolbar">
@@ -169,7 +170,6 @@
                     <tbody>
                         <thead>
                             <tr>
-                                <th>Sr No.</th>
                                 <th>From</th>
                                 <th>Subject</th>
                                 <th>Date</th>
@@ -199,18 +199,27 @@
                                     $cc = implode(',', $cc_emails);
                                 @endphp
                                 <tr class="unread">
-                                    <td class="mail-select">
-                                        {{ $index + 1 }}
-                                    </td>
 
-                                    <td>
-                                        {{ '<' . $fullname . '>' }}<a data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
-                                            id="" >{{ $from->work_email }}</a>
+                                    <td data-id="{{ $company_email->id }}" data-email_from="{{ $fullname }}"
+                                        data-work_email="{{ $from->work_email }}" data-email_to="{{ $to->work_email }}"
+                                        data-email_date="{{ $company_email->date }}"
+                                        data-email_time="{{ $company_email->time }}"
+                                        data-email_subject="{{ $company_email->subject }}"
+                                        data-email_body="{{ $company_email->body }}" href="" id="email-info">
+                                        {{ ucfirst($fullname) }}
                                     </td>
                                     <td class="d-none d-lg-inline-block">
-                                        <a data-toggle="modal" data-target="#email_read" data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
-                                            id="email-info" >{{ $company_email->subject }}</a>
-                                    </td> 
+                                        <a data-toggle="modal" data-target="#email_read" data-id="{{ $company_email->id }}"
+                                            data-email_from="{{ $fullname }}"
+                                            data-work_email="{{ $from->work_email }}"
+                                            data-email_to="{{ $to->work_email }}"
+                                            data-email_date="{{ $company_email->date }}"
+                                            data-email_time="{{ $company_email->time }}"
+                                            data-email_subject="{{ $company_email->subject }}"
+                                            data-email_body="{{ $company_email->body }}"
+                                            href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
+                                            id="email-info">{{ $company_email->subject }}</a>
+                                    </td>
 
                                     {{-- <td class="d-none d-lg-inline-block">
                                         <a data-toggle="modal" data-target="#email_read" href="email-read.html"
@@ -234,6 +243,83 @@
                     Showing 1 - 20 of 289
                 </div>
             </div>
+        </div>
+        <div class="col-md-6">
+
+            {{-- <div class="table-responsive mt-3">
+                <table class="table table-hover mails m-0 no-border" style="border:none;">
+                    <tbody>
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <td id="subject"></td>
+                            </tr>
+                            <tr>
+                                <th>From</th>
+                                <td id="from_email"></td>
+                            </tr>
+                            <tr>
+                                <th>To</th>
+                                <td></td>
+                            </tr>
+                            <th>Body</th>
+                            <td></td>
+                            </tr>
+                        </thead>
+                    </tbody>
+                </table>
+            </div> --}}
+            @if (!empty($company_emails->count()))
+                @foreach ($company_emails as $index => $company_email)
+                    @php
+                        if ($index > 0) {
+                            break;
+                        }
+                        $from = App\Models\EmployeeJob::with('employee')
+                            ->where('id', '=', $company_email->from_id)
+                            ->first();
+                        $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                        $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                        $fullname = $from_first_name . ' ' . $from_last_name;
+                        $to = App\Models\EmployeeJob::with('employee')
+                            ->where('id', '=', $company_email->to_id)
+                            ->first();
+                        $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                        $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                        $to_fullname = $to_first_name . ' ' . $to_last_name;
+                        $multiple_cc = explode(',', $company_email->company_cc);
+                        $cc_emails = [];
+                        foreach ($multiple_cc as $value) {
+                            $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                            $cc_emails[] = $cc;
+                        }
+                        $cc = implode(',', $cc_emails);
+                    @endphp
+                    <div class="card">
+                        <div class="card-box">
+                            <h5 class="mt-1 ml-2" id="subject"><b>{{ $company_email->subject }}</b></h5>
+                            <div class="media mb-4">
+                                <a href="#" class="float-left mr-2">
+                                    <img alt="" src="assets/images/users/avatar-2.jpg"
+                                        class="media-object avatar-sm rounded-circle">
+                                </a>
+                                <div class="media-body">
+                                    {{-- <span class="media-meta float-right" id="time">07:23 AM</span> --}}
+                                    {{-- <h5 class="text-primary font-16 m-0" >Jonathan Smith</h5> --}}
+                                    <small class="text-primary font-16 m-0" id="from_email">From:{{ $from->work_email }}
+                                    </small>
+                                    <br>
+                                    <small class="text-muted" id="to_email">TO:{{ $to->work_email }} </small>
+                                </div>
+                            </div>
+                            <!-- media -->
+
+                            {{-- <p id="email-subject"><b>Hi Bro...</b></p> --}}
+                            <p id="email_body" class="ml-2">{{ $company_email->body }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
     <!-- New layout ends-->
@@ -563,6 +649,44 @@
                 $('#edit_body').html("<b>Body:</b>" + edit_body);
                 // $('#edit_attachment').val(edit_attachment);
 
+            });
+
+            $('.table').on('click', '#email-info', function() {
+                // var employeeId = $('#employee_id').find('option:selected').text();
+                // var token =  $('input[name="csrfToken"]').attr('value');
+                var id = $(this).data('id');
+                var edit_from = $(this).data('email_from');
+                var edit_work_email = $(this).data('work_email');
+                var edit_email_to = $(this).data('email_to');
+                var edit_subject = $(this).data('email_subject');
+                var edit_body = $(this).data('email_body');
+                console.log(edit_subject, "edit_subject");
+                $.ajax({
+                    type: 'POST',
+                    url: '/email-read',
+                    headers: {
+                        'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        id: id,
+                        emailFromUser: edit_from,
+                        workEmail: edit_work_email,
+                        emailTo: edit_email_to,
+                        emailSubject: edit_subject,
+                        emailBody: edit_body,
+                    },
+                    dataType: 'JSON',
+                    success: function(dataResult) {
+                        console.log(dataResult);
+                        $.each(dataResult, function(index, row) {
+                            $("#subject").html(row.emailSubject);
+                            $("#from_email").html("From:" + row.workEmail);
+                            $("#to_email").html("To:" + row.emailTo);
+                            $("#email_body").html(row.emailBody)
+                        });
+                        // console.log(myArray);
+                    },
+                });
             });
         });
     </script>
