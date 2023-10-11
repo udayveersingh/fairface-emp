@@ -16,8 +16,8 @@ class CreateCompanyEmailsTable extends Migration
         Schema::create('company_emails', function (Blueprint $table) {
             $table->id();
             $table->foreignId('from_id')->nullable()->constrained('employee_jobs')->onDelete('cascade');
-            $table->foreignId('to_id')->nullable()->constrained('employee_jobs')->onDelete('cascade');
-            $table->foreignId('cc')->nullable()->constrained('employee_jobs')->onDelete('cascade');
+            $table->string('to_id')->nullable();
+            $table->string('company_cc')->nullable();
             $table->date('date')->nullable();
             $table->time('time')->nullable();
             $table->string('subject')->nullable();
