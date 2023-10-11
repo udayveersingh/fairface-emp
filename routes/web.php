@@ -302,7 +302,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('user-email-inbox',[CompanyEmailController::class,'emailInbox'])->name('user-email-inbox');
     Route::get('compose-email',[CompanyEmailController::class,'composeEmail'])->name('compose-email');
     Route::get('sent-email',[CompanyEmailController::class,'sentEmail'])->name('sent-email');
-    Route::get('mail-detail/{from}/{to}',[CompanyEmailController::class,'mailDetail'])->name('mail-detail');
+    Route::get('mail-detail/{from}',[CompanyEmailController::class,'mailDetail'])->name('mail-detail');
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
     Route::post('company-email',[CompanyEmailController::class,'store']);
     Route::post('reply-mail',[CompanyEmailController::class,'replyStore'])->name('reply-mail');

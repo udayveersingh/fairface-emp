@@ -32,6 +32,7 @@ class CompanyEmailController extends Controller
 
         // $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
         $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
+        // dd($company_emails);
         $count_emails = CompanyEmail::count();
         $notifications = DB::table('notifications')->where('type','=','App\Notifications\newMailNotification')->get();
         $array_data = [];
@@ -105,8 +106,12 @@ class CompanyEmailController extends Controller
             'to_id' => 'required',
         ]);
         $cc =Null;
+        $to_id =Null;
         if(!empty($request->cc)){
             $cc = implode(",", $request->cc);
+        }
+        if(!empty($request->to_id)){
+            $to_ids = implode(",", $request->to_id);
         }
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
@@ -121,7 +126,7 @@ class CompanyEmailController extends Controller
             $message = "Company Email data has been added";
         }
         $company_email->from_id = $request->from_id;
-        $company_email->to_id  = $request->to_id;
+        $company_email->to_id  =$to_ids;
         $company_email->company_cc  = $cc;
         $company_email->date = $request->email_date;
         $company_email->time = $request->email_time;
@@ -191,10 +196,10 @@ class CompanyEmailController extends Controller
     /**
      * check mail detail 
      */
-    public function mailDetail($from_id, $to_id)
+    public function mailDetail($from_id)
     {
         $title = "mail";
-        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->orwhere('from_id', '=', $to_id)->latest()->get();
+        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->latest()->get();
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {    
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
@@ -217,9 +222,13 @@ class CompanyEmailController extends Controller
             $imageName = time() . '.' . $request->email_attachment->extension();
             $request->email_attachment->move(public_path('storage/company_email/attachment'), $imageName);
         }
+        $to_ids="";
+        if(!empty($request->to_id)){
+          $to_ids = implode(',',$request->to_id);
+        }
         $company_email = new CompanyEmail();
         $company_email->from_id = $request->from_id;
-        $company_email->to_id  = $request->to_id;
+        $company_email->to_id  = $to_ids;
         $company_email->body = $request->email_body;
         $company_email->subject = $request->subject;
         $company_email->attachment = $imageName;

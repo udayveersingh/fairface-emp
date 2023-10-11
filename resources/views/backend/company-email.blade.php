@@ -68,7 +68,8 @@
                         <!-- media -->
 
                         <p id="email-subject"><b>Hi Bro...</b></p>
-                        <p id="edit_body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor.
+                        <p id="edit_body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula
+                            eget dolor.
                             Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus
                             mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</p>
                         {{-- <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget,
@@ -92,14 +93,14 @@
     <div class="table-box bg-white row">
         <div class="table-detail col-md-3">
             <div class="p-4">
-                <a href="{{route('compose-email')}}"
+                <a href="{{ route('compose-email') }}"
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="#" class="list-group-item border-0 text-success"><i 
-                             class="fa-solid fa-inbox font-13 mr-2"></i>inbox <span>{{$count_emails}}</span> </a> 
+                    <a href="#" class="list-group-item border-0 text-success"><i
+                            class="fa-solid fa-inbox font-13 mr-2"></i>inbox <span>{{ $count_emails }}</span> </a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Starred</a>  --}}
-                 </div>
+                </div>
 
                 {{-- <h5 class="mt-4 text-uppercase hidden-xxs">Labels</h5>
 
@@ -171,6 +172,7 @@
                             <tr>
                                 {{-- <th>Sr No.</th> --}}
                                 <th>From</th>
+                                <th>To</th>
                                 <th width="500px">Subject</th>
                                 <th>Date</th>
                             </tr>
@@ -184,12 +186,20 @@
                                     $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
                                     $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
                                     $fullname = $from_first_name . ' ' . $from_last_name;
-                                    $to = App\Models\EmployeeJob::with('employee')
-                                        ->where('id', '=', $company_email->to_id)
-                                        ->first();
-                                    $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
-                                    $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
-                                    $to_fullname = $to_first_name . ' ' . $to_last_name;
+
+                                    $to_ids = explode(',', $company_email->to_id);
+                                    $to_emails = [];
+                                    foreach ($to_ids as $value) {
+                                        $to = App\Models\EmployeeJob::with('employee')
+                                            ->where('id', '=', $value)
+                                            ->first();
+                                        $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                                        $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                                        $to_fullname = $to_first_name . ' ' . $to_last_name;
+                                        $to_emails[] = $to_fullname;
+                                    }
+                                    $to_emails = implode(',', $to_emails);
+
                                     $multiple_cc = explode(',', $company_email->company_cc);
                                     $cc_emails = [];
                                     foreach ($multiple_cc as $value) {
@@ -204,13 +214,17 @@
                                     </td> --}}
 
                                     <td>
-                                        <a data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
-                                            id="" >{{ $fullname}}</a>
+                                        <a href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id)]) }}"
+                                            id="">{{ $fullname }}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id)]) }}"
+                                            id="">{{ $to_emails }}</a>
                                     </td>
                                     <td class="d-none d-lg-inline-block" width="500px">
-                                        <a data-toggle="modal" data-target="#email_read" data-id="{{$company_email->id}}" data-email_from="{{$fullname}}" data-work_email="{{$from->work_email}}" data-email_to="{{$to->work_email}}" data-email_date="{{$company_email->date}}" data-email_time="{{$company_email->time}}" data-email_subject="{{$company_email->subject}}" data-email_body="{{$company_email->body}}" href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id), 'to' => $company_email->to_id]) }})}}"
-                                            id="email-info" >{{ $company_email->subject }}</a>
-                                    </td> 
+                                        <a href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id)]) }}"
+                                            id="">{{ $company_email->subject }}</a>
+                                    </td>
 
                                     {{-- <td class="d-none d-lg-inline-block">
                                         <a data-toggle="modal" data-target="#email_read" href="email-read.html"
@@ -220,7 +234,10 @@
                                         <i class="fa fa-paperclip"></i>
                                     </td>
                                     <td class="mail-time">
-                                        {{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}
+                                        <a href="{{ route('mail-detail', ['from' => encrypt($company_email->from_id)]) }}"
+                                            id="">
+                                            {{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

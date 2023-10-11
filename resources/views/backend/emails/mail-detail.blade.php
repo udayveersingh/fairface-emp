@@ -72,8 +72,8 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="form-label select-label">To</label>
-                                            <select name="to_id" class="form-control select"
-                                                data-mdb-placeholder="Example placeholder">
+                                            <select name="to_id[]" class="form-control select" multiple
+                                                 data-mdb-placeholder="Example placeholder" multiple>
                                                 @foreach (getEmployeeJob() as $employee_job)
                                                     @php
                                                         $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -164,6 +164,13 @@
         @endforeach
         <div class="col-auto float-right ml-auto">
             <a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#reply_mail"> Reply</a>
+        </div>
+        <div class="col-auto float-right ml-auto">
+            @if(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
+            <a href="{{route('company-email')}}" class="btn add-btn">Back</a>
+            @else
+            <a href="{{route('user-email-inbox')}}" class="btn add-btn">Back</a>
+            @endif
         </div>
     @endif
 @endsection

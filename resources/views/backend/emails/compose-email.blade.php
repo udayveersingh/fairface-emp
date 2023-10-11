@@ -72,7 +72,8 @@
                         @endif
                         <div class="form-group">
                             <label>To<span class="text-danger">*</span></label>
-                            <select name="to_id" id="to_id" class="form-control">
+                            <select name="to_id[]" class="form-control select" multiple
+                            data-mdb-placeholder="Example placeholder" multiple>
                                 <option value="">Select to</option>
                                 @foreach ($to_email_ids as $to_email)
                                     @php
