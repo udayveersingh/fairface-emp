@@ -67,7 +67,7 @@
                                     class="fa-solid fa-inbox font-13 mr-2"></i>inbox <span>{{ $count_emails }}</span> </a>
                         @else
                         <a href="{{route('sent-email')}}" class="list-group-item border-0 text-success"><i
-                            class="fa fa-envelope font-13 mr-2"></i>Sent</a>
+                            class="fa fa-envelope font-13 mr-2"></i>Sent({{$company_emails_count}})</a>
                         @endif
                     </div>
                 </div>
@@ -94,7 +94,7 @@
                                         $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
                                         $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
                                         $fullname = $from_first_name . ' ' . $from_last_name;
-                                        
+
                                         $to_ids = explode(',', $company_email->to_id);
                                         $to_emails = [];
                                         foreach ($to_ids as $value) {

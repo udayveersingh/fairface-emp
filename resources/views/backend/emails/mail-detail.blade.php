@@ -101,7 +101,7 @@
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             {{-- <label>Body<span class="text-danger">*</span></label> --}}
-                                            <textarea class="form-control" id="" name="email_body" rows="4" cols="50"></textarea>
+                                            <textarea class="form-control ckeditor" id="" name="email_body" rows="4" cols="50"></textarea>
                                         </div>
                                     </div>
                                 </div>

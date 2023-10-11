@@ -68,7 +68,8 @@ class CompanyEmailController extends Controller
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
             $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
-            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs'));
+            $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->latest()->count();
+            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs','company_emails_count'));
         }
     }
 

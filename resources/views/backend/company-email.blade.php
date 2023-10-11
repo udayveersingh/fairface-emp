@@ -98,7 +98,7 @@
 
                 <div class="list-group mail-list mt-3">
                     <a href="#" class="list-group-item border-0 text-success"><i
-                            class="fa-solid fa-inbox font-13 mr-2"></i>inbox <span>{{ $count_emails }}</span> </a>
+                            class="fa-solid fa-inbox font-13 mr-2"></i>inbox <span>({{ $count_emails }})</span> </a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Starred</a>  --}}
                 </div>
 
