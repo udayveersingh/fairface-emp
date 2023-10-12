@@ -64,7 +64,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Bank Account Name<span class="text-danger">*</span></label>
-                                        <input class="form-control" name="account_name"
+                                        <input class="form-control" name="account_name" required
                                             value="{{ !empty($employee_bank->account_name) ? $employee_bank->account_name : '' }}"
                                             id="edit_account_name" type="text">
                                     </div>
@@ -72,7 +72,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Bank Name<span class="text-danger">*</span></label>
-                                        <input class="form-control" name="bank_name"
+                                        <input class="form-control" name="bank_name" required
                                             value="{{ !empty($employee_bank->bank_name) ? $employee_bank->bank_name : '' }}"
                                             id="edit_bank_name" type="text">
                                     </div>
@@ -81,8 +81,8 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Bank Account Number</label>
-                                        <input class="form-control" name="account_number"
+                                        <label>Bank Account Number <span class="text-danger">*</span></label>
+                                        <input class="form-control" name="account_number" required
                                             value="{{ !empty($employee_bank->bank_account_number) ? $employee_bank->bank_account_number : '' }}"
                                             id="edit_account_number" type="text">
                                     </div>

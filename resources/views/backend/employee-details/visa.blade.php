@@ -94,7 +94,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="visa_type" class="form-control select">
+                                <select name="visa_type" required id="visa_type" class="form-control select">
                                     <option value="">Select Visa Type</option>
                                     @foreach ($visa_types as $type)
                                         <option value="{{ $type->id }}">{{ $type->visa_type }}</option>
@@ -124,14 +124,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Issue Date<span class="text-danger">*</span></label>
-                                <input class="form-control" name="visa_issue_date" id="visa_issue_date"
+                                <input class="form-control" name="visa_issue_date" required id="visa_issue_date"
                                     type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Expiry Date<span class="text-danger">*</span></label>
-                                <input class="form-control" name="visa_expiry_date" id="visa_expiry_date"
+                                <input class="form-control" name="visa_expiry_date" required id="visa_expiry_date"
                                     type="date">
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Type<span class="text-danger">*</span></label>
-                                <select name="visa_type" id="edit_visa_type" class="form-control select">
+                                <select name="visa_type" required id="edit_visa_type" class="form-control select">
                                     <option value="">Select Visa Type</option>
                                     @foreach ($visa_types as $type)
                                         <option value="{{ $type->id }}">{{ $type->visa_type }}</option>
@@ -197,14 +197,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Issue Date</label>
-                                <input class="form-control" name="visa_issue_date" id="edit_visa_issue_date"
+                                <input class="form-control" name="visa_issue_date" required id="edit_visa_issue_date"
                                     type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Visa Expiry Date</label>
-                                <input class="form-control" name="visa_expiry_date" id="edit_visa_expiry_date"
+                                <input class="form-control" name="visa_expiry_date" required id="edit_visa_expiry_date"
                                     type="date">
                             </div>
                         </div>

@@ -341,6 +341,8 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('activity',[ActivityController::class,'index'])->name('activity');
     Route::get('clear-activity',[ActivityController::class,'markAsRead'])->name('clear-all');
 
+    Route::get('logs',[ActivityController::class,'logs'])->name('logs');
+
     Route::get('backups',[BackupsController::class,'index'])->name('backups');
 
 

@@ -300,7 +300,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Address Line 1<span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="edit_address_line_1" name="address_line_1" rows="4" cols="50">{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}</textarea>
+                                <textarea class="form-control" id="edit_address_line_1" name="address_line_1" required rows="4" cols="50">{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}</textarea>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -322,15 +322,15 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>From Date<span class="text-danger">*</span></label>
-                                <input class="form-control" name="from_date" id="edit_from_date"
+                                <input class="form-control" name="from_date" required id="edit_from_date"
                                     value="{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}"
                                     type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>To Date</label>
-                                <input class="form-control" name="to_date" id="edit_to_date"
+                                <label>To Date<span class="text-danger">*</span></label>
+                                <input class="form-control" name="to_date" required id="edit_to_date"
                                     value="{{ !empty($employee_address->to_date) ? $employee_address->to_date : '' }}"
                                     type="date">
                             </div>

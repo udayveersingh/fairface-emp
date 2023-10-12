@@ -56,4 +56,9 @@ class ActivityController extends Controller
         // }
         return back()->with('success', "Notifications has been cleared.");
     }
+
+    public function logs()
+    {
+        
+    }
 }

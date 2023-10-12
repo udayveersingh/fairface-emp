@@ -43,6 +43,8 @@ class EmployeeProjectController extends Controller
     {
         $this->validate($request, [
             'start_date' => 'required',
+            'end_date' => 'required',
+            'project' => 'required',
         ]);
         EmployeeProject::create([
             'employee_id' => $request->emp_id,

@@ -84,7 +84,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Project<span class="text-danger">*</span></label>
-                                <select name="project" id="project" class="form-control select">
+                                <select name="project" id="project" required class="form-control select">
                                     <option value="">Select Project</option>
                                     @foreach ($projects as $project)
                                         <option value="{{ $project->id }}">{{ $project->name }}</option>
@@ -94,14 +94,14 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Start Date</label>
-                                <input class="form-control" name="start_date" id="start_date" type="date">
+                                <label>Start Date<span class="text-danger">*</span></label>
+                                <input class="form-control" name="start_date" required id="start_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>End Date</label>
-                                <input class="form-control" name="end_date" id="end_date" type="date">
+                                <label>End Date<span class="text-danger">*</span></label>
+                                <input class="form-control" name="end_date" required id="end_date" type="date">
                             </div>
                         </div>
                     </div>

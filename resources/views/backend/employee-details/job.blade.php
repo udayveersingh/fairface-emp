@@ -121,13 +121,13 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
-                                <input class="form-control" name="job_title" id="job_title" type="text">
+                                <input class="form-control" name="job_title" required id="job_title" type="text">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Supervisor<span class="text-danger">*</span></label>
-                                <select name="supervisor" id="supervisor" class="form-control select">
+                                <select name="supervisor" id="supervisor" required class="form-control select">
                                     <option value="">Select Supervisor</option>
                                     @foreach (getSupervisor() as $supervisor)
                                     @php
@@ -148,7 +148,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>TimeSheet Approval Incharge<span class="text-danger">*</span></label>
-                                <select name="timesheet_approval_inch" id="" class="form-control select">
+                                <select name="timesheet_approval_inch" required id="" class="form-control select">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">
@@ -160,7 +160,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Department<span class="text-danger">*</span></label>
-                                <select name="department" id="department" class="form-control select">
+                                <select name="department" required id="department" class="form-control select">
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -173,13 +173,13 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Work Email<span class="text-danger">*</span></label>
-                                <input class="form-control" name="work_email" id="work_email" type="text">
+                                <input class="form-control" required name="work_email" id="work_email" type="text">
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Work Phone Number</label>
-                                <input class="form-control mask_phone_number" name="work_phone_number"
+                                <input class="form-control mask_phone_number"  name="work_phone_number"
                                     id="phone_number" type="text">
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Type<span class="text-danger">*</span></label>
-                                <select name="job_type" id="job_type" class="form-control select">
+                                <select name="job_type" id="job_type" required class="form-control select">
                                     <option value="">Select Job Type</option>
                                     <option value="full_time">Full Time</option>
                                     <option value="part_time">Part Time</option>

@@ -7,8 +7,8 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="form-group">
-                        <label class="col-form-label">Document Name</label>
-                        <input class="form-control edit_name" name="name" type="text">
+                        <label class="col-form-label">Document Name<span class="text-danger">*</span></label>
+                        <input class="form-control edit_name" required name="name" type="text">
                     </div>
                 </div>
                 <div class="col-sm-4">
