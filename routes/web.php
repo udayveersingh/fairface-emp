@@ -337,6 +337,7 @@ Route::group(['middleware'=>['auth']], function (){
 
     Route::get('profile',[UserProfileController::class,'index'])->name('profile');
     Route::post('profile',[UserProfileController::class,'update']);
+    Route::post('employee-profile',[UserProfileController::class,'empProfileUpdate'])->name('employee-profile');
 
     Route::get('activity',[ActivityController::class,'index'])->name('activity');
     Route::get('clear-activity',[ActivityController::class,'markAsRead'])->name('clear-all');

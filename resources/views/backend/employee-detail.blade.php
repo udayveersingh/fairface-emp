@@ -142,6 +142,9 @@
                             <div class="card card-block shadow shadow-sm p-3">
                                 <img alt="avatar" height="300px"
                                     src="@if (!empty($employee->avatar)) {{ asset('storage/employees/' . $employee->avatar) }}  @else assets/img/profiles/default.jpg @endif">
+                                <a data-id="" data-employee_id="" data-target="#profile_info" class="btn btn-primary mt-2"
+                                    href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i>
+                                    Edit Profile Pic</a>
                             </div>
                         </div>
                     @endif
@@ -590,6 +593,63 @@
         </div>
     </div>
     <!-- /Delete  Modal -->
+    <div id="profile_info" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Profile Pic</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('employee-profile') }}">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="profile-img-wrap edit-img">
+                                    <input type="hidden" name="employee_id" value="{{!empty($employee->user_id) ? $employee->user_id:'' }}">
+                                    <img class="inline-block"
+                                        src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"
+                                        alt="user">
+                                    <div class="fileupload btn">
+                                        <span class="btn-text">edit</span>
+                                        <input name="avatar" class="upload" type="file">
+                                    </div>
+                                </div>
+                                {{-- <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Full Name</label>
+                                            <input type="text" class="form-control" name="name"
+                                                value="{{ auth()->user()->name }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label> Username</label>
+                                            <input type="text" class="form-control" name="username"
+                                                value="{{ auth()->user()->username }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" name="email"
+                                                value="{{ auth()->user()->email }}">
+                                        </div>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')

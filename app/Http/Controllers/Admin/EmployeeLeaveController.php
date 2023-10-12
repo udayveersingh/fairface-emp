@@ -69,7 +69,7 @@ class EmployeeLeaveController extends Controller
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
         $days = $start->diff($end_date, '%d')->days;
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
             $total_leaves = LeaveType::where('id','=',$request->leave_type)->value('days');

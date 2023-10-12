@@ -13,6 +13,7 @@ use App\Models\EmployeePayslip;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeVisa;
 use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -57,5 +58,24 @@ class UserProfileController extends Controller
             'avatar' => $imageName,
         ]);
         return back()->with('success', "user info has been updated");
+    }
+
+    public function empProfileUpdate(Request $request)
+    {
+        $user = User::find($request->employee_id);
+        $imageName = $user->avatar;
+        if ($request->hasFile('avatar')) {
+            $imageName = time() . '.' . $request->avatar->extension();
+            $request->avatar->move(public_path('storage/employees'), $imageName);
+        }
+        $user->update([
+          'avatar' => $imageName,
+        ]);
+
+        $employee = Employee::where('user_id','=',$request->employee_id)->first();
+        $employee->avatar = $imageName;
+        $employee->save();
+
+        return back()->with('success',"User Profile Image updated Successfully.");
     }
 }

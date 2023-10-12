@@ -239,19 +239,19 @@
                         <div class="form-group">
                             <label>From <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="from" class="form-control datetimepicker" type="text">
+                                <input name="from" required class="form-control datetimepicker" type="text">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>To <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="to" class="form-control datetimepicker" type="text">
+                                <input name="to" required class="form-control datetimepicker" type="text">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>Leave Reason <span class="text-danger">*</span></label>
-                            <textarea name="reason" rows="4" class="form-control"></textarea>
+                            <textarea name="reason" required rows="4" class="form-control"></textarea>
                         </div>
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
                             <div class="form-group">

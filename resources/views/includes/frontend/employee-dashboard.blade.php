@@ -60,7 +60,7 @@
                             <div class="card-body">
                                 <div class="request-btn">
                                     <div class="dash-stats-list">
-                                        <h4>{{ $timesheet_submitted_count}}</h4>
+                                        <h4>{{ $timesheet_submitted_count }}</h4>
                                         <p>Timesheet submmited this Month</p>
                                     </div>
                                 </div>
@@ -75,47 +75,58 @@
                 <section class="dash-section">
                     <h1 class="dash-sec-title">ANNOUNCEMENTS</h1>
                     <div class="dash-sec-content">
-                        <div class="dash-info-list">
-                            <a href="#" class="dash-card text-danger">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="dash-card-content">
-                                            <div class="dash-card-icon">
-                                                <i class="fa fa-hourglass-o"></i>
+                        @if (count(getEmployeeLeaveApprovedNotification()) > 0)
+                        @foreach (getEmployeeLeaveApprovedNotification() as $index => $notification)
+                            @php
+                                if($index > 1)
+                                {
+                                    break;
+                                }
+                            @endphp
+                                <div class="dash-info-list">
+                                    <a href="#" class="dash-card text-danger">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                {{-- @dd( $notification); --}}
+                                                <div class="dash-card-content">
+                                                    <div class="dash-card-icon">
+                                                        <i class="fa fa-hourglass-o"></i>
+                                                    </div>
+                                                    <p>{{ $notification->message }}</p>
+                                                </div>
                                             </div>
-                                            <p>{{ Auth::user()->name }} is off sick today</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <div class="">
-                                            <span class="badge bg-inverse-danger">Notification</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        @if(count(getAnnouncement()) > 0)
-                        @foreach (getAnnouncement() as $announcement)
-                        <div class="dash-info-list">
-                            <a href="#" class="dash-card">
-                                <div class="row">
-                                    <div class="col-9">
-                                        <div class="dash-card-content">
-                                            <div class="dash-card-icon">
-                                                <i class="fa fa-suitcase"></i>
+                                            <div class="col-6 text-right">
+                                                <div class="">
+                                                    <span class="badge bg-inverse-danger">Notification</span>
+                                                </div>
                                             </div>
-                                            <p>{{$announcement->description}}</p>
                                         </div>
-                                    </div> 
-                                    <div class="col-3 text-right">
-                                        <div class="">
-                                            <span class="badge bg-inverse-success">Annoucement</span>
-                                        </div>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
-                        </div>
-                         @endforeach
+                            @endforeach
+                        @endif
+                        @if (count(getAnnouncement()) > 0)
+                            @foreach (getAnnouncement() as $announcement)
+                                <div class="dash-info-list">
+                                    <a href="#" class="dash-card">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <div class="dash-card-content">
+                                                    <div class="dash-card-icon">
+                                                        <i class="fa fa-suitcase"></i>
+                                                    </div>
+                                                    <p>{{ $announcement->description }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-3 text-right">
+                                                <div class="">
+                                                    <span class="badge bg-inverse-success">Annoucement</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @endforeach
                         @endif
                         {{-- <div class="dash-info-list">
                             <a href="#" class="dash-card">
