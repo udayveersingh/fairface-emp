@@ -251,7 +251,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Supervisor<span class="text-danger">*</span></label>
-                                <select name="supervisor" id="edit_supervisor" class="form-control select">
+                                <select name="supervisor" required id="edit_supervisor" class="form-control select">
                                     <option value="">Select Supervisor</option>
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">

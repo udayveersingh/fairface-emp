@@ -22,7 +22,7 @@
                     <div class="form-group">
                         <label>Year<span class="text-danger">*</span></label>
                         @php
-                        $years = collect(range(12, 0))->map(function ($item) {
+                        $years = collect(range(12, -2))->map(function ($item) {
                         return (string) date('Y') - $item;
                         });
                         @endphp

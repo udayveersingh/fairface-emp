@@ -161,13 +161,13 @@
                                                                 class="text-danger">*</span></label>
                                                         <input class="form-control"
                                                             value="{{ !empty($employee->employee_id) ? $employee->employee_id : '' }}"
-                                                            name="employee_id" type="text">
+                                                            name="employee_id" required type="text">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Main Work Location<span class="text-danger">*</span></label>
-                                                        <select name="branch_id" class="form-control">
+                                                        <select name="branch_id" required class="form-control">
                                                             <option value="">Select Main Work Location</option>
                                                             @foreach ($branches as $branch)
                                                                 <option value="{{ $branch->id }}"
@@ -180,7 +180,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Employee Picture<span
-                                                                class="text-danger">*</span></label>
+                                                                class="text-danger"></span></label>
                                                         <input class="form-control floating edit_avatar" name="avatar"
                                                             type="file">
                                                     </div>
@@ -192,7 +192,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">First Name <span
                                                                 class="text-danger">*</span></label>
-                                                        <input class="form-control edit_firstname" name="firstname"
+                                                        <input class="form-control edit_firstname" name="firstname" required
                                                             value="{{ $employee->firstname }}" type="text">
                                                     </div>
                                                 </div>
@@ -200,7 +200,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Last Name <span
                                                                 class="text-danger">*</span></label>
-                                                        <input class="form-control edit_lastname" name="lastname"
+                                                        <input class="form-control edit_lastname" name="lastname" required
                                                             value="{{ $employee->lastname }}" type="text">
                                                     </div>
                                                 </div>
@@ -208,7 +208,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Phone Number Main </label>
                                                         <input class="form-control edit_phone mask_phone_number"
-                                                            name="phone" value="{{ $employee->phone }}"
+                                                            name="phone" required value="{{ $employee->phone }}"
                                                             type="text">
                                                     </div>
                                                 </div>
@@ -227,7 +227,7 @@
                                                         <label class="col-form-label">Email <span
                                                                 class="text-danger">*</span></label>
                                                         <input class="form-control edit_email"
-                                                            value="{{ $employee->email }}" name="email"
+                                                            value="{{ $employee->email }}" name="email" required
                                                             type="email">
                                                     </div>
                                                 </div>
@@ -243,7 +243,7 @@
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
                                                         <label>Role<span class="text-danger">*</span></label>
-                                                        <select name="role_id" class="form-control">
+                                                        <select name="role_id" required class="form-control">
                                                             <option value="">Select to</option>
                                                             @foreach (getEmployeeRole() as $role)
                                                                 @php
@@ -274,7 +274,7 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nationality <span class="text-danger">*</span></label>
-                                                        <select name="nationality" id="nationality" class="form-control">
+                                                        <select name="nationality" required id="nationality" class="form-control">
                                                             <option value="">Select Nationality</option>
                                                             @foreach ($countries as $country)
                                                                 <option value="{{ $country->id }}"
@@ -296,7 +296,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Passport Issue Date</label>
                                                         <input class="form-control edit_pass_issue_date"
-                                                            name="pass_issue_date"
+                                                            name="pass_issue_date" 
                                                             value="{{ $employee->passport_issue_date }}" type="date">
                                                     </div>
                                                 </div>
@@ -311,7 +311,7 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Marital Status <span class="text-danger">*</span></label>
-                                                        <select name="marital_status" id="marital_status"
+                                                        <select name="marital_status" required id="marital_status"
                                                             class="form-control">
                                                             <option value="">Select Marital Status</option>
                                                             <option value="married"
@@ -332,9 +332,9 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label>Record Status <span class="text-danger">*</span></label>
-                                                        <select name="record_status" id="record_status"
+                                                        <select name="record_status" required id="record_status"
                                                             class="form-control">
-                                                            <option>Select Record Status</option>
+                                                            <option value="">Select Record Status</option>
                                                             <option value="active"
                                                                 {{ $employee->record_status == 'active' ? 'selected' : '' }}>
                                                                 Active</option>
