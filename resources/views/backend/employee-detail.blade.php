@@ -6,7 +6,18 @@
 @endsection
 @section('content')
 
-   
+    @php
+        $firstname = !empty($employee->firstname) ? $employee->firstname : '';
+        $lastname = !empty($employee->lastname) ? $employee->lastname : '';
+        $fullname = $firstname . ' ' . $lastname;
+    @endphp
+    @if (!empty($employee))
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active">
+                <h3>You are viewing record of {{ ucfirst($fullname) }}</h3>
+            </li>
+        </ul>
+    @endif
     <?php
     $tabs = [
         'document' => 'Document',
@@ -19,25 +30,26 @@
         'payslip' => 'Payslip',
     ];
     ?>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="basic_info-tab" data-toggle="tab" href="#basic_info" role="tab"
+                aria-controls="basic_info" aria-selected="true">Basic Info</a>
+        </li>
+        @foreach ($tabs as $index => $tab)
             <li class="nav-item">
-                <a class="nav-link active" id="basic_info-tab" data-toggle="tab" href="#basic_info" role="tab"
-                    aria-controls="basic_info" aria-selected="true">Basic Info</a>
+                <a class="nav-link" id="{{ $index }}-tab" data-toggle="tab" href="#{{ $index }}"
+                    role="tab" aria-controls="{{ $index }}" aria-selected="true">{{ $tab }}</a>
             </li>
-            @foreach ($tabs as $index => $tab)
-                <li class="nav-item">
-                    <a class="nav-link" id="{{ $index }}-tab" data-toggle="tab" href="#{{ $index }}"
-                        role="tab" aria-controls="{{ $index }}" aria-selected="true">{{ $tab }}</a>
-                </li>
-            @endforeach
+        @endforeach
 
-            @if (!empty($employee))
-            <li class="nav-item ml-auto">                
-                    <a href="{{route('print-employee-detail',$employee->id)}}" class="text-white btn add-btn rounded-pill" target="_blank"><i class="fa fa-download"></i>Print PDF</a>
+        @if (!empty($employee))
+            <li class="nav-item ml-auto">
+                <a href="{{ route('print-employee-detail', $employee->id) }}" class="text-white btn add-btn rounded-pill"
+                    target="_blank"><i class="fa fa-download"></i>Print PDF</a>
             </li>
-            @endif
+        @endif
 
-        </ul>
+    </ul>
 
     @if (!empty($employee))
         <div class="tab-content" id="myTabContent">
@@ -192,8 +204,8 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">First Name <span
                                                                 class="text-danger">*</span></label>
-                                                        <input class="form-control edit_firstname" name="firstname" required
-                                                            value="{{ $employee->firstname }}" type="text">
+                                                        <input class="form-control edit_firstname" name="firstname"
+                                                            required value="{{ $employee->firstname }}" type="text">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -274,7 +286,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Nationality <span class="text-danger">*</span></label>
-                                                        <select name="nationality" required id="nationality" class="form-control">
+                                                        <select name="nationality" required id="nationality"
+                                                            class="form-control">
                                                             <option value="">Select Nationality</option>
                                                             @foreach ($countries as $country)
                                                                 <option value="{{ $country->id }}"
@@ -296,7 +309,7 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Passport Issue Date</label>
                                                         <input class="form-control edit_pass_issue_date"
-                                                            name="pass_issue_date" 
+                                                            name="pass_issue_date"
                                                             value="{{ $employee->passport_issue_date }}" type="date">
                                                     </div>
                                                 </div>
