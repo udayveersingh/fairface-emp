@@ -20,10 +20,15 @@
             </ul>
             <h3 class="page-title">Leave details</h3>
             @if (!empty($leave))
-            <div class="col-auto float-right ml-auto mt-2">
-                <a href="{{route('print-employee-leave',$leave->id)}}" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF</a>
-            </div>
-        @endif
+                <div class="col-auto float-right ml-auto mt-2">
+                    <a href="{{ route('print-employee-leave', $leave->id) }}" class="btn add-btn" target="_blank"><i
+                            class="fa fa-download"></i>Print PDF</a>
+                </div>
+                <div class="col-auto float-right ml-auto mt-2">
+                    <a class="btn add-btn" id="edit_btn" href="{{route('employee-leave')}}"><i class=""></i>
+                        Back</a>
+                </div>
+            @endif
         </div>
     </div>
 @endsection
@@ -86,16 +91,9 @@
                 </tr>
             </table>
             <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
-                {{-- <a data-id="{{ $job->id }}" data-employee_id="{{ $job->employee_id }}"
-                        data-supervisor="{{ $job->supervisor }}"
-                        data-timesheet_approval_inch="{{ $job->timesheet_approval_incharge }}"
-                        data-job_title="{{ $job->job_title }}" data-department="{{ $job->department_id }}"
-                        data-work_email="{{ $job->work_email }}" data-work_phone_number="{{ $job->work_phone_number }}"
-                        data-start_date="{{ $job->start_date }}" data-end_date="{{ $job->end_date }}"
-                        data-job_type="{{ $job->job_type }}" data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}"
-                        class="btn btn-primary" id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i>
-                        Edit</a>
-                    <a data-id="{{ $job->id }}" data-resource_data="Employee Job" class="btn btn-danger detail_delete"
+                {{-- <a class="btn btn-primary" id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i>
+                        Back</a> --}}
+                {{-- <a data-id="{{ $job->id }}" data-resource_data="Employee Job" class="btn btn-danger detail_delete"
                         href="javascript:void(0);" data-target="delete_modal" data-toggle="modal"><i
                             class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
             </div>

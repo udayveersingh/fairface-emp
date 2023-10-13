@@ -82,7 +82,7 @@
                                     <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
                                         title="{{ $timesheet->status_reason }}">
                                         {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p>
-                                    <i class="la la la-eye"></i>
+                                    
                                    </td>
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">

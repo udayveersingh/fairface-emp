@@ -14,7 +14,9 @@
             <h3 class="page-title">Leaves</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN ) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
+                        @if (
+                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                Auth::user()->role->name == App\Models\Role::ADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Leaves</li>
             </ul>
@@ -34,7 +36,9 @@
                     <thead>
                         <tr>
                             <th>Sr No.</th>
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                            @if (
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                    Auth::user()->role->name == App\Models\Role::ADMIN)
                                 <th>Employee</th>
                             @endif
                             <th>Leave Type</th>
@@ -45,7 +49,9 @@
                             <th class="text-center">Status</th>
                             {{-- <th>status reason</th> --}}
                             {{-- <th>Approved Date/Time</th> --}}
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                            @if (
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                    Auth::user()->role->name == App\Models\Role::ADMIN)
                                 <th class="text-right">Actions</th>
                             @endif
                         </tr>
@@ -54,7 +60,9 @@
                         @foreach ($leaves as $index => $leave)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <td>
                                         <h2 class="table-avatar">
                                             <a href="javascript:void(0)" class="avatar avatar-xs">
@@ -67,7 +75,7 @@
                                         </h2>
                                     </td>
                                 @endif
-                                <td>{{!empty($leave->leaveType->type) ? $leave->leaveType->type:''}}</td>
+                                <td>{{ !empty($leave->leaveType->type) ? $leave->leaveType->type : '' }}</td>
                                 <td>{{ date_format(date_create($leave->from), 'd M, Y') }}</td>
                                 <td>{{ date_format(date_create($leave->to), 'd M, Y') }}</td>
                                 <td>
@@ -127,14 +135,18 @@
                                     <i class="la la la-eye"></i>
                                 </td> --}}
                                 {{-- <td>{{!empty($leave->approved_date_time) ? date('d-m-Y', strtotime($leave->approved_date_time)) : '' }}</td> --}}
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" data-id="{{ $leave->id }}"
-                                                    data-status="approved" href="{{route('employee-leave-view',$leave->id)}}" id=""><i class="fa fa-eye m-r-5" aria-hidden="true"></i>View</a>
+                                                    data-status="approved"
+                                                    href="{{ route('employee-leave-view', $leave->id) }}" id=""><i
+                                                        class="fa fa-eye m-r-5" aria-hidden="true"></i>View</a>
                                                 <a data-id="{{ $leave->id }}"
                                                     data-leave_type="{{ $leave->leave_type_id }}"
                                                     data-employee="{{ $leave->employee_id }}"
@@ -190,7 +202,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                        @if (
+                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
                                 <label>Employee</label>
                                 <select name="employee" class="select">
@@ -253,7 +267,9 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" required rows="4" class="form-control"></textarea>
                         </div>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN )
+                        @if (
+                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
                                 <label>Leave Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" class="select form-control">
@@ -274,14 +290,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                                                                          <label>Status </label>
-                                                                          <select name="status" class="select">
-                                                                          <option value="null" disabled selected>Select Status</option>
-                                                                          <option>Approved</option>
-                                                                          <option>Pending</option>
-                                                                          <option>Declined</option>
-                                                                          </select>
-                                                                          </div> -->
+                                                                                          <label>Status </label>
+                                                                                          <select name="status" class="select">
+                                                                                          <option value="null" disabled selected>Select Status</option>
+                                                                                          <option>Approved</option>
+                                                                                          <option>Pending</option>
+                                                                                          <option>Declined</option>
+                                                                                          </select>
+                                                                                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -315,7 +331,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::check() && Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
+                        @if (
+                            (Auth::check() && Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
                                 <label>Employee<span class="text-danger">*</span></label>
                                 <select name="employee" class="select2" id="edit_employee">
@@ -401,14 +419,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                                              <label>Status </label>
-                                                                              <select name="status" class="select2 form-control" id="edit_status">
-                                                                              <option value="null">Select Status</option>
-                                                                              <option>Approved</option>
-                                                                              <option>Pending</option>
-                                                                              <option>Declined</option>
-                                                                              </select>
-                                                                              </div> -->
+                                                                                              <label>Status </label>
+                                                                                              <select name="status" class="select2 form-control" id="edit_status">
+                                                                                              <option value="null">Select Status</option>
+                                                                                              <option>Approved</option>
+                                                                                              <option>Pending</option>
+                                                                                              <option>Declined</option>
+                                                                                              </select>
+                                                                                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -434,21 +452,36 @@
                     <form action="{{ route('leave-status-update') }}" method="post">
                         @csrf
                         <input type="hidden" id="timesheet_id" name="id">
+                        @php
+                            $count_errors = '';
+                            if (count($errors) > 0) {
+                                $count_errors = count($errors);
+                            }
+                        @endphp
+                        <input type="hidden" id="error_id" value=" {{ $count_errors }}">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Leave Status<span class="text-danger">*</span></label>
-                                    <select name="timesheet_status" id="" class="select form-control">
+                                    <select name="timesheet_status" id=""
+                                        class="select form-control  {{ $errors->has('timesheet_status') ? ' is-invalid' : '' }}">
                                         <option value="">Select Status</option>
                                         @foreach (getLeaveStatus() as $time_status)
                                             <option value="{{ $time_status->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('timesheet_status'))
+                                        <span class="text-danger">{{ $errors->first('timesheet_status') }}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Leave Reason</label>
-                                    <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
+                                    <textarea name="status_reason" id="edit_status_reason" rows="4"
+                                        class="form-control {{ $errors->has('status_reason') ? ' is-invalid' : '' }}"></textarea>
+                                    @if ($errors->has('status_reason'))
+                                        <span class="text-danger">{{ $errors->first('status_reason') }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -528,11 +561,14 @@
         });
     </script>
     <script>
+        @if ($errors->any())
+            $('#update_leave_status').modal('show');
+        @endif
         $('.statusChecked').on('click', function() {
             $('#update_leave_status').modal('show');
             var id = $(this).data('id');
             var status = $(this).data('status');
-            $('#timesheet_id').val(id);
+            var timesheet = $('#timesheet_id').val(id);
         });
     </script>
 @endsection

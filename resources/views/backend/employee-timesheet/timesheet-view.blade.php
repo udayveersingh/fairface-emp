@@ -401,10 +401,10 @@
                 var day = days[start.getDay()];
                 var readonly = "";
                 var disabled = "";
-                if (day == "Sun") {
-                    readonly = "readonly";
-                    disabled = "disabled";
-                }
+                // if (day == "Sun") {
+                //     readonly = "";
+                //     disabled = "disabled";
+                // }
                 // console.log(day, "day 1")
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
                 var dayColSpan = holidayName = heading = "";
@@ -555,10 +555,10 @@
 
                 var readonly = "";
                 var disabled = "";
-                if (day == "Sun") {
-                    readonly = "readonly";
-                    disabled = "disabled";
-                }
+                // if (day == "Sun") {
+                //     readonly = "readonly";
+                //     disabled = "disabled";
+                // }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";

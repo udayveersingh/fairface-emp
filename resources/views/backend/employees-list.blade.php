@@ -19,7 +19,7 @@
         {{-- <div class="col-auto float-right ml-auto">
             <a href="{{ route('employee-detail') }}" class="btn add-btn"><i class="fa fa-plus"></i> Add Employee</a>
             {{-- <a href="javascript:void(0)" class="btn add-btn" data-toggle="modal" data-target="#add_employee"><i class="fa fa-plus"></i> Add Employee</a> --}}
-            {{-- <div class="view-icons">
+        {{-- <div class="view-icons">
                 <a href="{{ route('employees') }}"
                     class="grid-view btn btn-link {{ route_is(['employees', 'employees-list']) ? 'active' : '' }}"><i
                         class="fa fa-th"></i></a>
@@ -42,8 +42,12 @@
                             <th>Employee ID</th>
                             <th>Email</th>
                             <th>Mobile</th>
-							<th>Role</th>
-                            <th class="text-nowrap">Created Date</th>
+                            <th>Role</th>
+                            @if ($status == 'archieve')
+                                <th>Status Change Date</th>
+                            @else
+                                <th class="text-nowrap">Created Date</th>
+                            @endif
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
@@ -61,30 +65,33 @@
                                 <td>{{ $employee->uuid }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->phone }}</td>
-								<td>{{ !empty($employee->user->role->name) ? $employee->user->role->name:''}}</td>
-                                <td>{{ date_format(date_create($employee->created_at), 'd M,Y') }}</td>
+                                <td>{{ !empty($employee->user->role->name) ? $employee->user->role->name : '' }}</td>
+                                @if ($status == 'archieve')
+                                    <td>{{ $employee->status_change_date }}</td>
+                                @else
+                                    <td>{{ date_format(date_create($employee->created_at), 'd M,Y') }}</td>
+                                @endif
                                 <td class="text-right">
                                     {{-- <div class="dropdown dropdown-action"> --}}
-                                            <a class="btn-sm btn-primary editbtn" href="javascript:void(0)"
-                                            data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
-                                            data-employee_id="{{ $employee->employee_id }}"
-                                            data-firstname="{{ $employee->firstname }}"
-                                            data-lastname="{{ $employee->lastname }}"
-                                            data-email="{{ $employee->email }}"
-                                            data-role="{{ !empty($employee->user->role_id) ? $employee->user->role_id : '' }}"
-                                            data-phone="{{ $employee->phone }}" data-avatar="{{ $employee->avatar }}"
-                                            data-company="{{ $employee->company }}"
-                                            data-main_work_loc="{{ !empty($employee->branch->id) ? $employee->branch->id : '' }}"
-                                            data-phone_number="{{ $employee->alternate_phone_number }}"
-                                            data-national_insurance_number="{{ $employee->national_insurance_number }}"
-                                            data-nationality="{{ $employee->country_id }}"
-                                            data-passport_number="{{ $employee->passport_number }}"
-                                            data-marital_status="{{ $employee->marital_status }}"
-                                            data-record_status="{{ $employee->record_status }}"
-                                            data-date_of_birth="{{ $employee->date_of_birth }}"
-                                            data-passport_issue_date="{{ $employee->passport_issue_date }}"
-                                            data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
-                                            data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                    <a class="btn-sm btn-primary editbtn" href="javascript:void(0)"
+                                        data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
+                                        data-employee_id="{{ $employee->employee_id }}"
+                                        data-firstname="{{ $employee->firstname }}"
+                                        data-lastname="{{ $employee->lastname }}" data-email="{{ $employee->email }}"
+                                        data-role="{{ !empty($employee->user->role_id) ? $employee->user->role_id : '' }}"
+                                        data-phone="{{ $employee->phone }}" data-avatar="{{ $employee->avatar }}"
+                                        data-company="{{ $employee->company }}"
+                                        data-main_work_loc="{{ !empty($employee->branch->id) ? $employee->branch->id : '' }}"
+                                        data-phone_number="{{ $employee->alternate_phone_number }}"
+                                        data-national_insurance_number="{{ $employee->national_insurance_number }}"
+                                        data-nationality="{{ $employee->country_id }}"
+                                        data-passport_number="{{ $employee->passport_number }}"
+                                        data-marital_status="{{ $employee->marital_status }}"
+                                        data-record_status="{{ $employee->record_status }}"
+                                        data-date_of_birth="{{ $employee->date_of_birth }}"
+                                        data-passport_issue_date="{{ $employee->passport_issue_date }}"
+                                        data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
+                                        data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                     {{-- </div> --}}
                                 </td>
                             </tr>
@@ -128,8 +135,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="col-form-label">Employee Picture<span
-                                            class="text-danger">*</span></label>
+                                    <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
                                     <input class="form-control floating" name="avatar" type="file">
                                 </div>
                             </div>
@@ -422,7 +428,7 @@
             var firstname = $(this).data('firstname');
             var lastname = $(this).data('lastname');
             var email = $(this).data('email');
-			var role_id = $(this).data('role');
+            var role_id = $(this).data('role');
             var phone = $(this).data('phone');
             var company = $(this).data('company');
             // var designation = $(this).data('designation');
@@ -445,7 +451,7 @@
             $('.edit_firstname').val(firstname);
             $('.edit_lastname').val(lastname);
             $('.edit_email').val(email);
-			$('#role_id').val(role_id);
+            $('#role_id').val(role_id);
             $('.edit_phone').val(phone);
             $('.edit_company').val(company);
             // $('.edit_designation').val(designation);

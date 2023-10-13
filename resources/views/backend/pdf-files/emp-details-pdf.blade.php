@@ -34,6 +34,8 @@
     }
 </style>
 <div class="header">
+    <img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
+                    style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
     <table style="border:none;" cellpadding="0" cellspacing="0">
         <tr>
             <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
@@ -43,8 +45,8 @@
                                 alt="logo2" border="0"
                                 style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;">
                         </td>
-                        <td style="border:none;"><span style="color:#4c5860; font-size:22px; font-weight:bold;">FAIRFACE
-                                EMP <br><span
+                        <td style="border:none;"><span style="color:#4c5860; font-size:22px; font-weight:bold;">
+                                {{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? '') }} <br><span
                                     style="color:#333; font-size:14px; font-weight:normal; display:block; width:100%;">{{ ucwords(app(App\Settings\CompanySettings::class)->address ?? '') }}</span></span>
                         </td>
                     </tr>
@@ -54,7 +56,8 @@
 
         <tr>
             <td style="border:none; border-bottom:1px dashed #ddd;">
-                <strong>Name:</strong>{{ ucfirst($employee->firstname . '' . $employee->lastname) }} </td>
+                <strong>Name:</strong>{{ ucfirst($employee->firstname . '' . $employee->lastname) }}
+            </td>
             <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Email:</strong>{{ $employee->email }}</td>
         </tr>
         <tr>
@@ -68,24 +71,33 @@
     <table>
         <tr>
             <td colspan="2" class="bg_title">
-                <h3>Basic Information</h3>
+                <h3>Information Sheet</h3>
             </td>
         </tr>
         <tr>
-            <th>Profile Picture</th>
+            <th>Employee Photo</th>
             <td><img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
-                    style="height:40px; vertical-align:middle;margin-right:5px; vertical-align:middle;"></td>
+                    style="height:80px; width:80px; float:right; vertical-align:middle;margin-right:5px; vertical-align:middle;">
+            </td>
         </tr>
         <tr>
             <th>Employee Id</th>
             <td>{{ $employee->employee_id }}</td>
         </tr>
         <tr>
-            <th>Name</th>
-            <td>{{ $employee->firstname . ' ' . $employee->lastname }}</td>
+            <th>Employee First Name</th>
+            <td>{{ ucfirst($employee->firstname) }}</td>
         </tr>
         <tr>
-            <th>Mobile</th>
+            <th>Employee Last Name</th>
+            <td>{{ $employee->lastname }}</td>
+        </tr>
+        <tr>
+            <th>Job Title</th>
+            <td>{{ $employee_job_title }}</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
             <td>{{ $employee->phone }}</td>
         </tr>
         <tr>
@@ -101,6 +113,12 @@
             <td>{{ !empty($employee->country->name) ? $employee->country->name : '' }}</td>
         </tr>
         <tr>
+            <th>Address</th>
+            <td>{{ $employee_address->home_address_line_1 . ',' . $employee_address->home_address_line_2 }}
+
+            </td>
+        </tr>
+        <tr>
             <th>Passport Number</th>
             <td>{{ $employee->passport_number }}</td>
         </tr>
@@ -112,71 +130,33 @@
             <th>Passport Expire Date</th>
             <td>{{ $employee->passport_expiry_date }}</td>
         </tr>
+        <tr>
+            <th>Visa Type</th>
+            <td>{{ !empty($employee_visa->visa_types->visa_type) ? $employee_visa->visa_types->visa_type : '' }}</td>
+        </tr>
+        <tr>
+            <th>Visa Issue Date</th>
+            <td>{{ !empty($employee_visa->visa_issue_date) ? date('d-m-Y', strtotime($employee_visa->visa_issue_date)) : '' }}
+            </td>
+        </tr>
+        <tr>
+            <th>Visa Expiry Date</th>
+            <td>{{ !empty($employee_visa->visa_expiry_date) ? date('d-m-Y', strtotime($employee_visa->visa_expiry_date)) : '' }}
+            </td>
+        </tr>
+        <tr>
+            <th>Cos Number</th>
+            <td>{{ $employee_visa->cos_number }}</td>
+        </tr>
+        <tr>
+            <th>Cos Issue Date</th>
+            <td>{{ !empty($employee_visa->cos_issue_date) ? date('d-m-Y', strtotime($employee_visa->cos_issue_date)) : '' }}
+            </td>
+        </tr>
+        <tr>
+            <th>Cos Expire Date</th>
+            <td>{{ !empty($employee_visa->cos_expiry_date) ? date('d-m-Y', strtotime($employee_visa->cos_expiry_date)) : '' }}
+            </td>
+        </tr>
     </table>
-
-    @foreach ($employee_addresses as $index => $address)
-        @php
-            if ($index > 0) {
-                break;
-            }
-        @endphp
-        <table>
-            <tr>
-                <td colspan="2" class="bg_title">
-                    <h3>Employee Address</h3>
-                </td>
-            </tr>
-            <tr>
-                <th>Address Line 1</th>
-                <td>{{ !empty($address->home_address_line_1) ? $address->home_address_line_1 : '' }}</td>
-            </tr>
-            <tr>
-                <th>Address Line 2</th>
-                <td>{{ !empty($address->home_address_line_2) ? $address->home_address_line_2 : '' }}</td>
-            </tr>
-        </table>
-    @endforeach
-
-    @foreach ($employee_visas as $index => $visa)
-        @php
-            if ($index > 0) {
-                break;
-            }
-        @endphp
-        <table style="border-top:20px solid #fff;">
-            <tr>
-                <td colspan="2" class="bg_title">
-                    <h3>Employee Visas</h3>
-                </td>
-            </tr>
-            <tr>
-                <th>Visa Type</th>
-                <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}</td>
-            </tr>
-            <tr>
-                <th>Cos Number</th>
-                <td>{{ $visa->cos_number }}</td>
-            </tr>
-            <tr>
-                <th>Cos Issue Date</th>
-                <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y', strtotime($visa->cos_issue_date)) : '' }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cos Expire Date</th>
-                <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y', strtotime($visa->cos_expiry_date)) : '' }}
-                </td>
-            </tr>
-            <tr>
-                <th>Visa Issue Date</th>
-                <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y', strtotime($visa->visa_issue_date)) : '' }}
-                </td>
-            </tr>
-            <tr>
-                <th>Visa Expiry Date</th>
-                <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y', strtotime($visa->visa_expiry_date)) : '' }}
-                </td>
-            </tr>
-        </table>
-    @endforeach
-    <div>
+</div>

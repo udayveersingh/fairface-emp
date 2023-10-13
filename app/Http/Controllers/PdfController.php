@@ -33,11 +33,14 @@ class PdfController extends Controller
     {
         if (!empty($id)) {
             $employee = Employee::with('country', 'branch', 'user')->find($id);
-            $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
-            $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
+            $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->first();
+            $employee_visa = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->first();
+            $employee_job_title = EmployeeJob::where('employee_id', '=', $employee->id)
+            ->latest()
+            ->value('job_title');
             try {
                 $mpdf = new \Mpdf\Mpdf();
-                $content = view('backend.pdf-files.emp-details-pdf', compact('employee','employee_addresses','employee_visas'))->render();
+                $content = view('backend.pdf-files.emp-details-pdf', compact('employee','employee_address','employee_visa','employee_job_title'))->render();
                 $mpdf->SetTitle('Employee Detail');
                 $mpdf->WriteHTML($content);
                 $mpdf->Output('employeeDetail.pdf', 'I');
@@ -51,9 +54,12 @@ class PdfController extends Controller
     public function employeeLeavePdf($id)
     {
         $leave = Leave::with('leaveType', 'employee', 'time_sheet_status')->find($id);
+        // $supervisor = Employee::find()
+        $supervisor = Employee::where('id','=',$leave->supervisor_id)->select('firstname','lastname')->first();
+        $supervisor_name =   $supervisor->firstname .''.  $supervisor->lastname;
         try {
             $mpdf = new \Mpdf\Mpdf();
-            $content = view('backend.pdf-files.leave-details-pdf', compact('leave'))->render();
+            $content = view('backend.pdf-files.leave-details-pdf', compact('leave','supervisor_name'))->render();
             $mpdf->SetTitle('leave Detail');
             $mpdf->WriteHTML($content);
             $mpdf->Output('employeeLeaveDetail.pdf', 'I');

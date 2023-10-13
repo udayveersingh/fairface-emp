@@ -62,8 +62,12 @@
                 <td colspan="2" class="bg_title"><h3 >Employee Leave Details</h3></td>            
             </tr>
                 <tr>
-                    <th>Employee</th>
+                    <th>Employee Name</th>
                     <td>{{ ucfirst($full_name) }}</td>
+                </tr>
+                <tr>
+                    <th>Supervisor Name</th>
+                    <td>{{ucfirst($supervisor_name)}}</td>
                 </tr>
                 <tr>
                     <th>Leave Type</th>

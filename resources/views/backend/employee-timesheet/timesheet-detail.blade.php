@@ -96,10 +96,11 @@
                             <td>{{ $timesheet_hours }}</td>
                             <td class="d-flex" style="
                                 align-items: center;">
-                                <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
+                                {{ $timesheet->notes }}
+                                {{-- <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
                                     title="{{ $timesheet->notes }}">
-                                    {{ substr($timesheet->notes, 0, 10) . ' ...' }}</p>
-                                <i class="la la la-eye"></i>
+                                    {{ substr($timesheet->notes, 0, 10) . ' ...' }}</p> --}}
+
                             </td>
                         </tbody>
                     @endforeach
@@ -173,6 +174,9 @@
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach
                                     </select>
+                                    @if ($errors->has('timesheet_status'))
+                                        <span class="text-danger">{{ $errors->first('timesheet_status') }}</span>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -181,6 +185,9 @@
                                 <div class="form-group">
                                     <label>To Reason</label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
+                                    @if ($errors->has('status_reason'))
+                                    <span class="text-danger">{{ $errors->first('status_reason') }}</span>
+                                @endif
                                 </div>
                             </div>
                         </div>
@@ -204,6 +211,9 @@
 @endsection
 @section('scripts')
     <script>
+         @if ($errors->any())
+            $('#update_timesheet_status').modal('show');
+        @endif
         $('#statusChecked').on('click', function() {
             $('#update_timesheet_status').modal('show');
             var emp_id = $(this).data('emp_id');

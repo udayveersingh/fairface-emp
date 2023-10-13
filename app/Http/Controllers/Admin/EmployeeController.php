@@ -25,8 +25,8 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch','user.role')->get();
-        return view('backend.employees',compact('title', 'employees', 'branches', 'countries'));
+        $employees = Employee::with('branch', 'user.role')->get();
+        return view('backend.employees', compact('title', 'employees', 'branches', 'countries'));
     }
 
     /**
@@ -40,10 +40,10 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch','user.role')->where('record_status','=',$status)->orderBy('created_at', 'desc')->get();
+        $employees = Employee::with('branch', 'user.role')->where('record_status', '=', $status)->orderBy('created_at', 'desc')->get();
         // return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
 
-        return view('backend.employees-list',compact('title', 'employees', 'branches', 'countries'));
+        return view('backend.employees-list', compact('title', 'employees', 'branches', 'countries','status'));
     }
 
     /**
@@ -162,7 +162,10 @@ class EmployeeController extends Controller
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);
-        
+        $status_change_date = Null;
+        if ($request->record_status != 'active') {
+            $status_change_date =  date('Y-m-d');
+        }
         $employee->update([
             'uuid' => $employee->uuid,
             'employee_id' => $request->employee_id,
@@ -181,6 +184,7 @@ class EmployeeController extends Controller
             'marital_status' => $request->marital_status,
             'record_status' => $request->record_status,
             'passport_number' => $request->passport_number,
+            'status_change_date' => $status_change_date,
             'user_id' => $user->id,
         ]);
         return back()->with('success', "Employee details has been updated");
