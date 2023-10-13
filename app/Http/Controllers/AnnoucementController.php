@@ -52,6 +52,8 @@ class AnnoucementController extends Controller
         $annoucement->description = $request->input('announcement');
         $annoucement->status = $request->input('status');
         $annoucement->user_id = Auth::user()->id;
+        $annoucement->start_date = $request->start_date;
+        $annoucement->end_date = $request->end_date;
         $annoucement->save();
         $annoucement->notify(new NewAnnouncementByAdminNotification($annoucement));
         return back()->with('success',"Announcement has been added");    

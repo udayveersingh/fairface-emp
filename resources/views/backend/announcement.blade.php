@@ -39,16 +39,17 @@
                             @foreach ($announcements as $index => $announce)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
-                                    <td>{{ $announce->description }}</td>
-                                    <td>{{ $announce->status}}</td>
+                                    <td calss="announcement-scroll p-1">{{ $announce->description }}</td>
+                                    <td>{{ $announce->status }}</td>
 
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
                                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a data-id="{{ $announce->id }}" data-description="{{ $announce->description }}"
-                                                    data-status="{{ $announce->status }}" class="dropdown-item editbtn"
+                                                <a data-id="{{ $announce->id }}"
+                                                    data-description="{{ $announce->description }}"
+                                                    data-status="{{ $announce->status }}" data-start_date= {{$announce->start_date}}  data-end_date="{{$announce->end_date}}" class="dropdown-item editbtn"
                                                     href="#" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i>
                                                     Edit</a>
                                                 <a data-id="{{ $announce->id }}" class="dropdown-item deletebtn"
@@ -86,6 +87,14 @@
                             <textarea class="form-control" id="" name="announcement" rows="4" cols="50"></textarea>
                         </div>
                         <div class="form-group">
+                            <label>Start Date</label>
+                            <input class="form-control" name="start_date" id="" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input class="form-control" name="end_date" id="" type="date">
+                        </div>
+                        <div class="form-group">
                             <label>Status <span class="text-danger">*</span></label>
                             <select name="status" selected="selected" id="status" class="form-control">
                                 <option value="">Select Status</option>
@@ -120,7 +129,8 @@
                         <input id="edit_id" type="hidden" name="id">
                         <div class="form-group">
                             <label>Announcement<span class="text-danger">*</span></label>
-                            <textarea class="form-control edit_description" id="edit_description" name="announcement" rows="4" cols="50"></textarea>
+                            <textarea class="form-control edit_description" id="edit_description" name="announcement" rows="4"
+                                cols="50"></textarea>
                         </div>
                         <div class="form-group">
                             <label>Status <span class="text-danger">*</span></label>
@@ -129,6 +139,14 @@
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input class="form-control" name="start_date" id="start_date" type="date">
+                        </div>
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input class="form-control" name="end_date" id="end_date" type="date">
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -147,16 +165,21 @@
     <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-
             $('.editbtn').on('click', function() {
                 $('#edit_announcement').modal('show');
                 var id = $(this).data('id');
                 var description = $(this).data('description');
                 var status = $(this).data('status');
+                var startDate = $(this).data('start_date');
+
+                var endDate = $(this).data('end_date'); 
 
                 $('#edit_id').val(id);
                 $('.edit_description').val(description);
                 $('#edit_status').val(status);
+                $('#start_date').val(startDate);
+                $('#end_date').val(endDate);
+                
             });
         });
     </script>
