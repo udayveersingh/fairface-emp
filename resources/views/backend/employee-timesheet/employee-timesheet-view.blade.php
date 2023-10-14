@@ -368,7 +368,9 @@
                     disabled = "disabled";
                 }
                 // console.log(day, "day 1")
-                var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd      
+                var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd 
+                // var date = dd + "-" + mm + "_" + yyyy;
+
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
                 var bgcolor ="";

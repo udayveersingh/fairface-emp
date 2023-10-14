@@ -33,7 +33,9 @@
                             <th>User Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Status</th>
                             <th>Created Date</th>
+                            <th>Status Change Date </th>
                             <th class="text-right">Action</th>
                         </tr>
                     </thead>
@@ -55,12 +57,12 @@
                                         ->where('id', '=', $user->role_id)
                                         ->orderBy('created_at', 'desc')
                                         ->first();
-                                @endphp
-                                <td>{{ $role->name }}</td>
-                                <td>{{ date_format(date_create($user->created_at), 'd M, Y') }}</td>
-                                @php
                                     $employee = App\Models\Employee::where('user_id', '=', $user->id)->first();
                                 @endphp
+                                <td>{{ $role->name }}</td>
+                                <td>{{!empty($employee->record_status) ? ucfirst($employee->record_status):'' }}</td>
+                                <td>{{ !empty($user->created_at) ? date_format(date_create($user->created_at), 'd-m-Y'):'' }}</td>
+                                <td>{{!empty($employee->status_change_date) ? date_format(date_create($employee->status_change_date),'d-m-Y'):'__'}}</td>
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="javascript:void(0)" class="action-icon dropdown-toggle"
@@ -68,7 +70,16 @@
                                                 class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                data-username="{{ $user->username }}" data-emp_id="{{!empty($employee->id) ? $employee->id:''}}" data-firstname="{{!empty($employee->firstname) ? $employee->firstname:'' }}" data-lastname="{{!empty($employee->lastname) ? $employee->lastname:''}}" data-employee_id="{{!empty($employee->employee_id) ? $employee->employee_id:'' }}" data-marital_status="{{!empty($employee->marital_status) ? $employee->marital_status:''}}" data-record_status="{{!empty($employee->record_status) ? $employee->record_status:'' }}" data-nationality="{{!empty($employee->country_id)? $employee->country_id:'' }}" data-email="{{ $user->email }}" data-role="{{$role->id}}" class="dropdown-item editbtn" href="javascript:void(0)"
+                                                data-username="{{ $user->username }}"
+                                                data-emp_id="{{ !empty($employee->id) ? $employee->id : '' }}"
+                                                data-firstname="{{ !empty($employee->firstname) ? $employee->firstname : '' }}"
+                                                data-lastname="{{ !empty($employee->lastname) ? $employee->lastname : '' }}"
+                                                data-employee_id="{{ !empty($employee->employee_id) ? $employee->employee_id : '' }}"
+                                                data-marital_status="{{ !empty($employee->marital_status) ? $employee->marital_status : '' }}"
+                                                data-record_status="{{ !empty($employee->record_status) ? $employee->record_status : '' }}"
+                                                data-nationality="{{ !empty($employee->country_id) ? $employee->country_id : '' }}"
+                                                data-email="{{ $user->email }}" data-role="{{ $role->id }}"
+                                                class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
                                                 href="javascript:void(0)" data-toggle="modal"><i
@@ -342,14 +353,14 @@
                 $('#edit_user').modal('show');
                 var id = $(this).data('id');
                 var emp_id = $(this).data('emp_id');
-                console.log(emp_id , 'emp_id');
+                console.log(emp_id, 'emp_id');
                 var name = $(this).data('name');
                 var firstname = $(this).data('firstname');
                 var lastname = $(this).data('lastname');
                 var username = $(this).data('username');
                 var email = $(this).data('email');
                 var role_id = $(this).data('role');
-                console.log(role_id,"role_id");
+                console.log(role_id, "role_id");
                 var employee = $(this).data('employee_id');
                 var marital_status = $(this).data('marital_status');
                 var record_status = $(this).data('record_status');

@@ -19,13 +19,13 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Address Line 1<span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="edit_address_line_1" name="address_line_1" rows="4" cols="50">{{ !empty($employee_address->home_address_line_1) ? $employee_address->home_address_line_1 : '' }}</textarea>
+                                <textarea class="form-control" id="edit_address_line_1" name="address_line_1" rows="4" cols="50"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Address Line 2</label>
-                                <textarea class="form-control" id="edit_address_line_2" name="address_line_2" rows="4" cols="50">{{ !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}</textarea>
+                                <textarea class="form-control" id="edit_address_line_2" name="address_line_2" rows="4" cols="50"></textarea>
                             </div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label>Post Code</label>
                                 <input class="form-control" name="post_code" id="edit_post_code"
-                                    value="{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}"
+                                    value=""
                                     type="text">
                             </div>
                         </div>
@@ -42,8 +42,7 @@
                             <div class="form-group">
                                 <label>From Date<span class="text-danger">*</span></label>
                                 <input class="form-control" name="from_date" id="edit_from_date"
-                                    value="{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}"
-                                    type="date">
+                                    value="" type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">

@@ -15,8 +15,7 @@
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Send
-                                TimeSheet</span></a>
+                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Timesheets</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply

@@ -44,12 +44,11 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="mx-0"><strong>Month
-                        starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
+                <p class="mx-0"><strong>Date Starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
                 <p class="mx-0"></p>
             </div>
             <div class="col-md-6">
-                <p class="mx-0"><strong>Month Ending:-</strong><span>{{ date('d-m-Y', strtotime($end_date)) }}</span></p>
+                <p class="mx-0"><strong>Date Ending:-</strong><span>{{ !empty($end_date) ? date('d-m-Y', strtotime($end_date)):'' }}</span></p>
                 <p class="mx-0"></p>
             </div>
         </div>

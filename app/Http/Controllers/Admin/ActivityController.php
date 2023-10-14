@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ActivityController extends Controller
 {
@@ -59,6 +61,9 @@ class ActivityController extends Controller
 
     public function logs()
     {
+        $title = 'Logs';
+        $logs = UserLog::get();
+        return view('backend.logs',compact('logs','title'));
         
     }
 }

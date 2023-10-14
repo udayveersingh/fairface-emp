@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\UserLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -31,6 +32,7 @@ class LoginController extends Controller
             $user_log = new UserLog();
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
+            $user_log->date_time = Carbon::now();
             $user_log->save();
         }
         if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {

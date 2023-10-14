@@ -85,7 +85,7 @@
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>
-                                    <td>{{ $employee->date_of_birth }}</td>
+                                    <td>{{ !empty($employee->date_of_birth) ? date('d-m-Y',strtotime($employee->date_of_birth)):'' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Nationality</th>
@@ -101,11 +101,11 @@
                                 </tr>
                                 <tr>
                                     <th>Passport Issue Date</th>
-                                    <td>{{ $employee->passport_issue_date }}</td>
+                                    <td>{{ !empty($employee->passport_issue_date) ? date('d-m-Y',strtotime($employee->passport_issue_date)):''}}</td>
                                 </tr>
                                 <tr>
                                     <th>Passport Expire Date</th>
-                                    <td>{{ $employee->passport_expiry_date }}</td>
+                                    <td>{{ !empty($employee->passport_expiry_date) ? date('d-m-Y',strtotime($employee->passport_expiry_date)):'' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Marital Status</th>
@@ -115,6 +115,18 @@
                                     <th>Record Status </th>
                                     <td>{{ $employee->record_status }}</td>
                                 </tr>
+
+                                @if ($employee->record_status == 'archieve')
+                                    <tr>
+                                        <th>Status Change Date</th>
+                                        <td>{{ !empty($employee->status_change_date) ? date( 'd-m-Y',strtotime($employee->status_change_date)) :'' }}</td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <th>Created date</th>
+                                        <td>{{ !empty($employee->created_at) ? (date_format(date_create($employee->created_at), 'd-m-Y')):"" }}</td>
+                                    </tr>
+                                @endif
                             </table>
                             <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
                                 <a class="btn btn-primary w-100 " id="employee_edit_btn" href="javascript:void(0)"
@@ -142,8 +154,9 @@
                             <div class="card card-block shadow shadow-sm p-3">
                                 <img alt="avatar" height="300px"
                                     src="@if (!empty($employee->avatar)) {{ asset('storage/employees/' . $employee->avatar) }}  @else assets/img/profiles/default.jpg @endif">
-                                <a data-id="" data-employee_id="" data-target="#profile_info" class="btn btn-primary mt-2"
-                                    href="javascript:void(0);" data-toggle="modal"><i class="fa fa-pencil m-r-5"></i>
+                                <a data-id="" data-employee_id="" data-target="#profile_info"
+                                    class="btn btn-primary mt-2" href="javascript:void(0);" data-toggle="modal"><i
+                                        class="fa fa-pencil m-r-5"></i>
                                     Edit Profile Pic</a>
                             </div>
                         </div>
@@ -593,6 +606,7 @@
         </div>
     </div>
     <!-- /Delete  Modal -->
+    <!-- Profile picture change Models -->
     <div id="profile_info" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -608,7 +622,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="profile-img-wrap edit-img">
-                                    <input type="hidden" name="employee_id" value="{{!empty($employee->user_id) ? $employee->user_id:'' }}">
+                                    <input type="hidden" name="employee_id"
+                                        value="{{ !empty($employee->user_id) ? $employee->user_id : '' }}">
                                     <img class="inline-block"
                                         src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}"
                                         alt="user">
@@ -617,29 +632,6 @@
                                         <input name="avatar" class="upload" type="file">
                                     </div>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Full Name</label>
-                                            <input type="text" class="form-control" name="name"
-                                                value="{{ auth()->user()->name }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label> Username</label>
-                                            <input type="text" class="form-control" name="username"
-                                                value="{{ auth()->user()->username }}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Email</label>
-                                            <input type="email" class="form-control" name="email"
-                                                value="{{ auth()->user()->email }}">
-                                        </div>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
                         <div class="submit-section">
@@ -650,6 +642,7 @@
             </div>
         </div>
     </div>
+    <!-- Profile picture change Models -->
 @endsection
 
 @section('scripts')

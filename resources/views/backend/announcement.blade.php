@@ -171,9 +171,7 @@
                 var description = $(this).data('description');
                 var status = $(this).data('status');
                 var startDate = $(this).data('start_date');
-
                 var endDate = $(this).data('end_date'); 
-
                 $('#edit_id').val(id);
                 $('.edit_description').val(description);
                 $('#edit_status').val(status);

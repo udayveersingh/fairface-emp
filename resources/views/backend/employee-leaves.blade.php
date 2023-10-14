@@ -76,8 +76,8 @@
                                     </td>
                                 @endif
                                 <td>{{ !empty($leave->leaveType->type) ? $leave->leaveType->type : '' }}</td>
-                                <td>{{ date_format(date_create($leave->from), 'd M, Y') }}</td>
-                                <td>{{ date_format(date_create($leave->to), 'd M, Y') }}</td>
+                                <td>{{ !empty($leave->from) ? date_format(date_create($leave->from), 'd-m-Y'):'' }}</td>
+                                <td>{{ !empty($leave->to) ? date_format(date_create($leave->to), 'd-m-Y'):'' }}</td>
                                 <td>
                                     @php
                                         $start = new DateTime($leave->to);
@@ -95,19 +95,22 @@
                                     <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
                                         title="{{ $leave->reason }}">
                                         {{ substr($leave->reason, 0, 10) . ' ...' }}</p>
-                                    <i class="la la la-eye"></i>
                                 </td>
                                 <td class="text-center">
                                     <div class="action-label">
-                                        @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
+                                        {{-- @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
                                             <a class="btn btn-warning btn-sm btn-rounded" href="javascript:void(0);">
                                             @elseif ($timesheet_status->status == App\Models\TimesheetStatus::APPROVED)
                                                 <a class="btn btn-success btn-sm btn-rounded" href="javascript:void(0);">
                                                 @else
                                                     <a class="btn btn-danger btn-sm btn-rounded" href="javascript:void(0);">
-                                        @endif
+                                        @endif --}}
+                                        @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
+                                           Pending  
+                                           @else           
                                         {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
-                                        </a>
+                                        @endif
+                                        {{-- </a> --}}
                                         {{-- @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
                                             <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
                                                 data-status="approved" href="#" data-toggle="modal"

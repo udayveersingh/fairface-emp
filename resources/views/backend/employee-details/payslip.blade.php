@@ -77,7 +77,7 @@
                     <td>@if($extension == "pdf")
                         <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
                         @else
-                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="100px"></a>
+                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="120px" height="100px"></a>
                         @endif
                     </td>
                     <td class="text-right">

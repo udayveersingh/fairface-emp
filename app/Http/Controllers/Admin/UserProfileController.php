@@ -29,10 +29,11 @@ class UserProfileController extends Controller
             $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_jobs = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
+            $job_title = EmployeeJob::where('employee_id','=',$employee->id)->latest()->value('job_title');
             $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
             $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
             $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->latest()->get();
-            return view('backend.profile', compact('title', 'employee', 'emergency_contact', 'employee_bank', 'employee_addresses', 'employee_documents', 'employee_jobs', 'employee_visas','employee_projects','employee_payslips'));
+            return view('backend.profile', compact('title', 'employee', 'emergency_contact', 'employee_bank', 'employee_addresses', 'employee_documents', 'employee_jobs', 'employee_visas','employee_projects','employee_payslips','job_title'));
         } else {
             return view('backend.profile', compact('title'));
         }

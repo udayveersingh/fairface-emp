@@ -67,9 +67,9 @@
                                 <td>{{ $employee->phone }}</td>
                                 <td>{{ !empty($employee->user->role->name) ? $employee->user->role->name : '' }}</td>
                                 @if ($status == 'archieve')
-                                    <td>{{ $employee->status_change_date }}</td>
+                                    <td>{{ !empty($employee->status_change_date) ? (date_format(date_create($employee->status_change_date), 'd-m-Y')):'' }}</td>
                                 @else
-                                    <td>{{ date_format(date_create($employee->created_at), 'd M,Y') }}</td>
+                                    <td>{{!empty($employee->created_at) ? (date_format(date_create($employee->created_at), 'd-m-Y')):''}}</td>
                                 @endif
                                 <td class="text-right">
                                     {{-- <div class="dropdown dropdown-action"> --}}

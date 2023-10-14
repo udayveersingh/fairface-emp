@@ -19,6 +19,7 @@ class CreateUserLogsTable extends Migration
             $table->string('location_ip')->nullable();
             $table->string('location_name')->nullable();
             $table->string('message')->nullable();
+            $table->datetime('date_time')->nullable();
             $table->timestamps();
         });
     }

@@ -492,7 +492,7 @@
 
         console.log(currentYear, "currentYear");
 
-        for (var i = currentYear; i > currentYear - 10; i--) {
+        for (var i = currentYear + 2; i > currentYear - 10; i--) {
             $("#year").append('<option value="' + i.toString() + '">' + i.toString() + '</option>');
         }
 

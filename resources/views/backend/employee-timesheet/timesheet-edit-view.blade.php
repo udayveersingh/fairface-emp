@@ -105,13 +105,14 @@
                                 @foreach ($employee_timesheets as $timesheet)
                                     @php
                                         $readonly = '';
-                                        if (!empty($timesheet->calender_day) && $timesheet->calender_day == 'Sun') {
-                                            $readonly = 'readonly';
-                                            $disabled = 'disabled';
-                                        } else {
-                                            $readonly = ' ';
-                                            $disabled = ' ';
-                                        }
+                                        $disabled ="";
+                                        // if (!empty($timesheet->calender_day) && $timesheet->calender_day == 'Sun') {
+                                        //     $readonly = 'readonly';
+                                        //     $disabled = 'disabled';
+                                        // } else {
+                                        //     $readonly = ' ';
+                                        //     $disabled = ' ';
+                                        // }
                                         
                                     @endphp
                                     <tr>
@@ -121,21 +122,17 @@
                                                 value="{{ $timesheet->calender_day }}" readonly></td>
                                         <td>
                                             <input name="start_time[]" class="form-control start_time" type="time"
-                                                value="{{ !empty($timesheet->from_time) ? $timesheet->from_time : '' }}"
-                                                {{ $readonly }}>
+                                                value="{{ !empty($timesheet->from_time) ? $timesheet->from_time : '' }}">
                                         </td>
                                         <td><input name="end_time[]"
                                                 value="{{ !empty($timesheet->to_time) ? $timesheet->to_time : '' }}"
-                                                type="time" class="form-control end_time" {{ $readonly }}></td>
-                                        <td width="10%"><select name="hours[]" id="hours" class="form-control hours"
-                                                {{ $readonly }}>
+                                                type="time" class="form-control end_time"></td>
+                                        <td width="10%"><select name="hours[]" id="hours" class="form-control hours">
                                                 <option selected="selected" value="">Select Day</option>
                                                 <option
-                                                    value="half_day"{{ !empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours' ? 'selected' : '' }}
-                                                    {{ $disabled }}>Half Day</option>
+                                                    value="half_day"{{ !empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours' ? 'selected' : '' }}>Half Day</option>
                                                 <option
-                                                    value="full_day"{{ !empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours' ? 'selected' : '' }}
-                                                    {{ $disabled }}>Full Day</option>
+                                                    value="full_day"{{ !empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours' ? 'selected' : '' }}>Full Day</option>
                                             </select></td>
                                         <td><select name="project_id[]" id="edit_project_id" class="form-control"
                                                 {{ $readonly }}>
@@ -143,25 +140,22 @@
                                                 @foreach ($employee_project as $project)
                                                     <option
                                                         value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}"
-                                                        {{ !empty($timesheet->project_id) && $timesheet->project_id == $project->projects->id ? 'selected' : '' }}
-                                                        {{ $disabled }}>
+                                                        {{ !empty($timesheet->project_id) && $timesheet->project_id == $project->projects->id ? 'selected' : '' }}>
                                                         {{ !empty($project->projects->name) ? $project->projects->name : '' }}
                                                     </option>
                                                 @endforeach
                                             </select>
                                         </td>
-                                        <td><select name="project_phase_id[]" id="project_phase_id" class="form-control"
-                                                {{ $readonly }}>
+                                        <td><select name="project_phase_id[]" id="project_phase_id" class="form-control">
                                                 <option value="">Select Project Phase</option>
                                                 @foreach (getProjectPhase() as $phase)
                                                     <option value="{{ !empty($phase->id) ? $phase->id : '' }}"
-                                                        {{ !empty($timesheet->projectphase->id) && $timesheet->projectphase->id == $phase->id ? 'selected' : '' }}
-                                                        {{ $disabled }}>
+                                                        {{ !empty($timesheet->projectphase->id) && $timesheet->projectphase->id == $phase->id ? 'selected' : '' }}>
                                                         {{ !empty($phase->name) ? $phase->name : '' }}</option>
                                                 @endforeach
                                             </select></td>
                                         <td>
-                                            <textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" {{ $readonly }}>{{ $timesheet->notes }}</textarea>
+                                            <textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10">{{ $timesheet->notes }}</textarea>
                                         </td>
                                     </tr>
                                 @endforeach

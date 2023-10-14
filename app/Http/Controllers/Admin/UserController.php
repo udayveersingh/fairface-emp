@@ -125,6 +125,10 @@ class UserController extends Controller
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);
+        $status_change_date = Null;
+        if ($request->record_status != 'active') {
+            $status_change_date =  date('Y-m-d');
+        }
 
         $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
 
@@ -141,6 +145,7 @@ class UserController extends Controller
         $employee->record_status = $request->input('record_status');
         $employee->country_id = $request->input('nationality');
         $employee->employee_id = $request->input('employee_id');
+        $employee->status_change_date = $status_change_date;
         $employee->user_id = $user->id;
         $employee->avatar = $imageName;
         $employee->save();

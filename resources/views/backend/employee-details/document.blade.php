@@ -48,7 +48,7 @@
                 <tr>
                     <td>{{$index+1}}</td>
                     <td>{{$document->name}}</td>
-                    <td>{{!empty(date("Y-m-d", strtotime($document->created_at) ))? date("Y-m-d", strtotime($document->created_at)):''}}</td>
+                    <td>{{!empty($document->created_at) ? date("d-m-Y", strtotime($document->created_at)):''}}</td>
                     @php
                     $extension = pathinfo(storage_path('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
                     @endphp
@@ -56,7 +56,7 @@
                         @if(!empty($extension) && $extension == "pdf")
                         <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
                         @else
-                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="100px"></a>
+                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="120px" height="100px" ></a>
                         @endif
                     </td>
                     <td class="text-right">
