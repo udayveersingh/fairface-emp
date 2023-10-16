@@ -18,13 +18,13 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{ $project_count }}</h3>
-                        <span>Projects</span>
+                        <h3>{{ !empty($employee_count) ? $employee_count : '0' }}</h3>
+                        <span>Employees</span>
                     </div>
                 </div>
             </div>
@@ -32,10 +32,10 @@
         <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="card dash-widget">
                 <div class="card-body">
-                    <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
+                    <span class="dash-widget-icon"><i class="fa fa-cubes"></i></span>
                     <div class="dash-widget-info">
-                        <h3>{{ !empty($employee_count) ? $employee_count : '0' }}</h3>
-                        <span>Employees</span>
+                        <h3>{{ $passport_expiry_six_month }}</h3>
+                        <span>Passport Expiry in next 6 months.</span>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                                 0
                             @endif
                         </h3>
-                        <span>Notifications</span>
+                        <span>Visa Expiry in next 6 months.</span>
                     </div>
                 </div>
             </div>
@@ -69,7 +69,8 @@
                                 0
                             @endif
                         </h3>
-                        <span>Annoucements</span>
+                        <span>Cos Expiry in next 6 months.
+                        </span>
                     </div>
                 </div>
             </div>

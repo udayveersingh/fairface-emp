@@ -40,11 +40,8 @@
                         </ul>
                     </li>
                 @else
-                    <li class="menu-title">
-                        <span>Main</span>
-                    </li>
                     <li class="{{ route_is('dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+                        <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span>Home</span></a>
                     </li>
                     <!-- <li class="submenu">
                     <a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>

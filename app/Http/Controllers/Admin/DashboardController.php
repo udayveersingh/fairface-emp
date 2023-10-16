@@ -22,7 +22,11 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
         $clients_count = Client::count();
-        $employee_count = Employee::count();
+        $employee_count = Employee::where('record_status','=','active')->count();
+        // $test1 =Carbon::now();
+        // dd($test1);s
+        $nextSixMonth = date('Y-m-d', strtotime('+6 month'));
+        $passport_expiry_six_month = Employee::where("passport_expiry_date",">", $nextSixMonth)->count();
         $project_count =Project::count();
         $timesheet_approval_count = EmployeeTimesheet::whereHas('timesheet_status', function ($q) {
             $q->where('status', '=',TimesheetStatus::APPROVED);
@@ -48,7 +52,8 @@ class DashboardController extends Controller
             'timesheet_approval_count',
             'timesheet_pending_app_count',
             'timesheet_rejected_count',
-            'timesheet_submitted_count'
+            'timesheet_submitted_count',
+            'passport_expiry_six_month'
         ));
     }
 
