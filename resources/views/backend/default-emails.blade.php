@@ -18,6 +18,7 @@
         .single-email-inner{border-top: 1px solid #dee2e6; border-bottom: 2px solid #dee2e6; overflow-y:auto;}
         .single-email-inner .card{ height:100%;}
         .cursor-pointer{ cursor:pointer;}
+        .announcement_slider .carousel-indicators li{ background-color:#004085;}
         
         </style>
 @endsection
@@ -28,12 +29,25 @@
             <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="fa fa-home"></i></a>
         </div>
         <div class="col">
-        <div class="alert alert-primary m-0" style="display:block;">
-            <strong>Announcement!</strong> You should check in on some of those fields below.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+
+        <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <strong>Announcement One!</strong> You should check in on some of those fields below.
             </div>
+            <div class="carousel-item">
+            <strong>Announcement Two!</strong> You should check in on some of those fields below.
+            </div>
+            <div class="carousel-item">
+            <strong>Announcement Three!</strong> You should check in on some of those fields below.
+            </div>
+        </div>  
+        <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
+            <li data-target="#carouselExampleFade" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleFade" data-slide-to="1"></li>
+            <li data-target="#carouselExampleFade" data-slide-to="2"></li>
+        </ol>
+        </div>
         </div>
     </div>
 @endsection
