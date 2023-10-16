@@ -185,6 +185,7 @@ class EmployeeLeaveController extends Controller
 
     public function LeaveStatusUpdate(Request $request)
     {
+        // dd($request->all());
         $timesheet_status = TimesheetStatus::find($request->timesheet_status);
         $status_reason = '';
         if (!empty($timesheet_status->status) && $timesheet_status->status == TimesheetStatus::REJECTED) {

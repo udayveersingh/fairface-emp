@@ -138,11 +138,11 @@
                         </div>
                     </div> --}}
                 </div>
-                <div class="row">
+                <div class="row dataTables_scroll" style="overflow-x: scroll;">
                     <div class="col-md-12">
                         {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
                         <p class="mx-0"></p>
-                        <table class="table">
+                        <table class="table table dataTables_scroll" style="width:1400px;">
                             <tr>
                                 <td>Calender Date</td>
                                 <td style="width:11%">Days</td>
@@ -205,10 +205,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row dataTables_scroll" style="overflow-x: scroll;">
                     <div class="col-md-12">
                         <p class="mx-0"></p>
-                        <table class="table">
+                        <table class="tabletable dataTables_scroll" style="width:1200px;">
                             <tr>
                                 <td>Calender Date</td>
                                 <td>Days</td>
@@ -363,10 +363,10 @@
                 var day = days[start.getDay()];
                 var readonly = "";
                 var disabled = "";
-                if (day == "Sun") {
-                    readonly = "readonly";
-                    disabled = "disabled";
-                }
+                // if (day == "Sun") {
+                //     readonly = "readonly";
+                //     disabled = "disabled";
+                // }
                 // console.log(day, "day 1")
                 var date = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd 
                 // var date = dd + "-" + mm + "_" + yyyy;
@@ -534,10 +534,10 @@
 
                 var readonly = "";
                 var disabled = "";
-                if (day == "Sun") {
-                    readonly = "readonly";
-                    disabled = "disabled";
-                }
+                // if (day == "Sun") {
+                //     readonly = "readonly";
+                //     disabled = "disabled";
+                // }
                 var dateFormat = yyyy + "-" + mm + "-" + dd; //yyyy-mm-dd
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";

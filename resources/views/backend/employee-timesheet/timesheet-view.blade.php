@@ -158,14 +158,14 @@
                         </div>
                     </div> --}}
                 </div>
-                <div class="row">
+                <div class="row dataTables_scroll" style="overflow-x: scroll;">
                     <div class="col-md-12">
                         {{-- <p class="mx-0">Week starting:- <strong>{{ $week_starting->format('d-m-Y') }}</strong></p> --}}
                         <p class="mx-0"></p>
-                        <table class="table">
+                        <table class="table table dataTables_scroll" style="width:1400px;">
                             <tr>
                                 <td>Calender Date</td>
-                                <td style="width:11%">Days</td>
+                                <td>Days</td>
                                 <td>Start Time</td>
                                 <td>Finish Time</td>
                                 <td>1/2 or 1 Day</td>
@@ -410,7 +410,7 @@
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
                 var bgcolor = "";
-                var width = "width:70%";
+                var width = "width:30%";
                 var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
                     $.each(HolidayDataArrayForm, function(index, holidayData) {
@@ -451,6 +451,7 @@
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
+                    width="width:15%";
                     TimesheetData +=
                         '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
                         readonly + '></td>' +
@@ -471,7 +472,7 @@
                         '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
                         disabled +
                         ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
-                        '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' +
+                        '<td style="'+width+'"><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' +
                         readonly +
                         '></textarea></td>';
                 } else {
@@ -604,6 +605,7 @@
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
+                    width="width:15%";
                     TimesheetData +=
                         '<td><input name="start_time[]" value="" class="form-control start_time" type="time" ' +
                         readonly + '></td>' +
@@ -622,7 +624,7 @@
                         '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
                         disabled +
                         ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
-                        '<td><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
+                        '<td style="'+width+'"><textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10" ' + readonly +
                         '></textarea></td>';
                 } else {
                     TimesheetData += renderReasonHolidayHtml;
