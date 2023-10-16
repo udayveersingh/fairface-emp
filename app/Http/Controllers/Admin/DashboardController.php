@@ -76,7 +76,10 @@ class DashboardController extends Controller
                                           ->whereBetween("visa_expiry_date",[date('Y-m-d'), $nextSixMonth])
                                           ->select(['employees.employee_id','visa_expiry_date','employees.firstname','employees.lastname'])
                                           ->get();
-        $cos_expiry_list = EmployeeVisa::whereBetween("cos_expiry_date",[date('Y-m-d'), $nextSixMonth])->get();
+        $cos_expiry_list = EmployeeVisa::join('employees','employees.id','=','employee_visas.employee_id')
+                                          ->whereBetween("cos_expiry_date",[date('Y-m-d'), $nextSixMonth])
+                                          ->select(['employees.employee_id','cos_expiry_date','employees.firstname','employees.lastname'])
+                                          ->get();
         
         return view('backend.dashboard', compact(
             'title',
