@@ -24,7 +24,7 @@
                     <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
                     <div class="dash-widget-info">
                         <h3>{{ !empty($employee_count) ? $employee_count : '0' }}</h3>
-                        <span>Employees</span>
+                        <span>Active Employee</span>
                     </div>
                 </div>
             </div>
@@ -46,11 +46,7 @@
                     <span class="dash-widget-icon"><i class="fa fa-diamond"></i></span>
                     <div class="dash-widget-info">
                         <h3>
-                            @if (!is_null(getNewNotification()))
-                                {{ count(getNewNotification()) }}
-                            @else
-                                0
-                            @endif
+                            {{ $visa_expiry_six_month }}
                         </h3>
                         <span>Visa Expiry in next 6 months.</span>
                     </div>
@@ -63,11 +59,7 @@
                     <span class="dash-widget-icon"><i class="fa fa-users"></i></span>
                     <div class="dash-widget-info">
                         <h3>
-                            @if (!is_null(getNewAnnouncementNotification()))
-                                {{ count(getNewAnnouncementNotification()) }}
-                            @else
-                                0
-                            @endif
+                            {{ $cos_expiry_six_month }}
                         </h3>
                         <span>Cos Expiry in next 6 months.
                         </span>
@@ -184,7 +176,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div>
-                                <span class="d-block">Total Submitted Time sheet Past Month</span>
+                                <span class="d-block">Total Timesheets Past Month</span>
                             </div>
                         </div>
                         <p class="mb-0">
@@ -197,7 +189,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div>
-                                <span class="d-block">Approved Timesheet</span>
+                                <span class="d-block">Approved Timesheets</span>
                             </div>
                         </div>
                         <p class="mb-0">
@@ -223,11 +215,68 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div>
-                                <span class="d-block">Rejected Timesheet</span>
+                                <span class="d-block">Rejected Timesheets</span>
                             </div>
                         </div>
                         <p class="mb-0">
                         <h4>{{ $timesheet_rejected_count }}</h4>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-group m-b-30">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Total Leave Applications Past Month</span>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                        <h4>{{ $leaves_submitted_count }}</h4>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Approved Leaves</span>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                        <h4>{{ $leaves_approval_count }}</h4>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Pending Approval Leaves</span>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                        <h4>{{ $leaves_pending_app_count }}</h4>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div>
+                                <span class="d-block">Rejected Leaves</span>
+                            </div>
+                        </div>
+                        <p class="mb-0">
+                        <h4>{{ $leaves_rejected_count }}</h4>
                         </p>
                     </div>
                 </div>
@@ -374,10 +423,64 @@
                 </div>
             </div>
         </div> --}}
-        <div class="col-md-12 col-lg-12 col-xl-12 d-flex">
+        <div class="col-md-7 col-lg-7 col-xl-7 d-flex">
+            <div class="card card-table flex-fill">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-nowrap custom-table mb-0">
+                            <thead>
+                            <tr>
+                                <th>Emp. ID</th>
+                                <th>Employee</th>
+                                <th>Expiry Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($passport_expiry_list as $user_pass_list)
+                                <tr>
+                                    <td>{{ $user_pass_list->employee_id }}</td>
+                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
+                                    <td>{{  date('d-m-Y',strtotime($user_pass_list->passport_expiry_date)) }}</td>
+                                    <td>
+                                    <span class="badge bg-inverse-warning">Paasport Expiry</span>
+                                    </td>
+                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                </tr>
+                                @endforeach
+                                @foreach($visa_expiry_list as $user_pass_list)
+                                <tr>
+                                    <td>{{ $user_pass_list->employee_id }}</td>
+                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
+                                    <td>{{ date('d-m-Y',strtotime($user_pass_list->visa_expiry_date)) }}</td>
+                                    <td>
+                                    <span class="badge bg-inverse-danger">Visa Expiry</span>
+                                    </td>
+                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                </tr>
+                                @endforeach
+                                @foreach($cos_expiry_list as $user_pass_list)
+                                <tr>
+                                    <td>{{ $user_pass_list->employee_id }}</td>
+                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
+                                    <td>{{ date('d-m-Y',strtotime($user_pass_list->cos_expiry_date)) }}</td>
+                                    <td>
+                                    <span class="badge bg-inverse-success">COS Expiry</span>
+                                    </td>
+                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-lg-5 col-xl-5 d-flex">
             <div class="card flex-fill">
                 <div class="card-body">
-                    <h4 class="card-title">Notifications/Alert<span class="badge bg-inverse-danger ml-2"></span></h4>
+                    <h4 class="card-title">Employee Notifications<span class="badge bg-inverse-danger ml-2"></span></h4>
                     <div class="card-scroll p-1">
                         @if (count(sendNewTimeSheetNotifiaction()) > 0)
                             @foreach (sendNewTimeSheetNotifiaction() as $notification)
@@ -428,6 +531,7 @@
                 </div>
             </div>
         </div>
+        
         {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-body">
