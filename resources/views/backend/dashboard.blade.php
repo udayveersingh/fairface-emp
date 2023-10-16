@@ -8,10 +8,23 @@
 @section('page-header')
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ul>
+            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>     
+                <!-- <li class="breadcrumb-item active">Dashboard</li> -->
+                <div id="carouselExampleFade" class="carousel announcement_slider alert-primary mt-3 p-3 rounded slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner">
+                        
+                        @foreach($annoucement_list as $a_list)
+                        <div class="carousel-item">
+                            <strong>{{ $a_list->description }}</strong>
+                        </div>
+                        @endforeach
+                    </div>  
+                    <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
+                        @foreach($annoucement_list as $key=>$a_list)
+                            <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
+                        @endforeach
+                    </ol>
+                </div>
         </div>
     </div>
 @endsection

@@ -14,6 +14,7 @@ use App\Models\Leave;
 use App\Models\Project;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
+use App\Models\Annoucement;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,9 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
         $clients_count = Client::count();
+        // Announcements
+        $annoucement_list =Annoucement::where('status','=','active')->get();
+        // Top Counter
         $employee_count = Employee::where('record_status','=','active')->count();
         // $test1 =Carbon::now();
         // dd($test1);s
@@ -83,6 +87,7 @@ class DashboardController extends Controller
         
         return view('backend.dashboard', compact(
             'title',
+            'annoucement_list',
             'clients_count',
             'employee_count',
             'timesheet_approval_count',
