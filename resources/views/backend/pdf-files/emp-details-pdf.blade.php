@@ -35,15 +35,16 @@
 </style>
 <div class="header">
     <img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
-                    style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
+        style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
     <table style="border:none;" cellpadding="0" cellspacing="0">
         <tr>
             <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
                 <table style="border:none;padding-bottom:10px;" cellpadding="0" cellspacing="0">
                     <tr>
                         <td style="border:none; width:1cm; ">
-                            <img src="storage/settings/theme/{{ app(App\Settings\ThemeSettings::class)->logo }}" alt="profile" border="0"
-                            style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;">
+                            <img src="storage/settings/theme/{{ app(App\Settings\ThemeSettings::class)->logo }}"
+                                alt="profile" border="0"
+                                style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;">
                         </td>
                         <td style="border:none;"><span style="color:#4c5860; font-size:22px; font-weight:bold;">
                                 {{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? '') }} <br><span
@@ -56,7 +57,7 @@
 
         <tr>
             <td style="border:none; border-bottom:1px dashed #ddd;">
-                <strong>Name:</strong>{{ ucfirst($employee->firstname . '' . $employee->lastname) }}
+                <strong>Name:</strong>{{ ucfirst($employee->firstname . ' ' . $employee->lastname) }}
             </td>
             <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Email:</strong>{{ $employee->email }}</td>
         </tr>

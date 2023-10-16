@@ -87,10 +87,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row dataTables_scroll" style="overflow-x: scroll;">
                     <div class="col-md-12">
                         <p class="mx-0"></p>
-                        <table class="table">
+                        <table class="table table dataTables_scroll" style="width:1400px;">
                             <tr>
                                 <td>Calender Date</td>
                                 <td>Days</td>
@@ -154,7 +154,7 @@
                                                         {{ !empty($phase->name) ? $phase->name : '' }}</option>
                                                 @endforeach
                                             </select></td>
-                                        <td>
+                                        <td style="width:18%">
                                             <textarea class="form-control" id="notes" name="notes[]" rows="3" cols="10">{{ $timesheet->notes }}</textarea>
                                         </td>
                                     </tr>

@@ -76,8 +76,8 @@
                                     </td>
                                 @endif
                                 <td>{{ !empty($leave->leaveType->type) ? $leave->leaveType->type : '' }}</td>
-                                <td>{{ !empty($leave->from) ? date_format(date_create($leave->from), 'd-m-Y'):'' }}</td>
-                                <td>{{ !empty($leave->to) ? date_format(date_create($leave->to), 'd-m-Y'):'' }}</td>
+                                <td>{{ !empty($leave->from) ? date_format(date_create($leave->from), 'd-m-Y') : '' }}</td>
+                                <td>{{ !empty($leave->to) ? date_format(date_create($leave->to), 'd-m-Y') : '' }}</td>
                                 <td>
                                     @php
                                         $start = new DateTime($leave->to);
@@ -106,9 +106,9 @@
                                                     <a class="btn btn-danger btn-sm btn-rounded" href="javascript:void(0);">
                                         @endif --}}
                                         @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
-                                           Pending  
-                                           @else           
-                                        {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
+                                            Pending
+                                        @else
+                                            {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         @endif
                                         {{-- </a> --}}
                                         {{-- @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
@@ -293,14 +293,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                                                                                          <label>Status </label>
-                                                                                          <select name="status" class="select">
-                                                                                          <option value="null" disabled selected>Select Status</option>
-                                                                                          <option>Approved</option>
-                                                                                          <option>Pending</option>
-                                                                                          <option>Declined</option>
-                                                                                          </select>
-                                                                                          </div> -->
+                                                                                              <label>Status </label>
+                                                                                              <select name="status" class="select">
+                                                                                              <option value="null" disabled selected>Select Status</option>
+                                                                                              <option>Approved</option>
+                                                                                              <option>Pending</option>
+                                                                                              <option>Declined</option>
+                                                                                              </select>
+                                                                                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -416,20 +416,20 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-form-label">Approved Date/Time<span class="text-danger">*</span></label>
-                                <input class="form-control datetimepicker" name="approved_date_time"
+                                <input class="form-control aprroved_dateTime" name="approved_date_time"
                                     id="edit_approved_date_time" type="text">
                             </div>
                         @endif
 
                         <!-- <div class="form-group">
-                                                                                              <label>Status </label>
-                                                                                              <select name="status" class="select2 form-control" id="edit_status">
-                                                                                              <option value="null">Select Status</option>
-                                                                                              <option>Approved</option>
-                                                                                              <option>Pending</option>
-                                                                                              <option>Declined</option>
-                                                                                              </select>
-                                                                                              </div> -->
+                                                                                                  <label>Status </label>
+                                                                                                  <select name="status" class="select2 form-control" id="edit_status">
+                                                                                                  <option value="null">Select Status</option>
+                                                                                                  <option>Approved</option>
+                                                                                                  <option>Pending</option>
+                                                                                                  <option>Declined</option>
+                                                                                                  </select>
+                                                                                                  </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -564,6 +564,20 @@
         });
     </script>
     <script>
+        if ($('.aprroved_dateTime').length > 0) {
+            $('.aprroved_dateTime').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
+
+
         @if ($errors->any())
             $('#update_leave_status').modal('show');
         @endif

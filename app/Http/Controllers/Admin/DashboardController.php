@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\EmployeeLeave;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeTimesheet;
+use App\Models\EmployeeVisa;
 use App\Models\Leave;
 use App\Models\Project;
 use App\Models\Role;
@@ -27,6 +28,8 @@ class DashboardController extends Controller
         // dd($test1);s
         $nextSixMonth = date('Y-m-d', strtotime('+6 month'));
         $passport_expiry_six_month = Employee::where("passport_expiry_date",">", $nextSixMonth)->count();
+        $visa_expiry_six_month = EmployeeVisa::groupBy('employee_id')->get();
+        // dd($visa_expiry_six_month);
         $project_count =Project::count();
         $timesheet_approval_count = EmployeeTimesheet::whereHas('timesheet_status', function ($q) {
             $q->where('status', '=',TimesheetStatus::APPROVED);
@@ -53,7 +56,8 @@ class DashboardController extends Controller
             'timesheet_pending_app_count',
             'timesheet_rejected_count',
             'timesheet_submitted_count',
-            'passport_expiry_six_month'
+            'passport_expiry_six_month',
+            'visa_expiry_six_month',
         ));
     }
 
