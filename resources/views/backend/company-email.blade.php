@@ -57,6 +57,10 @@
         .cursor-pointer {
             cursor: pointer;
         }
+
+        .announcement_slider .carousel-indicators li {
+            background-color: #004085;
+        }
     </style>
 @endsection
 @section('page-header')
@@ -65,11 +69,25 @@
             <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="fa fa-home"></i></a>
         </div>
         <div class="col">
-            <div class="alert alert-primary m-0" style="display:block;">
-                <strong>Announcement!</strong> You should check in on some of those fields below.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+
+            <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade"
+                data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <strong>Announcement One!</strong> You should check in on some of those fields below.
+                    </div>
+                    <div class="carousel-item">
+                        <strong>Announcement Two!</strong> You should check in on some of those fields below.
+                    </div>
+                    <div class="carousel-item">
+                        <strong>Announcement Three!</strong> You should check in on some of those fields below.
+                    </div>
+                </div>
+                <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
+                    <li data-target="#carouselExampleFade" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleFade" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleFade" data-slide-to="2"></li>
+                </ol>
             </div>
         </div>
     </div>
@@ -80,7 +98,7 @@
     <div class="table-box bg-white row">
         <div class="table-detail col-md-3">
             <div class="p-4">
-                <a href="email-compose.html"
+                <a href="{{ route('compose-email') }}"
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
@@ -140,7 +158,8 @@
 
                         <div class="btn-group">
                             <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fdprocessedid="x3mkj9">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                fdprocessedid="x3mkj9">
                                 More <i class="mdi mdi-chevron-down"></i>
                             </button>
                             <ul class="dropdown-menu">
@@ -203,22 +222,29 @@
                                     </td>
 
                                     <td>
-                                        <a href="#single-email-wrapper" class="email-name">{{ucfirst($fullname)}}</a>
+                                        <a href="#single-email-wrapper" class="email-name mail-detail"
+                                            data-from_id="{{ $company_email->from_id }}">{{ ucfirst($fullname) }}</a>
                                     </td>
 
                                     <td>
-                                        <a href="#single-email-wrapper" class="email-name">{{ ucfirst($to_last_name) }}</a>
+                                        <a href="#single-email-wrapper"
+                                            class="email-name">{{ ucfirst($to_last_name) }}</a>
                                     </td>
 
                                     <td class="d-none d-lg-inline-block">
-                                        <a href="#single-email-wrapper" class="email-msg">Lorem ipsum dolor sit amet,
-                                            consectetuer adipiscing elit</a>
+                                        <a href="#single-email-wrapper"
+                                            class="email-msg">{{ $company_email->subject }}</a>
                                     </td>
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
                                     </td>
                                     <td class="text-right mail-time">
-                                        07:23 AM
+                                        @php
+                                            $date = \Carbon\Carbon::parse($company_email->date);
+                                        @endphp
+                                        {{ $date->diffForHumans() }}
+                                        {{-- <br>
+                                        {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>
                                 </tr>
                             @endforeach
@@ -242,73 +268,84 @@
             </div>
 
 
+            @foreach ($company_emails as $index => $company_email)
+                @php
+                    if ($index > 0) {
+                        break;
+                    }
+                    $from = App\Models\EmployeeJob::with('employee')
+                        ->where('id', '=', $company_email->from_id)
+                        ->first();
+                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                    $from_name = $from_first_name . ' ' . $from_last_name;
+                    $to = App\Models\EmployeeJob::with('employee')
+                        ->where('id', '=', $company_email->to_id)
+                        ->first();
+                    $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                    $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                    $to_fullname = $to_first_name . ' ' . $to_last_name;
+                    $multiple_cc = explode(',', $company_email->company_cc);
+                    $cc_emails = [];
+                    foreach ($multiple_cc as $value) {
+                        $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                        $cc_emails[] = $cc;
+                    }
+                    $cc = implode(',', $cc_emails);
+                @endphp
+                <div id="single-email-wrapper" class="row single-email-wrapper py-3">
+                    <div class="col-lg-12 px-0 single-email-inner">
+                        <div class="card m-0">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <h3 class="subject">{{ $company_email->subject }}</h3>
+                                    <div class="btn-group ml-auto">
+                                        <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
+                                            data-target="#email_edit"><i class="fa fa-edit"></i></div>
+                                        <div class="p-1 text-secondary cursor-pointer"
+                                            onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
+                                    </div>
+                                </div>
+                                <div class="email_header d-flex align-items-center">
+                                    <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                                    <div class="from">
+                                        <span>{{ ucfirst($from_name) }}</span>
+                                        < {{ $from->work_email }}>
+                                    </div>
+                                    @php
+                                        $date = \Carbon\Carbon::parse($company_email->date);
+                                    @endphp
+                                    {{ $date->diffForHumans() }}
+                                    <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
+                                </div>
+                            </div>
 
-            <div id="single-email-wrapper" class="row single-email-wrapper py-3">
-                <div class="col-lg-12 px-0 single-email-inner">
-                    <div class="card m-0">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h3>We received your inquiry for moving!</h3>
+                            <div class="card-body ">
+                                <p class="body">
+                                    {{ $company_email->body }}
+                                </p>
+                            </div>
+
+                            <div class="card-footer d-flex align-items-center">
+                                <div>
+                                    <div class="from">
+                                        <span>{{ ucfirst($from_name) }}</span>
+                                        < {{ $from->work_email }}>
+                                    </div>
+                                    <div class="date ml-auto">{{ $date->diffForHumans() }}</div>
+                                </div>
                                 <div class="btn-group ml-auto">
-                                    <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
-                                        data-target="#email_edit"><i class="fa fa-edit"></i></div>
-                                    <div class="p-1 text-secondary cursor-pointer"
-                                        onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
-                                </div>
-                            </div>
-                            <div class="email_header d-flex align-items-center">
-                                <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                                <div class="from">
-                                    <span>Lukasz Holeczek</span>
-                                    < lukasz@bootstrapmaster.com>
-                                </div>
-                                <div class="date ml-auto">Today, <b>3:47 PM</b></div>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                laborum.
-                            </p>
-                            <blockquote>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-                                laborum.
-                            </blockquote>
-                        </div>
-
-
-                        <div class="card-footer d-flex align-items-center">
-                            <div>
-                                <div class="from">
-                                    <span>Lukasz Holeczek</span>
-                                    < lukasz@bootstrapmaster.com>
-                                </div>
-                                <div class="date ml-auto">Today, <b>3:47 PM</b></div>
-                            </div>
-                            <div class="btn-group ml-auto">
-                                <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply"></i></div>
+                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply"></i></div>
                                 <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply-all"></i></div>
-                                <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"></i></div>
+                                <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"></i></div> --}}
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-            </div>
+            @endforeach
         </div>
-
-
-
         <!-- edit email modal starts -->
         <div id="email_edit" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -330,8 +367,7 @@
                             <div class="form-group">
                                 <label for="">Message</label>
                                 <textarea class="form-control" rows="6">  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </textarea>
+                             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -354,7 +390,30 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
         <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
         <script>
             $(document).ready(function() {
+                $('.mail-detail').on('click', function() {
+                    var from_id = $(this).data('from_id');
+                    $.ajax({
+                        type: 'GET',
+                        url: '/mail-detail/' + from_id,
+                        data: {
+                            _token: $("#csrf").val(),
+                            from_id: from_id,
+                        },
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log(data.email_data, "data");
+                            $.each(data.email_data, function(index, row) {
+                                $(".subject").html(row.subject);
+                                $(".body").html(row.body);
+                            });
+                            // $.each(data.email_data, function(index, row) {
+                            //     $(".subject").html(row.subject);
+                            // });
 
+                            // $("#msg").html(data.msg);
+                        },
+                    });
+                });
             });
 
             function printDiv(divName) {
