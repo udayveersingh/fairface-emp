@@ -200,16 +200,21 @@ class CompanyEmailController extends Controller
     public function mailDetail($from_id)
     {
         $title = "mail";
-        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', decrypt($from_id))->latest()->get();
+        $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $from_id)->latest()->get();
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {    
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
+
+            return json_encode(array('employee_data' => $employee_job,'email_data' => $company_emails));
+
             //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
-            return view('backend.emails.mail-detail', compact('company_emails', 'title', 'employee_job'));
+            // return view('backend.emails.mail-detail', compact('company_emails', 'title', 'employee_job'));
         }else{
-            $employee_job = EmployeeJob::find(decrypt($from_id));
-            return view('backend.emails.mail-detail', compact('company_emails', 'title','employee_job'));
+            $employee_job = EmployeeJob::find($from_id);
+            // dd($company_emails);
+            return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
+            // return view('backend.emails.mail-detail', compact('company_emails', 'title','employee_job'));
         }
     }
 
