@@ -263,4 +263,10 @@ class CompanyEmailController extends Controller
 
         return json_encode(array('data' => $data));     
     }
+
+    public function defaultEmails()
+    {
+        $title = "Default Email";
+        return view('backend.default-emails', compact('title'));   
+    }
 }

@@ -346,7 +346,7 @@ Route::group(['middleware'=>['auth']], function (){
 
     Route::get('backups',[BackupsController::class,'index'])->name('backups');
 
-
+    Route::get('default-emails',[CompanyEmailController::class,'defaultEmails'])->name('default-emails');
 });
 
 Route::get('',function (){
