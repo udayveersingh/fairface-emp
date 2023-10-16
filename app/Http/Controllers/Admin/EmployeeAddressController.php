@@ -45,6 +45,7 @@ class EmployeeAddressController extends Controller
         ]);
         EmployeeAddress::create([
             'employee_id' => $request->emp_id,
+            'address_type' => $request->address_type,
             'home_address_line_1' => $request->address_line_1,
             'home_address_line_2' => $request->address_line_2,
             'post_code' => $request->post_code,
@@ -74,6 +75,7 @@ class EmployeeAddressController extends Controller
      */
     public function update(Request $request)
     {
+       
         $this->validate($request, [
             'address_line_1' => 'required',
             'from_date' => 'required',
@@ -86,6 +88,7 @@ class EmployeeAddressController extends Controller
             $message = "Employee Address has been created.";
         }
         $Employee_emergency_contact->employee_id = $request->input('emp_id');
+        $Employee_emergency_contact->address_type = $request->address_type;
         $Employee_emergency_contact->home_address_line_1 = $request->input('address_line_1');
         $Employee_emergency_contact->home_address_line_2 = $request->input('address_line_2');
         $Employee_emergency_contact->post_code = $request->input('post_code');

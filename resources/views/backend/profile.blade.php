@@ -422,6 +422,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 30px;">Sr No.</th>
+                                <th>Address Type</th>
                                 <th>Address Line 1</th>
                                 <th>Address Line 2</th>
                                 <th>Post Code</th>
@@ -436,6 +437,7 @@
                     @foreach ($employee_addresses as $index => $address)
                         <tr>
                             <td>{{ $index + 1 }}</td>
+                            <td>{{ $address->address_type }}</td>
                             <td>{{ $address->home_address_line_1 }}</td>
                             <td>{{ $address->home_address_line_2 }}</td>
                             <td>{{ $address->post_code }}</td>
@@ -587,7 +589,7 @@
                 }
             @endphp
             <div class="col-md-12 mb-4">
-                <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+                <div class="card card-block shadow shadow-sm p-3 h-100 w-100">
                     <table class="table table-striped">
                         <tr>
                             <th>Job Title</th>

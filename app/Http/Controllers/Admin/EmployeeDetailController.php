@@ -118,7 +118,9 @@ class EmployeeDetailController extends Controller
         $file_name = "";
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-            $file_name = time() . '.' . $file->extension();
+           
+           // $file_name = time() . '.' . $file->extension();
+            $file_name = $file->getClientOriginalName();
             $file->move(public_path('storage/documents/employee/' . $request->emp_id), $file_name);
         }
         $Employee_document = new EmployeeDocument;

@@ -62,7 +62,7 @@ class ActivityController extends Controller
     public function logs()
     {
         $title = 'Logs';
-        $logs = UserLog::get();
+        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->orderBy('user_logs.date_time','DESC')->get();
         return view('backend.logs',compact('logs','title'));
         
     }

@@ -18,15 +18,14 @@
                         <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Timesheets</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
-                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Apply
-                                leave</span></a>
+                        <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Leaves</span></a>
                     </li>
                     @php
                         $employee = App\Models\Employee::where('user_id', '=', Auth::user()->id)->first();
                         $employee_job = App\Models\EmployeeJob::where('employee_id', '=', $employee->id)->first();
                     @endphp
                     <li class="submenu">
-                        <a href="#"><i class="la la-envelope-o"></i> <span> Email </span> <span
+                        <a href="#"><i class="la la-envelope-o"></i> <span> Emails </span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display:none;">
                             <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"

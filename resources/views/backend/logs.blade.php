@@ -35,12 +35,7 @@
                 <tbody> 
                     @foreach ($logs as $log)
                     <tr>
-                        @php
-                        $user_name = App\Models\User::where('id', '!=', Auth::user()->id)->whereHas('role', function ($q) {
-                            $q->where('name', '!=', App\Models\Role::SUPERADMIN);
-                        })->value('name');
-                        @endphp
-                        <td>{{$user_name}}</td>
+                        <td>{{$log->name}}</td>
                         <td>{{$log->location_ip}}</td>
                         <td>{{\Carbon\Carbon::parse($log->date_time)->diffForHumans()}}</td>
                     </tr>

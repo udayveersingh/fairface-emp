@@ -240,6 +240,10 @@
                 <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
                     <table class="table table-striped">
                         <tr>
+                            <th>Address Type</th>
+                            <td>{{ !empty($address->address_type) ? $address->address_type : '' }}</td>
+                        </tr>
+                        <tr>
                             <th>Address Line 1</th>
                             <td>{{ !empty($address->home_address_line_1) ? $address->home_address_line_1 : '' }}</td>
                         </tr>
@@ -296,6 +300,17 @@
                     <input type="hidden" id="edit_id"
                         value="{{ !empty($employee_address->id) ? $employee_address->id : '' }}" name="id">
                     <input type="hidden" value="{{ $employee->id }}" id="emp_id" name="emp_id">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Address Type<span class="text-danger mr-2">*</span></label>
+                                <input type="radio" id="main-add" name="address_type" value="main" required  />
+                                <label for="add" class="mr-2">Main</label>
+                                <input type="radio" id="temprarory" name="address_type" value="temprarory" required />
+                                <label for="temprarory">Temprarory</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -361,6 +376,17 @@
                     @method('PUT')
                     <input type="hidden" id="edit_emp_address_id" value="{{ !empty($employee_address->id) ? $employee_address->id : '' }}" name="id">
                     <input type="hidden" value="{{ $employee->id }}" id="address_employee_id" name="emp_id">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Address Type<span class="text-danger mr-2">*</span></label>
+                                <input type="radio" id="main-add" name="address_type" value="main" required  />
+                                <label for="add" class="mr-2">Main</label>
+                                <input type="radio" id="temprarory" name="address_type" value="temprarory" required />
+                                <label for="temprarory">Temprarory</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">

@@ -27,6 +27,7 @@
                 <thead>
                     <tr>
                         <th style="width: 30px;">#</th>
+                        <th>Address Type</th>
                         <th>Home Address Line 1</th>
                         <th>Post Code</th>
                         <th>From Date</th>
@@ -39,6 +40,7 @@
                     @foreach ($employee_addresses as $address)
                     <tr>
                         <td>{{$address->id}}</td>
+                        <td>{{$address->address_type}}</td>
                         <td>{{$address->home_address_line_1}}</td>
                         <td>{{$address->post_code}}</td>
                         <td>{{$address->from_date}}</td>

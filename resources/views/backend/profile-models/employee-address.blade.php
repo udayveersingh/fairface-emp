@@ -12,20 +12,29 @@
                 <form method="POST" action="{{ route('employee-address.update') }}">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" id="edit_id"
-                        value="{{ !empty($employee_address->id) ? $employee_address->id : '' }}" name="id">
                     <input type="hidden" value="{{ $employee->id }}" id="emp_id" name="emp_id">
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label>Address Type<span class="text-danger mr-2">*</span></label>
+                                <input type="radio" id="main-add" name="address_type" value="main" required  />
+                                <label for="add" class="mr-2">Main</label>
+                                <input type="radio" id="temprarory" name="address_type" value="temprarory" required />
+                                <label for="temprarory">Temprarory</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <label>Address Line 1<span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="edit_address_line_1" name="address_line_1" rows="4" cols="50"></textarea>
+                                <textarea class="form-control" id="edit_address_line_1" required  name="address_line_1" rows="2" cols="50"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Address Line 2</label>
-                                <textarea class="form-control" id="edit_address_line_2" name="address_line_2" rows="4" cols="50"></textarea>
+                                <textarea class="form-control" id="edit_address_line_2" name="address_line_2" rows="2" cols="50"></textarea>
                             </div>
                         </div>
                     </div>
@@ -41,7 +50,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>From Date<span class="text-danger">*</span></label>
-                                <input class="form-control" name="from_date" id="edit_from_date"
+                                <input class="form-control" required name="from_date" id="edit_from_date"
                                     value="" type="date">
                             </div>
                         </div>
