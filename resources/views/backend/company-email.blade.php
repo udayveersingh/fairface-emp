@@ -104,9 +104,9 @@
                 <div class="list-group mail-list mt-3">
                     <a href="#" class="list-group-item border-0 text-success"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a>
-                    <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive
-                        <b>(20)</b></a>
+                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a> --}}
+                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
+                        {{-- <b>(20)</b></a> --}}
                     <a href="#" class="list-group-item border-0"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent</a>
                 </div>
@@ -118,15 +118,15 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="btn-toolbar mt-4" role="toolbar">
-                        <div class="btn-group mr-2">
+                        {{-- <div class="btn-group mr-2">
                             <button type="button" class="btn btn-primary waves-effect waves-light" fdprocessedid="ri6ks"><i
                                     class="fa fa-inbox"></i></button>
                             <button type="button" class="btn btn-primary waves-effect waves-light"
                                 fdprocessedid="omqa9tb"><i class="fa fa-exclamation-circle"></i></button>
                             <button type="button" class="btn btn-primary waves-effect waves-light"
                                 fdprocessedid="oqzsnm"><i class="far fa-trash-alt"></i></button>
-                        </div>
-                        <div class="btn-group mr-2">
+                        </div> --}}
+                        {{-- <div class="btn-group mr-2">
 
                             <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fdprocessedid="iqg1vn">
@@ -140,8 +140,8 @@
                                 <li class="dropdown-divider"></li>
                                 <li><a href="javascript:void(0);" class="dropdown-item">Separated link</a></li>
                             </ul>
-                        </div>
-                        <div class="btn-group mr-2">
+                        </div> --}}
+                        {{-- <div class="btn-group mr-2">
                             <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fdprocessedid="xuli2m">
                                 <i class="fa fa-tag"></i>
@@ -154,9 +154,9 @@
                                 <li class="dropdown-divider"></li>
                                 <li><a href="javascript:void(0);" class="dropdown-item">Separated link</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
 
-                        <div class="btn-group">
+                        {{-- <div class="btn-group">
                             <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                                 fdprocessedid="x3mkj9">
@@ -166,7 +166,7 @@
                                 <li><a href="javascript:void(0);" class="dropdown-item">Dropdown link</a></li>
                                 <li><a href="javascript:void(0);" class="dropdown-item">Dropdown link</a></li>
                             </ul>
-                        </div>
+                        </div> --}}
 
                         <form class="form-inline my-2 my-lg-0 ml-auto">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -531,19 +531,7 @@
                             </div>
                         @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
-                                <label>From<span class="text-danger">*</span></label>
-                                <select name="from_id" id="from_id" class="form-control">
-                                    <option value="">Select to</option>
-                                    @foreach ($to_email_ids as $from_email)
-                                        @php
-                                            $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
-                                            $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
-                                            $emp_name = $firstname . '  ' . $lastname;
-                                        @endphp
-                                        <option value="{{ $from_email->id }}">
-                                            {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}</option>
-                                    @endforeach
-                                </select>
+                             <input type="hidden" name=""> 
                             </div>
                         @endif
                         <div class="form-group">

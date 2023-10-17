@@ -143,7 +143,7 @@
                     </li>
                     <li>
                         <a class="{{ route_is('company-email') ? 'active' : '' }}"
-                            href="{{ route('company-email') }}"><i class="la la-envelope-o"></i><span>Company Email</span></a>
+                            href="{{ route('company-email') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                     </li>
                     {{-- <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span> --}}
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
