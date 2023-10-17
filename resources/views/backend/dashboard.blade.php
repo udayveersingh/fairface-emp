@@ -13,8 +13,8 @@
              
                     <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach($annoucement_list as $annoucement)
-                        <div>
+                        @foreach($annoucement_list as $key=>$annoucement)
+                        <div class="carousel-item {{ $key==0?'active':'' }}"> 
                             <strong>{{ $annoucement->description }}</strong>
                         </div>
                         @endforeach
