@@ -14,6 +14,7 @@ use App\Models\Leave;
 use App\Models\Project;
 use App\Models\Role;
 use App\Models\TimesheetStatus;
+use App\Models\Annoucement;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,6 +24,12 @@ class DashboardController extends Controller
     {
         $title = 'Dashboard';
         $clients_count = Client::count();
+        // Announcements
+        $todayDate =Carbon::now()->toDateString();
+        $annoucement_list =Annoucement::where('start_date','<=',$todayDate)
+                                        ->where('end_date','>=',$todayDate)
+                                        ->where('status','=','active')->get();
+        // Top Counter
         $employee_count = Employee::where('record_status','=','active')->count();
         // $test1 =Carbon::now();
         // dd($test1);s
@@ -83,6 +90,7 @@ class DashboardController extends Controller
         
         return view('backend.dashboard', compact(
             'title',
+            'annoucement_list',
             'clients_count',
             'employee_count',
             'timesheet_approval_count',
@@ -105,14 +113,35 @@ class DashboardController extends Controller
     public function EmployeeDashboard()
     {
         $title = 'Employee Dashboard';
+        // Announcements
+        $todayDate =Carbon::now()->toDateString();
+        $annoucement_list =Annoucement::where('start_date','<=',$todayDate)
+                                        ->where('end_date','>=',$todayDate)
+                                        ->where('status','=','active')->get();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
-            $employee_projects = EmployeeProject::where('employee_id', '=', $employee->id)->get();
+            // Leaves List Latest 4
+            $leaves_list = Leave::leftJoin('leave_types','leaves.leave_type_id','=','leave_types.id')
+                                    ->leftJoin('timesheet_statuses','leaves.timesheet_status_id','=','timesheet_statuses.id')
+                                    ->where('leaves.employee_id','=',$employee->id)
+                                    ->orderBy('leaves.updated_at','DESC')
+                                    ->select(['leaves.employee_id','leave_types.type','timesheet_statuses.status','leaves.created_at','leaves.from','leaves.to'])
+                                    ->limit(4)
+                                    ->get();
+            // Recent Timesheet Latest 4
+            $timesheet_list = EmployeeTimesheet::leftJoin('timesheet_statuses','employee_timesheets.timesheet_status_id','=','timesheet_statuses.id')
+                                    ->where('employee_timesheets.employee_id','=',$employee->id)
+                                    ->groupBy('employee_timesheets.timesheet_id')
+                                    ->orderBy('employee_timesheets.updated_at','DESC')
+                                    ->select(['employee_timesheets.employee_id','employee_timesheets.timesheet_id','timesheet_statuses.status','employee_timesheets.start_date','employee_timesheets.end_date','employee_timesheets.created_at'])
+                                    ->limit(4)
+                                    ->get();
+            
             $employee_leaves = Leave::where('employee_id','=',$employee->id)->where('timesheet_status_id','!=',2)->get();
             $timesheet_submitted_count = EmployeeTimesheet::where('employee_id','=',$employee->id)->where( 'created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString())->whereHas('timesheet_status', function ($q) {
                 $q->where('status', '=',TimesheetStatus::SUBMITTED);
             })->count();
-            return view('includes.frontend.employee-dashboard', compact('title', 'employee','employee_projects','employee_leaves','timesheet_submitted_count'));
+            return view('includes.frontend.employee-dashboard', compact('title', 'annoucement_list','leaves_list','timesheet_list','employee','employee_leaves','timesheet_submitted_count'));
         }
     }
 }

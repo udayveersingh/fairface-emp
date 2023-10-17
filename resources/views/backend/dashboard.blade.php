@@ -8,10 +8,24 @@
 @section('page-header')
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>
-            <ul class="breadcrumb">
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ul>
+            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>     
+                <!-- <li class="breadcrumb-item active">Dashboard</li> -->
+                @if(count($annoucement_list)>0)
+                    <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach($annoucement_list as $key=>$annoucement)
+                        <div class="carousel-item {{ $key==0?'active':'' }}"> 
+                            <strong>{{ $annoucement->description }}</strong>
+                        </div>
+                        @endforeach
+                    </div>  
+                    <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
+                        @foreach($annoucement_list as $key=>$annoucement)
+                            <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
+                        @endforeach
+                    </ol>
+                    </div>
+                @endif        
         </div>
     </div>
 @endsection
@@ -286,8 +300,8 @@
 
 
     <!-- Statistics Widget -->
-    <div class="row">
-        {{-- <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
+   {{-- <div class="row">
+         <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
         <div class="card flex-fill dash-statistics">
             <div class="card-body">
                 <h5 class="card-title">Statistics</h5>
@@ -423,6 +437,7 @@
                 </div>
             </div>
         </div> --}}
+        <div class="row">
         <div class="col-md-7 col-lg-7 col-xl-7 d-flex">
             <div class="card card-table flex-fill">
                 <div class="card-body">

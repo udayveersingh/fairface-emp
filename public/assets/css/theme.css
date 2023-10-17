@@ -696,6 +696,11 @@
         background-color: #263238;
         border: 1px solid #2e3840;
       }
+      [data-layout-mode="dark"] .alert-primary {
+        background-color: #1b2429;
+        border: 1px solid #2e3840;
+        color:#fff;
+      }
       [data-layout-mode="dark"] .table-bordered th {
         border: 1px solid #2e3840;
       }
@@ -764,6 +769,10 @@
       [data-layout-mode="purple"] .btn-primary {
         background: linear-gradient(to right, #667eea 0%, #764ba2 100%);;
           border: 1px solid #667eea;
+      }
+      [data-layout-mode="purple"] .alert-primary {
+        background: linear-gradient(to right, #667eea 0%, #764ba2 100%);;
+          border: 1px solid #667eea; color:#fff;
       }
       [data-layout-mode="purple"] .roles-menu ul li.active a {
         border-color: #667eea;
@@ -834,6 +843,11 @@
       [data-layout-mode="maroon"] .btn-primary {
         background-color: #f43b48;
         border: 1px solid #f43b48;
+      }
+      [data-layout-mode="maroon"] .alert-primary {
+        background: linear-gradient(to right, #f43b48 0%, #453a94 100%);
+        border: 1px solid #f43b48;
+        color: #fff;
       }
       [data-layout-mode="maroon"] .roles-menu ul li.active a {
         border-color: #f43b48;
@@ -911,7 +925,16 @@
       [data-layout-mode="blue"] .settings-icon span {
         background-color: #00c5fb;
       }
+      [data-layout-mode="blue"] .alert-primary {
+        background: linear-gradient(to right, #00c5fb 0%, #0253cc 100%);
+        border: 1px solid #00c5fb; color:#fff;
+      }
       /*Layout Light */
+      [data-layout-mode="light"] .alert-primary {
+        background-color: #f8f8f8;
+        border-color:#ddd;
+        color: #000;
+      }
       [data-layout-mode="light"] .header {
         background: fff;
         border-color: transparent;
