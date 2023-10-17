@@ -98,6 +98,8 @@ class AnnoucementController extends Controller
         $annoucement = Annoucement::find($request->id);
         $annoucement->description = $request->input('announcement');
         $annoucement->status = $request->input('status');
+        $annoucement->start_date = $request->start_date;
+        $annoucement->end_date = $request->end_date;
         $annoucement->save();
         $notification = DB::table('notifications')->where('data->announcement_id', '=', $annoucement->id)->first();
         if (!empty($notification)) {
