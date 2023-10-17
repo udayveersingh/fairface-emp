@@ -187,6 +187,7 @@
                             <th>To</th>
                             <th>Subject</th>
                             <th class="text-right">Date & Time</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -227,13 +228,13 @@
                                     </td>
 
                                     <td>
-                                        <a href="#single-email-wrapper"
-                                            class="email-name">{{ ucfirst($to_last_name) }}</a>
+                                        <a href="#single-email-wrapper" class="email-name mail-detail"
+                                            data-from_id="{{ $company_email->from_id }}">{{ ucfirst($to_last_name) }}</a>
                                     </td>
 
                                     <td class="d-none d-lg-inline-block">
-                                        <a href="#single-email-wrapper"
-                                            class="email-msg">{{ $company_email->subject }}</a>
+                                        <a href="#single-email-wrapper" class="email-msg mail-detail"
+                                            data-from_id="{{ $company_email->from_id }}">{{ $company_email->subject }}</a>
                                     </td>
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
@@ -242,9 +243,25 @@
                                         @php
                                             $date = \Carbon\Carbon::parse($company_email->date);
                                         @endphp
-                                        {{ $date->diffForHumans() }}
+                                        <a href="#single-email-wrapper" class="email-date mail-detail"
+                                            data-from_id="{{ $company_email->from_id }}">{{ $date->diffForHumans() }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group ml-auto">
+                                            <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
+                                                data-target="#email_edit"><i class="fa fa-edit edit"
+                                                    data-id="{{ $company_email->id }}"
+                                                    data-email_from="{{ $company_email->from_id }}"
+                                                    data-email_to="{{ $company_email->to_id }}"
+                                                    data-email_cc="{{ $company_email->company_cc }}"
+                                                    data-email_date="{{ $company_email->date }}"
+                                                    data-email_time="{{ $company_email->time }}"
+                                                    data-email_subject="{{ $company_email->subject }}"
+                                                    data-email_body="{{ $company_email->body }}"
+                                                    data-email_attachment="{{ $company_email->attachment }}"></i></div>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -301,26 +318,36 @@
                                     <h3 class="subject">{{ $company_email->subject }}</h3>
                                     <div class="btn-group ml-auto">
                                         <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
-                                            data-target="#email_edit"><i class="fa fa-edit"></i></div>
+                                            data-target="#email_edit"><i class="fa fa-edit edit"
+                                                data-id="{{ $company_email->id }}"
+                                                data-email_from="{{ $company_email->from_id }}"
+                                                data-email_to="{{ $company_email->to_id }}"
+                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                data-email_date="{{ $company_email->date }}"
+                                                data-email_time="{{ $company_email->time }}"
+                                                data-email_subject="{{ $company_email->subject }}"
+                                                data-email_body="{{ $company_email->body }}"
+                                                data-email_attachment="{{ $company_email->attachment }}"></i></div>
                                         <div class="p-1 text-secondary cursor-pointer"
                                             onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
                                     </div>
                                 </div>
                                 <div class="email_header d-flex align-items-center">
                                     <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                                    <div class="from">
-                                        <span>{{ ucfirst($from_name) }}</span>
-                                        < {{ $from->work_email }}>
+                                    <div class="from email_from_name">
+                                        <span>{{ $from_name }}</span>
+                                        <span class="work_email">
+                                            < {{ $from->work_email }}>
+                                        </span>
                                     </div>
                                     @php
                                         $date = \Carbon\Carbon::parse($company_email->date);
                                     @endphp
-                                    {{ $date->diffForHumans() }}
                                     <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
                                 </div>
                             </div>
 
-                            <div class="card-body ">
+                            <div class="card-body">
                                 <p class="body">
                                     {{ $company_email->body }}
                                 </p>
@@ -328,17 +355,19 @@
 
                             <div class="card-footer d-flex align-items-center">
                                 <div>
-                                    <div class="from">
+                                    <div class="from email_from_name">
                                         <span>{{ ucfirst($from_name) }}</span>
                                         < {{ $from->work_email }}>
                                     </div>
                                     <div class="date ml-auto">{{ $date->diffForHumans() }}</div>
                                 </div>
                                 <div class="btn-group ml-auto">
-                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply"></i></div>
-                                <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply-all"></i></div>
-                                <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"></i></div> --}}
-
+                                    <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                            class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light"
+                                            id="reply" data-toggle="modal"
+                                            data-target="#reply_model">Reply</a></div>
+                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply-all"></i></div> --}}
+                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"></i></div> --}}
                                 </div>
                             </div>
                         </div>
@@ -356,30 +385,220 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
-                        <div class="card-box">
-
+                        <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" value="" id="edit_id" name="id">
+                            <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
+                            id="">
+                        <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
+                            id="">
+                        @php
+                            $to_email_ids = App\Models\EmployeeJOb::with('employee')->whereHas('employee', function ($q) {
+                            $q->where('record_status', '=', 'active');
+                        })->get();
+                        @endphp
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                             <div class="form-group">
-                                <label for="">Subject</label>
-                                <input type="text" class="form-control" value="We received your inquiry for moving!">
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    {{-- <option value="">Select from</option> --}}
+                                    @php
+                                        $from_email = App\Models\EmployeeJOb::with('employee')
+                                            ->where('employee_id', '=', $employee->id)
+                                            ->first();
+                                        $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                        $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $from_email->id }}">
+                                        {{ ucfirst($emp_name) . ' < ' . $from_email->work_email . ' > ' }}
+                                    </option>
+                                </select>
                             </div>
-
+                        @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
                             <div class="form-group">
-                                <label for="">Message</label>
-                                <textarea class="form-control" rows="6">  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </textarea>
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    <option value="">Select to</option>
+                                    @foreach ($to_email_ids as $from_email)
+                                        @php
+                                            $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                            $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $from_email->id }}">
+                                            {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-
-                            <button type="submit" class="btn btn-primary">Submit</button>
-
+                        @endif
+                        <div class="form-group">
+                            <label>To<span class="text-danger">*</span></label>
+                            <select name="to_id[]" id="to_id" class="form-control select" multiple
+                            data-mdb-placeholder="Example placeholder" multiple>
+                                <option value="">Select to</option>
+                                @foreach ($to_email_ids as $to_email)
+                                    @php
+                                        $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                        $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $to_email->id }}">
+                                        {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                @endforeach
+                            </select>
                         </div>
-
+                        <div class="form-group">
+                            <label class="form-label select-label">CC </label>
+                            <select name="cc[]" id="cc" class="form-control select" multiple
+                                data-mdb-placeholder="Example placeholder" multiple>
+                                @foreach ($employee_jobs as $employee_job)
+                                    @php
+                                        $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                        $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $employee_job->id }}">
+                                        {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input class="form-control" type="text" name="email_subject" id="edit_subject">
+                        </div>
+                        <div class="form-group">
+                            <label>Body<span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="edit_body" name="email_body" rows="4" cols="50"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Attachment</label>
+                            <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
+                        </div>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
+                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
         <!-- edit email modal ends  -->
         <!-- New layout ends-->
+
+
+
+        <!--- reply Models --->
+        <div id="reply_model" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" value="" id="edit_id" name="id">
+                            <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
+                            id="">
+                        <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
+                            id="">
+                        @php
+                            $to_email_ids = App\Models\EmployeeJOb::with('employee')->whereHas('employee', function ($q) {
+                            $q->where('record_status', '=', 'active');
+                        })->get();
+                        @endphp
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                            <div class="form-group">
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    {{-- <option value="">Select from</option> --}}
+                                    @php
+                                        $from_email = App\Models\EmployeeJOb::with('employee')
+                                            ->where('employee_id', '=', $employee->id)
+                                            ->first();
+                                        $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                        $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $from_email->id }}">
+                                        {{ ucfirst($emp_name) . ' < ' . $from_email->work_email . ' > ' }}
+                                    </option>
+                                </select>
+                            </div>
+                        @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
+                            <div class="form-group">
+                                <label>From<span class="text-danger">*</span></label>
+                                <select name="from_id" id="from_id" class="form-control">
+                                    <option value="">Select to</option>
+                                    @foreach ($to_email_ids as $from_email)
+                                        @php
+                                            $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                            $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $from_email->id }}">
+                                            {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+                        <div class="form-group">
+                            <label>To<span class="text-danger">*</span></label>
+                            <select name="to_id[]" class="form-control select" id="to_id" multiple
+                            data-mdb-placeholder="Example placeholder" multiple>
+                                <option value="">Select to</option>
+                                @foreach ($to_email_ids as $to_email)
+                                    @php
+                                        $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                        $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $to_email->id }}">
+                                        {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label select-label">CC </label>
+                            <select name="cc[]" class="form-control select" multiple
+                                data-mdb-placeholder="Example placeholder" multiple>
+                                @foreach ($employee_jobs as $employee_job)
+                                    @php
+                                        $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                        $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                        $emp_name = $firstname . '  ' . $lastname;
+                                    @endphp
+                                    <option value="{{ $employee_job->id }}">
+                                        {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <input class="form-control" type="text" name="email_subject" id="edit_subject">
+                        </div>
+                        <div class="form-group">
+                            <label>Body<span class="text-danger">*</span></label>
+                            <textarea class="form-control ckeditor" id="edit_body" name="email_body" rows="4" cols="50"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Attachment</label>
+                            <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
+                        </div>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!---reply models --->
 
 
     @endsection
@@ -401,10 +620,16 @@
                         },
                         dataType: 'JSON',
                         success: function(data) {
-                            console.log(data.email_data, "data");
+                            // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
+                                // console.log( row.employeejob.work_email)
+                                var work_email = `<` + row.employeejob.work_email + `>`;
                                 $(".subject").html(row.subject);
                                 $(".body").html(row.body);
+                                $(".email_from_name").html(`<span>` + row.employeejob
+                                    .employee.firstname + " " + row.employeejob.employee
+                                    .lastname + `</span>` + work_email);
+                                $(".work_email").html(row.employeejob.work_email);
                             });
                             // $.each(data.email_data, function(index, row) {
                             //     $(".subject").html(row.subject);
@@ -414,6 +639,26 @@
                         },
                     });
                 });
+            });
+
+            $('.edit').on('click', function() {
+                var id = $(this).data('id');
+                var edit_from = $(this).data('email_from');
+                var edit_work_email = $(this).data('work_email');
+                var edit_email_to = $(this).data('email_to'); 
+                var edit_cc = $(this).data('email_cc');
+                var edit_date = $(this).data('email_date');
+                var edit_time = $(this).data('email_time');
+                var edit_subject = $(this).data('email_subject');
+                var body = $(this).data('email_body');
+                // console.log(edit_email_to,"email_to");
+                $('#edit_id').val(id);
+                $('#from_id').val(edit_from)
+                $('#edit_subject').val(edit_subject);
+                // $('#to_id option[value=' + edit_email_to + ']').attr('selected', true);
+                $('#to_id').val(edit_email_to);
+                $('#cc').val(edit_cc);
+                $('#edit_body').val(body);
             });
 
             function printDiv(divName) {
