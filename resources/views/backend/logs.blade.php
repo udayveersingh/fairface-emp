@@ -42,7 +42,7 @@
                             <?php
                             try {
                                 $location = \Location::get($log->location_ip); // or specific IP
-                                echo $location->cityName.','.$location->countryCode. '('.$location->zipCode.')';
+                                echo $location->cityName.','.$location->countryCode. ' ('.$location->zipCode.')';
                             } catch (\Exception $e) {
                               
                             }
