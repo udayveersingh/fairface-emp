@@ -38,7 +38,17 @@
                     @foreach ($logs as $log)
                     <tr>
                         <td>{{$log->name}}</td>
-                        <td>{{$log->name}}</td>
+                        <td>
+                            <?php
+                            try {
+                                $location = \Location::get($log->location_ip); // or specific IP
+                                echo $location->cityName.','.$location->zipCode;
+                            } catch (\Exception $e) {
+                              
+                            }
+                           
+                            ?>
+                        </td>
                         <td>{{$log->location_ip}}</td>
                         <td>{{ date('d-m-Y',strtotime($log->date_time)) }}</td>
                         <td>{{\Carbon\Carbon::parse($log->date_time)->diffForHumans()}}</td>
