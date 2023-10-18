@@ -449,7 +449,7 @@
                                 <th>Employee</th>
                                 <th>Expiry Date</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                {{-- <th>Action</th> --}}
                             </tr>
                             </thead>
                             <tbody>
@@ -461,7 +461,7 @@
                                     <td>
                                     <span class="badge bg-inverse-warning">Paasport Expiry</span>
                                     </td>
-                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
                                 </tr>
                                 @endforeach
                                 @foreach($visa_expiry_list as $user_pass_list)
@@ -472,7 +472,7 @@
                                     <td>
                                     <span class="badge bg-inverse-danger">Visa Expiry</span>
                                     </td>
-                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
                                 </tr>
                                 @endforeach
                                 @foreach($cos_expiry_list as $user_pass_list)
@@ -483,7 +483,7 @@
                                     <td>
                                     <span class="badge bg-inverse-success">COS Expiry</span>
                                     </td>
-                                    <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
                                 </tr>
                                 @endforeach
                             </tbody>

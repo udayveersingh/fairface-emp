@@ -3,7 +3,7 @@
     <div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN )
+                @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                     <li class="menu-title">
                         <span>Main</span>
                     </li>
@@ -15,7 +15,8 @@
                         <a href="{{ route('profile') }}"><i class="la la-user"></i> <span>My Info</span></a>
                     </li>
                     <li class="">
-                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i> <span>Timesheets</span></a>
+                        <a href="{{ route('employee-timesheet-list') }}"><i class="la la-calendar"></i>
+                            <span>Timesheets</span></a>
                     </li>
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Leaves</span></a>
@@ -140,20 +141,11 @@
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee
                                 leaves</span></a>
                     </li>
-                    <li class="submenu">
-                        <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"> <i
-                                class="la la-envelope-o"></i> <span>Company Email </span> <span
-                                class="menu-arrow"></span></a>
-                        <ul style="display:none;">
-                            <li>
-                                <a class="{{ route_is('company-email') ? 'active' : '' }}"
-                                    href="{{ route('company-email') }}"><span>Emails</span> <span
-                                        class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
-                            </li>
-                            <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"
-                                    href="{{ route('compose-email') }}">Compose Email</a></li>
-                        </ul>
+                    <li>
+                        <a class="{{ route_is('company-email') ? 'active' : '' }}"
+                            href="{{ route('company-email') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                     </li>
+                    {{-- <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span> --}}
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
                         <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
                             <span>Announcement</span></a>
@@ -219,8 +211,8 @@
                             href="{{ route('settings.theme') }}"><i class="la la-cog"></i> <span>Settings</span></a>
                     </li>
                     <li>
-                        <a class="{{ route_is('logs') ? 'active' : '' }}"
-                            href="{{ route('logs') }}"><i class="la la-cog"></i> <span>Logs</span></a>
+                        <a class="{{ route_is('logs') ? 'active' : '' }}" href="{{ route('logs') }}"><i
+                                class="la la-cog"></i> <span>Logs</span></a>
                     </li>
                     <!-- <li class="{{ Request::is('backups') ? 'active' : '' }}">
                     <a href="{{ route('backups') }}"

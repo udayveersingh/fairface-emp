@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\EmployeeJob;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
+use App\Models\Annoucement;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\newMailNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 
 class CompanyEmailController extends Controller
 {
@@ -28,6 +30,10 @@ class CompanyEmailController extends Controller
     {
         $title = "Company Email";
         $employee_jobs = EmployeeJob::with('employee')->get();
+        $todayDate =Carbon::now()->toDateString();
+        $annoucement_list =Annoucement::where('start_date','<=',$todayDate)
+                                        ->where('end_date','>=',$todayDate)
+                                        ->where('status','=','active')->get();
         // $company_emails = CompanyEmail::with('employeejob')->get();
 
         // $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
@@ -44,7 +50,7 @@ class CompanyEmailController extends Controller
         foreach($array_data as $value){
         } 
        // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails','annoucement_list'));
     }
 
     /**
@@ -101,7 +107,6 @@ class CompanyEmailController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
@@ -256,7 +261,7 @@ class CompanyEmailController extends Controller
         // dd($company_email->notifications);
 
         // Notification::send($company_email, new newMailNotification($company_email));
-        return back();
+        return back()->with('success', "Reply Message has been sent successfully.");
     }
 
     public function emailRead(Request $request)
