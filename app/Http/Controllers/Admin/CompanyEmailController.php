@@ -62,20 +62,24 @@ class CompanyEmailController extends Controller
     public function emailInbox()
     {
         $title = "User Email";
+        $todayDate =Carbon::now()->toDateString();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
+            $annoucement_list =Annoucement::where('start_date','<=',$todayDate)
+            ->where('end_date','>=',$todayDate)
+            ->where('status','=','active')->get();
+            $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
             // $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
-            if(empty($employee_jobs))
+            if(empty($employee_job))
             {
                 $errorMessageDuration = 'Please add job information from admin side Or contact admin.';
                 return view('backend.emails.email-inbox',compact('title','errorMessageDuration'));
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
-            $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->latest()->count();
-            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'employee_jobs','company_emails_count'));
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhere('to_id', '=', $employee_job->id)->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
+            $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
+            return view('backend.emails.email-inbox', compact('title','company_emails','company_emails_count','annoucement_list','employee_job'));
         }
     }
 
@@ -179,6 +183,7 @@ class CompanyEmailController extends Controller
      */
     public function destroy(Request $request)
     {
+        // dd($request->all());
         $company_email = CompanyEmail::find($request->id);
         $company_email->delete();
         return back()->with('success', "Company Email has been deleted successfully!!.");

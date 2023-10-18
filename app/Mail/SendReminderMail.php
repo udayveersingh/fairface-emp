@@ -6,21 +6,21 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Content;
 
-class WelcomeMail extends Mailable
+class SendReminderMail extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $emp_job_detail;
+    public array $content;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($emp_job_detail)
+    public function __construct(array $content)
     {
-        $this->emp_job_detail = $emp_job_detail;
+        $this->content = $content;
     }
 
     /**
@@ -30,6 +30,7 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->view('backend.emails.job-email');
+        // return $this->subject($this->content['subject'])
+        return $this->view('backend.emails.reminder-mail-view');
     }
 }

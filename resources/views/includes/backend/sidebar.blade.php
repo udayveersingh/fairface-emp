@@ -25,12 +25,12 @@
                         $employee = App\Models\Employee::where('user_id', '=', Auth::user()->id)->first();
                         $employee_job = App\Models\EmployeeJob::where('employee_id', '=', $employee->id)->first();
                     @endphp
-                    <li class="submenu">
+                        <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
+                                href="{{ route('user-email-inbox') }}" target=_blank><i class="la la-envelope-o"></i> <span>Company Email </span></a></li>
+                    {{-- <li class="submenu">
                         <a href="#"><i class="la la-envelope-o"></i> <span> Emails </span> <span
                                 class="menu-arrow"></span></a>
                         <ul style="display:none;">
-                            <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
-                                    href="{{ route('user-email-inbox') }}">Inbox</a></li>
                             @if (!empty($employee_job))
                                 <li><a class="{{ route_is('sent-email') ? 'active' : '' }}"
                                         href="{{ route('sent-email') }}">Sent Mail</a></li>
@@ -38,7 +38,7 @@
                                         href="{{ route('compose-email') }}">Compose Email</a></li>
                             @endif
                         </ul>
-                    </li>
+                    </li> --}}
                 @else
                     <li class="{{ route_is('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span>Home</span></a>

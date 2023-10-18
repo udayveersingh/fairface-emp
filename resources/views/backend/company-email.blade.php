@@ -110,7 +110,7 @@
                 <div class="list-group mail-list mt-3">
                     <a href="#" class="list-group-item border-0 text-success"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a> --}}
+                    <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="#" class="list-group-item border-0"><i
@@ -178,7 +178,6 @@
                             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                             <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -206,12 +205,27 @@
                                     $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
                                     $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
                                     $fullname = $from_first_name . ' ' . $from_last_name;
-                                    $to = App\Models\EmployeeJob::with('employee')
-                                        ->where('id', '=', $company_email->to_id)
-                                        ->first();
-                                    $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
-                                    $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
-                                    $to_fullname = $to_first_name . ' ' . $to_last_name;
+                                    // $to = App\Models\EmployeeJob::with('employee')
+                                    //     ->where('id', '=', $company_email->to_id)
+                                    //     ->first();
+
+                                    // $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                                    // $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                                    // $to_fullname = $to_first_name . ' ' . $to_last_name;
+
+                                    if(!empty($company_email->to_id)){
+                                        $to_ids = explode(',',$company_email->to_id);
+                                    }
+                                    $to_emails = [];
+                                    foreach($to_ids as $to_id){
+                                        $to_mail_user = App\Models\EmployeeJob::with('employee')->where('id', '=',  $to_id)->first();
+                                        $to_first_name = !empty( $to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
+                                        $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
+                                        $to_fullname = $to_first_name . ' ' . $to_last_name;
+                                        $to_emails[] =  $to_fullname;
+                                    }
+
+                                    $to_mail_users = implode(',', $to_emails);
                                     $multiple_cc = explode(',', $company_email->company_cc);
                                     $cc_emails = [];
                                     foreach ($multiple_cc as $value) {
@@ -239,7 +253,7 @@
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}">{{ ucfirst($to_last_name) }}</a>
+                                            data-subject="{{ $company_email->subject }}">{{  $to_mail_users  }}</a>
                                     </td>
 
                                     <td class="d-none d-lg-inline-block">
@@ -330,7 +344,7 @@
                                 <div class="d-flex align-items-center">
                                     <h3 class="subject">{{ $company_email->subject }}</h3>
                                     <div class="btn-group ml-auto">
-                                        <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
+                                        {{-- <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
                                             data-target="#email_edit"><i class="fa fa-edit edit"
                                                 data-id="{{ $company_email->id }}"
                                                 data-email_from="{{ $company_email->from_id }}"
@@ -340,7 +354,7 @@
                                                 data-email_time="{{ $company_email->time }}"
                                                 data-email_subject="{{ $company_email->subject }}"
                                                 data-email_body="{{ $company_email->body }}"
-                                                data-email_attachment="{{ $company_email->attachment }}"></i></div>
+                                                data-email_attachment="{{ $company_email->attachment }}"></i></div> --}}
                                         <div class="p-1 text-secondary cursor-pointer"
                                             onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
                                     </div>

@@ -449,7 +449,7 @@
                                 <th>Employee</th>
                                 <th>Expiry Date</th>
                                 <th>Status</th>
-                                {{-- <th>Action</th> --}}
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -461,29 +461,29 @@
                                     <td>
                                     <span class="badge bg-inverse-warning">Paasport Expiry</span>
                                     </td>
-                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
+                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
-                                @foreach($visa_expiry_list as $user_pass_list)
+                                @foreach($visa_expiry_list as $user_visa_list)
                                 <tr>
-                                    <td>{{ $user_pass_list->employee_id }}</td>
-                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
-                                    <td>{{ date('d-m-Y',strtotime($user_pass_list->visa_expiry_date)) }}</td>
+                                    <td>{{ $user_visa_list->employee_id }}</td>
+                                    <td> <h2><a href='/employee-detail/{{$user_visa_list->id }}'>{{ $user_visa_list->firstname.' '.$user_visa_list->lastname }}</a></h2></td>
+                                    <td>{{ date('d-m-Y',strtotime($user_visa_list->visa_expiry_date)) }}</td>
                                     <td>
                                     <span class="badge bg-inverse-danger">Visa Expiry</span>
                                     </td>
-                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
+                                    <td> <a href="{{route('send-reminder-mail',[$user_visa_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
-                                @foreach($cos_expiry_list as $user_pass_list)
+                                @foreach($cos_expiry_list as $user_cos_list)
                                 <tr>
-                                    <td>{{ $user_pass_list->employee_id }}</td>
-                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
-                                    <td>{{ date('d-m-Y',strtotime($user_pass_list->cos_expiry_date)) }}</td>
+                                    <td>{{ $user_cos_list->employee_id }}</td>
+                                    <td> <h2><a href='/employee-detail/{{$user_cos_list->id }}'>{{ $user_cos_list->firstname.' '.$user_cos_list->lastname }}</a></h2></td>
+                                    <td>{{ date('d-m-Y',strtotime($user_cos_list->cos_expiry_date)) }}</td>
                                     <td>
                                     <span class="badge bg-inverse-success">COS Expiry</span>
                                     </td>
-                                    {{-- <td> <a href="#" class="btn-sm btn-primary editbtn">Send Reminder</a></td> --}}
+                                    <td> <a href="{{route('send-reminder-mail',[$user_cos_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>
