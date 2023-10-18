@@ -53,12 +53,24 @@ class CompanyEmailController extends Controller
         return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails','annoucement_list'));
     }
 
+
+     public function unreadMails()
+     {
+        $title = "Company Email";
+        $employee_jobs = EmployeeJob::with('employee')->get();
+        $todayDate =Carbon::now()->toDateString();
+        $annoucement_list =Annoucement::where('start_date','<=',$todayDate)->where('end_date','>=',$todayDate)
+                                        ->where('status','=','active')->get();
+       $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+       $count_emails = CompanyEmail::count();
+       return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','count_emails','annoucement_list'));                       
+     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-
     public function emailInbox()
     {
         $title = "User Email";
@@ -143,6 +155,7 @@ class CompanyEmailController extends Controller
         $company_email->subject = $request->email_subject;
         $company_email->body = $request->email_body;
         $company_email->attachment = $imageName;
+        $company_email->read_at = Carbon::now();
         //  $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
         //  $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
 

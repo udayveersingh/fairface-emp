@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMessageMail;
 
 class ActivityController extends Controller
 {
@@ -30,9 +32,9 @@ class ActivityController extends Controller
         //     $data[$index] =  json_decode($value->data);
         // }
         $user_id = '';
-        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN ) {
+        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
             $user_id = Auth::user()->id;
-            $notifications = DB::table('notifications')->whereNull('read_at')->where('data->user_id',$user_id)->get();
+            $notifications = DB::table('notifications')->whereNull('read_at')->where('data->user_id', $user_id)->get();
         } elseif (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $user = Employee::where('user_id', '=', Auth::user()->id)->first();
             if (!empty($user)) {
@@ -41,7 +43,7 @@ class ActivityController extends Controller
             }
         }
         foreach ($notifications as $notifi) {
-            if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN ) {
+            if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
                 $notification = DB::table('notifications')->where('id', '!=', $notifi->id)->whereNull('read_at')->first();
             } else {
                 $notification = DB::table('notifications')->where('id', '=', $notifi->id)->whereNull('read_at')->first();
@@ -62,8 +64,18 @@ class ActivityController extends Controller
     public function logs()
     {
         $title = 'Logs';
-        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->orderBy('user_logs.date_time','DESC')->get();
-        return view('backend.logs',compact('logs','title'));
-        
+        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->orderBy('user_logs.date_time', 'DESC')->get();
+        return view('backend.logs', compact('logs', 'title'));
+    }
+
+
+    public function sendMessage(Request $request)
+    {
+        $user_email = User::where('id', '=', $request->user_id)->value('email');
+        $content = [
+            'message' => $request->email_message,
+        ];
+        Mail::to($user_email)->send(new SendMessageMail($content));
+        return "Email has been sent.";
     }
 }

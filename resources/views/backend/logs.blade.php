@@ -12,7 +12,8 @@
             <h3 class="page-title">Logs</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a
-                        @if((Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                        @if (
+                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
                                 Auth::user()->role->name == App\Models\Role::ADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Logs</li>
@@ -31,34 +32,67 @@
                         <th>IP Address</th>
                         <th>Login Date</th>
                         <th>Logged Time</th>
-                        <th class="text-right">Action</th> 
+                        <th class="text-right">Action</th>
                     </tr>
                 </thead>
-                <tbody> 
+                <tbody>
                     @foreach ($logs as $log)
-                    <tr>
-                        <td>{{$log->name}}</td>
-                        <td>
-                            <?php
-                            try {
-                                $location = \Location::get($log->location_ip); // or specific IP
-                                echo $location->cityName.','.$location->countryCode. ' ('.$location->zipCode.')';
-                            } catch (\Exception $e) {
-                              
-                            }
-                           
-                            ?>
-                        </td>
-                        <td>{{$log->location_ip}}</td>
-                        <td>{{ date('d-m-Y',strtotime($log->date_time)) }}</td>
-                        <td>{{\Carbon\Carbon::parse($log->date_time)->diffForHumans()}}</td>
-                        <td>
-                            <a class="btn-sm btn-primary editbtn"><i class="fa fa-comments m-r-5"></i> PING</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $log->name }}</td>
+                            <td>
+                                <?php
+                                try {
+                                    $location = \Location::get($log->location_ip); // or specific IP
+                                    echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
+                                } catch (\Exception $e) {
+                                }
+                                
+                                ?>
+                            </td>
+                            <td>{{ $log->location_ip }}</td>
+                            <td>{{ date('d-m-Y', strtotime($log->date_time)) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($log->date_time)->diffForHumans() }}</td>
+                            <td>
+                                <a class="btn-sm btn-primary Pingbtn" data-id="{{$log->user_id}}"><i class="fa fa-comments m-r-5"></i> PING</a>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+    <div id="ping_model" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- <h5 class="modal-title">Message</h5> --}}
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('send-message') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="user_id" id="user_id" value="">
+                        <div class="form-group">
+                            <label>Message<span class="text-danger"></span></label>
+                            <textarea class="form-control ckeditor" id="" name="email_message" rows="4" cols="50"></textarea>
+                        </div>
+                        <div class="submit-section">
+                            <button type="submit" class="btn btn-primary submit-btn mb-2">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('scripts')
+    <script>
+        $('.table').on('click', '.Pingbtn', function() {
+            $('#ping_model').modal('show');
+            var id = $(this).data('id');
+            $('#user_id').val(id);
+        });
+    </script>
 @endsection

@@ -108,9 +108,9 @@
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="#" class="list-group-item border-0 text-success"><i
+                    <a href="{{route('company-email')}}" class="list-group-item border-0 text-success"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a>
+                    <a href="{{route('unread-email')}}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="#" class="list-group-item border-0"><i

@@ -300,6 +300,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('leave-status-update',[EmployeeLeaveController::class,'LeaveStatusUpdate'])->name('leave-status-update');
     Route::delete('employee-leave',[EmployeeLeaveController::class,'destroy'])->name('leave.destroy');
 
+    Route::get('unread-email',[CompanyEmailController::class,'unreadMails'])->name('unread-email');
     Route::get('user-email-inbox',[CompanyEmailController::class,'emailInbox'])->name('user-email-inbox');
     Route::get('compose-email',[CompanyEmailController::class,'composeEmail'])->name('compose-email');
     Route::get('sent-email',[CompanyEmailController::class,'sentEmail'])->name('sent-email');
@@ -344,6 +345,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('clear-activity',[ActivityController::class,'markAsRead'])->name('clear-all');
 
     Route::get('logs',[ActivityController::class,'logs'])->name('logs');
+    Route::post('send-message',[ActivityController::class,'sendMessage'])->name('send-message');
 
     Route::get('backups',[BackupsController::class,'index'])->name('backups');
 
