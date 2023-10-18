@@ -156,6 +156,6 @@ class DashboardController extends Controller
             'regards' => 'Regards,HR Team.'
         ];
         Mail::to($employee->email)->send(new SendReminderMail($content));
-        return "Email has been sent.";
+        return back()->with('success',"Email has been sent.");
     }
 }

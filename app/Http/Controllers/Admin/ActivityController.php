@@ -76,6 +76,6 @@ class ActivityController extends Controller
             'message' => $request->email_message,
         ];
         Mail::to($user_email)->send(new SendMessageMail($content));
-        return "Email has been sent.";
+        return back()->with('success',"Email has been sent.");
     }
 }

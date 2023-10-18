@@ -68,6 +68,10 @@
                     <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
                         <span>Announcement</span></a>
                 </li>
+                <li>
+                    <a class="{{ route_is('logs') ? 'active' : '' }}" href="{{ route('logs') }}"><i
+                            class="la la-cog"></i> <span>Logs</span></a>
+                </li>
             </ul>
         </div>
     </div>

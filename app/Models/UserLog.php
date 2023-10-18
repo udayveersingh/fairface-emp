@@ -9,6 +9,6 @@ class UserLog extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'location_ip', 'location_name','message','date_time'
+        'user_id','location_ip', 'location_name','message','date_time','out_time','status'
     ];
 }
