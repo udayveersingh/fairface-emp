@@ -62,6 +62,14 @@ class ActivityController extends Controller
     public function logs()
     {
         $title = 'Logs';
+        $ip = '103.239.147.187';
+        try {
+            $location = \Location::get($ip); // or specific IP
+        } catch (\Exception $e) {
+            // Handle the exception (log, display, etc.)
+            dd($e);
+        }
+        dd( $location);
         $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->orderBy('user_logs.date_time','DESC')->get();
         return view('backend.logs',compact('logs','title'));
         
