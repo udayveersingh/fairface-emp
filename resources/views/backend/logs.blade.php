@@ -26,18 +26,35 @@
             <table class="table table-striped custom-table mb-0 datatable">
                 <thead>
                     <tr>
-                        <th>User Name</th>
+                        <th>Employee Name</th>
+                        <th>Employee Location</th>
                         <th>IP Address</th>
+                        <th>Login Date</th>
                         <th>Logged Time</th>
-                        {{-- <th class="text-right">Action</th> --}}
+                        <th class="text-right">Action</th> 
                     </tr>
                 </thead>
                 <tbody> 
                     @foreach ($logs as $log)
                     <tr>
                         <td>{{$log->name}}</td>
+                        <td>
+                            <?php
+                            try {
+                                $location = \Location::get($log->location_ip); // or specific IP
+                                echo $location->cityName.','.$location->countryCode. ' ('.$location->zipCode.')';
+                            } catch (\Exception $e) {
+                              
+                            }
+                           
+                            ?>
+                        </td>
                         <td>{{$log->location_ip}}</td>
+                        <td>{{ date('d-m-Y',strtotime($log->date_time)) }}</td>
                         <td>{{\Carbon\Carbon::parse($log->date_time)->diffForHumans()}}</td>
+                        <td>
+                            <a class="btn-sm btn-primary editbtn"><i class="fa fa-comments m-r-5"></i> PING</a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
