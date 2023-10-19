@@ -147,12 +147,12 @@ class DashboardController extends Controller
         }
     }
 
-    public function sendReminderMail($emp_id)
+    public function sendReminderMail($type,$emp_id)
     {
         $employee = Employee::find($emp_id);
         $content = [
             'name' => $employee->firstname ." ".$employee->lastname,
-            'subject' => 'This is a reminder that your <<Passport>> is expiring in next 6 months.Please contact HR and update.',
+            'subject' => 'This is a reminder that your <'.$type.'> is expiring in next 6 months.Please contact HR and update.',
             'regards' => 'Regards,HR Team.'
         ];
         Mail::to($employee->email)->send(new SendReminderMail($content));

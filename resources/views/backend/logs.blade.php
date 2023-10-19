@@ -38,8 +38,9 @@
                 </thead>
                 <tbody>
                     @foreach ($logs as $log)
+                    {{-- @dd( $log); --}}
                         <tr>
-                            <td>{{ $log->name }}</td>
+                            <td>{{ $log->name }}@if(!empty($log->status == "1")) <button type="button" class="btn btn-success btn-sm">Online</button> @else <button type="button" class="btn btn-danger btn-sm">Offline</button> @endif</td>
                             <td>
                                 <?php
                                 try {
@@ -77,7 +78,7 @@
                         <input type="hidden" name="user_id" id="user_id" value="">
                         <div class="form-group">
                             <label>Message<span class="text-danger"></span></label>
-                            <textarea class="form-control ckeditor" id="" name="email_message" rows="4" cols="50"></textarea>
+                            <textarea class="form-control" id="" name="email_message" rows="4" cols="50"></textarea>
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn mb-2">Send</button>

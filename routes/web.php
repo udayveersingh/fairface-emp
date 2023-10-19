@@ -85,7 +85,7 @@ Route::group(['middleware'=>['auth']], function (){
     
     Route::get('dashboard',[DashboardController::class,'index'])->name('dashboard');
     Route::get('employee-dashboard',[DashboardController::class,'EmployeeDashboard'])->name('employee-dashboard');
-    Route::get('send-reminder-mail/{emp_id}',[DashboardController::class,'sendReminderMail'])->name('send-reminder-mail');
+    Route::get('send-reminder-mail/{type}/{emp_id}',[DashboardController::class,'sendReminderMail'])->name('send-reminder-mail');
     Route::post('logout',[LogoutController::class,'index'])->name('logout');
 
     //apps routes

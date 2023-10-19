@@ -461,7 +461,7 @@
                                     <td>
                                     <span class="badge bg-inverse-warning">Paasport Expiry</span>
                                     </td>
-                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id,'type' =>'Passport'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
                                 @foreach($visa_expiry_list as $user_visa_list)
@@ -472,7 +472,7 @@
                                     <td>
                                     <span class="badge bg-inverse-danger">Visa Expiry</span>
                                     </td>
-                                    <td> <a href="{{route('send-reminder-mail',[$user_visa_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    <td> <a href="{{route('send-reminder-mail',[$user_visa_list->id,'type' =>'visa'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
                                 @foreach($cos_expiry_list as $user_cos_list)
@@ -483,7 +483,7 @@
                                     <td>
                                     <span class="badge bg-inverse-success">COS Expiry</span>
                                     </td>
-                                    <td> <a href="{{route('send-reminder-mail',[$user_cos_list->id])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    <td> <a href="{{route('send-reminder-mail',[$user_cos_list->id,'type'=>'cos'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
                             </tbody>
