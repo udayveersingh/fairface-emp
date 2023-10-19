@@ -39,10 +39,13 @@
                 <tbody>
                     @foreach ($logs as $log)
                         <tr>
-                            <td>{{ $log->username }}@if (!empty($log->status == '1'))
-                                    <button type="button" class="btn btn-success btn-sm">Online</button>
+                            <td> <div class="online-dot-icon">
+                                {{ $log->username }}@if (!empty($log->status == '1'))
+                                <div class="noti-dot text-success"></div>
+                               
                                 @else
-                                    <button type="button" class="btn btn-danger btn-sm">Offline</button>
+                                <div class="noti-dot text-danger"></div>
+                            </div>
                                 @endif
                             </td>
                             <td>
