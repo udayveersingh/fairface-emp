@@ -247,21 +247,24 @@
                                              data-com_email_id="{{$company_email->id}}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}">{{ ucfirst($fullname) }}</a>
+                                            data-subject="{{ $company_email->subject }}"
+                                            data-token="{{ Session::token()}}">{{ ucfirst($fullname) }}</a>
                                     </td>
 
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}">{{  $to_mail_users  }}</a>
+                                            data-subject="{{ $company_email->subject }}"
+                                            data-token="{{ Session::token()}}">{{  $to_mail_users  }}</a>
                                     </td>
 
                                     <td class="d-none d-lg-inline-block">
                                         <a href="#single-email-wrapper" class="email-msg mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}">{{ $company_email->subject }}</a>
+                                            data-subject="{{ $company_email->subject }}"
+                                            data-token="{{ Session::token()}}">{{ $company_email->subject }}</a>
                                     </td>
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
@@ -272,7 +275,8 @@
                                         @endphp
                                         <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}">{{ $date->diffForHumans() }}</a>
+                                            data-email_to="{{ $company_email->to_id }}"
+                                            data-token="{{ Session::token()}}">{{ $date->diffForHumans() }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>
@@ -638,11 +642,13 @@
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
+                    var token =  $(this).data('token');
+                    console.log(token);
                     $.ajax({
-                        type: 'GET',
+                        type:'POST',
                         url: '/mail-detail/' + from_id,
                         data: {
-                            _token: $("#csrf").val(),
+                            _token: token,
                             from_id: from_id,
                             id:id,
                         },

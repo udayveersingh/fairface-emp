@@ -38,7 +38,6 @@ class CompanyEmailController extends Controller
 
         // $company_emails = CompanyEmail::with('employeejob.employee')->select('*', DB::raw("GROUP_CONCAT(from_id SEPARATOR ',') as `from_id`"), DB::raw("GROUP_CONCAT(to_id SEPARATOR ',') as `to_id`"))->groupBy('to_id')->latest()->get();
         $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
-        // dd($company_emails);
         $count_emails = CompanyEmail::count();
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
         $notifications = DB::table('notifications')->where('type','=','App\Notifications\newMailNotification')->get();
@@ -63,6 +62,7 @@ class CompanyEmailController extends Controller
         $annoucement_list =Annoucement::where('start_date','<=',$todayDate)->where('end_date','>=',$todayDate)
                                         ->where('status','=','active')->get();
        $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+       $count_emails = CompanyEmail::count();
        $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','count_emails','count_unread_emails','annoucement_list'));                       
      }
@@ -221,9 +221,13 @@ class CompanyEmailController extends Controller
     /**
      * check mail detail 
      */
-    public function mailDetail($from_id)
+    public function mailDetail($from_id,Request $request)
     {
+        // dd($from_id, $request->all());
         $title = "mail";
+        $read_at_update = CompanyEmail::find($request->id);
+        $read_at_update->read_at =Null;
+        $read_at_update->save();
         $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $from_id)->latest()->get();
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {    
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {

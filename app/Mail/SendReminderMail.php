@@ -31,6 +31,6 @@ class SendReminderMail extends Mailable
     public function build()
     {
         // return $this->subject($this->content['subject'])
-        return $this->view('backend.emails.reminder-mail-view');
+        return $this->subject($this->content['subject_type'])->view('backend.emails.reminder-mail-view');
     }
 }

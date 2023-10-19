@@ -151,6 +151,7 @@ class DashboardController extends Controller
     {
         $employee = Employee::find($emp_id);
         $content = [
+            'subject_type' => 'Your '. $type . ' application is going to be expire soon!',
             'name' => "Dear " . $employee->firstname . " " . $employee->lastname.",",
             'subject' => "It's a reminder email to notify you that your " . $type . "  is expiring soon. Please contact HR to update your documents.",
             'regards' => 'Regards,HR Team.'
