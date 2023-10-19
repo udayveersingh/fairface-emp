@@ -25,6 +25,13 @@ if (!function_exists('getSupervisor')) {
     }
 }
 
+function getUsers()
+{
+    return User::whereHas('role', function ($q) {
+        $q->where('name', '!=', Role::SUPERADMIN);
+    })->get();
+}
+
 
 if (!function_exists('getEmployee')) {
     function getEmployee()

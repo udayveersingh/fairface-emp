@@ -8,7 +8,7 @@
     -->
 </head>
 <body>
-    <p>Dear {{$content['name']}}</p>
+    <p>{{$content['name']}}</p>
     <p>{{ $content['subject']}}</p>
     <p>{{$content['regards']}}</p>
 </body>

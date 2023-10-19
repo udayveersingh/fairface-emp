@@ -83,11 +83,11 @@ class DashboardController extends Controller
         $passport_expiry_list = Employee::whereBetween("passport_expiry_date", [date('Y-m-d'), $nextSixMonth])->get();
         $visa_expiry_list = EmployeeVisa::join('employees', 'employees.id', '=', 'employee_visas.employee_id')
             ->whereBetween("visa_expiry_date", [date('Y-m-d'), $nextSixMonth])
-            ->select(['employees.id','employees.employee_id', 'visa_expiry_date', 'employees.firstname', 'employees.lastname'])
+            ->select(['employees.id', 'employees.employee_id', 'visa_expiry_date', 'employees.firstname', 'employees.lastname'])
             ->get();
         $cos_expiry_list = EmployeeVisa::join('employees', 'employees.id', '=', 'employee_visas.employee_id')
             ->whereBetween("cos_expiry_date", [date('Y-m-d'), $nextSixMonth])
-            ->select(['employees.id','employees.employee_id', 'cos_expiry_date', 'employees.firstname', 'employees.lastname'])
+            ->select(['employees.id', 'employees.employee_id', 'cos_expiry_date', 'employees.firstname', 'employees.lastname'])
             ->get();
 
         return view('backend.dashboard', compact(
@@ -147,15 +147,15 @@ class DashboardController extends Controller
         }
     }
 
-    public function sendReminderMail($type,$emp_id)
+    public function sendReminderMail($type, $emp_id)
     {
         $employee = Employee::find($emp_id);
         $content = [
-            'name' => $employee->firstname ." ".$employee->lastname,
-            'subject' => 'This is a reminder that your <'.$type.'> is expiring in next 6 months.Please contact HR and update.',
+            'name' => "Dear " . $employee->firstname . " " . $employee->lastname.",",
+            'subject' => "It's a reminder email to notify you that your " . $type . "  is expiring soon. Please contact HR to update your documents.",
             'regards' => 'Regards,HR Team.'
         ];
         Mail::to($employee->email)->send(new SendReminderMail($content));
-        return back()->with('success',"Email has been sent.");
+        return back()->with('success', "Reminder email has been sent.");
     }
 }

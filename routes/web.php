@@ -304,7 +304,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('user-email-inbox',[CompanyEmailController::class,'emailInbox'])->name('user-email-inbox');
     Route::get('compose-email',[CompanyEmailController::class,'composeEmail'])->name('compose-email');
     Route::get('sent-email',[CompanyEmailController::class,'sentEmail'])->name('sent-email');
-    Route::get('mail-detail/{from}',[CompanyEmailController::class,'mailDetail'])->name('mail-detail');
+    Route::post('mail-detail/{from}',[CompanyEmailController::class,'mailDetail'])->name('mail-detail');
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
     Route::post('company-email',[CompanyEmailController::class,'store']);
     Route::post('reply-mail',[CompanyEmailController::class,'replyStore'])->name('reply-mail');
@@ -345,6 +345,7 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('clear-activity',[ActivityController::class,'markAsRead'])->name('clear-all');
 
     Route::get('logs',[ActivityController::class,'logs'])->name('logs');
+    Route::put('logs',[ActivityController::class,'update'])->name('logs');
     Route::post('send-message',[ActivityController::class,'sendMessage'])->name('send-message');
 
     Route::get('backups',[BackupsController::class,'index'])->name('backups');

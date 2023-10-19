@@ -40,6 +40,7 @@ class CompanyEmailController extends Controller
         $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
         // dd($company_emails);
         $count_emails = CompanyEmail::count();
+        $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
         $notifications = DB::table('notifications')->where('type','=','App\Notifications\newMailNotification')->get();
         $array_data = [];
         foreach($notifications as $index=>$notification)
@@ -50,7 +51,7 @@ class CompanyEmailController extends Controller
         foreach($array_data as $value){
         } 
        // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails','annoucement_list'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','array_data','count_emails','count_unread_emails','annoucement_list'));
     }
 
 
@@ -62,8 +63,8 @@ class CompanyEmailController extends Controller
         $annoucement_list =Annoucement::where('start_date','<=',$todayDate)->where('end_date','>=',$todayDate)
                                         ->where('status','=','active')->get();
        $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
-       $count_emails = CompanyEmail::count();
-       return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','count_emails','annoucement_list'));                       
+       $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
+       return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs','count_emails','count_unread_emails','annoucement_list'));                       
      }
 
     /**
@@ -263,6 +264,7 @@ class CompanyEmailController extends Controller
         $company_email->attachment = $imageName;
         $company_email->date = $request->email_date;
         $company_email->time = $request->email_time;
+        $company_email->read_at = Carbon::now();
         // $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
         // $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
         // $emp_job_detail = ([

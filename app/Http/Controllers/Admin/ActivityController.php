@@ -64,18 +64,33 @@ class ActivityController extends Controller
     public function logs()
     {
         $title = 'Logs';
-        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles','roles.id','=','users.role_id')->where('roles.name','!=','Super admin')->orderBy('user_logs.date_time', 'DESC')->get();
+        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles','roles.id','=','users.role_id')->select('user_logs.*','users.username','roles.name')->where('roles.name','!=','Super admin')->orderBy('user_logs.id', 'DESC')->get();
+
         return view('backend.logs', compact('logs', 'title'));
     }
 
 
     public function sendMessage(Request $request)
     {
-        $user_email = User::where('id', '=', $request->user_id)->value('email');
+        $user = User::where('id', '=', $request->user_id)->first();
         $content = [
+            'name' => "Dear". $user->name.",",
             'message' => $request->email_message,
+            'regards' => 'Regards,HR Team.'
         ];
-        Mail::to($user_email)->send(new SendMessageMail($content));
+        Mail::to($user->email)->send(new SendMessageMail($content));
         return back()->with('success',"Email has been sent.");
+    }
+
+    public function update(Request $request)
+    {
+       $user_log = UserLog::find($request->id);
+       $user_log->user_id = $request->name;
+       $user_log->location_ip = $request->ip_address;
+    //    $user_log->location_name = $request->employee_location;
+       $user_log->date_time = $request->date_time;
+       $user_log->out_time = $request->out_time;
+       $user_log->save();
+       return back()->with('success',"User Logs Data Updated Successfully."); 
     }
 }

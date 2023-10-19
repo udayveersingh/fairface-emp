@@ -109,8 +109,8 @@
 
                 <div class="list-group mail-list mt-3">
                     <a href="{{route('company-email')}}" class="list-group-item border-0 text-success"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    <a href="{{route('unread-email')}}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a>
+                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{$count_emails}})</b></a>
+                    <a href="{{route('unread-email')}}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails}})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="#" class="list-group-item border-0"><i
@@ -244,6 +244,7 @@
 
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
+                                             data-com_email_id="{{$company_email->id}}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}">{{ ucfirst($fullname) }}</a>
@@ -635,6 +636,7 @@
         <script>
             $(document).ready(function() {
                 $('.mail-detail').on('click', function() {
+                    var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
                     $.ajax({
                         type: 'GET',
@@ -642,6 +644,7 @@
                         data: {
                             _token: $("#csrf").val(),
                             from_id: from_id,
+                            id:id,
                         },
                         dataType: 'JSON',
                         success: function(data) {

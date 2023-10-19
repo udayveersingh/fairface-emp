@@ -461,7 +461,7 @@
                                     <td>
                                     <span class="badge bg-inverse-warning">Paasport Expiry</span>
                                     </td>
-                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id,'type' =>'Passport'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id,'type' =>'passport'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                 </tr>
                                 @endforeach
                                 @foreach($visa_expiry_list as $user_visa_list)

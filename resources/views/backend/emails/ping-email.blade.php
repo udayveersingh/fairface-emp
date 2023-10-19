@@ -7,6 +7,8 @@
     -->
 </head>
 <body>
+    <p>{{$content['name']}}</p>
     <p>{{ $content['message']}}</p>
+    <p>{{$content['regards']}}</p>  
 </body>
 </html>

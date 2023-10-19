@@ -24,7 +24,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-striped custom-table mb-0 datatable">
+            <table class="table table-striped custom-table mb-0 datatable" id="logtable">
                 <thead>
                     <tr>
                         <th>Employee Name</th>
@@ -33,14 +33,18 @@
                         <th>Login Date</th>
                         <th>Logout Time</th>
                         <th>Logged Time</th>
-                        <th class="text-right">Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($logs as $log)
-                    {{-- @dd( $log); --}}
                         <tr>
-                            <td>{{ $log->name }}@if(!empty($log->status == "1")) <button type="button" class="btn btn-success btn-sm">Online</button> @else <button type="button" class="btn btn-danger btn-sm">Offline</button> @endif</td>
+                            <td>{{ $log->username }}@if (!empty($log->status == '1'))
+                                    <button type="button" class="btn btn-success btn-sm">Online</button>
+                                @else
+                                    <button type="button" class="btn btn-danger btn-sm">Offline</button>
+                                @endif
+                            </td>
                             <td>
                                 <?php
                                 try {
@@ -51,11 +55,13 @@
                                 ?>
                             </td>
                             <td>{{ $log->location_ip }}</td>
-                            <td>{{ date('d-m-Y  H:i:sa', strtotime($log->date_time)) }}</td>
-                            <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i:sa', strtotime($log->out_time)):''}}</td>
+                            <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
+                            <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
                             <td>{{ \Carbon\Carbon::parse($log->date_time)->diffForHumans() }}</td>
                             <td>
-                                <a class="btn-sm btn-primary Pingbtn" data-id="{{$log->user_id}}"><i class="fa fa-comments m-r-5"></i> PING</a>
+                                <a class="btn-sm btn-primary edit_log_btn" data-id="{{$log->id}}" data-user_id="{{$log->user_id}}" data-date_time="{{$log->date_time}}" data-time_out="{{$log->out_time}}" data-location_ip="{{$log->location_ip}}" data-location_name="{{$log->location_name}}"  href="#"><i class="fa fa-pencil m-r-5"
+                                        aria-hidden="true"></i>Edit</a> <button type="button"
+                                    class="btn btn-sm btn-primary Pingbtn" data-id="{{ $log->user_id }}"><i class="fa fa-comments m-r-5"></i> PING</button>
                             </td>
                         </tr>
                     @endforeach
@@ -63,6 +69,7 @@
             </table>
         </div>
     </div>
+    <!--ping Model message -->
     <div id="ping_model" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -88,6 +95,56 @@
             </div>
         </div>
     </div>
+    <!--- ping model message --- >
+
+    <--logs Edit Model -->
+    <div id="edit_logs" class="modal custom-modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User Logs</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('logs') }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" name="id" id="logs_edit_id">
+                        <div class="form-group">
+                            <label>User Name<span class="text-danger">*</span></label>
+                            <select name="name" class="select" id="edit_user_id">
+                                @foreach (getUsers() as  $user)
+                                <option value="{{$user->id}}">{{$user->username}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Login Date Time <span class="text-danger">*</span></label>
+                                <input name="date_time" class="form-control" type="datetime" id="edit_date_time">
+                        </div>
+                        <div class="form-group">
+                            <label>Logout Date Time <span class="text-danger"></span></label>
+                                <input name="out_time" class="form-control" type="text" id="edit_out_time">
+                        </div>
+                        <div class="form-group">
+                            <label>Employee Location</label>
+                            <textarea name="employee_location" rows="4" class="form-control" id="edit_employee_location"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Employee IP Address</label>
+                            <textarea name="ip_address" rows="4" class="form-control" id="edit_ip_address"></textarea>
+                        </div>
+                        <div class="submit-section">
+                            <button class="btn btn-primary submit-btn">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- logs edit Model -->
 @endsection
 @section('scripts')
     <script>
@@ -96,5 +153,34 @@
             var id = $(this).data('id');
             $('#user_id').val(id);
         });
+
+        $('.table').on('click', '.edit_log_btn', function() {
+            $('#edit_logs').modal('show');
+            var id = $(this).data('id');
+            var user_id = $(this).data('user_id');
+            var date_time = $(this).data('date_time');
+            var time_out= $(this).data('time_out');
+            var location_ip = $(this).data('location_ip');
+            var location_address = $(this).data('location_name');
+            $('#logs_edit_id').val(id);
+            $('#edit_user_id').val(user_id).trigger('change');
+            $('#edit_date_time').val(date_time);
+            $('#edit_out_time').val(time_out);
+            $('#edit_ip_address').val(location_ip);
+            $('#edit_employee_location').val(location_address);
+        });
+
+        if ($('.dateTime').length > 0) {
+            $('.dateTime').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
     </script>
 @endsection
