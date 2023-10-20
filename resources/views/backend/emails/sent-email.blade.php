@@ -192,13 +192,18 @@
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a> --}}
+                    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE || Auth::user()->role->name == App\Models\Role::SUPERVISOR)
+                        <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>({{$count_emails}})</b></a>
+                    @else
+                        <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>({{$count_emails}})</b></a>
+                    @endif
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{$count_unread_emails}})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent</a>
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{count($company_emails)}})</b></a>
                 </div>
 
             </div>
@@ -272,11 +277,11 @@
                 <table class="table table-hover mails m-0 no-border emails_list" style="border:none;">
                     <thead>
                         <tr>
-                            {{-- <th>From</th> --}}
+                            <th>From</th>
                             <th>To</th>
                             <th>Subject</th>
-                            <th>Date</th>
-                            <th class="text-right">Action</th>
+                            <th class="text-center">Date & Time</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -321,12 +326,12 @@
                                         </div>
                                     </td> --}}
 
-                                    {{-- <td>
+                                    <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}">{{ ucfirst($fullname) }}</a>
-                                    </td> --}}
+                                    </td>
 
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
@@ -344,12 +349,12 @@
                                         <i class="fa fa-paperclip"></i>
                                     </td>
                                     <td class="text-right mail-time">
-                                        @php
+                                        {{-- @php
                                             $date = \Carbon\Carbon::parse($company_email->date);
-                                        @endphp
+                                        @endphp --}}
                                         <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}">{{ $date->diffForHumans() }}</a>
+                                            data-email_to="{{ $company_email->to_id }}">{{date('d-m-Y H:i',strtotime($company_email->created_at)) }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>

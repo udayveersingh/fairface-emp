@@ -25,8 +25,9 @@
                         $employee = App\Models\Employee::where('user_id', '=', Auth::user()->id)->first();
                         $employee_job = App\Models\EmployeeJob::where('employee_id', '=', $employee->id)->first();
                     @endphp
-                        <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
-                                href="{{ route('user-email-inbox') }}" target=_blank><i class="la la-envelope-o"></i> <span>Company Email </span></a></li>
+                    <li><a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
+                            href="{{ route('user-email-inbox') }}" target=_blank><i class="la la-envelope-o"></i>
+                            <span>Company Email </span></a></li>
                     {{-- <li class="submenu">
                         <a href="#"><i class="la la-envelope-o"></i> <span> Emails </span> <span
                                 class="menu-arrow"></span></a>
@@ -63,10 +64,12 @@
                                     href="{{ route('holidays') }}">Public Holidays</a></li>
                             <li><a class="{{ route_is('leave-type') ? 'active' : '' }}"
                                     href="{{ route('leave-type') }}">Leave Type</a></li>
-                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa
-                                    Type</a></li>
                             <li><a class="{{ route_is('departments') ? 'active' : '' }}"
                                     href="{{ route('departments') }}">Departments</a></li>
+                            <li><a class="{{ route_is('expense-type') ? 'active' : '' }}"
+                                    href="{{ route('expense-type') }}">Expense Type</a></li>
+                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa
+                                    Type</a></li>
                             <li><a class="{{ route_is(['projects', 'project-list']) ? 'active' : '' }}"
                                     href="{{ route('project-list') }}">Projects</a></li>
                             <li><a class="{{ route_is('project-phase') ? 'active' : '' }}"
@@ -77,8 +80,6 @@
                                     href="{{ route('designations') }}">Designations</a></li>
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
-
-                            <!-- <li><a class="{{ route_is('overtime') ? 'active' : '' }}" href="{{ route('overtime') }}">Overtime</a></li> -->
 
                             {{-- <li><a class="{{ route_is('employees.attendance') ? 'active' : '' }}" href="{{route('employees.attendance')}}">Attendance</a></li> --}}
                             {{-- <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li> --}}
@@ -142,14 +143,15 @@
                                 leaves</span></a>
                     </li>
                     <li>
-                        <a class="{{ route_is('company-email') ? 'active' : '' }}"
-                            href="{{ route('company-email') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
+                        <a class="{{ route_is('company-email') ? 'active' : '' }}" href="{{ route('company-email') }}"
+                            target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                     </li>
                     {{-- <span class="badge badge-pill">{{ count(getEmailCounts()) }}</span> --}}
                     <li class="{{ route_is('announcement') ? 'active' : '' }}">
                         <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
                             <span>Announcement</span></a>
                     </li>
+                    <li><a class="{{ route_is('expenses') ? 'active' : '' }}" href="{{ route('expenses') }}"><i class="fa fa-money"></i><span>Expenses</span></a></li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
                 </li> --}}
@@ -172,7 +174,6 @@
                     <a href="#"><i class="la la-files-o"></i> <span> Accounts </span> <span class="menu-arrow"></span></a>
                     <ul style="display: none;">
                         <li><a class="{{ route_is('invoices.*') ? 'active' : '' }}" href="{{ route('invoices.index') }}">Invoices</a></li>
-                        <li><a class="{{ route_is('expenses') ? 'active' : '' }}" href="{{ route('expenses') }}">Expenses</a></li>
                         <li><a class="{{ route_is('provident-fund') ? 'active' : '' }}" href="{{ route('provident-fund') }}">Provident Fund</a></li>
                         <li><a class="{{ route_is('taxes') ? 'active' : '' }}" href="{{ route('taxes') }}">Taxes</a></li>
                     </ul>

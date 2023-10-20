@@ -53,6 +53,7 @@ use App\Http\Controllers\Admin\ProjectPhaseController;
 use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
 use App\Http\Controllers\AnnoucementController;
+use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\PdfController;
 
 /*
@@ -220,6 +221,11 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('leave-type',[LeaveTypeController::class,'store']);
     Route::delete('leave-type',[LeaveTypeController::class,'destroy'])->name('leave-type.destroy');
     Route::put('leave-type',[LeaveTypeController::class,'update']);
+
+    Route::get('expense-type',[ExpenseTypeController::class,'index'])->name('expense-type');
+    Route::post('expense-type',[ExpenseTypeController::class,'store']);
+    Route::delete('expense-type',[ExpenseTypeController::class,'destroy'])->name('expense-type.destroy');
+    Route::put('expense-type',[ExpenseTypeController::class,'update']);
 
     Route::get('policies',[PolicyController::class,'index'])->name('policies');
     Route::post('policies',[PolicyController::class,'store']);

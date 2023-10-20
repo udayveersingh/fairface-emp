@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
+use App\Models\LeaveType;
+use App\Models\Project;
+use App\Models\ProjectPhase;
+use App\Models\TimesheetStatus;
 
 class ExpenseController extends Controller
 {
@@ -17,8 +22,20 @@ class ExpenseController extends Controller
     {
         $title = 'expenses';
         $expenses = Expense::get();
-        return view('backend.expenses',compact(
-            'title','expenses'
+        $timesheet_statuses = TimesheetStatus::get();
+        $leave_types = LeaveType::get();
+        $employees = Employee::get();
+        $projects = Project::get();
+        $project_phases = ProjectPhase::get();
+        return view('backend.expenses', compact(
+            'title',
+            'expenses',
+            'expenses',
+            'timesheet_statuses',
+            'leave_types',
+            'employees',
+            'projects',
+            'project_phases'
         ));
     }
 
@@ -30,36 +47,34 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'name' => 'required',
-            'user' => 'required',
-            'seller' => 'required',
-            'date' => 'nullable',
-            'payment_method' => 'required',
-            'amount' => 'required',
-            'file' => 'nullable|file',
-            'status' => 'required'
+        $this->validate($request, [
+            'expense_type' => 'required',
+            'employee' => 'required',
+            'supervisor' => 'required',
+            'project' => 'required',
+            'project_phase_id' => 'required',
+            'timesheet_status' => 'required'
         ]);
-        $file_name = null;
-        if($request->hasFile('file')){
-            $file_name = time().'.'.$request->file->extension();
-            $request->file->move(public_path('storage/expenses'), $file_name);
-        }
+        // $file_name = null;
+        // if ($request->hasFile('file')) {
+        //     $file_name = time() . '.' . $request->file->extension();
+        //     $request->file->move(public_path('storage/expenses'), $file_name);
+        // }
         Expense::create([
-            'name' => $request->name,
-            'user_id' => $request->user ?? auth()->user()->id,
-            'purchased_from' => $request->seller,
-            'purchased_date' => $request->date,
-            'payment_method' => $request->payment_method,
-            'amount' => $request->amount,
-            'file' => $file_name,
-            'status' => $request->status ?? 'Approved',
+            'Expense_type_id' => $request->expense_type,
+            'employee_id' =>$request->expense_type,
+            'supervisor_id' => $request->supervisor,
+            'project_id' => $request->project,
+            'project_phase_id' => $request->project_phase_id,
+            'timesheet_status_id' => $request->timesheet_status,
+            'status_reason' => $request->status_reason,
+            'approved_date_time' => $request->approved_date_time,
         ]);
         $notification = notify('expense has been created');
         return back()->with($notification);
     }
 
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -70,7 +85,7 @@ class ExpenseController extends Controller
      */
     public function update(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'name' => 'required',
             'user' => 'required',
             'seller' => 'required',
@@ -82,8 +97,8 @@ class ExpenseController extends Controller
         ]);
         $expense = Expense::findOrFail($request->id);
         $file_name = $expense->file;
-        if($request->hasFile('file')){
-            $file_name = time().'.'.$request->file->extension();
+        if ($request->hasFile('file')) {
+            $file_name = time() . '.' . $request->file->extension();
             $request->file->move(public_path('storage/expenses'), $file_name);
         }
         $expense->update([

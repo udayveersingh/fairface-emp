@@ -69,31 +69,31 @@
             <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="fa fa-home"></i></a>
         </div>
         <div class="col">
-            @if(count($annoucement_list)>0)
-            <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade"
-                data-ride="carousel">
-                <div class="carousel-inner">
-                    @foreach($annoucement_list as $key=>$annoucement)
-                    <div class="carousel-item {{ $key==0?'active':'' }}"> 
-                        <strong>{{ $annoucement->description }}</strong>
-                    </div>
-                    @endforeach
-                    {{-- <div class="carousel-item">
+            @if (count($annoucement_list) > 0)
+                <div id="carouselExampleFade"
+                    class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach ($annoucement_list as $key => $annoucement)
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                <strong>{{ $annoucement->description }}</strong>
+                            </div>
+                        @endforeach
+                        {{-- <div class="carousel-item">
                         <strong>Announcement Two!</strong> You should check in on some of those fields below.
                     </div>
                     <div class="carousel-item">
                         <strong>Announcement Three!</strong> You should check in on some of those fields below.
                     </div> --}}
-                </div>
-                <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
-                    @foreach($annoucement_list as $key=>$annoucement)
-                    <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
-                @endforeach
-                    {{-- <li data-target="#carouselExampleFade" data-slide-to="0" class="active"></li>
+                    </div>
+                    <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
+                        @foreach ($annoucement_list as $key => $annoucement)
+                            <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
+                        @endforeach
+                        {{-- <li data-target="#carouselExampleFade" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleFade" data-slide-to="1"></li>
                     <li data-target="#carouselExampleFade" data-slide-to="2"></li> --}}
-                </ol>
-            </div>
+                    </ol>
+                </div>
             @endif
         </div>
     </div>
@@ -108,13 +108,14 @@
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="{{route('company-email')}}" class="list-group-item border-0 text-success"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{$count_emails}})</b></a>
-                    <a href="{{route('unread-email')}}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails}})</b></a>
+                    <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
+                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
+                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
-                    <a href="#" class="list-group-item border-0"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent</a>
+                    <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{$sent_email_count}})</b></a>
                 </div>
 
             </div>
@@ -213,16 +214,18 @@
                                     // $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
                                     // $to_fullname = $to_first_name . ' ' . $to_last_name;
 
-                                    if(!empty($company_email->to_id)){
-                                        $to_ids = explode(',',$company_email->to_id);
+                                    if (!empty($company_email->to_id)) {
+                                        $to_ids = explode(',', $company_email->to_id);
                                     }
                                     $to_emails = [];
-                                    foreach($to_ids as $to_id){
-                                        $to_mail_user = App\Models\EmployeeJob::with('employee')->where('id', '=',  $to_id)->first();
-                                        $to_first_name = !empty( $to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
+                                    foreach ($to_ids as $to_id) {
+                                        $to_mail_user = App\Models\EmployeeJob::with('employee')
+                                            ->where('id', '=', $to_id)
+                                            ->first();
+                                        $to_first_name = !empty($to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
                                         $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
                                         $to_fullname = $to_first_name . ' ' . $to_last_name;
-                                        $to_emails[] =  $to_fullname;
+                                        $to_emails[] = $to_fullname;
                                     }
 
                                     $to_mail_users = implode(',', $to_emails);
@@ -244,11 +247,11 @@
 
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
-                                             data-com_email_id="{{$company_email->id}}"
+                                            data-com_email_id="{{ $company_email->id }}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token()}}">{{ ucfirst($fullname) }}</a>
+                                            data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
                                     </td>
 
                                     <td>
@@ -256,7 +259,7 @@
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token()}}">{{  $to_mail_users  }}</a>
+                                            data-token="{{ Session::token() }}">{{ $to_mail_users }}</a>
                                     </td>
 
                                     <td class="d-none d-lg-inline-block">
@@ -264,19 +267,20 @@
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token()}}">{{ $company_email->subject }}</a>
+                                            data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
                                     </td>
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
                                     </td>
                                     <td class="text-right mail-time">
-                                        @php
-                                            $date = \Carbon\Carbon::parse($company_email->date);
-                                        @endphp
+                                        {{-- @php
+                                            $date = \Carbon\Carbon::parse($company_email->created_at);
+                                        @endphp --}}
                                         <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-token="{{ Session::token()}}">{{ $date->diffForHumans() }}</a>
+                                            data-subject="{{ $company_email->subject }}"
+                                            data-token="{{ Session::token() }}">{{date('d-m-Y H:i',strtotime($company_email->created_at))}}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>
@@ -369,7 +373,7 @@
                                     <div class="from email_from_name">
                                         <span>{{ $from_name }}</span>
                                         <span class="work_email">
-                                            < {{ !empty($from->work_email) ? $from->work_email:''}}>
+                                            < {{ !empty($from->work_email) ? $from->work_email : '' }}>
                                         </span>
                                     </div>
                                     @php
@@ -389,7 +393,7 @@
                                 <div>
                                     <div class="from email_from_name">
                                         <span>{{ ucfirst($from_name) }}</span>
-                                        <{{ !empty($from->work_email) ? $from->work_email:'' }}>
+                                        <{{ !empty($from->work_email) ? $from->work_email : '' }}>
                                     </div>
                                     <div class="date ml-auto">{{ $date->diffForHumans() }}</div>
                                 </div>
@@ -536,14 +540,21 @@
                     <div class="modal-body">
                         <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="hidden" value="" id="edit_id" name="id">
-                            <input type="hidden" value="" id="reply_from_id" name="from_id">
-                            <input type="hidden" value="" id="reply_to_ids" name="to_id[]">
-                            <input type="hidden" value="" id="reply_subject" name="subject">
+                            @foreach ($company_emails as $index => $company_email)
+                            @php
+                                if ($index > 0) {
+                                    break;
+                                }
+                                @endphp
+                            <input type="hidden" value="{{!empty($company_email->id) ? $company_email->id:'' }}" id="edit_id" name="id">
+                            <input type="hidden" value="{{!empty($company_email->from_id) ? $company_email->from_id:''}}" id="reply_from_id" name="from_id">
+                            <input type="hidden" value="{{!empty($company_email->to_id) ? $company_email->to_id:''}}" id="reply_to_ids" name="to_id[]">
+                            <input type="hidden" value="{{!empty($company_email->subject) ? $company_email->subject:''}}" id="reply_subject" name="subject">
                             <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
                                 id="">
                             <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
                                 id="">
+                          @endforeach
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
@@ -642,15 +653,15 @@
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
-                    var token =  $(this).data('token');
+                    var token = $(this).data('token');
                     console.log(token);
                     $.ajax({
-                        type:'POST',
+                        type: 'POST',
                         url: '/mail-detail/' + from_id,
                         data: {
                             _token: token,
                             from_id: from_id,
-                            id:id,
+                            id: id,
                         },
                         dataType: 'JSON',
                         success: function(data) {

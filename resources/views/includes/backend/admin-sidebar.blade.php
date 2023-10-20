@@ -50,19 +50,9 @@
                     <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Employee
                             leaves</span></a>
                 </li>
-                <li class="submenu">
-                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"> <i
-                            class="la la-envelope-o"></i> <span>Company Email </span> <span
-                            class="menu-arrow"></span></a>
-                    <ul style="display:none;">
-                        <li>
-                            <a class="{{ route_is('company-email') ? 'active' : '' }}"
-                                href="{{ route('company-email') }}"><span>Emails</span> <span
-                                    class="badge badge-pill">{{ count(getEmailCounts()) }}</span></a>
-                        </li>
-                        <li><a class="{{ route_is('compose-email') ? 'active' : '' }}"
-                                href="{{ route('compose-email') }}">Compose Email</a></li>
-                    </ul>
+                <li>
+                    <a class="{{ route_is('company-email') ? 'active' : '' }}"
+                        href="{{ route('company-email') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                 </li>
                 <li class="{{ route_is('announcement') ? 'active' : '' }}">
                     <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
