@@ -20,62 +20,85 @@
                     </div>
                 </div>
             </div>
-            @if(count($annoucement_list)>0)
+            @if (count($annoucement_list) > 0)
                 <h1 class="dash-sec-title ml-3">Latest Annoucements</h1>
                 <div class="col-md-12 mb-4">
-                    <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
+                    <div id="carouselExampleFade"
+                        class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade"
+                        data-ride="carousel">
                         <div class="carousel-inner">
-                            @foreach($annoucement_list as $key=>$annoucement)
-                            <div class="carousel-item {{ $key==0?'active':'' }}"> 
-                                <strong>{{ $annoucement->description }}</strong>
-                            </div>
+                            @foreach ($annoucement_list as $key => $annoucement)
+                                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                    <strong>{{ $annoucement->description }}</strong>
+                                </div>
                             @endforeach
-                        </div>  
+                        </div>
                         <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
-                            @foreach($annoucement_list as $key=>$annoucement)
-                                <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
+                            @foreach ($annoucement_list as $key => $annoucement)
+                                <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class="">
+                                </li>
                             @endforeach
                         </ol>
                     </div>
                 </div>
-            @endif 
+            @endif
         </div>
         <section>
-            
-        <div class="row">
-            <div class="col-md-12 d-flex">
-                <h1 class="dash-sec-title">Recent Stats</h1>
-            </div>
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="request-btn">
-                            <div class="dash-stats-list">
-                                @if (!empty($employee_leaves) && count($employee_leaves) > 0)
-                                    <h4>{{ count($employee_leaves) }}</h4>
-                                @else
-                                    <h4>0</h4>
-                                @endif
-                                <p>Leave Taken</p>
+
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <h1 class="dash-sec-title">Recent Status</h1>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="request-btn">
+                                <div class="dash-stats-list">
+                                    @if (!empty($employee_leaves) && $employee_leaves > 0)
+                                        <h4>{{ $employee_leaves }}</h4>
+                                    @else
+                                        <h4>0</h4>
+                                    @endif
+                                    <p> Total Annual Leaves Taken this Year</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="request-btn">
+                                <div class="dash-stats-list">
+                                    @if (!empty($remaining_leaves) && $remaining_leaves > 0)
+                                        <h4>{{ $remaining_leaves }}</h4>
+                                    @else
+                                        <h4>0</h4>
+                                    @endif
+                                    <p>Annual Leaves Remaining</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="request-btn">
+                                <div class="dash-stats-list">
+                                    @if (!empty($employee_sick_leaves) && $employee_sick_leaves > 0)
+                                        <h4>{{ $employee_sick_leaves }}</h4>
+                                    @else
+                                        <h4>0</h4>
+                                    @endif
+                                    <p>Total Sick Leaves taken</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="request-btn">
-                            <div class="dash-stats-list">
-                                <h4>{{ $timesheet_submitted_count }}</h4>
-                                <p>Timesheet submmited</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            
+
             <div class="row">
                 <div class="col-md-12 d-flex">
                     <h1 class="dash-sec-title">Recent Submission</h1>
@@ -86,29 +109,30 @@
                             <div class="table-responsive">
                                 <table class="table table-nowrap custom-table mb-0">
                                     <thead>
-                                    <tr>
-                                        <th>Leave Type</th>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>Status</th>
-                                        <th>Submitted </th>
-                                    </tr>
+                                        <tr>
+                                            <th>Leave Type</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Status</th>
+                                            <th>Submitted </th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($leaves_list as $leave)
-                                        <tr>
-                                            <td>{{ $leave->type }}</td>
-                                            <td>{{ date('d-m-Y',strtotime($leave->from)) }}</td>
-                                            <td>{{  date('d-m-Y',strtotime($leave->to))  }}</td>
-                                            <td>
-                                                <span class="badge {{ $leave->status=='approved'?'bg-success':'bg-inverse-warning' }}">{{ $leave->status }}</span>
-                                            </td>
-                                            <td>{{  date('d-m-Y',strtotime($leave->created_at)) }}</td>
-                                            
-                                            
-                                        </tr>
+                                        @foreach ($leaves_list as $leave)
+                                            <tr>
+                                                <td>{{ $leave->type }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($leave->from)) }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($leave->to)) }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge {{ $leave->status == 'approved' ? 'bg-success' : 'bg-inverse-warning' }}">{{ $leave->status }}</span>
+                                                </td>
+                                                <td>{{ date('d-m-Y', strtotime($leave->created_at)) }}</td>
+
+
+                                            </tr>
                                         @endforeach
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -121,28 +145,29 @@
                             <div class="table-responsive">
                                 <table class="table table-nowrap custom-table mb-0">
                                     <thead>
-                                    <tr>
-                                        <th>Timesheet ID</th>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>Status</th>
-                                        <th>Submitted</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Timesheet ID</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Status</th>
+                                            <th>Submitted</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($timesheet_list as $timesheet)
-                                        <tr>
-                                            <td>{{ $timesheet->timesheet_id }}</td>
-                                            <td>{{ date('d-m-Y',strtotime($timesheet->start_date)) }}</td>
-                                            <td>{{  date('d-m-Y',strtotime($timesheet->end_date))  }}</td>
-                                            <td>
-                                                <span class="badge {{ $timesheet->status=='approved'?'bg-success':'bg-inverse-warning' }}">{{ $timesheet->status }}</span>
-                                            </td>
-                                            <td>{{  date('d-m-Y',strtotime($timesheet->created_at)) }}</td>
-                                            
-                                        </tr>
+                                        @foreach ($timesheet_list as $timesheet)
+                                            <tr>
+                                                <td>{{ $timesheet->timesheet_id }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($timesheet->start_date)) }}</td>
+                                                <td>{{ date('d-m-Y', strtotime($timesheet->end_date)) }}</td>
+                                                <td>
+                                                    <span
+                                                        class="badge {{ $timesheet->status == 'approved' ? 'bg-success' : 'bg-inverse-warning' }}">{{ $timesheet->status }}</span>
+                                                </td>
+                                                <td>{{ date('d-m-Y', strtotime($timesheet->created_at)) }}</td>
+
+                                            </tr>
                                         @endforeach
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -157,13 +182,12 @@
                     <h1 class="dash-sec-title">Latest Notifications</h1>
                     <div class="dash-sec-content">
                         @if (count(getEmployeeLeaveApprovedNotification()) > 0)
-                        @foreach (getEmployeeLeaveApprovedNotification() as $index => $notification)
-                            @php
-                                if($index > 1)
-                                {
-                                    break;
-                                }
-                            @endphp
+                            @foreach (getEmployeeLeaveApprovedNotification() as $index => $notification)
+                                @php
+                                    if ($index > 1) {
+                                        break;
+                                    }
+                                @endphp
                                 <div class="dash-info-list">
                                     <a href="#" class="dash-card text-danger">
                                         <div class="row">
@@ -186,7 +210,7 @@
                                 </div>
                             @endforeach
                         @endif
-                       
+
                         {{-- <div class="dash-info-list">
                             <a href="#" class="dash-card">
                                 <div class="dash-card-container">
