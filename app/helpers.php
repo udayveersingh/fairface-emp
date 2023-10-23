@@ -98,8 +98,8 @@ if (!function_exists('getEmployeeJob')) {
     }
 }
 
-if (!function_exists('getLeaveStatus')) {
-    function getLeaveStatus()
+if (!function_exists('getTimesheetStatus')) {
+    function getTimesheetStatus()
     {
         return TimesheetStatus::where('status', '!=', TimesheetStatus::SUBMITTED)->where('status', '!=', TimesheetStatus::PENDING_APPROVED)->get();
     }

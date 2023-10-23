@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Captcha;
 
 class LoginController extends Controller
 {
@@ -23,6 +24,7 @@ class LoginController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
+            'captcha' => 'required',
         ]);
         $authenticate = auth()->attempt($request->only('email', 'password'));
     //    $user_log= Log::info('User Logged in Successful whose id:'. Auth::id());
@@ -42,5 +44,11 @@ class LoginController extends Controller
         } else {
             return redirect()->route('employee-dashboard');
         }
+    }
+
+
+     public function reloadCaptcha()
+    {
+        return response()->json(['captcha'=> Captcha::img()]);
     }
 }

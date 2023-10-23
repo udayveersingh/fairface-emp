@@ -65,6 +65,17 @@
 		
 		<!-- Custom JS -->
 		<script src="{{asset('assets/js/app.js')}}"></script>
-		
+		<script>    
+			$('#reload').click(function () {
+				$.ajax({
+					type: 'GET',
+					url: 'reload-captcha',
+					success: function (data) {
+					    console.log(data , "data data");
+						$(".captcha span").html(data.captcha);
+					}
+				});
+			});
+			</script>
     </body>
 </html>

@@ -15,7 +15,7 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('Expense_type_id')->nullable()->constrained('expense_types')->onDelete('cascade');
+            $table->foreignId('expense_type_id')->nullable()->constrained('expense_types')->onDelete('cascade');
             $table->foreignId('employee_id')->nullable()->constrained('employees')->onDelete('cascade');
             $table->foreignId('supervisor_id')->nullable()->constrained('employees')->onDelete('cascade');
             $table->foreignId('project_id')->nullable()->constrained('projects')->onDelete('cascade');

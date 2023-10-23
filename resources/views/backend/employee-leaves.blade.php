@@ -404,7 +404,7 @@
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" id="edit_status" class="select form-control">
                                     <option value="">Select TimeSheet Status</option>
-                                    @foreach (getLeaveStatus() as $time_status)
+                                    @foreach (getTimesheetStatus() as $time_status)
                                         <option value="{{ $time_status->id }}">
                                             {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                     @endforeach
@@ -469,7 +469,7 @@
                                     <select name="timesheet_status" id=""
                                         class="select form-control  {{ $errors->has('timesheet_status') ? ' is-invalid' : '' }}">
                                         <option value="">Select Status</option>
-                                        @foreach (getLeaveStatus() as $time_status)
+                                        @foreach (getTimesheetStatus() as $time_status)
                                             <option value="{{ $time_status->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach

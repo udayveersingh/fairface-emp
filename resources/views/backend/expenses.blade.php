@@ -44,20 +44,43 @@
                     </thead>
                     <tbody>
                         @foreach ($expenses as $expense)
+                            @php
+                                $firstName = !empty($expense->employee->firstname) ? $expense->employee->firstname : '';
+                                $lastName = !empty($expense->employee->lastname) ? $expense->employee->lastname : '';
+                                $emp_full_name = $firstName . ' ' . $lastName;
+
+                                $supervisor_id = $expense->supervisor_id;
+                                $get_suepervisor = app\models\Employee::find($expense->supervisor_id);
+                                $sup_firstname = !empty($get_suepervisor->firstname) ? $get_suepervisor->firstname : '';
+                                $sup_lastname = !empty($get_suepervisor->lastname) ? $get_suepervisor->lastname : '';
+                                $sup_fullname = $sup_firstname . ' ' . $sup_lastname;
+                            @endphp
                             <tr>
+                                <td>{{ !empty($expense->expensetype->type) ? $expense->expensetype->type : '' }}</td>
+                                <td>{{ ucfirst($emp_full_name) }}</td>
+                                <td>{{ ucfirst($sup_fullname) }}</td>
+                                <td>{{ !empty($expense->project->name) ? $expense->project->name : '' }}</td>
+                                <td>{{ !empty($expense->projectphase->name) ? $expense->projectphase->name : '' }}</td>
+                                <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }}
+                                </td>
+                                <td>{{ $expense->status_reason }}</td>
+                                <td>{{ $expense->approved_date_time }}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <a class="dropdown-item editbtn" href="javascript:void(0)"
-                                                data-id="{{ $expense->id }}" data-user="{{ $expense->user_id }}"
-                                                data-amount="{{ $expense->amount }}"
-                                                data-paymethod="{{ $expense->payment_method }}"
-                                                data-status="{{ $expense->status }}" data-name="{{ $expense->name }}"
-                                                data-date="{{ $expense->purchased_date }}"
-                                                data-seller="{{ $expense->purchased_from }}"><i
-                                                    class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                data-id="{{ $expense->id }}"
+                                                data-expense_type_id ="{{$expense->expense_type_id}}"
+                                                data-employee_id="{{ $expense->employee_id }}"
+                                                data-supervisor_id="{{ $expense->supervisor_id }}"
+                                                data-project_id="{{ $expense->project_id }}"
+                                                data-project_phase_id="{{ $expense->project_phase_id }}"
+                                                data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
+                                                data-status_reason="{{ $expense->status_reason }}"
+                                                data-approved_date_time="{{ $expense->approved_date_time }}">
+                                                <i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a class="dropdown-item deletebtn" href="javascript:void(0)"
                                                 data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
                                                 Delete</a>
@@ -132,6 +155,7 @@
                                 <div class="form-group">
                                     <label>Projects</label>
                                     <select name="project" class="select">
+                                        <option value="">Select Project</option>
                                         @foreach ($projects as $project)
                                             <option value="{{ $project->id }}">{{ $project->name }}</option>
                                         @endforeach
@@ -143,8 +167,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Project Phase</label>
-                                    <select name="project_phase_id" id="project_phase" class="select form-control">
-                                        <option value="">Select Project</option>
+                                    <select name="project_phase_id" class="select form-control">
+                                        <option value="">Select Project Phase</option>
                                         @foreach ($project_phases as $project_phase)
                                             <option value="{{ $project_phase->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($project_phase->name)) }}</option>
@@ -154,7 +178,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Leave Status<span class="text-danger">*</span></label>
+                                    <label>Status<span class="text-danger">*</span></label>
                                     <select name="timesheet_status" class="select form-control">
                                         <option value="">Select TimeSheet Status</option>
                                         @foreach ($timesheet_statuses as $time_status)
@@ -206,35 +230,25 @@
                     <form action="{{ route('expenses') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="row">
-                            <input type="hidden" name="id" id="edit_id">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Item Name</label>
-                                    <input class="form-control" id="edit_name" name="name" type="text">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Purchase From</label>
-                                    <input class="form-control" id="edit_seller" name="seller" type="text">
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" id="edit_id" name="id">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Purchase Date</label>
-                                    <div class="cal-icon"><input id="edit_date" name="date"
-                                            class="form-control datetimepicker" type="text"></div>
+                                    <label>Expense Type <span class="text-danger">*</span></label>
+                                    <select name="expense_type" class="select" id="expense_type_id">
+                                        @foreach ($expensive_type as $type)
+                                            <option value="{{ $type->id }}">{{ $type->type }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Purchased By </label>
-                                    <select class="select" id="edit_user" name="user">
-                                        @foreach (\App\Models\User::get() as $user)
-                                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    <label>Employee</label>
+                                    <select name="employee" class="select" id="employee_id">
+                                        @foreach ($employees as $employee)
+                                            <option value="{{ $employee->id }}">{{ $employee->firstname }}
+                                                {{ $employee->lastname }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -243,17 +257,31 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Amount</label>
-                                    <input placeholder="50" id="edit_amount" name="amount" class="form-control"
-                                        type="text">
+                                    <label>Supervisor</label>
+                                    <select name="supervisor" class="select form-control" id="supervisor_id">
+                                        @foreach (getSupervisor() as $sup)
+                                            @php
+                                                $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
+                                                $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                                $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                                $fullname = $firstname . ' ' . $lastname;
+                                            @endphp
+                                            @if (!empty($supervisor))
+                                                <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                                    {{ $fullname }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Paid By</label>
-                                    <select class="select" id="edit_paymethod" name="payment_method">
-                                        <option>Cash</option>
-                                        <option>Cheque</option>
+                                    <label>Projects</label>
+                                    <select name="project" id="project_id" class="select form-control">
+                                        <option value="">Select Project</option>
+                                        @foreach ($projects as $project)
+                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -261,21 +289,46 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Status</label>
-                                    <select class="select" id="edit_status" name="status">
-                                        <option>Pending</option>
-                                        <option>Approved</option>
+                                    <label>Project Phase</label>
+                                    <select name="project_phase_id" id="project_phase_id" class="select form-control">
+                                        <option value="">Select Project</option>
+                                        @foreach ($project_phases as $project_phase)
+                                            <option value="{{ $project_phase->id }}">
+                                                {{ str_replace('_', ' ', ucfirst($project_phase->name)) }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Attachments</label>
-                                    <input class="form-control" name="file" type="file">
+                                    <label>Status<span class="text-danger">*</span></label>
+                                    <select name="timesheet_status" class="select form-control" id="timesheet_status_id">
+                                        <option value="">Select Status</option>
+                                        @foreach ($timesheet_statuses as $time_status)
+                                            <option value="{{ $time_status->id }}">
+                                                {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Status Reason <span class="text-danger">*</span></label>
+                                    <textarea name="status_reason" rows="4" class="form-control" id="status_reason"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-form-label">Approved Date/Time<span
+                                            class="text-danger">*</span></label>
+                                    <input class="form-control datetimepicker" name="approved_date_time" id="approved_date_time" type="text">
+                                </div>
+                            </div>
+                        </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -301,22 +354,25 @@
         $(document).ready(function() {
             $('.table').on('click', '.editbtn', (function() {
                 var id = $(this).data('id');
-                var name = $(this).data('name');
-                var user = $(this).data('user');
-                var status = $(this).data('status');
-                var amount = $(this).data('amount');
-                var payment_method = $(this).data('paymethod');
-                var seller = $(this).data('seller');
-                var date = $(this).data('date');
+                var expense_type = $(this).data('expense_type_id');
+                var employee = $(this).data('employee_id');
+                var supervisor = $(this).data('supervisor_id');
+                var project = $(this).data('project_id');
+                var project_phase = $(this).data('project_phase_id');
+                var timesheet_status = $(this).data('timesheet_status_id');
+                var status_reason = $(this).data('status_reason');
+                var approved_date_time = $(this).data('approved_date_time');
+
                 $('#edit_expense').modal('show');
                 $('#edit_id').val(id);
-                $('#edit_name').val(name);
-                $('#edit_seller').val(seller);
-                $('#edit_date').val(date);
-                $('#edit_user').val(user).trigger('change');
-                $('#edit_amount').val(amount);
-                $('#edit_paymethod').val(payment_method).trigger('change');
-                $('#edit_status').val(status).trigger('change');
+                $('#expense_type_id').val(expense_type).trigger('change');
+                $('#employee_id').val(employee).trigger('change');
+                $('#supervisor_id').val(supervisor).trigger('change');
+                $('#project_id').val(project).trigger('change');
+                $('#project_phase_id').val(project_phase).trigger('change');
+                $('#timesheet_status_id').val(timesheet_status).trigger('change');
+                $('#status_reason').val(status_reason).trigger('change');
+                $('#approved_date_time').val(approved_date_time).trigger('change');
             }));
         });
     </script>

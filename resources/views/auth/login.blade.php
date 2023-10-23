@@ -1,5 +1,4 @@
 @extends('layouts.auth')
-
 @section('content')
 @if(session('login_error'))
 <div class="bg-danger p-3 rounded text-center mb-2 text-sm text-white">
@@ -36,6 +35,22 @@
         {{$message}}
     </div>
     @enderror
+    <div class="form-group">
+        <div class="captcha">
+            <span>{!! captcha_img() !!}</span>
+            <button type="button" class="btn btn-danger" class="reload" id="reload">
+                &#x21bb;
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control  @error('captcha') border-danger @enderror" placeholder="Enter Captcha" name="captcha">
+    </div>
+    @error('captcha')
+    <div class="bg-danger text-sm text-white p-3 rounded mb-2">
+        {{$message}}
+    </div>
+   @enderror
     <div class="form-group text-center">
         <button class="btn btn-primary account-btn" type="submit">Login</button>
     </div>

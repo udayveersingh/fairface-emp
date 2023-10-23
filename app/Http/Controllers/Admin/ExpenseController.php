@@ -6,6 +6,7 @@ use App\Models\Expense;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\ExpenseType;
 use App\Models\LeaveType;
 use App\Models\Project;
 use App\Models\ProjectPhase;
@@ -21,15 +22,17 @@ class ExpenseController extends Controller
     public function index()
     {
         $title = 'expenses';
-        $expenses = Expense::get();
+        $expenses = Expense::with('expensetype','employee','project','projectphase')->get();
+        // dd($expenses);
         $timesheet_statuses = TimesheetStatus::get();
+        $expensive_type = ExpenseType::get();
         $leave_types = LeaveType::get();
         $employees = Employee::get();
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
         return view('backend.expenses', compact(
             'title',
-            'expenses',
+            'expensive_type',
             'expenses',
             'timesheet_statuses',
             'leave_types',
@@ -86,14 +89,12 @@ class ExpenseController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
-            'user' => 'required',
-            'seller' => 'required',
-            'date' => 'nullable',
-            'payment_method' => 'required',
-            'amount' => 'required',
-            'file' => 'nullable|file',
-            'status' => 'required'
+            'expense_type' => 'required',
+            'employee' => 'required',
+            'supervisor' => 'required',
+            'project' => 'required',
+            'project_phase_id' => 'required',
+            'timesheet_status' => 'required'
         ]);
         $expense = Expense::findOrFail($request->id);
         $file_name = $expense->file;
@@ -102,14 +103,14 @@ class ExpenseController extends Controller
             $request->file->move(public_path('storage/expenses'), $file_name);
         }
         $expense->update([
-            'name' => $request->name,
-            'user_id' => $request->user ?? auth()->user()->id,
-            'purchased_from' => $request->seller,
-            'purchased_date' => $request->date,
-            'payment_method' => $request->payment_method,
-            'amount' => $request->amount,
-            'file' => $file_name,
-            'status' => $request->status ?? 'Approved',
+            'expense_type_id' => $request->expense_type,
+            'employee_id' =>$request->expense_type,
+            'supervisor_id' => $request->supervisor,
+            'project_id' => $request->project,
+            'project_phase_id' => $request->project_phase_id,
+            'timesheet_status_id' => $request->timesheet_status,
+            'status_reason' => $request->status_reason,
+            'approved_date_time' => $request->approved_date_time,
         ]);
         $notification = notify('expense has been updated');
         return back()->with($notification);

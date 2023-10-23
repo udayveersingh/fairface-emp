@@ -70,6 +70,7 @@ Route::group(['middleware'=>['guest']], function (){
     Route::get('register',[RegisterController::class,'index'])->name('register');
     Route::post('register',[RegisterController::class,'store']);
     Route::get('login',[LoginController::class,'index'])->name('login');
+    Route::get('reload-captcha', [LoginController::class, 'reloadCaptcha'])->name('reload-captcha');
     Route::post('login',[LoginController::class,'login']);
 
     Route::get('forgot-password',[ForgotPasswordController::class,'index'])->name('forgot-password');
