@@ -1,9 +1,9 @@
 $(document).ready(function() {
-	// Datatables initialization
+// 	// Datatables initialization
 	if ($('.datatable').length > 0) {
         $('.datatable').DataTable({
             "bFilter": true,
-			order: [[ 3 , "desc" ]],
+			order: [[ 0 , "desc" ]],
         });
     }
 

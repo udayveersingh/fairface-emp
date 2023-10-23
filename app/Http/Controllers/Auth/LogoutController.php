@@ -10,13 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class LogoutController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $userId = Auth::user()->id;
-        $user_log = UserLog::where('user_id','=', $userId)->where('status','=','1')->first();
-        if(!empty($user_log)){
-        $user_log->out_time = Carbon::now();
-        $user_log->status="0";
-        $user_log->save();
+        $user_log = UserLog::where('user_id', '=', $userId)->where('status', '=', '1')->first();
+        if (!empty($user_log)) {
+            $user_log->update([
+                'out_time' => Carbon::now(),
+                'status' => "0",
+            ]);
         }
         Auth::logout();
         return redirect()->route('login');

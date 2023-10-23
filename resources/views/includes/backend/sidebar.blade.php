@@ -64,20 +64,19 @@
                                     href="{{ route('holidays') }}">Public Holidays</a></li>
                             <li><a class="{{ route_is('leave-type') ? 'active' : '' }}"
                                     href="{{ route('leave-type') }}">Leave Type</a></li>
-                            <li><a class="{{ route_is('departments') ? 'active' : '' }}"
-                                    href="{{ route('departments') }}">Departments</a></li>
-                            <li><a class="{{ route_is('expense-type') ? 'active' : '' }}"
-                                    href="{{ route('expense-type') }}">Expense Type</a></li>
-                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa
-                                    Type</a></li>
                             <li><a class="{{ route_is(['projects', 'project-list']) ? 'active' : '' }}"
                                     href="{{ route('project-list') }}">Projects</a></li>
+                            <li><a class="{{ route_is('departments') ? 'active' : '' }}"
+                                    href="{{ route('departments') }}">Departments</a></li>
+                            <li><a class="{{ route_is('designations') ? 'active' : '' }}"
+                                    href="{{ route('designations') }}">Designations</a></li>
+                            <li><a class="{{ route_is('expense-type') ? 'active' : '' }}"
+                                    href="{{ route('expense-type') }}">Expense Type</a></li>
+                            <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa Type</a></li>
                             <li><a class="{{ route_is('project-phase') ? 'active' : '' }}"
                                     href="{{ route('project-phase') }}">Project Phase</a></li>
                             <li><a class="{{ route_is('timesheet-status') ? 'active' : '' }}"
                                     href="{{ route('timesheet-status') }}">Timesheet Status</a></li>
-                            <li><a class="{{ route_is('designations') ? 'active' : '' }}"
-                                    href="{{ route('designations') }}">Designations</a></li>
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
 
