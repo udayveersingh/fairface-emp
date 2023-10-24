@@ -65,7 +65,7 @@ class ExpenseController extends Controller
         // }
         Expense::create([
             'expense_type_id' => $request->expense_type,
-            'employee_id' =>$request->expense_type,
+            'employee_id' =>$request->employee,
             'supervisor_id' => $request->supervisor,
             'project_id' => $request->project,
             'project_phase_id' => $request->project_phase_id,
@@ -104,7 +104,7 @@ class ExpenseController extends Controller
         }
         $expense->update([
             'expense_type_id' => $request->expense_type,
-            'employee_id' =>$request->expense_type,
+            'employee_id' =>$request->employee,
             'supervisor_id' => $request->supervisor,
             'project_id' => $request->project,
             'project_phase_id' => $request->project_phase_id,
