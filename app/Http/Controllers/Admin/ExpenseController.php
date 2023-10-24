@@ -64,7 +64,7 @@ class ExpenseController extends Controller
         //     $request->file->move(public_path('storage/expenses'), $file_name);
         // }
         Expense::create([
-            'Expense_type_id' => $request->expense_type,
+            'expense_type_id' => $request->expense_type,
             'employee_id' =>$request->expense_type,
             'supervisor_id' => $request->supervisor,
             'project_id' => $request->project,
