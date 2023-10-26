@@ -17,7 +17,7 @@
         //Monthly ending date
         $date = new DateTime('now');
         $date->modify('last day of this month');
-        
+
         //display week starting date
         $week_starting = new DateTime('now');
         $week_starting->modify('first day of this month');
@@ -39,16 +39,19 @@
                     @endif
                 </span></div>
             <div class="col-md-6 mt-2">
-                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
+                <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
+                    class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <p class="mx-0"><strong>Date Starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
+                <p class="mx-0"><strong>Date
+                        Starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
                 <p class="mx-0"></p>
             </div>
             <div class="col-md-6">
-                <p class="mx-0"><strong>Date Ending:-</strong><span>{{ !empty($end_date) ? date('d-m-Y', strtotime($end_date)):'' }}</span></p>
+                <p class="mx-0"><strong>Date
+                        Ending:-</strong><span>{{ !empty($end_date) ? date('d-m-Y', strtotime($end_date)) : '' }}</span></p>
                 <p class="mx-0"></p>
             </div>
         </div>
@@ -157,7 +160,7 @@
                         <h3>Update {{ ucfirst($title) }} data</h3>
                         <p>Are you sure want to update status?</p>
                     </div>
-                    <form action="{{ route('timesheet-status-update') }}" method="post">
+                    <form action="{{ route('timesheet-status-update') }}" method="post" id="timesheet_status_form">
                         @csrf
                         <input type="hidden" id="emp_id" name="emp_id">
                         <input type="hidden" id="start_date" name="start_date">
@@ -166,16 +169,15 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                    <select name="timesheet_status" id="" class="select form-control">
+                                    <select name="timesheet_status" id="timesheet_status_field" class="select form-control">
                                         <option value="">Select TimeSheet Status</option>
                                         @foreach ($timesheet_statuses as $time_status)
                                             <option value="{{ $time_status->id }}">
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('timesheet_status'))
-                                        <span class="text-danger">{{ $errors->first('timesheet_status') }}</span>
-                                    @endif
+                                    <div class="status_val_error">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -185,19 +187,22 @@
                                     <label>To Reason</label>
                                     <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                                     @if ($errors->has('status_reason'))
-                                    <span class="text-danger">{{ $errors->first('status_reason') }}</span>
-                                @endif
+                                        <span class="text-danger">{{ $errors->first('status_reason') }}</span>
+                                    @endif
+                                </div>
+                                <div class="validation_error">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-btn delete-action">
                             <div class="row">
                                 <div class="col-6">
-                                    <button class="btn btn-primary continue-btn btn-block" type="submit">Update</button>
+                                    <button class="btn btn-primary continue-btn btn-block" id="update_status"
+                                        type="submit">Update</button>
                                 </div>
                                 <div class="col-6">
-                                    <button data-dismiss="modal"
-                                        class="btn btn-primary cancel-btn btn-block">Cancel</button>
+                                    <button data-dismiss="modal" class="btn btn-primary cancel-btn btn-block"
+                                        id="">Cancel</button>
                                 </div>
                             </div>
                         </div>
@@ -210,9 +215,28 @@
 @endsection
 @section('scripts')
     <script>
-         @if ($errors->any())
-            $('#update_timesheet_status').modal('show');
-        @endif
+        $("#update_status").on("click", function(event) {
+            event.preventDefault()
+            var timesheet_status_reason = "";
+            var status_field_value = $("#timesheet_status_field").find(":selected").text().trim();
+            console.log(status_field_value, "status_field_value");
+            var timesheet_status_reason = $("#edit_status_reason").val();
+            if ((status_field_value == "Approved")) {
+                $("#timesheet_status_form").submit();
+            } else if ((status_field_value == "Select TimeSheet Status")) {
+                $(".status_val_error").html("");
+                $(".status_val_error").html(
+                    `<span class="text-danger">The timesheet status field is required.</span>`);
+            } else if (timesheet_status_reason && status_field_value == "Rejected") {
+                $("#timesheet_status_form").submit();
+            } else if (status_field_value == "Rejected") {
+                $(".status_val_error").html("");
+                $(".validation_error").html("");
+                $(".validation_error").html(`<span class="text-danger">The reason field is required.</span>`);
+            }
+        });
+
+
         $('#statusChecked').on('click', function() {
             $('#update_timesheet_status').modal('show');
             var emp_id = $(this).data('emp_id');

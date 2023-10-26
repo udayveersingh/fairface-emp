@@ -293,14 +293,14 @@
                             </div>
                         @endif
                         <!-- <div class="form-group">
-                                                                                              <label>Status </label>
-                                                                                              <select name="status" class="select">
-                                                                                              <option value="null" disabled selected>Select Status</option>
-                                                                                              <option>Approved</option>
-                                                                                              <option>Pending</option>
-                                                                                              <option>Declined</option>
-                                                                                              </select>
-                                                                                              </div> -->
+                                                                                                          <label>Status </label>
+                                                                                                          <select name="status" class="select">
+                                                                                                          <option value="null" disabled selected>Select Status</option>
+                                                                                                          <option>Approved</option>
+                                                                                                          <option>Pending</option>
+                                                                                                          <option>Declined</option>
+                                                                                                          </select>
+                                                                                                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -422,14 +422,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                                                                  <label>Status </label>
-                                                                                                  <select name="status" class="select2 form-control" id="edit_status">
-                                                                                                  <option value="null">Select Status</option>
-                                                                                                  <option>Approved</option>
-                                                                                                  <option>Pending</option>
-                                                                                                  <option>Declined</option>
-                                                                                                  </select>
-                                                                                                  </div> -->
+                                                                                                              <label>Status </label>
+                                                                                                              <select name="status" class="select2 form-control" id="edit_status">
+                                                                                                              <option value="null">Select Status</option>
+                                                                                                              <option>Approved</option>
+                                                                                                              <option>Pending</option>
+                                                                                                              <option>Declined</option>
+                                                                                                              </select>
+                                                                                                              </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -452,7 +452,7 @@
                         <h3>Update {{ ucfirst($title) }} data</h3>
                         <p>Are you sure want to update status?</p>
                     </div>
-                    <form action="{{ route('leave-status-update') }}" method="post">
+                    <form action="{{ route('leave-status-update') }}" method="post" id="leave_status_form">
                         @csrf
                         <input type="hidden" id="timesheet_id" name="id">
                         @php
@@ -466,7 +466,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Leave Status<span class="text-danger">*</span></label>
-                                    <select name="timesheet_status" id=""
+                                    <select name="timesheet_status" id="timesheet_status_field"
                                         class="select form-control  {{ $errors->has('timesheet_status') ? ' is-invalid' : '' }}">
                                         <option value="">Select Status</option>
                                         @foreach (getTimesheetStatus() as $time_status)
@@ -474,24 +474,23 @@
                                                 {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('timesheet_status'))
-                                        <span class="text-danger">{{ $errors->first('timesheet_status') }}</span>
-                                    @endif
+                                    <div class="status_val_error">
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Leave Reason</label>
-                                    <textarea name="status_reason" id="edit_status_reason" rows="4"
+                                    <textarea name="status_reason" id="status_reason" rows="4"
                                         class="form-control {{ $errors->has('status_reason') ? ' is-invalid' : '' }}"></textarea>
-                                    @if ($errors->has('status_reason'))
-                                        <span class="text-danger">{{ $errors->first('status_reason') }}</span>
-                                    @endif
+                                    <div class="validation_error">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-btn delete-action">
                             <div class="row">
                                 <div class="col-6">
-                                    <button class="btn btn-primary continue-btn btn-block" type="submit">Update</button>
+                                    <button class="btn btn-primary continue-btn btn-block" type="submit"
+                                        id="update_leave">Update</button>
                                 </div>
                                 <div class="col-6">
                                     <button data-dismiss="modal"
@@ -562,8 +561,7 @@
             // 	}
             // });
         });
-    </script>
-    <script>
+
         if ($('.aprroved_dateTime').length > 0) {
             $('.aprroved_dateTime').datetimepicker({
                 format: 'YYYY-MM-DD',
@@ -577,10 +575,25 @@
             });
         }
 
-
-        @if ($errors->any())
-            $('#update_leave_status').modal('show');
-        @endif
+        $("#update_leave").on("click", function(event) {
+            event.preventDefault()
+            var leave_reason="";
+            var status_field_value = $("#timesheet_status_field").find(":selected").text().trim();
+            var leave_reason = $("#status_reason").val();
+            if ((status_field_value == "Approved")) {
+                $("#leave_status_form").submit();
+            } else if ((status_field_value == "Select Status")) {
+                $(".status_val_error").html("");
+                $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
+            }else if (leave_reason && status_field_value == "Rejected") {
+                $("#leave_status_form").submit();
+            }else if(status_field_value == "Rejected"){
+                $(".status_val_error").html("");
+                $(".validation_error").html("");
+                $(".validation_error").html(`<span class="text-danger">this field is required</span>`);
+            }
+        });
+        
         $('.statusChecked').on('click', function() {
             $('#update_leave_status').modal('show');
             var id = $(this).data('id');

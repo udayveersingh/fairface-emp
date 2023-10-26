@@ -82,6 +82,7 @@
                 <th>1/2 or 1 Day</th>
                 <th>Comments</th>
             </tr>
+
             @foreach ($employee_timesheets as $index => $timesheet)
                 <tr>
                     @php
@@ -114,15 +115,15 @@
             <tr>
                 <td style="border:none;"><strong>Employee Confirmation:</strong><br />I confirm that this is an accurate
                     record of the times I have worked</td>
-                <td style="border:none; text-align:right;" align="right"><strong>Signature:</strong></td>
+                <td style="border:none; text-align:right;" align="right">{{ $employee->firstname . ' ' . $employee->lastname }}<br><strong>Signature:</strong></td>
             </tr>
             <tr>
                 <td style="border:none;"><strong>Client Manager Confirmation:</strong><br />I confirm that the total
                     days shown here shall be payable.</td>
-                <td style="border:none; text-align:right;" align="right"><strong>Signature:</strong> <br /></td>
+                <td style="border:none; text-align:right;" align="right">{{$supervisor->firstname .' '. $supervisor->lastname }}<br><strong>Signature:</strong> <br /></td>
             </tr>
             <tr>
-                <td style="border:none;"><strong>Name:</strong> _______</td>
+                {{-- <td style="border:none;"><strong>Name:</strong> _______</td> --}}
 
             </tr>
 

@@ -9,7 +9,7 @@
                 <li class="menu-title">Settings</li>
 
                 <li class="{{ Request::routeIs('settings.company') ? 'active' : '' }}"> 
-                    <a href="{{route('settings.company')}}"><i class="la la-building"></i> <span>Company Settings</span></a>
+                    <a href="{{route('settings.company')}}"><i class="la la-building"></i> <span>Company Information</span></a>
                 </li>
 
                 <li class="{{ Request::routeIs('settings.theme') ? 'active' : '' }}"> 

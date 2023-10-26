@@ -51,12 +51,9 @@
                         <li><a class="{{ route_is('contacts') ? 'active' : '' }}" href="{{ route('contacts') }}">Contacts</a></li>
                     </ul>
                 </li> -->
-                    <li class="menu-title">
-                        <span>Configurations</span>
-                    </li>
                     <li class="submenu">
                         <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
-                                class="la la-cog"></i> <span> Master DataSet</span> <span class="menu-arrow"></span></a>
+                                class="la la-cog"></i> <span> Company Setup</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a class="{{ route_is('branches') ? 'active' : '' }}"
                                     href="{{ route('branches') }}">Branch</a></li>
@@ -92,7 +89,7 @@
                     </li> --}}
                     <li class="submenu">
                         <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
-                                class="la la-user"></i><span> All Employees</span> <span class="menu-arrow"></span></a>
+                                class="la la-user"></i><span>Employees</span> <span class="menu-arrow"></span></a>
                         <ul style="display: none;">
                             <li><a class="{{ route_is('employee-detail') ? 'active' : '' }}"
                                     href="{{ route('employee-detail') }}">Add New Employee</a>

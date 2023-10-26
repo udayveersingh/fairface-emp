@@ -191,10 +191,10 @@ class EmployeeLeaveController extends Controller
         if (!empty($timesheet_status->status) && $timesheet_status->status == TimesheetStatus::REJECTED) {
             $status_reason = 'required';
         }
-        $this->validate($request, [
-            'timesheet_status' => 'required',
-            'status_reason' =>  $status_reason,
-        ]);
+        // $this->validate($request, [
+        //     'timesheet_status' => 'required',
+        //     'status_reason' =>  $status_reason,
+        // ]);
         $date = date('Y-m-d');
         $employee_leave_status = Leave::with('leaveType', 'time_sheet_status')->find($request->id);
         $employee_leave_status->timesheet_status_id =  $request->input('timesheet_status');

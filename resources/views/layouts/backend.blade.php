@@ -134,10 +134,7 @@
 			var id = $(this).data('id');
 			$('#delete_id').val(id);
 		});
-		@if ($errors->any())
-		$('#update_leave_status').modal('show');
-		@endif
-
+		
 		$('.alert').delay(10000).fadeOut();
 		@if(Session::has('message'))
 			var type = "{{ Session::get('alert-type', '') }}";

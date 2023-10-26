@@ -115,7 +115,7 @@
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{$sent_email_count}})</b></a>
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
 
             </div>
@@ -236,8 +236,15 @@
                                         $cc_emails[] = $cc;
                                     }
                                     $cc = implode(',', $cc_emails);
+
+                                    if (!empty($company_email->read_at) && $company_email->read_at != null) {
+                                        $unread = 'unread';
+                                    } else {
+                                        $unread = '';
+                                    }
+
                                 @endphp
-                                <tr class="unread">
+                                <tr class= {{$unread}}>
                                     <td class="mail-select">
                                         <div class="checkbox checkbox-primary">
                                             <input id="checkbox1" type="checkbox">
@@ -280,7 +287,7 @@
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token() }}">{{date('d-m-Y H:i',strtotime($company_email->created_at))}}</a>
+                                            data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>
@@ -541,20 +548,27 @@
                         <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @foreach ($company_emails as $index => $company_email)
-                            @php
-                                if ($index > 0) {
-                                    break;
-                                }
+                                @php
+                                    if ($index > 0) {
+                                        break;
+                                    }
                                 @endphp
-                            <input type="hidden" value="{{!empty($company_email->id) ? $company_email->id:'' }}" id="edit_id" name="id">
-                            <input type="hidden" value="{{!empty($company_email->from_id) ? $company_email->from_id:''}}" id="reply_from_id" name="from_id">
-                            <input type="hidden" value="{{!empty($company_email->to_id) ? $company_email->to_id:''}}" id="reply_to_ids" name="to_id[]">
-                            <input type="hidden" value="{{!empty($company_email->subject) ? $company_email->subject:''}}" id="reply_subject" name="subject">
-                            <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
-                                id="">
-                            <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
-                                id="">
-                          @endforeach
+                                <input type="hidden" value="{{ !empty($company_email->id) ? $company_email->id : '' }}"
+                                    id="edit_id" name="id">
+                                <input type="hidden"
+                                    value="{{ !empty($company_email->from_id) ? $company_email->from_id : '' }}"
+                                    id="reply_from_id" name="from_id">
+                                <input type="hidden"
+                                    value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
+                                    id="reply_to_ids" name="to_id[]">
+                                <input type="hidden"
+                                    value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
+                                    id="reply_subject" name="subject">
+                                <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
+                                    name="email_date" id="">
+                                <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
+                                    name="email_time" id="">
+                            @endforeach
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {

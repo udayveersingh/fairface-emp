@@ -44,8 +44,9 @@ class SettingsController extends Controller
         $settings->currency_symbol = !empty($request->currency_symbol) ? $request->currency_symbol:'';
         $settings->theme_color = $request->theme_color;
         $settings->save();
-        $notification = notify('theme has been updated');
-        return back()->with($notification);
+        // $notification = notify('theme has been updated.');
+        // return back()->with($notification);
+        return back()->with('success','theme has been updated.');
     }
 
     public function invoice(InvoiceSettings $settings){
@@ -68,8 +69,9 @@ class SettingsController extends Controller
         $settings->prefix = $request->prefix;
         $settings->logo = $logo;
         $settings->save();
-        $notification = notify('invoice settings updated');
-        return back()->with($notification);
+        // $notification = notify('invoice settings updated');
+        // return back()->with($notification);
+        return back()->with('success','invoice settings updated.');
     }
 
     public function attendance(AttendanceSettings $settings){
@@ -92,7 +94,7 @@ class SettingsController extends Controller
     }
 
     public function company(CompanySettings $settings){
-        $title = 'company settings';
+        $title = 'Company Information';
         return view('backend.settings.company',compact(
             'title','settings'
         ));
@@ -129,8 +131,10 @@ class SettingsController extends Controller
         $settings->website_url = $request->website_url;
         $settings->timesheet_interval = $request->timesheet_interval;
         $settings->save();
-        $notification = notify('company settings has been updated');
-        return back()->with($notification);
+        // $notification = notify('Company settings has been updated.');
+        // return back()->with($notification);
+
+        return back()->with('success','Company settings has been updated.');
     }
    
 }
