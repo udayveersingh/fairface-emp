@@ -209,7 +209,7 @@
                     </li>
                     <li>
                         <a class="{{ route_is('logs') ? 'active' : '' }}" href="{{ route('logs') }}"><i
-                                class="la la-cog"></i> <span>Logs</span></a>
+                                class="la la-cog"></i> <span>Employee Activity</span></a>
                     </li>
                     <!-- <li class="{{ Request::is('backups') ? 'active' : '' }}">
                     <a href="{{ route('backups') }}"

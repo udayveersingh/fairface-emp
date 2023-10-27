@@ -73,7 +73,7 @@
                                 @endif
                                 <td class="text-right">
                                     {{-- <div class="dropdown dropdown-action"> --}}
-                                    <a class="btn-sm btn-primary editbtn" href="javascript:void(0)"
+                                    <a class="btn-sm btn-primary" href="{{ route('employee-detail', $employee->id) }}"
                                         data-id="{{ !empty($employee->id) ? $employee->id : '' }}"
                                         data-employee_id="{{ $employee->employee_id }}"
                                         data-firstname="{{ $employee->firstname }}"
@@ -90,8 +90,7 @@
                                         data-record_status="{{ $employee->record_status }}"
                                         data-date_of_birth="{{ $employee->date_of_birth }}"
                                         data-passport_issue_date="{{ $employee->passport_issue_date }}"
-                                        data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
-                                        data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        data-passport_expiry_date="{{ $employee->passport_expiry_date }}"><i class="fa fa-eye m-r-5"></i></a>
                                     {{-- </div> --}}
                                 </td>
                             </tr>
@@ -249,7 +248,7 @@
     <!-- /Add Employee Modal -->
 
     <!-- Edit Employee Modal -->
-    <div id="edit_employee_list" class="modal custom-modal fade" role="dialog">
+    {{-- <div id="edit_employee_list" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -411,7 +410,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!-- /Edit Employee Modal -->
 @endsection
 

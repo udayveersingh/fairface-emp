@@ -58,6 +58,7 @@
                                         ->orderBy('created_at', 'desc')
                                         ->first();
                                     $employee = App\Models\Employee::where('user_id', '=', $user->id)->first();
+                                   
                                 @endphp
                                 <td>{{ $role->name }}</td>
                                 <td>{{!empty($employee->record_status) ? ucfirst($employee->record_status):'' }}</td>
@@ -79,6 +80,7 @@
                                                 data-record_status="{{ !empty($employee->record_status) ? $employee->record_status : '' }}"
                                                 data-nationality="{{ !empty($employee->country_id) ? $employee->country_id : '' }}"
                                                 data-email="{{ $user->email }}" data-role="{{ $role->id }}"
+                                                data-password="{{$user->temp_password}}"
                                                 class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
@@ -194,7 +196,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="form-control" name="password" type="password">
+                                    <input class="form-control" name="password" id="edit_password" type="password">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -318,14 +320,14 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="form-control edit_password" name="password" type="password">
+                                    <input class="form-control edit_password" name="password" type="text">
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>Confirm Password</label>
                                     <input class="form-control edit_password" name="password_confirmation"
-                                        type="password">
+                                        type="text">
                                 </div>
                             </div>
                         </div>
@@ -365,6 +367,7 @@
                 var marital_status = $(this).data('marital_status');
                 var record_status = $(this).data('record_status');
                 var nationality_id = $(this).data('nationality');
+                var user_password = $(this).data('password');
                 $('#edit_id').val(id);
                 $('#emp_id').val(emp_id);
                 $('.edit_name').val(name);
@@ -377,6 +380,7 @@
                 $('.marital_status').val(marital_status);
                 $('.record_status').val(record_status);
                 $('.nationality').val(nationality_id);
+                $('.edit_password').val(user_password);
             });
         });
     </script>

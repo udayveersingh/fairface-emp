@@ -15,6 +15,7 @@
                     <div class="form-group">
                         <label class="col-form-label">Attachment</label>
                         <input class="form-control" name="attachment" type="file">
+                        <span class="text-danger">Please upload a valid document image. Size of document image should not be more than 2MB.</span>
                     </div>
                 </div>
                 <div class="col-sm-4">

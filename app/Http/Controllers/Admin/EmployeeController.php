@@ -60,7 +60,6 @@ class EmployeeController extends Controller
             'lastname' => 'required',
             'email' => 'required|email',
             'phone' => 'nullable|max:25',
-            'avatar' => 'file|image|mimes:jpg,jpeg,png,gif',
             'nat_insurance_number' => 'nullable|max:25',
             'passport_number' => 'nullable|max:25',
             // 'pass_issue_date' => 'required',
@@ -70,6 +69,7 @@ class EmployeeController extends Controller
             'record_status' => 'required',
             'role_id' => 'required',
             'password' => 'required|confirmed|max:200|min:5',
+            'avatar' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
         $imageName = Null;
         if ($request->hasFile('avatar')) {
@@ -82,6 +82,7 @@ class EmployeeController extends Controller
             'username' =>  $request->firstname . " " . $request->lastname,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'temp_password' => $request->password,
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);

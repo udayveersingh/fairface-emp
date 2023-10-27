@@ -12,7 +12,8 @@
         <div class="row mb-3">
             <div class="col-md-2"><img src="" alt="" /></div>
             <div class="col-md-10">
-                <h1 class="text-left">Indus Services Limited</h1>
+                <h1 class="text-center indus_service">Indus Services Limited</h1>
+                <a href="{{route('employee-timesheet')}}" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
         @php

@@ -8,31 +8,32 @@
 @section('page-header')
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>     
-                <!-- <li class="breadcrumb-item active">Dashboard</li> -->
-                @if(count($annoucement_list)>0)
-                    <div id="carouselExampleFade" class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
+            <h3 class="page-title">Welcome {{ auth()->user()->username }}!</h3>
+            <!-- <li class="breadcrumb-item active">Dashboard</li> -->
+            @if (count($annoucement_list) > 0)
+                <div id="carouselExampleFade"
+                    class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner">
-                        @foreach($annoucement_list as $key=>$annoucement)
-                        <div class="carousel-item {{ $key==0?'active':'' }}"> 
-                            <strong>{{ $annoucement->description }}</strong>
-                        </div>
+                        @foreach ($annoucement_list as $key => $annoucement)
+                            <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                                <strong>{{ $annoucement->description }}</strong>
+                            </div>
                         @endforeach
-                    </div>  
+                    </div>
                     <ol class="carousel-indicators" style="right:20px; left:auto; margin-right:0;">
-                        @foreach($annoucement_list as $key=>$annoucement)
+                        @foreach ($annoucement_list as $key => $annoucement)
                             <li data-target="#carouselExampleFade" data-slide-to="{{ $key }}" class=""></li>
                         @endforeach
                     </ol>
-                    </div>
-                @endif        
+                </div>
+            @endif
         </div>
     </div>
 @endsection
 
 @section('content')
     <div class="row">
-    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div class="card dash-widget">
                 <div class="card-body">
                     <span class="dash-widget-icon"><i class="fa fa-user"></i></span>
@@ -190,11 +191,15 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div>
-                                <span class="d-block">Total Timesheets Past Month</span>
+                                <span class="d-block">Total Timesheets</span>
                             </div>
                         </div>
                         <p class="mb-0">
-                        <h4>{{ $timesheet_submitted_count }}</h4>
+                            @if (!empty($timesheet_submitted_count) && count($timesheet_submitted_count) > 0)
+                                <h4>{{ count($timesheet_submitted_count) }}</h4>
+                            @else
+                                <h4>0</h4>
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -207,7 +212,11 @@
                             </div>
                         </div>
                         <p class="mb-0">
-                        <h4>{{ $timesheet_approval_count }}</h4>
+                            @if (!empty($timesheet_approval_count) && count($timesheet_approval_count) > 0)
+                                <h4>{{ count($timesheet_approval_count) }}</h4>
+                            @else
+                                <h4>0</h4>
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -220,7 +229,11 @@
                             </div>
                         </div>
                         <p class="mb-0">
-                        <h4>{{ $timesheet_pending_app_count }}</h4>
+                            @if (!empty($timesheet_pending_app_count) && count($timesheet_pending_app_count) > 0)
+                                <h4>{{ count($timesheet_pending_app_count) }}</h4>
+                            @else
+                                <h4>0</h4>
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -233,7 +246,11 @@
                             </div>
                         </div>
                         <p class="mb-0">
-                        <h4>{{ $timesheet_rejected_count }}</h4>
+                            @if (!empty($timesheet_rejected_count) && count($timesheet_rejected_count) > 0)
+                                <h4>{{ count($timesheet_rejected_count) }}</h4>
+                            @else
+                                <h4>0</h4>
+                            @endif
                         </p>
                     </div>
                 </div>
@@ -247,7 +264,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3">
                             <div>
-                                <span class="d-block">Total Leave Applications Past Month</span>
+                                <span class="d-block">Total Leave Applications</span>
                             </div>
                         </div>
                         <p class="mb-0">
@@ -300,7 +317,7 @@
 
 
     <!-- Statistics Widget -->
-   {{-- <div class="row">
+    {{-- <div class="row">
          <div class="col-md-12 col-lg-12 col-xl-4 d-flex">
         <div class="card flex-fill dash-statistics">
             <div class="card-body">
@@ -341,8 +358,8 @@
         </div>
     </div> --}}
 
-        {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex"> --}}
-        {{-- <div class="card flex-fill">
+    {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex"> --}}
+    {{-- <div class="card flex-fill">
             <div class="card-body">
                 <h4 class="card-title">Task Statistics</h4>
                 <div class="statistics">
@@ -377,9 +394,9 @@
                 </div>
             </div>
         </div> --}}
-        {{-- </div> --}}
+    {{-- </div> --}}
 
-        {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
+    {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-body">
                     <h4 class="card-title">Recent Timesheet<span class="badge bg-inverse-danger ml-2"></span></h4>
@@ -437,54 +454,69 @@
                 </div>
             </div>
         </div> --}}
-        <div class="row">
+    <div class="row">
         <div class="col-md-7 col-lg-7 col-xl-7 d-flex">
             <div class="card card-table flex-fill">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-nowrap custom-table mb-0">
                             <thead>
-                            <tr>
-                                <th>Emp. ID</th>
-                                <th>Employee</th>
-                                <th>Expiry Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
+                                <tr>
+                                    <th>Emp. ID</th>
+                                    <th>Employee</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                @foreach($passport_expiry_list as $user_pass_list)
-                                <tr>
-                                    <td>{{ $user_pass_list->employee_id }}</td>
-                                    <td> <h2><a href='/employee-detail/{{$user_pass_list->id }}'>{{ $user_pass_list->firstname.' '.$user_pass_list->lastname }}</a></h2></td>
-                                    <td>{{  date('d-m-Y',strtotime($user_pass_list->passport_expiry_date)) }}</td>
-                                    <td>
-                                    <span class="badge bg-inverse-warning">Paasport Expiry</span>
-                                    </td>
-                                    <td><a href="{{route('send-reminder-mail',[$user_pass_list->id,'type' =>'passport'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
-                                </tr>
+                                @foreach ($passport_expiry_list as $user_pass_list)
+                                    <tr>
+                                        <td>{{ $user_pass_list->employee_id }}</td>
+                                        <td>
+                                            <h2><a
+                                                    href='/employee-detail/{{ $user_pass_list->id }}'>{{ $user_pass_list->firstname . ' ' . $user_pass_list->lastname }}</a>
+                                            </h2>
+                                        </td>
+                                        <td>{{ date('d-m-Y', strtotime($user_pass_list->passport_expiry_date)) }}</td>
+                                        <td>
+                                            <span class="badge bg-inverse-warning">Paasport Expiry</span>
+                                        </td>
+                                        <td><a href="{{ route('send-reminder-mail', [$user_pass_list->id, 'type' => 'passport']) }}"
+                                                class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    </tr>
                                 @endforeach
-                                @foreach($visa_expiry_list as $user_visa_list)
-                                <tr>
-                                    <td>{{ $user_visa_list->employee_id }}</td>
-                                    <td> <h2><a href='/employee-detail/{{$user_visa_list->id }}'>{{ $user_visa_list->firstname.' '.$user_visa_list->lastname }}</a></h2></td>
-                                    <td>{{ date('d-m-Y',strtotime($user_visa_list->visa_expiry_date)) }}</td>
-                                    <td>
-                                    <span class="badge bg-inverse-danger">Visa Expiry</span>
-                                    </td>
-                                    <td> <a href="{{route('send-reminder-mail',[$user_visa_list->id,'type' =>'visa'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
-                                </tr>
+                                @foreach ($visa_expiry_list as $user_visa_list)
+                                    <tr>
+                                        <td>{{ $user_visa_list->employee_id }}</td>
+                                        <td>
+                                            <h2><a
+                                                    href='/employee-detail/{{ $user_visa_list->id }}'>{{ $user_visa_list->firstname . ' ' . $user_visa_list->lastname }}</a>
+                                            </h2>
+                                        </td>
+                                        <td>{{ date('d-m-Y', strtotime($user_visa_list->visa_expiry_date)) }}</td>
+                                        <td>
+                                            <span class="badge bg-inverse-danger">Visa Expiry</span>
+                                        </td>
+                                        <td> <a href="{{ route('send-reminder-mail', [$user_visa_list->id, 'type' => 'visa']) }}"
+                                                class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    </tr>
                                 @endforeach
-                                @foreach($cos_expiry_list as $user_cos_list)
-                                <tr>
-                                    <td>{{ $user_cos_list->employee_id }}</td>
-                                    <td> <h2><a href='/employee-detail/{{$user_cos_list->id }}'>{{ $user_cos_list->firstname.' '.$user_cos_list->lastname }}</a></h2></td>
-                                    <td>{{ date('d-m-Y',strtotime($user_cos_list->cos_expiry_date)) }}</td>
-                                    <td>
-                                    <span class="badge bg-inverse-success">COS Expiry</span>
-                                    </td>
-                                    <td> <a href="{{route('send-reminder-mail',[$user_cos_list->id,'type'=>'cos'])}}" class="btn-sm btn-primary editbtn">Send Reminder</a></td>
-                                </tr>
+                                @foreach ($cos_expiry_list as $user_cos_list)
+                                    <tr>
+                                        <td>{{ $user_cos_list->employee_id }}</td>
+                                        <td>
+                                            <h2><a
+                                                    href='/employee-detail/{{ $user_cos_list->id }}'>{{ $user_cos_list->firstname . ' ' . $user_cos_list->lastname }}</a>
+                                            </h2>
+                                        </td>
+                                        <td>{{ date('d-m-Y', strtotime($user_cos_list->cos_expiry_date)) }}</td>
+                                        <td>
+                                            <span class="badge bg-inverse-success">COS Expiry</span>
+                                        </td>
+                                        <td> <a href="{{ route('send-reminder-mail', [$user_cos_list->id, 'type' => 'cos']) }}"
+                                                class="btn-sm btn-primary editbtn">Send Reminder</a></td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -546,7 +578,7 @@
                 </div>
             </div>
         </div>
-        
+
         {{-- <div class="col-md-12 col-lg-6 col-xl-4 d-flex">
             <div class="card flex-fill">
                 <div class="card-body">
@@ -613,11 +645,11 @@
             </div>
         </div>
     </div> --}}
-    <!-- /Statistics Widget -->
-@endsection
-@section('scripts')
-    <!-- Chart JS -->
-    <script src="assets/plugins/morris/morris.min.js"></script>
-    <script src="assets/plugins/raphael/raphael.min.js"></script>
-    <script src="assets/js/chart.js"></script>
-@endsection
+        <!-- /Statistics Widget -->
+    @endsection
+    @section('scripts')
+        <!-- Chart JS -->
+        <script src="assets/plugins/morris/morris.min.js"></script>
+        <script src="assets/plugins/raphael/raphael.min.js"></script>
+        <script src="assets/js/chart.js"></script>
+    @endsection

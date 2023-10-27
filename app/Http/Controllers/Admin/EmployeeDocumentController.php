@@ -41,6 +41,7 @@ class EmployeeDocumentController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'attachment' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
         $file = null;
@@ -92,6 +93,7 @@ class EmployeeDocumentController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'attachment' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
         $file = null;
         $file_name = "";

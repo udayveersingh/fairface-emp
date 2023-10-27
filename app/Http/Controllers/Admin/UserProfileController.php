@@ -63,6 +63,9 @@ class UserProfileController extends Controller
 
     public function empProfileUpdate(Request $request)
     {
+          $this->validate($request, [
+            'avatar' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
+        ]);
         $user = User::find($request->employee_id);
         $imageName = $user->avatar;
         if ($request->hasFile('avatar')) {

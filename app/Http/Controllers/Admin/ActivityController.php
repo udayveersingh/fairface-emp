@@ -63,8 +63,8 @@ class ActivityController extends Controller
 
     public function logs()
     {
-        $title = 'Logs';
-        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles','roles.id','=','users.role_id')->select('user_logs.*','users.username','roles.name')->where('roles.name','!=','Super admin')->orderBy('user_logs.id', 'DESC')->get();
+        $title = 'Employee Activity';
+        $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles','roles.id','=','users.role_id')->select('user_logs.*','users.username','users.email','roles.name')->where('roles.name','!=','Super admin')->orderBy('user_logs.id', 'DESC')->get();
 
         return view('backend.logs', compact('logs', 'title'));
     }
@@ -72,13 +72,14 @@ class ActivityController extends Controller
 
     public function sendMessage(Request $request)
     {
-        $user = User::where('id', '=', $request->user_id)->first();
         $content = [
-            'name' => "Dear". $user->name.",",
-            'message' => $request->email_message,
-            'regards' => 'Regards,HR Team.'
+            'from' => $request->from,
+            'to' => $request->to,
+            'date_time' => $request->date_time,
+            'subject' => $request->subject,
+            'message' => $request->email_message
         ];
-        Mail::to($user->email)->send(new SendMessageMail($content));
+        Mail::to($content['to'])->send(new SendMessageMail($content));
         return back()->with('success',"Email has been sent.");
     }
 

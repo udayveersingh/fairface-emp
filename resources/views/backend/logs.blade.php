@@ -9,14 +9,14 @@
 @section('page-header')
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Logs</h3>
+            <h3 class="page-title">Employee Activity</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a
                         @if (
                             (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
                                 Auth::user()->role->name == App\Models\Role::ADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Logs</li>
+                <li class="breadcrumb-item active">Employee Activity</li>
             </ul>
         </div>
     </div>
@@ -32,41 +32,49 @@
                         <th>IP Address</th>
                         <th>Login Date</th>
                         <th>Logout Time</th>
-                        <th>Logged Time</th>
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                         <th class="text-center">Action</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($logs as $log)
                         <tr>
-                            <td> <div class="online-dot-icon">
-                                {{ $log->username }}@if (!empty($log->status == '1'))
-                                <div class="noti-dot text-success"></div>
-                               
-                                @else
-                                <div class="noti-dot text-danger"></div>
-                            </div>
-                                @endif
-                            </td>
                             <td>
-                                <?php
-                                try {
-                                    $location = \Location::get($log->location_ip); // or specific IP
-                                    echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
-                                } catch (\Exception $e) {
-                                }
-                                ?>
-                            </td>
-                            <td>{{ $log->location_ip }}</td>
-                            <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
-                            <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
-                            <td>{{ \Carbon\Carbon::parse($log->date_time)->diffForHumans() }}</td>
-                            <td>
-                                <a class="btn-sm btn-primary edit_log_btn" data-id="{{$log->id}}" data-user_id="{{$log->user_id}}" data-date_time="{{$log->date_time}}" data-time_out="{{$log->out_time}}" data-location_ip="{{$log->location_ip}}" data-location_name="{{$log->location_name}}"  href="#"><i class="fa fa-pencil m-r-5"
-                                        aria-hidden="true"></i>Edit</a> <button type="button"
-                                    class="btn btn-sm btn-primary Pingbtn" data-id="{{ $log->user_id }}"><i class="fa fa-comments m-r-5"></i> PING</button>
-                            </td>
-                        </tr>
+                                <div class="online-dot-icon">
+                                    {{ $log->username }}@if (!empty($log->status == '1'))
+                                        <div class="noti-dot text-success"></div>
+                                    @else
+                                        <div class="noti-dot text-danger"></div>
+                                </div>
+                    @endif
+                    </td>
+                    <td>
+                        <?php
+                        try {
+                            $location = \Location::get($log->location_ip); // or specific IP
+                            echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
+                        } catch (\Exception $e) {
+                        }
+                        ?>
+                    </td>
+                    <td>{{ $log->location_ip }}</td>
+                    <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
+                    <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
+                    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                        <td>
+                            <a class="btn-sm btn-primary edit_log_btn" data-id="{{ $log->id }}"
+                                data-user_id="{{ $log->user_id }}" data-date_time="{{ $log->date_time }}"
+                                data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
+                                data-location_name="{{ $log->location_name }}" href="#"><i class="fa fa-pencil m-r-5"
+                                    aria-hidden="true"></i>Edit</a>
+                            @if (!empty($log->status == '1'))
+                                <button type="button" class="btn btn-sm btn-primary Pingbtn" data-id="{{ $log->user_id }}"
+                                    data-email="{{ $log->email }}"><i class="fa fa-comments m-r-5"></i> PING</button>
+                            @endif
+                        </td>
+                    @endif
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -87,6 +95,26 @@
                         @csrf
                         <input type="hidden" name="user_id" id="user_id" value="">
                         <div class="form-group">
+                            <label>From<span class="text-danger"></span></label>
+                            <input name="from" class="form-control" value="{{ Auth::user()->email }}" type="text"
+                                id="from" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>To<span class="text-danger"></span></label>
+                            <input name="to" class="form-control" value="" id="to_user" type="text"
+                                readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Date/Time<span class="text-danger"></span></label>
+                            <input name="date_time" class="form-control" value="{{ date('d-m-Y H:i') }}" id="date_time"
+                                type="text" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject<span class="text-danger"></span></label>
+                            <input name="subject" class="form-control" value="Urgent message" id="subject" type="text"
+                                readonly>
+                        </div>
+                        <div class="form-group">
                             <label>Message<span class="text-danger"></span></label>
                             <textarea class="form-control" id="" name="email_message" rows="4" cols="50"></textarea>
                         </div>
@@ -100,7 +128,7 @@
     </div>
     <!--- ping model message --- >
 
-    <--logs Edit Model -->
+            <--logs Edit Model -->
     <div id="edit_logs" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -118,18 +146,18 @@
                         <div class="form-group">
                             <label>User Name<span class="text-danger">*</span></label>
                             <select name="name" class="select" id="edit_user_id">
-                                @foreach (getUsers() as  $user)
-                                <option value="{{$user->id}}">{{$user->username}}</option>
+                                @foreach (getUsers() as $user)
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Login Date Time <span class="text-danger">*</span></label>
-                                <input name="date_time" class="form-control" type="datetime" id="edit_date_time">
+                            <input name="date_time" class="form-control" type="datetime" id="edit_date_time">
                         </div>
                         <div class="form-group">
                             <label>Logout Date Time <span class="text-danger"></span></label>
-                                <input name="out_time" class="form-control" type="text" id="edit_out_time">
+                            <input name="out_time" class="form-control" type="text" id="edit_out_time">
                         </div>
                         <div class="form-group">
                             <label>Employee Location</label>
@@ -154,7 +182,9 @@
         $('.table').on('click', '.Pingbtn', function() {
             $('#ping_model').modal('show');
             var id = $(this).data('id');
+            var to_user_email = $(this).data('email');
             $('#user_id').val(id);
+            $('#to_user').val(to_user_email);
         });
 
         $('.table').on('click', '.edit_log_btn', function() {
@@ -162,7 +192,7 @@
             var id = $(this).data('id');
             var user_id = $(this).data('user_id');
             var date_time = $(this).data('date_time');
-            var time_out= $(this).data('time_out');
+            var time_out = $(this).data('time_out');
             var location_ip = $(this).data('location_ip');
             var location_address = $(this).data('location_name');
             $('#logs_edit_id').val(id);

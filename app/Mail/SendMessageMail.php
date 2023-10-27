@@ -29,6 +29,6 @@ class SendMessageMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('You have alert from your office!')->view('backend.emails.ping-email');
+        return $this->subject('Urgent Message')->view('backend.emails.ping-email');
     }
 }

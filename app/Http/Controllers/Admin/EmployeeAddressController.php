@@ -41,7 +41,6 @@ class EmployeeAddressController extends Controller
     {
         $this->validate($request, [
             'address_line_1' => 'required',
-            'from_date' => 'required',
         ]);
         EmployeeAddress::create([
             'employee_id' => $request->emp_id,
@@ -78,7 +77,6 @@ class EmployeeAddressController extends Controller
        
         $this->validate($request, [
             'address_line_1' => 'required',
-            'from_date' => 'required',
         ]);
         if (!empty($request->id)) {
             $Employee_emergency_contact = EmployeeAddress::find($request->id);

@@ -69,7 +69,7 @@
                                                 <img alt="avatar"
                                                     src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
                                             </a>
-                                            <a href="#">{{ !empty($leave->employee->firstname) ? $leave->employee->firstname : '' }}
+                                            <a href="{{ route('employee-leave-view', $leave->id) }}">{{ !empty($leave->employee->firstname) ? $leave->employee->firstname : '' }}
                                                 {{ !empty($leave->employee->lastname) ? $leave->employee->lastname : '' }}
                                             </a>
                                         </h2>

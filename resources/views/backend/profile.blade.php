@@ -414,6 +414,11 @@
 <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
 @if (!empty($employee_addresses))
 <div class="card profile-box flex-fill">
+    <div class="text-end d-flex mb-2 mt-2" style="justify-content: end">
+        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
+                class="fa fa-plus"></i>
+            Add New Address</a>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-striped custom-table mb-0">
@@ -450,13 +455,6 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_address"><i
-                class="fa fa-plus"></i>
-            Add New Address</a>
     </div>
 </div>
 @endif
@@ -515,40 +513,40 @@
                 </thead>
                 <tbody>
                     @foreach ($employee_documents as $index => $document)
-                    @if($index > 5)
-                    @break;
+                        @if ($index > 5)
+                        @break;
                     @endif
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $document->name }}</td>
-                            <td>{{ !empty($document->created_at) ? date('d-m-Y', strtotime($document->created_at)) : '' }}
-                            </td>
-                            @php
-                                $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <td>
-                                @if (!empty($extension) && $extension == 'pdf')
-                                    <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                            width="100px"></a>
-                                @else
-                                    @if (!empty($document->attachment))
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $document->name }}</td>
+                        <td>{{ !empty($document->created_at) ? date('d-m-Y', strtotime($document->created_at)) : '' }}
+                        </td>
+                        @php
+                            $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
+                        @endphp
+                        <td>
+                            @if (!empty($extension) && $extension == 'pdf')
+                                <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                    target="_blank"><img
+                                        src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                        width="100px"></a>
+                            @else
+                                @if (!empty($document->attachment))
                                     <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
                                         target="_blank">
                                         <img src="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
                                             width="100px"></a>
-                                    @else
+                                @else
                                     No Document
                                     {{-- <a href=""><img src={{asset('assets/img/document_image.png')}} width="100px"></a> --}}
-                                            @endif 
                                 @endif
-                            </td>
-                            <td>
-                                <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
-                                    target="_blank" download>Download</a>
-                            </td>
-                            {{-- <td class="text-right">
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ asset('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment) }}"
+                                target="_blank" download>Download</a>
+                        </td>
+                        {{-- <td class="text-right">
                                             <div class="dropdown dropdown-action">
                                                 <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                 <div class="dropdown-menu dropdown-menu-right">
@@ -556,13 +554,13 @@
                                                 </div>
                                             </div>
                                         </td> --}}
-                        </tr>
-                    @endforeach
-                    <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
-                </tbody>
-            </table>
-        </div>
+                    </tr>
+                @endforeach
+                <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
+            </tbody>
+        </table>
     </div>
+</div>
 </div>
 @endif
 </div>
@@ -571,68 +569,70 @@
 <!-- Employee Job -->
 <div class="tab-pane fade" id="job" role="tabpanel" aria-labelledby="job-tab">
 <div class="row">
-    @if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0 )
-    <div class="row">
-        @foreach ($employee_jobs as $job)
-            @php
-                if (!empty($job->supervisor)) {
-                    $supervisor = App\Models\Employee::find($job->supervisor);
-                    $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                } else {
-                    $supervisor_name = '';
-                }
-                if (!empty($job->timesheet_approval_incharge)) {
-                    $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
-                } else {
-                    $incharge_name = '';
-                }
-            @endphp
-            <div class="col-md-12 mb-4">
-                <div class="card card-block shadow shadow-sm p-3 h-100 w-100">
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Job Title</th>
-                            <td>{{ $job->job_title }}</td>
-                        </tr>
-                        <tr>
-                            <th>supervisor </th>
-                            <td>{{ $supervisor_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Timesheet Approval Incharge </th>
-                            <td>{{ $incharge_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Department</th>
-                            <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Work Email</th>
-                            <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Work Phone Number</th>
-                            <td>{{ $job->work_phone_number }}</td>
-                        </tr>
-                        <tr>
-                            <th>Start Date</th>
-                            <td>{{ !empty($job->start_date) ? date('d-m-Y',strtotime($job->start_date)):''}}</td>
-                        </tr>
-                        <tr>
-                            <th>End Date</th>
-                            <td>{{!empty($job->end_date) ? date('d-m-Y',strtotime($job->end_date)):'' }}</td>
-                        </tr>
-                        <tr>
-                            <th>Job Type</th>
-                            <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
-                        </tr>
-                        <tr>
-                            <th>Contracted Weekly Hours</th>
-                            <td>{{ $job->contracted_weekly_hours }}</td>
-                        </tr>
-                    </table>
-                    {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0)
+<div class="row">
+    @foreach ($employee_jobs as $job)
+        @php
+            if (!empty($job->supervisor)) {
+                $supervisor = App\Models\Employee::find($job->supervisor);
+                $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+            } else {
+                $supervisor_name = '';
+            }
+            if (!empty($job->timesheet_approval_incharge)) {
+                $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
+                $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+            } else {
+                $incharge_name = '';
+            }
+        @endphp
+        <div class="col-md-12 mb-4">
+            <div class="card card-block shadow shadow-sm p-3 h-100 w-100">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Job Title</th>
+                        <td>{{ $job->job_title }}</td>
+                    </tr>
+                    <tr>
+                        <th>supervisor </th>
+                        <td>{{ $supervisor_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Timesheet Approval Incharge </th>
+                        <td>{{ $incharge_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Department</th>
+                        <td>{{ !empty($job->department->name) ? $job->department->name : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Work Email</th>
+                        <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Work Phone Number</th>
+                        <td>{{ $job->work_phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Start Date</th>
+                        <td>{{ !empty($job->start_date) ? date('d-m-Y', strtotime($job->start_date)) : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>End Date</th>
+                        <td>{{ !empty($job->end_date) ? date('d-m-Y', strtotime($job->end_date)) : '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Job Type</th>
+                        <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Contracted Weekly Hours</th>
+                        <td>{{ $job->contracted_weekly_hours }}</td>
+                    </tr>
+                </table>
+                {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
                         <a data-id="{{ $job->id }}" data-employee_id="{{ $job->employee_id }}"
                             data-supervisor="{{ $job->supervisor }}"
                             data-timesheet_approval_inch="{{ $job->timesheet_approval_incharge }}"
@@ -647,10 +647,10 @@
                             class="btn btn-danger detail_delete" href="javascript:void(0);" data-target="delete_modal"
                             data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                     </div> --}}
-                </div>
             </div>
-        @endforeach
-    </div>
+        </div>
+    @endforeach
+</div>
 @endif
 </div>
 </div>
@@ -659,43 +659,43 @@
 <div class="tab-pane fade" id="visa" role="tabpanel" aria-labelledby="visa-tab">
 <div class="row">
 @if (!empty($employee_visas))
-    @foreach ($employee_visas as $visa)
-        <div class="col-md-12 mb-4">
-            <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Visa Type</th>
-                        <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Cos Number</th>
-                        <td>{{ $visa->cos_number }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cos Issue Date</th>
-                        <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y', strtotime($visa->cos_issue_date)) : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Cos Expire Date</th>
-                        <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y', strtotime($visa->cos_expiry_date)) : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Visa Issue Date</th>
-                        <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y', strtotime($visa->visa_issue_date)) : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Visa Expiry Date</th>
-                        <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y', strtotime($visa->visa_expiry_date)) : '' }}
-                        </td>
-                    </tr>
-                </table>
-            </div>
+@foreach ($employee_visas as $visa)
+    <div class="col-md-12 mb-4">
+        <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+            <table class="table table-striped">
+                <tr>
+                    <th>Visa Type</th>
+                    <td>{{ !empty($visa->visa_types->visa_type) ? $visa->visa_types->visa_type : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Cos Number</th>
+                    <td>{{ $visa->cos_number }}</td>
+                </tr>
+                <tr>
+                    <th>Cos Issue Date</th>
+                    <td>{{ !empty($visa->cos_issue_date) ? date('d-m-Y', strtotime($visa->cos_issue_date)) : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Cos Expire Date</th>
+                    <td>{{ !empty($visa->cos_expiry_date) ? date('d-m-Y', strtotime($visa->cos_expiry_date)) : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Visa Issue Date</th>
+                    <td>{{ !empty($visa->visa_issue_date) ? date('d-m-Y', strtotime($visa->visa_issue_date)) : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Visa Expiry Date</th>
+                    <td>{{ !empty($visa->visa_expiry_date) ? date('d-m-Y', strtotime($visa->visa_expiry_date)) : '' }}
+                    </td>
+                </tr>
+            </table>
         </div>
-    @endforeach
+    </div>
+@endforeach
 @endif
 </div>
 </div>
@@ -704,38 +704,38 @@
 <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
 @if (!empty($employee_projects))
 <div class="row">
-    @foreach ($employee_projects as $project)
-        <div class="col-md-12 mb-4">
-            <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
-                <table class="table table-striped">
-                    <tr>
-                        <th>Project</th>
-                        <td>{{ !empty($project->projects->name) ? $project->projects->name : '' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Start Date</th>
-                        <td>{{ !empty($project->start_date) ? date('d-m-Y', strtotime($project->start_date)) : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>End Date</th>
-                        <td>{{ !empty($project->end_date) ? date('d-m-Y', strtotime($project->end_date)) : '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>status</th>
-                        @php
-                            $status = '';
-                            if (!empty($project->projects->status) && $project->projects->status == 1) {
-                                $status = 'Active';
-                            } else {
-                                $status = 'Inactive';
-                            }
-                        @endphp
-                        <td>{{ $status }}</td>
-                    </tr>
-                </table>
-                {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
+@foreach ($employee_projects as $project)
+    <div class="col-md-12 mb-4">
+        <div class="card card-block shadow shadow-sm p-3 h-100 w-50">
+            <table class="table table-striped">
+                <tr>
+                    <th>Project</th>
+                    <td>{{ !empty($project->projects->name) ? $project->projects->name : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Start Date</th>
+                    <td>{{ !empty($project->start_date) ? date('d-m-Y', strtotime($project->start_date)) : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>End Date</th>
+                    <td>{{ !empty($project->end_date) ? date('d-m-Y', strtotime($project->end_date)) : '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>status</th>
+                    @php
+                        $status = '';
+                        if (!empty($project->projects->status) && $project->projects->status == 1) {
+                            $status = 'Active';
+                        } else {
+                            $status = 'Inactive';
+                        }
+                    @endphp
+                    <td>{{ $status }}</td>
+                </tr>
+            </table>
+            {{-- <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
                                     <a data-id="{{ $project->id }}" data-employee_id="{{ $project->employee_id }}"
                                         data-project="{{ $project->project_id }}" data-start_date="{{ $project->start_date }}"
                                         data-end_date="{{ $project->end_date }}" class="btn btn-primary edit_btn"
@@ -745,9 +745,9 @@
                                         data-resource_data="Employee Project" href="javascript:void(0);" data-toggle="modal"><i
                                             class="fa fa-trash-o m-r-5"></i> Delete</a>
                                 </div> --}}
-            </div>
         </div>
-    @endforeach
+    </div>
+@endforeach
 </div>
 @endif
 </div>
@@ -756,54 +756,54 @@
 <div class="tab-pane fade" id="payslip" role="tabpanel" aria-labelledby="payslip-tab">
 <div class="card profile-box flex-fill">
 <div class="row">
-    <div class="col-md-12">
-        <table class="table table-striped custom-table mb-0">
-            <thead>
-                <tr>
-                    <th style="width: 30px;">Sr No.</th>
-                    <th>Month</th>
-                    <th>Year</th>
-                    <th>Created</th>
-                    <th>Attachment</th>
-                    <th>Action</th>
-                    {{-- <th class="text-right">Action</th> --}}
-                </tr>
-            </thead>
-            <tbody id="bodyData">
-                @if (!empty($employee_payslips))
-                    @foreach ($employee_payslips as $index => $employee_payslip)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ !empty($employee_payslip->month) ? $employee_payslip->month : '' }}</td>
-                            <td>{{ !empty($employee_payslip->year) ? $employee_payslip->year : '' }}</td>
-                            <td>{{ !empty(date('Y-m-d', strtotime($employee_payslip->created_at))) ? date('Y-m-d', strtotime($employee_payslip->created_at)) : '' }}
-                            </td>
-                            @php
-                                $extension = pathinfo(storage_path('storage/payslips/' . $employee_payslip->attachment), PATHINFO_EXTENSION);
-                            @endphp
-                            <td>
-                                @if ($extension == 'pdf')
-                                    <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('assets/img/profiles/photopdf.png') }}"
-                                            width="100px"></a>
-                                @else
-                                    <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                        target="_blank"><img
-                                            src="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                            width="120px" height="100px"></a>
-                                @endif
-                            </td>
-                            <td>
+<div class="col-md-12">
+    <table class="table table-striped custom-table mb-0">
+        <thead>
+            <tr>
+                <th style="width: 30px;">Sr No.</th>
+                <th>Month</th>
+                <th>Year</th>
+                <th>Created</th>
+                <th>Attachment</th>
+                <th>Action</th>
+                {{-- <th class="text-right">Action</th> --}}
+            </tr>
+        </thead>
+        <tbody id="bodyData">
+            @if (!empty($employee_payslips))
+                @foreach ($employee_payslips as $index => $employee_payslip)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ !empty($employee_payslip->month) ? $employee_payslip->month : '' }}</td>
+                        <td>{{ !empty($employee_payslip->year) ? $employee_payslip->year : '' }}</td>
+                        <td>{{ !empty(date('Y-m-d', strtotime($employee_payslip->created_at))) ? date('Y-m-d', strtotime($employee_payslip->created_at)) : '' }}
+                        </td>
+                        @php
+                            $extension = pathinfo(storage_path('storage/payslips/' . $employee_payslip->attachment), PATHINFO_EXTENSION);
+                        @endphp
+                        <td>
+                            @if ($extension == 'pdf')
                                 <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
-                                    target="_blank" download>Download
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-            </tbody>
-        </table>
-    </div>
+                                    target="_blank"><img
+                                        src="{{ asset('assets/img/profiles/photopdf.png') }}"
+                                        width="100px"></a>
+                            @else
+                                <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                    target="_blank"><img
+                                        src="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                        width="120px" height="100px"></a>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ asset('storage/payslips/' . $employee_payslip->attachment) }}"
+                                target="_blank" download>Download
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </tbody>
+    </table>
+</div>
 </div>
 </div>
 </div>
@@ -814,56 +814,56 @@
 <div id="profile_info" class="modal custom-modal fade" role="dialog">
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title">Profile Information</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form method="POST" enctype="multipart/form-data" action="{{ route('profile') }}">
-            @csrf
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="profile-img-wrap edit-img">
-                        <img class="inline-block"
-                            src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
-                            alt="user">
-                        <div class="fileupload btn">
-                            <span class="btn-text">edit</span>
-                            <input name="avatar" class="upload" type="file">
+<div class="modal-header">
+    <h5 class="modal-title">Profile Information</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form method="POST" enctype="multipart/form-data" action="{{ route('profile') }}">
+        @csrf
+        <div class="row">
+            <div class="col-md-12">
+                <div class="profile-img-wrap edit-img">
+                    <img class="inline-block"
+                        src="{{ !empty(auth()->user()->avatar) ? asset('storage/users/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
+                        alt="user">
+                    <div class="fileupload btn">
+                        <span class="btn-text">edit</span>
+                        <input name="avatar" class="upload" type="file">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" name="name"
+                                value="{{ auth()->user()->name }}">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Full Name</label>
-                                <input type="text" class="form-control" name="name"
-                                    value="{{ auth()->user()->name }}">
-                            </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label> Username</label>
+                            <input type="text" class="form-control" name="username"
+                                value="{{ auth()->user()->username }}">
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label> Username</label>
-                                <input type="text" class="form-control" name="username"
-                                    value="{{ auth()->user()->username }}">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="email" class="form-control" name="email"
-                                    value="{{ auth()->user()->email }}">
-                            </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email"
+                                value="{{ auth()->user()->email }}">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="submit-section">
-                <button class="btn btn-primary submit-btn">Submit</button>
-            </div>
-        </form>
-    </div>
+        </div>
+        <div class="submit-section">
+            <button class="btn btn-primary submit-btn">Submit</button>
+        </div>
+    </form>
+</div>
 </div>
 </div>
 </div>

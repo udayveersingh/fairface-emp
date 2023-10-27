@@ -49,8 +49,8 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>From Date<span class="text-danger">*</span></label>
-                                <input class="form-control" required name="from_date" id="edit_from_date"
+                                <label>From Date<span class="text-danger"></span></label>
+                                <input class="form-control" name="from_date" id="edit_from_date"
                                     value="" type="date">
                             </div>
                         </div>

@@ -425,6 +425,9 @@
                         <div class="form-group">
                             <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
                             <input class="form-control floating" name="avatar" type="file">
+                            {{-- <div class="text-center"> --}}
+                                <span class="text-danger">Please upload a valid image file. Size of image should not be more than 2MB.</span>
+                               {{-- </div> --}}
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -631,6 +634,9 @@
                                         <span class="btn-text">edit</span>
                                         <input name="avatar" class="upload" type="file">
                                     </div>
+                                </div>
+                                <div class="text-center">
+                                 <span class="text-danger">Please upload a valid image file. Size of image should not be more than 2MB.</span>
                                 </div>
                             </div>
                         </div>

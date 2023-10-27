@@ -59,6 +59,7 @@ class UserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'temp_password' => $request->password,
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);
@@ -116,12 +117,14 @@ class UserController extends Controller
         $password = $user->password;
         if ($request->password) {
             $password = Hash::make($request->password);
+            $temp_pass = $request->password;
         }
         $user->update([
             'name' => $request->firstname . " " . $request->lastname,
             'username' => $request->username,
             'email' => $request->email,
             'password' => $password,
+            'temp_password' => $temp_pass,
             'avatar' => $imageName,
             'role_id' => $request->role_id,
         ]);

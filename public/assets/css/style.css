@@ -8223,5 +8223,9 @@ ul.comment-list li ul.children {
 .online-dot-icon .noti-dot.text-danger:before{ left: -11px; top: 8px;border: 5px solid #dc3545!important;}
 .online-dot-icon .noti-dot.text-danger:after{left:-11px; top: 1px;border: 4px solid #dc3545!important;}
 
+.text-center.indus_service {
+    margin-right: 304px;
+}
+
 
 

@@ -38,6 +38,7 @@
                     <div class="form-group">
                         <label>Attachment<span class="text-danger">*</span></label>
                         <input class="form-control" id="attachment" name="attachment" required multiple type="file">
+                        <span class="text-danger">Please upload a valid payslip image. Size of payslip image should not be more than 2MB.</span>
                     </div>
                 </div>
                 <div class="col-sm-6">

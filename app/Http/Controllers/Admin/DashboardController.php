@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendReminderMail;
 use App\Models\LeaveType;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -45,40 +46,42 @@ class DashboardController extends Controller
         $firstDayLastMonth = Carbon::now()->startOfMonth()->subMonth()->toDateString();
         $lastDayLastMonth = Carbon::now()->subMonth()->endOfMonth()->toDateString();
 
-        $timesheet_approval_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
-            $q->where('status', '=', TimesheetStatus::APPROVED);
-        })->count();
+        $timesheet_approval_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
+            $q->where('status', '=', TimesheetStatus::APPROVED);})->groupBy('end_date')->latest()->get();
 
-        $timesheet_pending_app_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
-            $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
-        })->count();
+        // $timesheet_pending_app_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
+        //     $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
+        // })->count();
 
-        $timesheet_rejected_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
-            $q->where('status', '=', TimesheetStatus::REJECTED);
-        })->count();
+        $timesheet_pending_app_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
+                $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);})->groupBy('end_date')->latest()->get();
 
-        $timesheet_submitted_count = EmployeeTimesheet::join('timesheet_statuses', 'timesheet_statuses.id', '=', 'employee_timesheets.timesheet_status_id')
-            ->whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])
-            ->where('timesheet_statuses.status', '=', 'submitted')
-            ->count();
+        $timesheet_rejected_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
+            $q->where('status', '=', TimesheetStatus::REJECTED);})->groupBy('end_date')->latest()->get();
+
+        // $timesheet_submitted_count = EmployeeTimesheet::join('timesheet_statuses', 'timesheet_statuses.id', '=', 'employee_timesheets.timesheet_status_id')
+        //     ->whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])
+        //     ->where('timesheet_statuses.status', '=', 'submitted')
+        //     ->count();
+
+        $timesheet_submitted_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->groupBy('end_date')->latest()->get();
+
         // Leaves
 
-        $leaves_approval_count = Leave::whereBetween('leaves.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('time_sheet_status', function ($q) {
+        $leaves_approval_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::APPROVED);
         })->count();
 
-        $leaves_pending_app_count = Leave::whereBetween('leaves.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('time_sheet_status', function ($q) {
+        $leaves_pending_app_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
         })->count();
 
-        $leaves_rejected_count = Leave::whereBetween('leaves.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('time_sheet_status', function ($q) {
+        $leaves_rejected_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::REJECTED);
         })->count();
 
         $leaves_submitted_count = Leave::join('timesheet_statuses', 'timesheet_statuses.id', '=', 'leaves.timesheet_status_id')
-            ->whereBetween('leaves.created_at', [$firstDayLastMonth, $lastDayLastMonth])
-            ->where('timesheet_statuses.status', '=', 'submitted')
-            ->count();
+            ->whereYear('leaves.created_at', date('Y'))->count();
 
         // employee list of passport expiry
         $passport_expiry_list = Employee::whereBetween("passport_expiry_date", [date('Y-m-d'), $nextSixMonth])->get();

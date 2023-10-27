@@ -64,7 +64,9 @@
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right">
                                                 <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>View</a>
+                                                @if(!empty($status) && $status->status == "pending approval" || $status->status == "rejected" )
                                                 <a class="dropdown-item editbtn" href="{{route('employee-timesheet-edit',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>Edit</a>
+                                                @endif
                                             </div>
                                         </div>
                                         @endif

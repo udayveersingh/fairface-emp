@@ -41,6 +41,7 @@
             <div class="col-md-6 mt-2">
                 <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
                     class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
+                <a href="{{ route('employee-timesheet') }}" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
         <div class="row">
@@ -92,7 +93,8 @@
                             <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)) : '' }}
                             </td>
                             <td>{{ $timesheet->calender_day }}</td>
-                            <td>{{ !empty($timesheet->project->name) ? ucfirst($timesheet->project->name) : '______' }}</td>
+                            <td>{{ !empty($timesheet->project->name) ? ucfirst($timesheet->project->name) : '______' }}
+                            </td>
                             <td>{{ !empty($from_time) ? $from_time : '' }}</td>
                             <td>{{ !empty($to_time) ? $to_time : '' }}</td>
                             <td>{{ $timesheet_hours }}</td>
@@ -114,22 +116,28 @@
                         </tr> --}}
                 </table>
                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                    @php
+                        $timesheet_status = App\Models\TimesheetStatus::where('id', '=', $timesheet->timesheet_status_id)->value('status');
+                    @endphp
                     <div class="row">
-                        <div class="col-lg-6">
+
+                        <div class=" @if (!empty($timesheet_status) && $timesheet_status != 'approved') col-lg-6 @else col-lg-12 @endif">
                             <a class="dropdown-item btn btn-primary continue-btn btn-block"
                                 data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
                                 data-end_date="{{ $end_date }}" data-status="approved" href="#"
                                 data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change
                                 Timesheet Status</a>
                         </div>
-                        <div class="col-lg-6">
-                            <a class="dropdown-item btn btn-primary continue-btn btn-block"
-                                data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
-                                data-end_date="{{ $end_date }}" data-status="approved"
-                                href="{{ route('employee-timesheet-edit', ['id' => $timesheet->employee_id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
-                                id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Edit
-                                Timesheet</a>
-                        </div>
+                        @if (!empty($timesheet_status) && $timesheet_status != 'approved')
+                            <div class="col-lg-6">
+                                <a class="dropdown-item btn btn-primary continue-btn btn-block"
+                                    data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
+                                    data-end_date="{{ $end_date }}" data-status="approved"
+                                    href="{{ route('employee-timesheet-edit', ['id' => $timesheet->employee_id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
+                                    id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Edit
+                                    Timesheet</a>
+                            </div>
+                        @endif
                     </div>
                 @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
                     <div class="row">
