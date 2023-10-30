@@ -41,7 +41,7 @@
             <div class="col-md-6 mt-2">
                 <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
                     class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
-                <a href="@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) {{ route('employee-timesheet') }} @else  {{ route('employee-timesheet-list') }} @endif" class="btn add-btn mr-2">Back</a>
+                <a href="@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN ) {{ route('employee-timesheet') }} @else  {{ route('employee-timesheet-list') }} @endif" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
         <div class="row">
@@ -128,14 +128,14 @@
                     @endphp
                     <div class="row">
 
-                        <div class=" @if (!empty($timesheet_status) && $timesheet_status != 'approved') col-lg-6 @else col-lg-12 @endif">
+                        <div class="col-lg-6">
                             <a class="dropdown-item btn btn-primary continue-btn btn-block"
                                 data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
                                 data-end_date="{{ $end_date }}" data-status="approved" href="#"
                                 data-toggle="modal" id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change
                                 Timesheet Status</a>
                         </div>
-                        @if (!empty($timesheet_status) && $timesheet_status != 'approved')
+                        {{-- @if (!empty($timesheet_status) && $timesheet_status != 'approved') --}}
                             <div class="col-lg-6">
                                 <a class="dropdown-item btn btn-primary continue-btn btn-block"
                                     data-emp_id="{{ $id }}" data-start_date="{{ $start_date }}"
@@ -144,7 +144,7 @@
                                     id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Edit
                                     Timesheet</a>
                             </div>
-                        @endif
+                        {{-- @endif --}}
                     </div>
                 @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
                     <div class="row">
