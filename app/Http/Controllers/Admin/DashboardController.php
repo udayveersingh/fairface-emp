@@ -149,18 +149,18 @@ class DashboardController extends Controller
                     $q->where('type', '=','Annual Holiday');
             })->whereYear('created_at', $currentYear)->count();
 
-            $employee_sick_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
+            $employee_others_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::APPROVED);})->whereHas('leaveType', function ($q) {
-                    $q->where('type', '=','Sick leave');
+                    $q->where('type', '!=','Annual Holiday');
             })->whereYear('created_at', $currentYear)->count();
 
-            $total_leaves = LeaveType::where('type','=','Annual Holiday')->value('days');
-            $remaining_leaves = $total_leaves -  $employee_leaves; 
+            $total_annual_leaves = LeaveType::where('type','=','Annual Holiday')->value('days');
+            $remaining_leaves = $total_annual_leaves -  $employee_leaves; 
 
             $timesheet_submitted_count = EmployeeTimesheet::where('employee_id', '=', $employee->id)->where('created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString())->whereHas('timesheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::SUBMITTED);
             })->count();
-            return view('includes.frontend.employee-dashboard', compact('title', 'annoucement_list', 'leaves_list', 'timesheet_list', 'employee', 'employee_leaves', 'timesheet_submitted_count','remaining_leaves','employee_sick_leaves'));
+            return view('includes.frontend.employee-dashboard', compact('title', 'annoucement_list', 'leaves_list', 'timesheet_list', 'employee', 'employee_leaves', 'timesheet_submitted_count','remaining_leaves','total_annual_leaves','employee_others_leaves'));
         }
     }
 

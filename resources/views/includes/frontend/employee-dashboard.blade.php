@@ -49,7 +49,23 @@
                 <div class="col-md-12 d-flex">
                     <h1 class="dash-sec-title">Recent Status</h1>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="request-btn">
+                                <div class="dash-stats-list">
+                                    @if (!empty($total_annual_leaves) && $total_annual_leaves > 0)
+                                        <h4>{{$total_annual_leaves }}</h4>
+                                    @else
+                                        <h4>0</h4>
+                                    @endif
+                                    <p>Total Annual Leaves</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="request-btn">
@@ -59,13 +75,13 @@
                                     @else
                                         <h4>0</h4>
                                     @endif
-                                    <p> Total Annual Leaves Taken this Year</p>
+                                    <p>Annual Leaves Taken</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="request-btn">
@@ -75,23 +91,23 @@
                                     @else
                                         <h4>0</h4>
                                     @endif
-                                    <p>Annual Leaves Remaining</p>
+                                    <p>Balance Annual Leaves</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="request-btn">
                                 <div class="dash-stats-list">
-                                    @if (!empty($employee_sick_leaves) && $employee_sick_leaves > 0)
-                                        <h4>{{ $employee_sick_leaves }}</h4>
+                                    @if (!empty($employee_others_leaves) && $employee_others_leaves > 0)
+                                        <h4>{{ $employee_others_leaves }}</h4>
                                     @else
                                         <h4>0</h4>
                                     @endif
-                                    <p>Total Sick Leaves taken</p>
+                                    <p>Total other Leaves taken</p>
                                 </div>
                             </div>
                         </div>
