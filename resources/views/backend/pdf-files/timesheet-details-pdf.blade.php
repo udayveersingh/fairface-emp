@@ -82,20 +82,26 @@
                 <th>1/2 or 1 Day</th>
                 <th>Comments</th>
             </tr>
-
+            @php
+              $count = 0;
+              $total_days_worked = 0;
+            @endphp
             @foreach ($employee_timesheets as $index => $timesheet)
                 <tr>
                     @php
                         $timesheet_hours = '';
                         if (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours') {
                             $timesheet_hours = 'Full day';
+                            $count = 1;
                         } elseif (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours') {
                             $timesheet_hours = 'Half day';
+                            $count =.5;
                         } else {
                             $timesheet_hours = '______';
                         }
                         $from_time = date('H:i', strtotime($timesheet->from_time));
                         $to_time = date('H:i', strtotime($timesheet->to_time));
+                        $total_days_worked +=$count; 
                     @endphp
                     <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)) : '' }}
                     </td>
@@ -110,6 +116,7 @@
                 </tr>
             @endforeach
         </table>
+        <h4>Total days Worked:{{" ".$total_days_worked ."days"}}</h4>
 
         <table style="border:none; border-top:30px solid #fff;">
             <tr>

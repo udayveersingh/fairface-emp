@@ -126,7 +126,6 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -169,6 +168,7 @@ class EmployeeTimeSheetController extends Controller
             } else {
                 $total_hours_worked = "";
             }
+
             $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $calender_date[$key])->first();
             if (empty($employee_timesheet)) {
                 $emp_timesheet = new EmployeeTimesheet();
@@ -186,8 +186,19 @@ class EmployeeTimeSheetController extends Controller
             $emp_timesheet->project_phase_id  = $project_phase_id[$key];
             $emp_timesheet->calender_day = $calender_day[$key];
             $emp_timesheet->calender_date = $calender_date[$key];
-            $emp_timesheet->from_time = $value;
-            $emp_timesheet->to_time = $end_time[$key];
+            if ($value == Null && !empty($hours[$key]) && $hours[$key] == "full_day" ||  $hours[$key] == "half_day") {
+                $emp_timesheet->from_time = "9:00";
+            }else{
+                $emp_timesheet->from_time = $value;
+            }
+
+            if ($end_time[$key] == Null && !empty($hours[$key]) && $hours[$key] == "full_day") {
+                $emp_timesheet->to_time = "17:00";
+            } else if ($end_time[$key] == Null && !empty($hours[$key]) && $hours[$key] == "half_day") {
+                $emp_timesheet->to_time = "13:00";
+            }else{
+                $emp_timesheet->to_time = $end_time[$key];
+            }
             $emp_timesheet->notes =  $notes[$key];
             $emp_timesheet->total_hours_worked = $total_hours_worked;
             $emp_timesheet->timesheet_status_id = $timesheet_status->id;

@@ -41,7 +41,7 @@
             <div class="col-md-6 mt-2">
                 <a href="{{ route('print-timesheet-detail', ['id' => $id, 'start_date' => $start_date, 'end_date' => $end_date]) }}"
                     class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
-                <a href="{{ route('employee-timesheet') }}" class="btn add-btn mr-2">Back</a>
+                <a href="@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) {{ route('employee-timesheet') }} @else  {{ route('employee-timesheet-list') }} @endif" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
         <div class="row">
@@ -68,9 +68,10 @@
                         <th>1/2 or 1 Day</th>
                         <th>Comments</th>
                     </tr>
-                    {{-- @php
+                    @php
                         $count = 0;
-                    @endphp --}}
+                        $total_days_worked = 0;
+                    @endphp
                     @foreach ($employee_timesheets as $index => $timesheet)
                         <tbody id="bodyData">
                             @php
@@ -82,13 +83,16 @@
                                 $timesheet_hours = '';
                                 if (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '8 hours') {
                                     $timesheet_hours = 'Full day';
+                                    $count = 1;
                                 } elseif (!empty($timesheet->total_hours_worked) && $timesheet->total_hours_worked == '4 hours') {
                                     $timesheet_hours = 'Half day';
+                                    $count =.5;
                                 } else {
                                     $timesheet_hours = '______';
                                 }
                                 $from_time = date('H:i', strtotime($timesheet->from_time));
                                 $to_time = date('H:i', strtotime($timesheet->to_time));
+                                $total_days_worked +=$count; 
                             @endphp
                             <td>{{ !empty($timesheet->calender_date) ? date('d-m-Y', strtotime($timesheet->calender_date)) : '' }}
                             </td>
@@ -115,6 +119,9 @@
                             <td colspan="2">total: {{ $total_count - $count }}</td>
                         </tr> --}}
                 </table>
+            <div>
+                <h4>Total days Worked:{{" ".$total_days_worked ."days"}}</h4>
+            </div>
                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                     @php
                         $timesheet_status = App\Models\TimesheetStatus::where('id', '=', $timesheet->timesheet_status_id)->value('status');
@@ -154,7 +161,6 @@
     </div>
 
     <!-- update Employee Timsheet status Model-->
-
     <div class="modal custom-modal fade" id="update_timesheet_status" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
