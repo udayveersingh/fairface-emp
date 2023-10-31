@@ -137,7 +137,7 @@
                             <select name="status" selected="selected" id="edit_status" class="form-control">
                                 <option value="">Select Status</option>
                                 <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="Inactive">Inactive</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -170,6 +170,7 @@
                 var id = $(this).data('id');
                 var description = $(this).data('description');
                 var status = $(this).data('status');
+                console.log(status ,"status");
                 var startDate = $(this).data('start_date');
                 var endDate = $(this).data('end_date'); 
                 $('#edit_id').val(id);
