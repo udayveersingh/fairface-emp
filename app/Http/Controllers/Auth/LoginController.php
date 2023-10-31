@@ -24,8 +24,9 @@ class LoginController extends Controller
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required',
-            'captcha' => 'required',
-        ]);
+            'captcha' => 'required|captcha'],
+            ['captcha.captcha'=>'Invalid captcha code.']
+        );
         $authenticate = auth()->attempt($request->only('email', 'password'));
     //    $user_log= Log::info('User Logged in Successful whose id:'. Auth::id());
         if (!$authenticate) {
