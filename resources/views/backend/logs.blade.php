@@ -39,10 +39,16 @@
                 </thead>
                 <tbody>
                     @foreach ($logs as $log)
+                    {{-- @dd($log); --}}
+                    @php 
+                      $login_date ="";
+                      $current_date = date('Y-m-d');
+                      $login_date = date('Y-m-d',strtotime($log->date_time));
+                    @endphp
                         <tr>
                             <td>
                                 <div class="online-dot-icon">
-                                    {{ $log->username }}@if (!empty($log->status == '1'))
+                                    {{ $log->username }}@if (!empty($log->status == '1') &&  !empty($login_date) && $login_date ==  $current_date)
                                         <div class="noti-dot text-success"></div>
                                     @else
                                         <div class="noti-dot text-danger"></div>

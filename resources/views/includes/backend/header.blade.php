@@ -256,7 +256,7 @@
                 @endif
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button type="submit" class="dropdown-item">Logout</button>
+                    <button type="submit" id="logout" class="dropdown-item">Logout</button>
                 </form>
             </div>
         </li>
@@ -272,9 +272,10 @@
             <a class="dropdown-item" href="{{ route('settings.theme') }}">Settings</a>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
-                <button type="submit" class="dropdown-item">Logout</button>
+                <button type="submit" id="logout" class="dropdown-item">Logout</button>
             </form>
         </div>
     </div>
     <!-- /Mobile Menu -->
 </div>
+
