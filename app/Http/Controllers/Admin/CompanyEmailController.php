@@ -140,7 +140,7 @@ class CompanyEmailController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
