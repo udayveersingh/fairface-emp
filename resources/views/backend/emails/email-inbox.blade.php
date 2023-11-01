@@ -108,13 +108,14 @@
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="#" class="list-group-item border-0 text-success"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{count($company_emails)}})</b></a>
-                    <a href="{{route('unread-email')}}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
+                    <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
+                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ count($company_emails) }})</b></a>
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
+                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{$sent_email_count}})</b></a>
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
 
             </div>
@@ -227,8 +228,14 @@
                                         $cc_emails[] = $cc;
                                     }
                                     $cc = implode(',', $cc_emails);
+                                    if (!empty($company_email->read_at) && $company_email->read_at != null) {
+                                        $unread = 'unread';
+                                    } else {
+                                        $unread = '';
+                                    }
+
                                 @endphp
-                                <tr class="unread">
+                                <tr class="{{$unread}}">
                                     <td class="mail-select">
                                         <div class="checkbox checkbox-primary">
                                             <input id="checkbox1" type="checkbox">
@@ -273,7 +280,7 @@
                                             data-com_email_id="{{ $company_email->id }}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
-                                            data-token="{{ Session::token() }}">{{ date('d-m-Y H:i',strtotime($company_email->created_at))}}</a>
+                                            data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
                                     </td>
@@ -299,7 +306,7 @@
                 </table>
             </div>
 
-            <div class="row mt-3 mb-3">
+            {{-- <div class="row mt-3 mb-3">
                 <div class="col-7 mt-3">
                     Showing 1 - 20 of 289
                 </div>
@@ -311,7 +318,7 @@
                             fdprocessedid="6i5q7q"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             @foreach ($company_emails as $index => $company_email)
@@ -370,7 +377,7 @@
                                         </span>
                                     </div>
                                     @php
-                                        $date = \Carbon\Carbon::parse($company_email->date);
+                                        $date = \Carbon\Carbon::parse($company_email->created_at);
                                     @endphp
                                     <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
                                 </div>
@@ -378,7 +385,7 @@
 
                             <div class="card-body">
                                 <p class="body">
-                                    {{ $company_email->body }}
+                                    {!! $company_email->body !!}
                                 </p>
                             </div>
 
@@ -501,21 +508,26 @@
                         <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="" id="reply_from_id" name="from_id">
-                                            
+
                             @foreach ($company_emails as $index => $company_email)
-                            @php
-                                if ($index > 0) {
-                                    break;
-                                }
-                            @endphp
-                            <input type="hidden" value="{{!empty($company_email->id) ? $company_email->id:''}}" id="edit_id" name="id">
-                            <input type="hidden" value="{{!empty($company_email->to_id) ? $company_email->to_id:''}}" id="reply_to_ids" name="to_id[]">
-                            <input type="hidden" value="{{!empty($company_email->subject) ? $company_email->subject:''}}" id="reply_subject" name="subject">
-                            <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
-                                id="">
-                            <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
-                                id="">
-                             @endforeach
+                                @php
+                                    if ($index > 0) {
+                                        break;
+                                    }
+                                @endphp
+                                <input type="hidden" value="{{ !empty($company_email->id) ? $company_email->id : '' }}"
+                                    id="edit_id" name="id">
+                                <input type="hidden"
+                                    value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
+                                    id="reply_to_ids" name="to_id[]">
+                                <input type="hidden"
+                                    value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
+                                    id="reply_subject" name="subject">
+                                <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
+                                    name="email_date" id="">
+                                <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
+                                    name="email_time" id="">
+                            @endforeach
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
@@ -581,10 +593,10 @@
                         success: function(data) {
                             // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
-                                // console.log( row.employeejob.work_email)
+                                // console.log( row)
                                 var work_email = `<` + row.employeejob.work_email + `>`;
                                 $(".subject").html(row.subject);
-                                $(".body").html(row.body);
+                                $(".card-body").html(row.body);
                                 $(".email_from_name").html(`<span>` + row.employeejob
                                     .employee.firstname + " " + row.employeejob.employee
                                     .lastname + `</span>` + work_email);

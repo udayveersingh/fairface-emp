@@ -263,6 +263,7 @@
 
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
+                                            data-com_email_id="{{ $company_email->id }}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
@@ -271,6 +272,7 @@
 
                                     <td class="d-none d-lg-inline-block">
                                         <a href="#single-email-wrapper" class="email-msg mail-detail get_email_data"
+                                            data-com_email_id="{{ $company_email->id }}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
@@ -284,6 +286,7 @@
                                             $date = \Carbon\Carbon::parse($company_email->created_at);
                                         @endphp --}}
                                         <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
+                                            data-com_email_id="{{ $company_email->id }}"
                                             data-from_id="{{ $company_email->from_id }}"
                                             data-email_to="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
@@ -313,7 +316,7 @@
                 </table>
             </div>
 
-            <div class="row mt-3 mb-3">
+            {{-- <div class="row mt-3 mb-3">
                 <div class="col-7 mt-3">
                     Showing 1 - 20 of 289
                 </div>
@@ -325,12 +328,12 @@
                             fdprocessedid="6i5q7q"><i class="fa fa-chevron-right"></i></button>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
             @foreach ($company_emails as $index => $company_email)
                 @php
-                    if ($index > 0) {
+                    if ($index > 0) {  
                         break;
                     }
                     $from = App\Models\EmployeeJob::with('employee')
@@ -384,7 +387,7 @@
                                         </span>
                                     </div>
                                     @php
-                                        $date = \Carbon\Carbon::parse($company_email->date);
+                                        $date = \Carbon\Carbon::parse($company_email->created_at);
                                     @endphp
                                     <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
                                 </div>
@@ -392,7 +395,7 @@
 
                             <div class="card-body">
                                 <p class="body">
-                                    {{ $company_email->body }}
+                                    {!! $company_email->body !!}
                                 </p>
                             </div>
 
@@ -684,7 +687,7 @@
                                 // console.log( row.employeejob.work_email)
                                 var work_email = `<` + row.employeejob.work_email + `>`;
                                 $(".subject").html(row.subject);
-                                $(".body").html(row.body);
+                                $(".card-body").html(row.body);
                                 $(".email_from_name").html(`<span>` + row.employeejob
                                     .employee.firstname + " " + row.employeejob.employee
                                     .lastname + `</span>` + work_email);

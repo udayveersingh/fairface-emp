@@ -227,17 +227,19 @@ class CompanyEmailController extends Controller
     public function sentEmail()
     {
         $title = "User Email";
+        $employee = "";
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
+            $employee = Employee::where('user_id','=',Auth::user()->id)->first();
             $count_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
         } else {
             $count_emails = CompanyEmail::count();
         }
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
         $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
-        return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails'));
+        return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails','employee'));
         // }
     }
 

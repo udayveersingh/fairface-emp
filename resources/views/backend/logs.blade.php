@@ -30,7 +30,7 @@
                         <th>Employee Name</th>
                         <th>Employee Location</th>
                         <th>IP Address</th>
-                        <th>Login Date</th>
+                        <th>Login Time</th>
                         <th>Logout Time</th>
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                         <th class="text-center">Action</th>
@@ -75,7 +75,7 @@
                                 data-location_name="{{ $log->location_name }}" href="#"><i class="fa fa-pencil m-r-5"
                                     aria-hidden="true"></i>Edit</a>
                             @if (!empty($log->status == '1'))
-                                <button type="button" class="btn btn-sm btn-primary Pingbtn" data-id="{{ $log->user_id }}"
+                                <button type="button" class="btn btn-sm btn-success Pingbtn" data-id="{{ $log->user_id }}"
                                     data-email="{{ $log->email }}"><i class="fa fa-comments m-r-5"></i> PING</button>
                             @endif
                         </td>
