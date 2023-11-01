@@ -593,7 +593,9 @@
                         success: function(data) {
                             // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
-                                // console.log( row)
+                                var date= new Date(row.created_at);
+                                dateStringWithTime = moment(date).format('DD-MM-YYYY');
+                                console.log(dateStringWithTime , row.created_at);
                                 var work_email = `<` + row.employeejob.work_email + `>`;
                                 $(".subject").html(row.subject);
                                 $(".card-body").html(row.body);
@@ -601,6 +603,7 @@
                                     .employee.firstname + " " + row.employeejob.employee
                                     .lastname + `</span>` + work_email);
                                 $(".work_email").html(row.employeejob.work_email);
+                                $(".date").html(dateStringWithTime);
                             });
                             // $.each(data.email_data, function(index, row) {
                             //     $(".subject").html(row.subject);
