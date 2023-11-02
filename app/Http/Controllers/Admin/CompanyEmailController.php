@@ -63,11 +63,12 @@ class CompanyEmailController extends Controller
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
-            $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+            $total_mail_count = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $count_unread_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->whereNotNull('read_at')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->whereNotNull('read_at')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
             $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
             $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
-            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails'));
+            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails','total_mail_count'));
         } else {
             $employee_jobs = EmployeeJob::with('employee')->get();
             $todayDate = Carbon::now()->toDateString();
@@ -106,9 +107,10 @@ class CompanyEmailController extends Controller
             }
 
             $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+            $total_mail_count = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
             $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
             $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
-            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails'));
+            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails','total_mail_count'));
         }
     }
 
@@ -123,12 +125,24 @@ class CompanyEmailController extends Controller
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_jobs = EmployeeJob::with('employee')->get();
-            return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs'));
+            $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
+                $query->where('user_id', '=', Auth::user()->id);
+            })->first();
+            $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
+            $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
+            $count_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
+            $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
+            return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs','company_emails_count','sent_email_count','count_emails','company_emails','count_unread_emails'));
         } else if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
             $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function ($q) {
                 $q->where('record_status', '=', 'active');
             })->get();
-            return view('backend.emails.compose-email', compact('title', 'employee_jobs'));
+            $count_emails = CompanyEmail::count();
+            $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
+            $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
+            $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
+            return view('backend.emails.compose-email', compact('title', 'employee_jobs','count_emails','sent_email_count','count_unread_emails','company_emails'));
         }
     }
 
@@ -142,26 +156,17 @@ class CompanyEmailController extends Controller
     {
         $request->validate([
             'from_id' => 'required',
-            // 'to_id' => 'required',
+            'to_id' => 'required',
         ]);
         $cc = Null;
-        $to_mail_ids = [];
-        $to_mails = "";
-        $to_emails = "";
+        $to_mail_ids = "";
         if (!empty($request->cc)) {
             $cc = implode(",", $request->cc);
         }
 
         $to_ids = array_unique($request->to_id);
-        foreach ($to_ids as $mail_id) {
-            $to_email_id = EmployeeJob::where('work_email', '=', $mail_id)->value('id');
-            if (!empty($to_email_id)) {
-                $to_mail_ids[] = $to_email_id;
-            }
-        }
-        $to_emails = implode(",", $to_mail_ids );
         if (!empty($to_ids)) {
-            $to_mails = implode(",",  $to_ids);
+            $to_mail_ids = implode(",",  $to_ids);
         }
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
@@ -176,7 +181,7 @@ class CompanyEmailController extends Controller
             $message = "Company Email data has been added";
         }
         $company_email->from_id = $request->from_id;
-        $company_email->to_id  = $to_emails;
+        $company_email->to_id  = $to_mail_ids;
         $company_email->company_cc  = $cc;
         $company_email->date = $request->email_date;
         $company_email->time = $request->email_time;
@@ -185,7 +190,7 @@ class CompanyEmailController extends Controller
         $company_email->attachment = $imageName;
         $company_email->read_at = Carbon::now();
         $company_email->sent_by_user_id = Auth::user()->id;
-        $company_email->to_mails = $to_mails;
+        // $company_email->to_mails = $request->to_others_mail;
         //  $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');
         //  $form_email =  EmployeeJob::where('id', '=', $company_email->from_id)->value('work_email');
 

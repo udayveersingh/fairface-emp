@@ -83,16 +83,16 @@
                 <div class="list-group mail-list mt-3">
                     @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                         <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
-                                class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     @else
                         <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
-                                class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     @endif
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a> --}}
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{$count_unread_emails}})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
-                    <a href="#" class="list-group-item border-0"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent</a>
+                    <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
+                        class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ count($company_emails) }})</b></a>
                 </div>
 
             </div>
@@ -212,20 +212,24 @@
                                     </div>
                                 @endif
                                 <div class="form-group">
-                                    <label>To<span class="text-danger">*</span></label>
-                                    <select name="to_id[]" class="form-control" data-role="tagsinput" multiple>
-                                        @foreach ($to_email_ids as $index => $to_email)
-                                            @php
-                                                if ($index > 20) {
-                                                    break;
-                                                }
-                                                $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
-                                                $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
-                                                $emp_name = $firstname . '  ' . $lastname;
-                                            @endphp
-                                            <option value="{{ $to_email->work_email }}"></option>
+                                    <label class="form-label select-label">To Company Mails </label>
+                                    <select name="to_id[]" class="form-control select" multiple
+                                        data-mdb-placeholder="Example placeholder" multiple>
+                                        @foreach ($to_email_ids as $to_email)
+                                        @php
+                                            $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                            $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                            <option value="{{$to_email->id }}">
+                                                {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}
+                                            </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>To Other Mails</label>
+                                    <input type="text" data-role="tagsinput" name="to_others_mail">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label select-label">CC </label>
