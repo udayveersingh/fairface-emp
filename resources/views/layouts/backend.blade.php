@@ -30,6 +30,8 @@
     <!-- Toastify css -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastify/src/toastify.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
+
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
@@ -127,6 +129,9 @@
 <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
+
+<!--tags input -->
+<script src="{{asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js')}}"></script>
 
 <script src="{{ asset('assets/js/app.js') }}"></script>
 <script>

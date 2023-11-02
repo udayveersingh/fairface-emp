@@ -33,22 +33,22 @@
                         <th>Login Time</th>
                         <th>Logout Time</th>
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                        <th class="text-center">Action</th>
+                            <th class="text-center">Action</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($logs as $log)
-                    {{-- @dd($log); --}}
-                    @php 
-                      $login_date ="";
-                      $current_date = date('Y-m-d');
-                      $login_date = date('Y-m-d',strtotime($log->date_time));
-                    @endphp
+                        {{-- @dd($log); --}}
+                        @php
+                            $login_date = '';
+                            $current_date = date('Y-m-d');
+                            $login_date = date('Y-m-d', strtotime($log->date_time));
+                        @endphp
                         <tr>
                             <td>
                                 <div class="online-dot-icon">
-                                    {{ $log->username }}@if (!empty($log->status == '1') &&  !empty($login_date) && $login_date ==  $current_date)
+                                    {{ $log->username }}@if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
                                         <div class="noti-dot text-success"></div>
                                     @else
                                         <div class="noti-dot text-danger"></div>
@@ -74,7 +74,7 @@
                                 data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
                                 data-location_name="{{ $log->location_name }}" href="#"><i class="fa fa-pencil m-r-5"
                                     aria-hidden="true"></i>Edit</a>
-                            @if (!empty($log->status == '1'))
+                            @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
                                 <button type="button" class="btn btn-sm btn-success Pingbtn" data-id="{{ $log->user_id }}"
                                     data-email="{{ $log->email }}"><i class="fa fa-comments m-r-5"></i> PING</button>
                             @endif
@@ -134,7 +134,7 @@
     </div>
     <!--- ping model message --- >
 
-            <--logs Edit Model -->
+                <--logs Edit Model -->
     <div id="edit_logs" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

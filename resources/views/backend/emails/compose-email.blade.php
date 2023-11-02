@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         #sidebar {
@@ -81,12 +82,12 @@
 
                 <div class="list-group mail-list mt-3">
                     @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                    <a href="{{route('company-email')}}" class="list-group-item border-0 text-success"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
+                        <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
                     @else
-                    <a href="{{route('user-email-inbox')}}" class="list-group-item border-0 text-success"><i
-                        class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
-                    @endif        
+                        <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
+                                class="fas fa-download font-13 mr-2"></i>Inbox <b>(8)</b></a>
+                    @endif
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread</a> --}}
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
@@ -167,9 +168,11 @@
                                 <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
                                     id="">
                                 @php
-                                    $to_email_ids = App\Models\EmployeeJOb::with('employee')->whereHas('employee', function ($q) {
-                                    $q->where('record_status', '=', 'active');
-                                })->get();
+                                    $to_email_ids = App\Models\EmployeeJOb::with('employee')
+                                        ->whereHas('employee', function ($q) {
+                                            $q->where('record_status', '=', 'active');
+                                        })
+                                        ->get();
                                 @endphp
                                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                                     <div class="form-group">
@@ -189,7 +192,9 @@
                                             </option>
                                         </select>
                                     </div>
-                                @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
+                                @elseif(
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <div class="form-group">
                                         <label>From<span class="text-danger">*</span></label>
                                         <select name="from_id" id="from_id" class="form-control">
@@ -208,17 +213,17 @@
                                 @endif
                                 <div class="form-group">
                                     <label>To<span class="text-danger">*</span></label>
-                                    <select name="to_id[]" class="form-control select" multiple
-                                    data-mdb-placeholder="Example placeholder" multiple>
-                                        <option value="">Select to</option>
-                                        @foreach ($to_email_ids as $to_email)
+                                    <select name="to_id[]" class="form-control" data-role="tagsinput" multiple>
+                                        @foreach ($to_email_ids as $index => $to_email)
                                             @php
+                                                if ($index > 20) {
+                                                    break;
+                                                }
                                                 $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
                                                 $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
                                                 $emp_name = $firstname . '  ' . $lastname;
                                             @endphp
-                                            <option value="{{ $to_email->id }}">
-                                                {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                            <option value="{{ $to_email->work_email }}"></option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -272,7 +277,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <!-- edit email modal starts -->
         <div id="email_edit" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -578,5 +583,10 @@
 
                 document.body.innerHTML = originalContents;
             }
+
+
+            $('input').on('itemAddedOnInit', function(event) {
+                alert(event.item);
+            });
         </script>
     @endsection
