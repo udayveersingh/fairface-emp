@@ -5,87 +5,173 @@
     <link rel="stylesheet" href="assets/css/dataTables.bootstrap4.min.css">
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
-@endsection
-@section('page-header')
+@section('content')
+    <?php
+    $tabs = [
+        'History_last_three' => 'History(last 3 days/Current Week)',
+    ];
+    ?>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="basic_info-tab" data-toggle="tab" href="#basic_info" role="tab"
+                aria-controls="basic_info" aria-selected="true">Today History</a>
+        </li>
+        @foreach ($tabs as $index => $tab)
+            <li class="nav-item">
+                <a class="nav-link" id="{{ $index }}-tab" data-toggle="tab" href="#{{ $index }}"
+                    role="tab" aria-controls="{{ $index }}" aria-selected="true">{{ $tab }}</a>
+            </li>
+        @endforeach
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="basic_info" role="tabpanel" aria-labelledby="basic_info-tab">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Today History</h2>
+                    <table class="table table-striped custom-table mb-0 datatable" id="logtable">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Employee Location</th>
+                                <th>IP Address</th>
+                                <th>Login Time</th>
+                                <th>Logout Time</th>
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                    <th class="text-center">Action</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($today_logs as $log)
+                                @php
+                                    $login_date = '';
+                                    $current_date = date('Y-m-d');
+                                    $login_date = date('Y-m-d', strtotime($log->date_time));
+                                @endphp
+                                <tr>
+                                    <td>
+                                        <div class="online-dot-icon">
+                                            {{ $log->username }}@if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
+                                                <div class="noti-dot text-success"></div>
+                                            @else
+                                                <div class="noti-dot text-danger"></div>
+                                        </div>
+                            @endif
+                            </td>
+                            <td>
+                                <?php
+                                try {
+                                    $location = \Location::get($log->location_ip); // or specific IP
+                                    echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
+                                } catch (\Exception $e) {
+                                }
+                                ?>
+                            </td>
+                            <td>{{ $log->location_ip }}</td>
+                            <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
+                            <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                <td>
+                                    <a class="btn-sm btn-primary edit_log_btn" data-id="{{ $log->id }}"
+                                        data-user_id="{{ $log->user_id }}" data-date_time="{{ $log->date_time }}"
+                                        data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
+                                        data-location_name="{{ $log->location_name }}" href="#"><i
+                                            class="fa fa-pencil m-r-5" aria-hidden="true"></i>Edit</a>
+                                    @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
+                                        <button type="button" class="btn btn-sm btn-success Pingbtn"
+                                            data-id="{{ $log->user_id }}" data-email="{{ $log->email }}"><i
+                                                class="fa fa-comments m-r-5"></i> PING</button>
+                                    @endif
+                                </td>
+                            @endif
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @foreach ($tabs as $index => $tab)
+            <div class="tab-pane fade" id="{{ $index }}" role="tabpanel" aria-labelledby="{{ $index }}-tab">
+                <h2>History(last 3 days/Current Week)</h2>
+                <table class="table table-striped custom-table mb-0 datatable" id="logtable">
+                    <thead>
+                        <tr>
+                            <th>Employee Name</th>
+                            <th>Employee Location</th>
+                            <th>IP Address</th>
+                            <th>Login Time</th>
+                            <th>Logout Time</th>
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                <th class="text-center">Action</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($logs as $log)
+                            {{-- @dd($log); --}}
+                            @php
+                                $login_date = '';
+                                $current_date = date('Y-m-d');
+                                $login_date = date('Y-m-d', strtotime($log->date_time));
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="online-dot-icon">
+                                        {{ $log->username }}@if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
+                                            <div class="noti-dot text-success"></div>
+                                        @else
+                                            <div class="noti-dot text-danger"></div>
+                                    </div>
+                        @endif
+                        </td>
+                        <td>
+                            <?php
+                            try {
+                                $location = \Location::get($log->location_ip); // or specific IP
+                                echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
+                            } catch (\Exception $e) {
+                            }
+                            ?>
+                        </td>
+                        <td>{{ $log->location_ip }}</td>
+                        <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
+                        <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                            <td>
+                                <a class="btn-sm btn-primary edit_log_btn" data-id="{{ $log->id }}"
+                                    data-user_id="{{ $log->user_id }}" data-date_time="{{ $log->date_time }}"
+                                    data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
+                                    data-location_name="{{ $log->location_name }}" href="#"><i
+                                        class="fa fa-pencil m-r-5" aria-hidden="true"></i>Edit</a>
+                                @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
+                                    <button type="button" class="btn btn-sm btn-success Pingbtn"
+                                        data-id="{{ $log->user_id }}" data-email="{{ $log->email }}"><i
+                                            class="fa fa-comments m-r-5"></i> PING</button>
+                                @endif
+                            </td>
+                        @endif
+                        </tr>
+        @endforeach
+        </tbody>
+        </table>
+    </div>
+    @endforeach
+    </div>
+    {{-- @section('page-header')
     <div class="row align-items-center">
         <div class="col">
             <h3 class="page-title">Employee Activity</h3>
             <ul class="breadcrumb">
                 <li class="breadcrumb-item"><a
-                        @if (
-                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                Auth::user()->role->name == App\Models\Role::ADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
+                        @if ((Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) || Auth::user()->role->name == App\Models\Role::ADMIN) href="{{ route('dashboard') }}" @else href="{{ route('employee-dashboard') }}" @endif>Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Employee Activity</li>
             </ul>
         </div>
     </div>
-@endsection
-@section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-striped custom-table mb-0 datatable" id="logtable">
-                <thead>
-                    <tr>
-                        <th>Employee Name</th>
-                        <th>Employee Location</th>
-                        <th>IP Address</th>
-                        <th>Login Time</th>
-                        <th>Logout Time</th>
-                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                            <th class="text-center">Action</th>
-                        @endif
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($logs as $log)
-                        {{-- @dd($log); --}}
-                        @php
-                            $login_date = '';
-                            $current_date = date('Y-m-d');
-                            $login_date = date('Y-m-d', strtotime($log->date_time));
-                        @endphp
-                        <tr>
-                            <td>
-                                <div class="online-dot-icon">
-                                    {{ $log->username }}@if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
-                                        <div class="noti-dot text-success"></div>
-                                    @else
-                                        <div class="noti-dot text-danger"></div>
-                                </div>
-                    @endif
-                    </td>
-                    <td>
-                        <?php
-                        try {
-                            $location = \Location::get($log->location_ip); // or specific IP
-                            echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
-                        } catch (\Exception $e) {
-                        }
-                        ?>
-                    </td>
-                    <td>{{ $log->location_ip }}</td>
-                    <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
-                    <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
-                    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                        <td>
-                            <a class="btn-sm btn-primary edit_log_btn" data-id="{{ $log->id }}"
-                                data-user_id="{{ $log->user_id }}" data-date_time="{{ $log->date_time }}"
-                                data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
-                                data-location_name="{{ $log->location_name }}" href="#"><i class="fa fa-pencil m-r-5"
-                                    aria-hidden="true"></i>Edit</a>
-                            @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
-                                <button type="button" class="btn btn-sm btn-success Pingbtn" data-id="{{ $log->user_id }}"
-                                    data-email="{{ $log->email }}"><i class="fa fa-comments m-r-5"></i> PING</button>
-                            @endif
-                        </td>
-                    @endif
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+@endsection --}}
+
     <!--ping Model message -->
     <div id="ping_model" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -117,8 +203,8 @@
                         </div>
                         <div class="form-group">
                             <label>Subject<span class="text-danger"></span></label>
-                            <input name="subject" class="form-control" value="Urgent message" id="subject" type="text"
-                                readonly>
+                            <input name="subject" class="form-control" value="Urgent message" id="subject"
+                                type="text" readonly>
                         </div>
                         <div class="form-group">
                             <label>Message<span class="text-danger"></span></label>
@@ -134,7 +220,7 @@
     </div>
     <!--- ping model message --- >
 
-                <--logs Edit Model -->
+                                    <--logs Edit Model -->
     <div id="edit_logs" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
