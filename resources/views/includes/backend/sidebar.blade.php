@@ -21,6 +21,7 @@
                     <li class="{{ route_is('employee-leave') ? 'active' : '' }}">
                         <a href="{{ route('employee-leave') }}"><i class="la la-files-o"></i> <span>Leaves</span></a>
                     </li>
+                    <li><a class="{{ route_is('emp-expenses') ? 'active' : '' }}" href="{{ route('emp-expenses') }}"><i class="fa fa-money"></i><span>Expenses</span></a></li>
                     @php
                         $employee = App\Models\Employee::where('user_id', '=', Auth::user()->id)->first();
                         $employee_job = App\Models\EmployeeJob::where('employee_id', '=', $employee->id)->first();

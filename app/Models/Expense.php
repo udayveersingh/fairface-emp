@@ -11,7 +11,8 @@ class Expense extends Model
 
     protected $fillable = [
         'expense_type_id','employee_id','supervisor_id','project_id',
-        'project_phase_id','timesheet_status_id','status_reason','approved_date_time','status',
+        'project_phase_id','timesheet_status_id','status_reason','approved_date_time','status','expense_id',
+        'expense_occurred_date','cost','description'
     ];
 
     // protected function user(){

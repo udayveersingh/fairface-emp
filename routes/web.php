@@ -53,6 +53,7 @@ use App\Http\Controllers\Admin\ProjectPhaseController;
 use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
 use App\Http\Controllers\AnnoucementController;
+use App\Http\Controllers\EmployeeExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\PdfController;
 
@@ -239,6 +240,12 @@ Route::group(['middleware'=>['auth']], function (){
     Route::post('expenses',[ExpenseController::class,'store']);
     Route::put('expenses',[ExpenseController::class,'update']);
     Route::delete('expenses',[ExpenseController::class,'destroy']);
+
+
+    Route::get('emp-expenses',[EmployeeExpenseController::class,'index'])->name('emp-expenses');
+    Route::post('emp-expenses',[EmployeeExpenseController::class,'store']);
+    Route::put('emp-expenses',[EmployeeExpenseController::class,'update']);
+    Route::delete('emp-expenses',[EmployeeExpenseController::class,'destroy']);
 
     Route::get('provident-fund',[ProvidentFundController::class,'index'])->name('provident-fund');
     Route::post('provident-fund',[ProvidentFundController::class,'store']);

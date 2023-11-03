@@ -10,7 +10,9 @@ use App\Models\ExpenseType;
 use App\Models\LeaveType;
 use App\Models\Project;
 use App\Models\ProjectPhase;
+use App\Models\Role;
 use App\Models\TimesheetStatus;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
@@ -22,7 +24,7 @@ class ExpenseController extends Controller
     public function index()
     {
         $title = 'expenses';
-        $expenses = Expense::with('expensetype','employee','project','projectphase')->get();
+        $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->get();
         // dd($expenses);
         $timesheet_statuses = TimesheetStatus::get();
         $expensive_type = ExpenseType::get();
@@ -65,7 +67,7 @@ class ExpenseController extends Controller
         // }
         Expense::create([
             'expense_type_id' => $request->expense_type,
-            'employee_id' =>$request->employee,
+            'employee_id' => $request->employee,
             'supervisor_id' => $request->supervisor,
             'project_id' => $request->project,
             'project_phase_id' => $request->project_phase_id,
@@ -104,7 +106,7 @@ class ExpenseController extends Controller
         }
         $expense->update([
             'expense_type_id' => $request->expense_type,
-            'employee_id' =>$request->employee,
+            'employee_id' => $request->employee,
             'supervisor_id' => $request->supervisor,
             'project_id' => $request->project,
             'project_phase_id' => $request->project_phase_id,
