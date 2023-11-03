@@ -106,8 +106,9 @@ class CompanyEmailController extends Controller
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
 
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
-            $total_mail_count = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $company_emails = CompanyEmail::with('employeejob.employee')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+            // dd( $company_emails);
+            $total_mail_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
             $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
             $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
             return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails', 'total_mail_count'));
@@ -249,12 +250,13 @@ class CompanyEmailController extends Controller
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-            $count_emails = CompanyEmail::with('employeejob.employee')->where('from_id', '=', $employee_job->id)->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $count_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $company_emails = CompanyEmail::with('employeejob')->where('from_id','=',$employee_job->id)->latest()->get();
         } else {
             $count_emails = CompanyEmail::count();
+            $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
         }
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
-        $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
         return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails', 'employee'));
         // }
     }

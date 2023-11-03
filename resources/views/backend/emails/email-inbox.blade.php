@@ -193,7 +193,7 @@
                             <th>From</th>
                             <th>To</th>
                             <th>Subject</th>
-                            <th class="text-center">Date & Time</th>
+                            <th>Date & Time</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -246,8 +246,8 @@
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
                                             data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
+                                            data-email_to="{{ $company_email->from_id }}"
+                                            data-from_id="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
                                             data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
                                     </td>
@@ -255,8 +255,8 @@
                                     <td>
                                         <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
                                             data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
+                                            data-email_to="{{ $company_email->from_id }}"
+                                            data-from_id="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
                                             data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a>
                                     </td>
@@ -264,22 +264,23 @@
                                     <td class="d-none d-lg-inline-block">
                                         <a href="#single-email-wrapper" class="email-msg mail-detail get_email_data"
                                             data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
+                                            data-email_to="{{ $company_email->from_id }}"
+                                            data-from_id="{{ $company_email->to_id }}"
                                             data-subject="{{ $company_email->subject }}"
                                             data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
                                     </td>
                                     <td style="width: 20px;" class=" d-none d-lg-display-inline">
                                         <i class="fa fa-paperclip"></i>
                                     </td>
-                                    <td class="text-right mail-time">
+                                    <td class="mail-time">
                                         {{-- @php
                                             $date = \Carbon\Carbon::parse($company_email->date);
                                         @endphp --}}
                                         <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
                                             data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
+                                            data-email_to="{{ $company_email->from_id }}"
+                                            data-from_id="{{ $company_email->to_id }}"
+                                            data-subject="{{ $company_email->subject }}"
                                             data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                         {{-- <br>
                                         {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
