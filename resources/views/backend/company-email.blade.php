@@ -177,8 +177,8 @@
                 <div class="list-group mail-list mt-3">
                     <a href="{{ route('company-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
-                    <a href="" class="list-group-item border-0 py-2 px-3"><i
-                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
+                    {{-- <a href="" class="list-group-item border-0 py-2 px-3"><i
+                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
@@ -322,7 +322,10 @@
                                                                     data-email_body="{{ $company_email->body }}"
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
-                                                            <i class="fa fa-paperclip text-secondary cursor-pointer"></i>
+                                                            @if (!empty($company_email->attachment))
+                                                            <a href="{{asset('storage/company_email/attachment/'.$company_email->attachment)}}" target="_blank""> <i
+                                                                class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -451,7 +454,7 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                           <div class="text-left ml-5"> No Record</div>
+                                            <div class="text-left ml-5"> No Record</div>
                                         @endif
                                     </tbody>
                                 </table>
@@ -508,10 +511,12 @@
                                                     data-email_body="{{ $company_email->body }}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
                                                 Edit</span>
-                                            <span class="cursor-pointer"><i class="fa fa-mail-reply" title="Reply"></i>
-                                                Reply</span>
-                                            <span class="cursor-pointer"><i class="fa fa-mail-forward"
-                                                    class="Forward"></i> Forward</span>
+                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                    class=" text-secondary" id="reply" data-toggle="modal"
+                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
+                                            </div>
+                                            {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
+                                                    class="Forward"></i> Forward</span> --}}
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
@@ -555,8 +560,8 @@
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
-                                            <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"
-                                                    title="Forward"></i> Forward</div>
+                                            {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"
+                                                    title="Forward"></i> Forward</div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -645,22 +650,6 @@
                                         @endphp
                                         <option value="{{ $to_email->id }}">
                                             {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label select-label">CC </label>
-                                <select name="cc[]" id="cc" class="form-control select" multiple
-                                    data-mdb-placeholder="Example placeholder" multiple>
-                                    @foreach ($employee_jobs as $employee_job)
-                                        @php
-                                            $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
-                                            $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
-                                            $emp_name = $firstname . '  ' . $lastname;
-                                        @endphp
-                                        <option value="{{ $employee_job->id }}">
-                                            {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
-                                        </option>
                                     @endforeach
                                 </select>
                             </div>

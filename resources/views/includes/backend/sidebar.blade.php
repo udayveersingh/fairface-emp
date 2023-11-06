@@ -4,9 +4,6 @@
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
-                    <li class="menu-title">
-                        <span>Main</span>
-                    </li>
                     <li class="{{ route_is('employee-dashboard') ? 'active' : '' }}">
                         <a href="{{ route('employee-dashboard') }}"><i class="la la-dashboard"></i> <span>
                                 Dashboard</span></a>
