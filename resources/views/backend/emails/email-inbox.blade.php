@@ -79,7 +79,7 @@
         }
 
         .mx-100vh {
-            max-height: 40vh;
+            max-height: 60vh;
             overflow-y: auto;
         }
 
@@ -283,7 +283,7 @@
                                                             data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
 
                                                         <div class="d-block fsiziii email-content-wrap">
-                                                            {!! $company_email->body !!}
+                                                            {!! mb_strimwidth("$company_email->body", 0, 200, "..."); !!}
                                                         </div>
                                                     </td>
 
@@ -447,7 +447,7 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                            <div class="text-left ml-5"> No Record</div>
+                                            <div class="text-left ml-5">There is no new email.</div>
                                         @endif
                                     </tbody>
                                 </table>
