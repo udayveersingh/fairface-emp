@@ -84,7 +84,9 @@ class EmployeeExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+       $title = "Expense details";
+       $expenses = Expense::with('expensetype', 'employee', 'project')->find($id);
+       return view('backend.employee-expense.expense-view',compact('expenses','title'));
     }
 
     /**

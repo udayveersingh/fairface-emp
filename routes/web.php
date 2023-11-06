@@ -243,6 +243,7 @@ Route::group(['middleware'=>['auth']], function (){
 
 
     Route::get('emp-expenses',[EmployeeExpenseController::class,'index'])->name('emp-expenses');
+    Route::get('emp-expenses-view/{id}',[EmployeeExpenseController::class,'show'])->name('emp-expenses-view');
     Route::post('emp-expenses',[EmployeeExpenseController::class,'store']);
     Route::put('emp-expenses',[EmployeeExpenseController::class,'update']);
     Route::delete('emp-expenses',[EmployeeExpenseController::class,'destroy']);

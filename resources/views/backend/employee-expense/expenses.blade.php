@@ -82,7 +82,7 @@
                                                 data-status_reason="{{ $expense->status_reason }}"
                                                 data-approved_date_time="{{ $expense->approved_date_time }}">
                                                 <i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                                <a class="dropdown-item" href=""
+                                                <a class="dropdown-item" href="{{route('emp-expenses-view',$expense->id)}}"
                                                 data-id="{{ $expense->id }}"
                                                 data-expense_type_id ="{{ $expense->expense_type_id }}"
                                                 data-employee_id="{{ $expense->employee_id }}">
