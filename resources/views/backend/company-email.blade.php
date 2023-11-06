@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
+
+        .gap-2{ gap:10px;}
+        .email_tabs{ border:none;}
+        .email_tabs .nav-link{ border:none;}
+        .email_tabs .nav-link.active{ color:#667eea;}
+        .fsizi{ display:block; font-size:16px;}
+        .fsizii{display:block; font-size:14px;}
+        .fsiziii{display:block; font-size:10px;}
+        .email-content-wrap{ white-space:nowrap; text-overflow:ellipsis; overflow:hidden; max-width: 400px;}
+        .email-msg.fsizii{ max-width:400px;}
+        .fs-12{ font-size:12px; color:#c4bfbf !important;}
+        .fs-18{ font-size:18px;}
+        .shadow-0{ box-shadow:none !important;}
         #sidebar {
             display: none !important;
         }
@@ -35,13 +48,14 @@
             border-top: 1px solid #dee2e6;
             border-bottom: 2px solid #dee2e6;
         }
-
+        .emails_list tr td{ border-bottom:1px solid #dee2e6;}
+        .emails_list tr.active:nth-child(1) td{ background:#dfe4fa; }
         .unread {
             font-weight: bold;
         }
 
         .single-email-wrapper {
-            min-height: 90vh;
+            min-height: calc(100vh - 157px);
         }
 
         .single-email-inner {
@@ -61,6 +75,7 @@
         .announcement_slider .carousel-indicators li {
             background-color: #004085;
         }
+        .email_header .avatar{ border-radius:4px;}
     </style>
 @endsection
 @section('page-header')
@@ -102,202 +117,199 @@
 @section('content')
     <!-- New Layout Starts-->
     <div class="table-box bg-white row">
-        <div class="table-detail col-md-3">
+        <div class="table-detail col-md-2">
             <div class="p-4">
                 <a href="{{ route('compose-email') }}"
-                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
+                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light w-100">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
+                    <a href="{{ route('company-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
-                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
-                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
-                    {{-- <b>(20)</b></a> --}}
-                    <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0 py-2 px-3"><i
+                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>                  
+                    <a href="{{ route('sent-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
 
             </div>
         </div>
 
-        <div class="table-detail mail-right col-md-9">
+        <div class="table-detail mail-right col-md-10">
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="btn-toolbar mt-4" role="toolbar">
-                        {{-- <div class="btn-group mr-2">
-                            <button type="button" class="btn btn-primary waves-effect waves-light" fdprocessedid="ri6ks"><i
-                                    class="fa fa-inbox"></i></button>
-                            <button type="button" class="btn btn-primary waves-effect waves-light"
-                                fdprocessedid="omqa9tb"><i class="fa fa-exclamation-circle"></i></button>
-                            <button type="button" class="btn btn-primary waves-effect waves-light"
-                                fdprocessedid="oqzsnm"><i class="far fa-trash-alt"></i></button>
-                        </div> --}}
-                        {{-- <div class="btn-group mr-2">
+                <div class="col-md-6 pr-2 pr-md-0">                    
+                    <form class="input-group mt-3 pr-3">
+                        <input type="text" class="form-control border-0 bg-light" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                        <button class="btn btn-light border-0" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        </div>
+                    </form><!-- search bar ends here -->
 
-                            <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fdprocessedid="iqg1vn">
-                                <i class="fa fa-folder"></i>
-                                <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0);" class="dropdown-item">Action</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Another action</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Something else here</a></li>
-                                <li class="dropdown-divider"></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Separated link</a></li>
-                            </ul>
-                        </div> --}}
-                        {{-- <div class="btn-group mr-2">
-                            <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" fdprocessedid="xuli2m">
-                                <i class="fa fa-tag"></i>
-                                <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0);" class="dropdown-item">Action</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Another action</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Something else here</a></li>
-                                <li class="dropdown-divider"></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Separated link</a></li>
-                            </ul>
-                        </div> --}}
+                    <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">All</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread" type="button" role="tab" aria-controls="unread" aria-selected="false">Unread</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-0" id="myTabContent">
+                        <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                            <div class="table-responsive mx-100vh">
+                                <table class="table table-hover mails m-0 no-border emails_list" style="border:none;">                            
+                                    <tbody>
+                                        @if (!empty($company_emails->count()) > 0)
+                                            @foreach ($company_emails as $index => $company_email)
+                                                @php
+                                                    $from = App\Models\EmployeeJob::with('employee')
+                                                        ->where('id', '=', $company_email->from_id)
+                                                        ->first();
+                                                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                                                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                                                    $fullname = $from_first_name . ' ' . $from_last_name;
+                                                    // $to = App\Models\EmployeeJob::with('employee')
+                                                    //     ->where('id', '=', $company_email->to_id)
+                                                    //     ->first();
 
-                        {{-- <div class="btn-group">
-                            <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                fdprocessedid="x3mkj9">
-                                More <i class="mdi mdi-chevron-down"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="javascript:void(0);" class="dropdown-item">Dropdown link</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item">Dropdown link</a></li>
-                            </ul>
-                        </div> --}}
+                                                    // $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                                                    // $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                                                    // $to_fullname = $to_first_name . ' ' . $to_last_name;
 
-                        <form class="form-inline my-2 my-lg-0 ml-auto">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                                                    if (!empty($company_email->to_id)) {
+                                                        $to_ids = explode(',', $company_email->to_id);
+                                                    }
+                                                    $to_emails = [];
+                                                    foreach ($to_ids as $to_id) {
+                                                        $to_mail_user = App\Models\EmployeeJob::with('employee')
+                                                            ->where('id', '=', $to_id)
+                                                            ->first();
+                                                        $to_first_name = !empty($to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
+                                                        $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
+                                                        $to_fullname = $to_first_name . ' ' . $to_last_name;
+                                                        $to_emails[] = $to_fullname;
+                                                    }
+
+                                                    $to_mail_users = implode(',', $to_emails);
+                                                    $multiple_cc = explode(',', $company_email->company_cc);
+                                                    $cc_emails = [];
+                                                    foreach ($multiple_cc as $value) {
+                                                        $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                                                        $cc_emails[] = $cc;
+                                                    }
+                                                    $cc = implode(',', $cc_emails);
+
+                                                    if (!empty($company_email->read_at) && $company_email->read_at != null) {
+                                                        $unread = 'unread';
+                                                    } else {
+                                                        $unread = '';
+                                                    }
+
+                                                @endphp
+                                                <tr class= "active">                                            
+                                                    <td>
+                                                        <div class="d-block fsizi">
+                                                        <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
+                                                            data-com_email_id="{{ $company_email->id }}"
+                                                            data-from_id="{{ $company_email->from_id }}"
+                                                            data-email_to="{{ $company_email->to_id }}"
+                                                            data-subject="{{ $company_email->subject }}"
+                                                            data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a> - 
+
+                                                            <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
+                                                            data-com_email_id="{{ $company_email->id }}"
+                                                            data-from_id="{{ $company_email->from_id }}"
+                                                            data-email_to="{{ $company_email->to_id }}"
+                                                            data-subject="{{ $company_email->subject }}"
+                                                            data-token="{{ Session::token() }}">{{ $to_mail_users }}</a>
+                                                        </div>
+
+                                                            <a href="#single-email-wrapper" class="email-msg mail-detail get_email_data fsizii"
+                                                            data-com_email_id="{{ $company_email->id }}"
+                                                            data-from_id="{{ $company_email->from_id }}"
+                                                            data-email_to="{{ $company_email->to_id }}"
+                                                            data-subject="{{ $company_email->subject }}"
+                                                            data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
+
+                                                            <div class="d-block fsiziii email-content-wrap">
+                                                                {!! $company_email->body !!}
+                                                            </div>
+                                                    </td>
+
+
+                                                    <td align="end" class="align-middle">
+                                                        
+                                                    
+                                                    <div class="text-right mail-time">                   
+                                                        <a href="#single-email-wrapper" class="email-date mail-detail get_email_data fs-12"
+                                                            data-com_email_id="{{ $company_email->id }}"
+                                                            data-from_id="{{ $company_email->from_id }}"
+                                                            data-email_to="{{ $company_email->to_id }}"
+                                                            data-subject="{{ $company_email->subject }}"
+                                                            data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>                                                       
+                                                        </div>
+                                                    
+                                                        <div class="d-flex align-items-center justify-content-end gap-2">
+                                                            <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
+                                                                data-target="#email_edit"><i class="fa fa-edit edit"
+                                                                    data-id="{{ $company_email->id }}"
+                                                                    data-email_from="{{ $company_email->from_id }}"
+                                                                    data-email_to="{{ $company_email->to_id }}"
+                                                                    data-email_cc="{{ $company_email->company_cc }}"
+                                                                    data-email_date="{{ $company_email->date }}"
+                                                                    data-email_time="{{ $company_email->time }}"
+                                                                    data-email_subject="{{ $company_email->subject }}"
+                                                                    data-email_body="{{ $company_email->body }}"
+                                                                    data-email_attachment="{{ $company_email->attachment }}" title="Edit"></i></div>
+                                                                    <i class="fa fa-paperclip text-secondary cursor-pointer"></i>   
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div><!-- table list ends here -->    
+                        </div><!-- all mails tab ends here -->
+                        <div class="tab-pane fade" id="unread" role="tabpanel" aria-labelledby="unread-tab">...</div><!-- unread mails tab ends here -->
                     </div>
-                </div>
-            </div>
-            <!-- End row -->
 
-            <div class="table-responsive mt-3 mx-100vh">
-                <table class="table table-hover mails m-0 no-border emails_list" style="border:none;">
-                    <thead>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Subject</th>
-                            <th class="text-right">Date & Time</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!empty($company_emails->count()) > 0)
-                            @foreach ($company_emails as $index => $company_email)
-                                @php
-                                    $from = App\Models\EmployeeJob::with('employee')
-                                        ->where('id', '=', $company_email->from_id)
-                                        ->first();
-                                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
-                                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
-                                    $fullname = $from_first_name . ' ' . $from_last_name;
-                                    // $to = App\Models\EmployeeJob::with('employee')
-                                    //     ->where('id', '=', $company_email->to_id)
-                                    //     ->first();
-
-                                    // $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
-                                    // $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
-                                    // $to_fullname = $to_first_name . ' ' . $to_last_name;
-
-                                    if (!empty($company_email->to_id)) {
-                                        $to_ids = explode(',', $company_email->to_id);
-                                    }
-                                    $to_emails = [];
-                                    foreach ($to_ids as $to_id) {
-                                        $to_mail_user = App\Models\EmployeeJob::with('employee')
-                                            ->where('id', '=', $to_id)
-                                            ->first();
-                                        $to_first_name = !empty($to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
-                                        $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
-                                        $to_fullname = $to_first_name . ' ' . $to_last_name;
-                                        $to_emails[] = $to_fullname;
-                                    }
-
-                                    $to_mail_users = implode(',', $to_emails);
-                                    $multiple_cc = explode(',', $company_email->company_cc);
-                                    $cc_emails = [];
-                                    foreach ($multiple_cc as $value) {
-                                        $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
-                                        $cc_emails[] = $cc;
-                                    }
-                                    $cc = implode(',', $cc_emails);
-
-                                    if (!empty($company_email->read_at) && $company_email->read_at != null) {
-                                        $unread = 'unread';
-                                    } else {
-                                        $unread = '';
-                                    }
-
-                                @endphp
-                                <tr class= {{$unread}}>
-                                    <td class="mail-select">
-                                        <div class="checkbox checkbox-primary">
-                                            <input id="checkbox1" type="checkbox">
-                                            <label for="checkbox1"></label>
-                                        </div>
-                                    </td>
-
-                                    <td>
-                                        <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
-                                            data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
-                                    </td>
-
-                                    <td>
-                                        <a href="#single-email-wrapper" class="email-name mail-detail get_email_data"
-                                            data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token() }}">{{ $to_mail_users }}</a>
-                                    </td>
-
-                                    <td class="d-none d-lg-inline-block">
-                                        <a href="#single-email-wrapper" class="email-msg mail-detail get_email_data"
-                                            data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
-                                    </td>
-                                    <td style="width: 20px;" class=" d-none d-lg-display-inline">
-                                        <i class="fa fa-paperclip"></i>
-                                    </td>
-                                    <td class="text-right mail-time">
-                                        {{-- @php
-                                            $date = \Carbon\Carbon::parse($company_email->created_at);
-                                        @endphp --}}
-                                        <a href="#single-email-wrapper" class="email-date mail-detail get_email_data"
-                                            data-com_email_id="{{ $company_email->id }}"
-                                            data-from_id="{{ $company_email->from_id }}"
-                                            data-email_to="{{ $company_email->to_id }}"
-                                            data-subject="{{ $company_email->subject }}"
-                                            data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
-                                        {{-- <br>
-                                        {{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}} --}}
-                                    </td>
-                                    <td>
-                                        <div class="btn-group ml-auto">
-                                            <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
-                                                data-target="#email_edit"><i class="fa fa-edit edit"
+                                    
+                </div> <!-- col-6 ends here -->
+                <div class="col-md-6 pl-2 pl-md-0">
+                    @foreach ($company_emails as $index => $company_email)
+                    @php
+                        if ($index > 0) {  
+                            break;
+                        }
+                        $from = App\Models\EmployeeJob::with('employee')
+                            ->where('id', '=', $company_email->from_id)
+                            ->first();
+                        $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                        $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                        $from_name = $from_first_name . ' ' . $from_last_name;
+                        $to = App\Models\EmployeeJob::with('employee')
+                            ->where('id', '=', $company_email->to_id)
+                            ->first();
+                        $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                        $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                        $to_fullname = $to_first_name . ' ' . $to_last_name;
+                        $multiple_cc = explode(',', $company_email->company_cc);
+                        $cc_emails = [];
+                        foreach ($multiple_cc as $value) {
+                            $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                            $cc_emails[] = $cc;
+                        }
+                        $cc = implode(',', $cc_emails);
+                    @endphp
+                    <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
+                        <div class="single-email-inner h-100">
+                            <div class="loader d-none text-secondary" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"><i class="fa-spinner fa fa-spin"></i></div>
+                            <div class="card m-0 shadow-0">
+                                <div class="card-header">
+                                    <div class="d-flex gap-2 text-secondary">
+                                        <span class="cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
+                                                data-target="#email_edit"><i title="Edit" class="fa fa-edit edit"
                                                     data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
@@ -306,120 +318,65 @@
                                                     data-email_time="{{ $company_email->time }}"
                                                     data-email_subject="{{ $company_email->subject }}"
                                                     data-email_body="{{ $company_email->body }}"
-                                                    data-email_attachment="{{ $company_email->attachment }}"></i></div>
+                                                    data-email_attachment="{{ $company_email->attachment }}"></i> Edit</span>
+                                        <span class="cursor-pointer"><i class="fa fa-mail-reply" title="Reply"></i> Reply</span>
+                                        <span class="cursor-pointer"><i class="fa fa-mail-forward" class="Forward"></i> Forward</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
+                                        <div class="btn-group ml-auto">
+                                            
+                                            <div class="p-1 text-secondary cursor-pointer"
+                                                onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
                                         </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                    </tbody>
-                </table>
-            </div>
-
-            {{-- <div class="row mt-3 mb-3">
-                <div class="col-7 mt-3">
-                    Showing 1 - 20 of 289
-                </div>
-                <div class="col-5 mt-3">
-                    <div class="btn-group float-right">
-                        <button type="button" class="btn btn-sm btn-outline-secondary waves-effect"
-                            fdprocessedid="1gxuds"><i class="fa fa-chevron-left"></i></button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary waves-effect"
-                            fdprocessedid="6i5q7q"><i class="fa fa-chevron-right"></i></button>
-                    </div>
-                </div>
-            </div> --}}
-
-
-            @foreach ($company_emails as $index => $company_email)
-                @php
-                    if ($index > 0) {  
-                        break;
-                    }
-                    $from = App\Models\EmployeeJob::with('employee')
-                        ->where('id', '=', $company_email->from_id)
-                        ->first();
-                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
-                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
-                    $from_name = $from_first_name . ' ' . $from_last_name;
-                    $to = App\Models\EmployeeJob::with('employee')
-                        ->where('id', '=', $company_email->to_id)
-                        ->first();
-                    $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
-                    $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
-                    $to_fullname = $to_first_name . ' ' . $to_last_name;
-                    $multiple_cc = explode(',', $company_email->company_cc);
-                    $cc_emails = [];
-                    foreach ($multiple_cc as $value) {
-                        $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
-                        $cc_emails[] = $cc;
-                    }
-                    $cc = implode(',', $cc_emails);
-                @endphp
-                <div id="single-email-wrapper" class="row single-email-wrapper py-3">
-                    <div class="col-lg-12 px-0 single-email-inner">
-                        <div class="card m-0">
-                            <div class="card-header">
-                                <div class="d-flex align-items-center">
-                                    <h3 class="subject">{{ $company_email->subject }}</h3>
-                                    <div class="btn-group ml-auto">
-                                        {{-- <div class="p-1 text-secondary cursor-pointer" data-toggle="modal"
-                                            data-target="#email_edit"><i class="fa fa-edit edit"
-                                                data-id="{{ $company_email->id }}"
-                                                data-email_from="{{ $company_email->from_id }}"
-                                                data-email_to="{{ $company_email->to_id }}"
-                                                data-email_cc="{{ $company_email->company_cc }}"
-                                                data-email_date="{{ $company_email->date }}"
-                                                data-email_time="{{ $company_email->time }}"
-                                                data-email_subject="{{ $company_email->subject }}"
-                                                data-email_body="{{ $company_email->body }}"
-                                                data-email_attachment="{{ $company_email->attachment }}"></i></div> --}}
-                                        <div class="p-1 text-secondary cursor-pointer"
-                                            onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i></div>
                                     </div>
-                                </div>
-                                <div class="email_header d-flex align-items-center">
-                                    <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                                    <div class="from email_from_name">
-                                        <span>{{ $from_name }}</span>
-                                        <span class="work_email">
-                                            < {{ !empty($from->work_email) ? $from->work_email : '' }}>
-                                        </span>
+                                    <div class="email_header d-flex align-items-center">
+                                        <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                                        <div class="from email_from_name">
+                                            <span>{{ $from_name }}</span>
+                                            <span class="work_email d-block fs-12">
+                                                < {{ !empty($from->work_email) ? $from->work_email : '' }} >
+                                            </span>
+                                        </div>
+                                        @php
+                                            $date = \Carbon\Carbon::parse($company_email->created_at);
+                                        @endphp
+                                        <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
                                     </div>
-                                    @php
-                                        $date = \Carbon\Carbon::parse($company_email->created_at);
-                                    @endphp
-                                    <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
+                                    <div class="mt-2 fs-14">To: <span class="email-name mail-detail get_email_data"
+                                                            data-com_email_id="{{ $company_email->id }}"
+                                                            data-from_id="{{ $company_email->from_id }}"
+                                                            data-email_to="{{ $company_email->to_id }}"
+                                                            data-subject="{{ $company_email->subject }}"
+                                                            data-token="{{ Session::token() }}">{{ $to_mail_users }}</span></div>
                                 </div>
-                            </div>
 
-                            <div class="card-body">
-                                <p class="body">
-                                    {!! $company_email->body !!}
-                                </p>
-                            </div>
+                                <div class="card-body">
+                                    <p class="body">
+                                        {!! $company_email->body !!}
+                                    </p>
+                                </div>
 
-                            <div class="card-footer d-flex align-items-center">
-                                <div>
-                                    <div class="from email_from_name">
-                                        <span>{{ ucfirst($from_name) }}</span>
-                                        <{{ !empty($from->work_email) ? $from->work_email : '' }}>
+                                <div class="card-footer d-flex align-items-center">
+                                    <div class="btn-group ml-auto gap-2">
+                                        <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                class=" text-secondary"
+                                                id="reply" data-toggle="modal" data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a></div>                                       
+                                        <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward" title="Forward"></i> Forward</div> 
                                     </div>
-                                    <div class="date ml-auto">{{ $date->diffForHumans() }}</div>
-                                </div>
-                                <div class="btn-group ml-auto">
-                                    <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                            class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light"
-                                            id="reply" data-toggle="modal" data-target="#reply_model">Reply</a></div>
-                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-reply-all"></i></div> --}}
-                                    {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"></i></div> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-            @endforeach
+            </div> <!-- End row -->
+            
+            
+
+            
         </div>
+
         <!-- edit email modal starts -->
         <div id="email_edit" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
