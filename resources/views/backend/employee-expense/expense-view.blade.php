@@ -1,14 +1,14 @@
-@extends('layouts.backend')
+{{-- @extends('layouts.backend')
 
-@section('styles')
+@section('styles') --}}
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}"> --}}
 
     <!-- Datatable CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
 @endsection
 
-@section('content')
+ @section('content')
 @section('page-header')
     <div class="row align-items-center">
         <div class="col">
@@ -19,16 +19,6 @@
                 <li class="breadcrumb-item active">Expenses Details</li>
             </ul>
             <h3 class="page-title">Expenses details</h3>
-            {{-- @if (!empty($expenses))
-                <div class="col-auto float-right ml-auto mt-2">
-                    <a href="{{ route('print-employee-leave', $leave->id) }}" class="btn add-btn" target="_blank"><i
-                            class="fa fa-download"></i>Print PDF</a>
-                </div>
-                <div class="col-auto float-right ml-auto mt-2">
-                    <a class="btn add-btn" id="edit_btn" href="{{route('employee-leave')}}"><i class=""></i>
-                        Back</a>
-                </div>
-            @endif --}}
         </div>
     </div>
 @endsection
@@ -95,13 +85,84 @@
                 </tr>
             </table>
             <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
-                {{-- <a class="btn btn-primary" id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i>
-                        Back</a> --}}
-                {{-- <a data-id="{{ $job->id }}" data-resource_data="Employee Job" class="btn btn-danger detail_delete"
-                        href="javascript:void(0);" data-target="delete_modal" data-toggle="modal"><i
-                            class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
             </div>
         </div>
     </div>
+</div>
+@endsection --}}
+
+@extends('layouts.backend')
+
+@section('styles')
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}">
+
+    <!-- Datatable CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
+    @endsection
+    <style>
+        table,th,td {
+            border: 1px solid;
+        }
+    </style>
+ @section('content')
+    @php
+        //Monthly ending date
+        $date = new DateTime('now');
+        $date->modify('last day of this month');
+
+        //display week starting date
+        $week_starting = new DateTime('now');
+        $week_starting->modify('first day of this month');
+    @endphp
+    <div class="container my-4">
+        <div class="row mb-3">
+            <div class="col-md-2"><img src="" alt="" /></div>
+            <div class="col-md-10">
+                <h1 class="text-left">Employee Expenses Details</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>
+                </span></div>
+            <div class="col-md-6 mt-2">
+                {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}
+                <a href="" class="btn add-btn mr-2">Back</a>
+            </div>
+        </div>
+    </div>
+        {{-- <div class="row">
+            <div class="col-md-6">
+                <p class="mx-0"><strong>Date
+                        Starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
+                <p class="mx-0"></p>
+            </div>
+            <div class="col-md-6">
+                <p class="mx-0"><strong>Date
+                        Ending:-</strong><span>{{ !empty($end_date) ? date('d-m-Y', strtotime($end_date)) : '' }}</span></p>
+                <p class="mx-0"></p>
+            </div>
+        </div> --}}
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Expense Id</th>
+                        <th>Expense Type</th>
+                        <th>Employee</th>
+                        <th>Supervisor</th>
+                        <th>Project</th>
+                        <th>Occurred Date</th>
+                        <th>Status</th>
+                        <th>Cost</th>
+                    </tr>
+                    @php
+                        $count = 0;
+                        $total_days_worked = 0;
+                    @endphp
+                    
+                </table>
+        </div>
+    </div> 
 </div>
 @endsection

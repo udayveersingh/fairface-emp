@@ -25,6 +25,7 @@ class EmployeeExpenseController extends Controller
         $title = 'expenses';
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->where('employee_id','=',$employee->id)->groupBy('expense_id')->latest()->get();
+        $expense_ids = Expense::groupBy('expense_id')->where('employee_id','=',$employee->id)->orderBy('expense_id', 'DESC')->get();
         // dd($expenses);
         $timesheet_statuses = TimesheetStatus::get();
         $expensive_type = ExpenseType::get();
@@ -36,6 +37,7 @@ class EmployeeExpenseController extends Controller
             'timesheet_statuses',
             'employee',
             'projects',
+            'expense_ids'
         ));
     }
 
@@ -82,11 +84,26 @@ class EmployeeExpenseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($expense_id,$emp_id)
     {
        $title = "Expense details";
-       $expenses = Expense::with('expensetype', 'employee', 'project')->find($id);
+       $expenses = Expense::with('expensetype', 'employee', 'project')->where('expense_id','=',$expense_id);
        return view('backend.employee-expense.expense-view',compact('expenses','title'));
+    }
+
+    public function getExpenseId(Request $request)
+    {
+        // $expense_date = $request->expense_id;
+        $expense_date=  str_replace("Exp-","", $request->expense_id);
+        $year = (date("Y", strtotime( $expense_date)));
+        $months = (date("m", strtotime( $expense_date)));
+        if($months < 10 ){
+           $month = str_replace("0","", $months);
+        }else{
+            $month =  $months;
+        }
+
+        return json_encode(array('expense_id' => $request->expense_id, 'year' => $year , 'month' => $month));
     }
 
     /**

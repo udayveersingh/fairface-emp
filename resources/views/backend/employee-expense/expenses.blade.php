@@ -63,7 +63,8 @@
                                 <td>{{ !empty($expense->project->name) ? $expense->project->name : '' }}</td>
                                 <td>{{ !empty($expense->expense_occurred_date) ? date('d-m-Y', strtotime($expense->expense_occurred_date)) : '' }}
                                 </td>
-                                <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol.' '.$expense->cost }}</td>
+                                <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}
+                                </td>
                                 <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }}
                                 </td>
                                 <td class="text-end">
@@ -82,11 +83,11 @@
                                                 data-status_reason="{{ $expense->status_reason }}"
                                                 data-approved_date_time="{{ $expense->approved_date_time }}">
                                                 <i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                                <a class="dropdown-item" href="{{route('emp-expenses-view',$expense->id)}}"
+                                            <a class="dropdown-item" href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id , 'emp_id' => $expense->employee_id]) }}"
                                                 data-id="{{ $expense->id }}"
                                                 data-expense_type_id ="{{ $expense->expense_type_id }}"
                                                 data-employee_id="{{ $expense->employee_id }}">
-                                                <i class="fa fa-pencil m-r-5"></i>View</a>     
+                                                <i class="fa fa-pencil m-r-5"></i>View</a>
                                             <a class="dropdown-item deletebtn" href="javascript:void(0)"
                                                 data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
                                                 Delete</a>
@@ -115,7 +116,19 @@
                     <form action="{{ route('emp-expenses') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
+                                <input type="hidden" id="token" value="{{ Session::token() }}">
+                                <div class="form-group">
+                                    <label>Expenses Id</label>
+                                    <select name="expenses_id" id="expense_id" class="form-control select expense_id">
+                                        <option value="">Select expenses Id</option>
+                                        @foreach ($expense_ids as $expense)
+                                            <option value="{{ $expense->expense_id }}">{{ $expense->expense_id }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Year</label>
                                     <select name="year" id="year" class="form-control select">
@@ -123,10 +136,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Months</label>
-                                    <select name="month" id="year_month" class="form-control month select">
+                                    <select name="month" id="year_month" class="form-control month ">
                                         <option value="">Select Month</option>
                                     </select>
                                 </div>
@@ -171,7 +184,10 @@
                                     <select name="project" class="select">
                                         <option value="">Select Project</option>
                                         @foreach ($projects as $project)
-                                            <option value="{{ !empty($project->projects->id) ? $project->projects->id:'' }}">{{ !empty($project->projects->name) ? $project->projects->name:'' }}</option>
+                                            <option
+                                                value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">
+                                                {{ !empty($project->projects->name) ? $project->projects->name : '' }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -434,6 +450,35 @@
             for (var month = 0; month <= totalMonths; month++) {
                 $("#year_month").append('<option value="' + (month + 1) + '">' + monthNames[month] + '</option>');
             }
+        });
+
+        $("#expense_id").change(function() {
+            var expense_id = $(".expense_id").val();
+            var token = $("#token").val();
+            $.ajax({
+                type: 'POST',
+                url: '/get-expense-data/',
+                data: {
+                    _token: token,
+                    expense_id: expense_id
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data.month);
+                    $('#year').val(data.year).trigger('change');
+                    $('#year_month').val(data.month).trigger('change');
+                    // console.log(data.year);
+                    // $.each(data.email_data, function(index, row) {
+                    //     // console.log( row.employeejob.work_email)
+                    //     var date = new Date(row.created_at);
+                    //     dateStringWithTime = moment(date).format('DD-MM-YYYY');
+                    // });
+
+
+                },
+            });
+
+
         });
     </script>
 @endsection

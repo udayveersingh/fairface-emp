@@ -39,15 +39,11 @@ class CompanyEmailController extends Controller
         $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
         $notifications = DB::table('notifications')->where('type', '=', 'App\Notifications\newMailNotification')->get();
-        $array_data = [];
-        foreach ($notifications as $index => $notification) {
-            $array_data[$index] = json_decode($notification->data);
-        }
 
-        foreach ($array_data as $value) {
-        }
+        $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+       
         // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'array_data', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count','company_unread_emails'));
     }
 
 

@@ -201,7 +201,7 @@
                         <a href="{{ route('company-email') }}" class="list-group-item border-0 text-success"><i
                                 class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     @endif
-                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
+                    <a href="" class="list-group-item border-0"><i
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
