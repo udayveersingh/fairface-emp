@@ -95,9 +95,9 @@
             border-bottom: 1px solid #dee2e6;
         }
 
-        .emails_list tr.active:nth-child(1) td {
+        /* .emails_list tr.active:nth-child(1) td {
             background: #dfe4fa;
-        }
+        } */
 
         .unread {
             font-weight: bold;
@@ -254,7 +254,8 @@
 
                                                 @endphp
 
-                                                <tr class= "active">
+                                                {{-- @dd($company_email) --}}
+                                                <tr class={{$unread}}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -312,7 +313,7 @@
                                                                     data-email_date="{{ $company_email->date }}"
                                                                     data-email_time="{{ $company_email->time }}"
                                                                     data-email_subject="{{ $company_email->subject }}"
-                                                                    data-email_body="{{ $company_email->body }}"
+                                                                    data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
                                                             @if (!empty($company_email->attachment))
@@ -379,7 +380,7 @@
                                                     }
 
                                                 @endphp
-                                                <tr class= "active">
+                                                <tr class={{$unread}}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -514,7 +515,7 @@
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
-                                        <div class="loaderDiv">
+                                        <div class="loaderDiv" style="display: none;">
                                             <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
                                         </div>
                                         <div class="d-flex align-items-center">

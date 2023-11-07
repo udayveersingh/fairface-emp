@@ -244,15 +244,23 @@ class CompanyEmailController extends Controller
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
+            // dd($employee_job);
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $count_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
             $company_emails = CompanyEmail::with('employeejob')->where('from_id','=',$employee_job->id)->latest()->get();
+            $sent_email_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->get()->count();
+            // dd($employee_job->id);
+            // $company_unread_emails = CompanyEmail::with('employeejob')->where('from_id','=',$employee_job->id)->latest()->get();
+            $company_unread_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',$employee_job->id)->whereNotNull('read_at')->latest()->get();
+            // dd($company_unread_emails);
         } else {
             $count_emails = CompanyEmail::count();
             $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
+            $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->count();
+            $company_unread_emails = CompanyEmail::with('employeejob')->whereNotNull('read_at')->Orwhere('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
         }
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
-        return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails', 'employee'));
+        return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails', 'employee','sent_email_count','company_unread_emails'));
         // }
     }
 
@@ -261,15 +269,16 @@ class CompanyEmailController extends Controller
      */
     public function mailDetail($from_id, Request $request)
     {
+        // dd($request->all());
         $title = "mail";
         $read_at_update = CompanyEmail::find($request->id);
         $read_at_update->read_at = Null;
         $read_at_update->save();
-        $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('from_id', '=', $from_id)->latest()->get();
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('to_id', '=', $from_id)->latest()->get();
 
             
             return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
@@ -278,6 +287,7 @@ class CompanyEmailController extends Controller
             // return view('backend.emails.mail-detail', compact('company_emails', 'title', 'employee_job'));
         } else {
             $employee_job = EmployeeJob::find($from_id);
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('from_id', '=', $from_id)->latest()->get();
             // dd($company_emails);
             return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
             // return view('backend.emails.mail-detail', compact('company_emails', 'title','employee_job'));
@@ -289,6 +299,7 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
+        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
