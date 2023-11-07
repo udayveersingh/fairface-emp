@@ -95,17 +95,21 @@
             border-bottom: 1px solid #dee2e6;
         }
 
-        /* .emails_list tr.active:nth-child(1) td {
-                background: #dfe4fa;
-            } */
+        .emails_list tr.active:nth-child(1) td {
+            background: #dfe4fa;
+        }
+
+        /* .emails_list tr .active td{
+                    background: #dfe4fa;
+                } */
 
         /* .emails_list tr.active td {
-                background: #dfe4fa;
-            } */
+                    background: #dfe4fa;
+                } */
 
         /* .emails_list tr.active {
-                background: #dfe4fa;
-            } */
+                    background: #dfe4fa;
+                } */
 
         .unread {
             font-weight: bold;
@@ -271,8 +275,8 @@
                                                     }
 
                                                 @endphp
-                                                <tr class="active ">
-                                                    <td {{ $count }}>
+                                                <tr {{ $count }} class="active ">
+                                                    <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
                                                                 class="email-name mail-detail get_email_data"
@@ -511,14 +515,16 @@
                         @endphp
                         <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
                             <div class="single-email-inner h-100">
-                                <div class="loader d-none text-secondary"
-                                    style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fa-spinner fa fa-spin"></i>
+                                <div id="">
+                                    <div class="loader d-none text-secondary"
+                                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-spinner fa fa-spin"></i>
+                                    </div>
                                 </div>
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
+                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
                                                 data-target="#email_edit"><i title="Edit" class="fa fa-edit edit"
                                                     data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
@@ -534,17 +540,23 @@
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
-                                            {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
+                                            <div class="p-1 text-secondary cursor-pointer"
+                                                    onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
+                                                </div>
+                                                {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
-                                        </div>
+                                                </div>
+                                                <div class="loaderDiv">
+                                                    <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+                                                </div>
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
-                                            <div class="btn-group ml-auto">
+                                            {{-- <div class="btn-group ml-auto">
 
                                                 <div class="p-1 text-secondary cursor-pointer"
                                                     onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="email_header d-flex align-items-center">
                                             <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
@@ -571,9 +583,6 @@
                                         <p class="body">
                                             {!! $company_email->body !!}
                                         </p>
-                                        <div class="loader">
-
-                                        </div>
                                     </div>
 
                                     <div class="card-footer d-flex align-items-center">
@@ -828,15 +837,14 @@
                 $('.mail-detail').on('click', function() {
 
                     var count = $(this).data('count');
-
-                    $(".emails_list tr .active:nth-child(1)").addClass("active");
-
+                    $(`.emails_list tr ${count}.active:nth-child(1)`).addClass("active");
+                    
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
                     var token = $(this).data('token');
-                    $('.loader').html(
+                    $('.loaderDiv').html(
                         `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`
-                        )
+                        );
                     console.log(token);
                     $.ajax({
                         type: 'POST',
@@ -846,11 +854,21 @@
                             from_id: from_id,
                             id: id,
                         },
+                        beforeSend: function() {
+                            $(".loaderDiv").show();
+                        },
+
+                        complete: function() {
+                            $(".loaderDiv").hide();
+                        },
                         dataType: 'JSON',
                         success: function(data) {
+                            // $(".loaderDiv").show();
+                            // console.log(data)
                             // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
                                 // console.log( row.employeejob.work_email)
+                                // console.log(data.loader)
                                 var date = new Date(row.created_at);
                                 dateStringWithTime = moment(date).format('DD-MM-YYYY');
                                 var work_email = `<` + row.employeejob.work_email + `>`;

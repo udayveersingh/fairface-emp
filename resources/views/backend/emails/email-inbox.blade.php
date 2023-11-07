@@ -492,7 +492,7 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
+                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
                                                 data-target="#email_edit"><i title="Edit" class="fa fa-edit edit"
                                                     data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
@@ -504,21 +504,21 @@
                                                     data-email_body="{{ $company_email->body }}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
                                                 Edit</span>
-                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
+                                            <div class="p-1 text-secondary cursor-pointer"
+                                                    onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
+                                                </div>
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
+                                        <div class="loaderDiv">
+                                            <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+                                        </div>
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
-                                            <div class="btn-group ml-auto">
-
-                                                <div class="p-1 text-secondary cursor-pointer"
-                                                    onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
-                                                </div>
-                                            </div>
                                         </div>
                                         <div class="email_header d-flex align-items-center">
                                             <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
@@ -762,6 +762,13 @@
                             _token: token,
                             from_id: from_id,
                             id: id,
+                        },
+                        beforeSend: function() {
+                            $(".loaderDiv").show();
+                        },
+
+                        complete: function() {
+                            $(".loaderDiv").hide();
                         },
                         dataType: 'JSON',
                         success: function(data) {

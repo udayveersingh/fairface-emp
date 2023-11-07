@@ -271,8 +271,9 @@ class CompanyEmailController extends Controller
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
 
+            
             return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
-
+            
             //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
             // return view('backend.emails.mail-detail', compact('company_emails', 'title', 'employee_job'));
         } else {
