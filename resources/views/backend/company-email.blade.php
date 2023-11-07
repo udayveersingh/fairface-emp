@@ -95,9 +95,17 @@
             border-bottom: 1px solid #dee2e6;
         }
 
-        .emails_list tr.active:nth-child(1) td {
-            background: #dfe4fa;
-        }
+        /* .emails_list tr.active:nth-child(1) td {
+                background: #dfe4fa;
+            } */
+
+        /* .emails_list tr.active td {
+                background: #dfe4fa;
+            } */
+
+        /* .emails_list tr.active {
+                background: #dfe4fa;
+            } */
 
         .unread {
             font-weight: bold;
@@ -214,6 +222,9 @@
                                 <table class="table table-hover mails m-0 no-border emails_list" style="border:none;">
                                     <tbody>
                                         @if (!empty($company_emails->count()) > 0)
+                                            @php
+                                                $count = 1;
+                                            @endphp
                                             @foreach ($company_emails as $index => $company_email)
                                                 @php
                                                     $from = App\Models\EmployeeJob::with('employee')
@@ -260,8 +271,8 @@
                                                     }
 
                                                 @endphp
-                                                <tr class= "active">
-                                                    <td>
+                                                <tr class="active ">
+                                                    <td {{ $count }}>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
                                                                 class="email-name mail-detail get_email_data"
@@ -269,16 +280,18 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
-                                                                data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
-                                                            -
-
+                                                                data-token="{{ Session::token() }}"
+                                                                data-count="{{ $count }}">
+                                                                {{ ucfirst($fullname) }}
+                                                            </a>
                                                             <a href="#single-email-wrapper"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
-                                                                data-token="{{ Session::token() }}">{{ $to_mail_users }}</a>
+                                                                data-token="{{ Session::token() }}"
+                                                                data-count="{{ $count }}">{{ $to_mail_users }}</a>
                                                         </div>
 
                                                         <a href="#single-email-wrapper"
@@ -287,10 +300,11 @@
                                                             data-from_id="{{ $company_email->from_id }}"
                                                             data-email_to="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
-                                                            data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
+                                                            data-token="{{ Session::token() }}"
+                                                            data-count="{{ $count }}">{{ $company_email->subject }}</a>
 
                                                         <div class="d-block fsiziii email-content-wrap">
-                                                            {!! mb_strimwidth("$company_email->body", 0, 200, "..."); !!}
+                                                            {!! mb_strimwidth("$company_email->body", 0, 200, '...') !!}
                                                         </div>
                                                     </td>
 
@@ -305,7 +319,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
-                                                                data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
+                                                                data-token="{{ Session::token() }}"
+                                                                data-count="{{ $count }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
@@ -323,12 +338,16 @@
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
                                                             @if (!empty($company_email->attachment))
-                                                            <a href="{{asset('storage/company_email/attachment/'.$company_email->attachment)}}" target="_blank""> <i
-                                                                class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
+                                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                                    target="_blank""> <i
+                                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
                                                             @endif
                                                         </div>
                                                     </td>
                                                 </tr>
+                                                @php
+                                                    $count++;
+                                                @endphp
                                             @endforeach
                                         @endif
                                     </tbody>
@@ -454,7 +473,7 @@
                                                 </tr>
                                             @endforeach
                                         @else
-                                        <div class="text-left ml-5">There is no new email.</div>
+                                            <div class="text-left ml-5">There is no new email.</div>
                                         @endif
                                     </tbody>
                                 </table>
@@ -552,6 +571,9 @@
                                         <p class="body">
                                             {!! $company_email->body !!}
                                         </p>
+                                        <div class="loader">
+
+                                        </div>
                                     </div>
 
                                     <div class="card-footer d-flex align-items-center">
@@ -804,9 +826,17 @@
         <script>
             $(document).ready(function() {
                 $('.mail-detail').on('click', function() {
+
+                    var count = $(this).data('count');
+
+                    $(".emails_list tr .active:nth-child(1)").addClass("active");
+
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
                     var token = $(this).data('token');
+                    $('.loader').html(
+                        `<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>`
+                        )
                     console.log(token);
                     $.ajax({
                         type: 'POST',
