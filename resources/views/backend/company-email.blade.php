@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                    background: #dfe4fa;
-                } */
+                        background: #dfe4fa;
+                    } */
 
         .unread {
             font-weight: bold;
@@ -201,11 +201,13 @@
                     <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all"
-                                type="button" role="tab" aria-controls="all" aria-selected="true">All({{$count_emails}})</button>
+                                type="button" role="tab" aria-controls="all"
+                                aria-selected="true">All({{ $count_emails }})</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread"
-                                type="button" role="tab" aria-controls="unread" aria-selected="false">Unread({{$count_unread_emails}})</button>
+                                type="button" role="tab" aria-controls="unread"
+                                aria-selected="false">Unread({{ $count_unread_emails }})</button>
                         </li>
                     </ul>
                     <div class="tab-content pt-0" id="myTabContent">
@@ -325,7 +327,7 @@
                                                                     data-email_date="{{ $company_email->date }}"
                                                                     data-email_time="{{ $company_email->time }}"
                                                                     data-email_subject="{{ $company_email->subject }}"
-                                                                    data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
                                                             @if (!empty($company_email->attachment))
@@ -502,12 +504,12 @@
                         @endphp
                         <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
                             <div class="single-email-inner h-100">
-                                <div id="">
-                                    <div class="loader d-none text-secondary"
-                                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fa-spinner fa fa-spin"></i>
-                                    </div>
+
+                                <div class="loader  text-secondary"
+                                    style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-spinner fa fa-spin"></i>
                                 </div>
+
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
@@ -533,10 +535,8 @@
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
-                                        <div class="loaderDiv" style="display: none;">
-                                            <div class="spinner-border" role="status"><span
-                                                    class="sr-only">Loading...</span></div>
-                                        </div>
+
+
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
                                             {{-- <div class="btn-group ml-auto">
@@ -616,7 +616,8 @@
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
                                         $q->where('record_status', '=', 'active');
-                                    })->get();
+                                    })
+                                    ->get();
                             @endphp
                             <div class="row">
                                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
@@ -829,6 +830,11 @@
         <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
         <script>
             $(document).ready(function() {
+
+                setTimeout(function() {
+                    $(".loader").hide();
+                }, 500);
+                
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
@@ -843,11 +849,11 @@
                             id: id,
                         },
                         beforeSend: function() {
-                            $(".loaderDiv").show();
+                            $(".loader").show();
                         },
 
                         complete: function() {
-                            $(".loaderDiv").hide();
+                            $(".loader").hide();
                         },
                         dataType: 'JSON',
                         success: function(data) {

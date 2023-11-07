@@ -257,7 +257,7 @@ class CompanyEmailController extends Controller
             $count_emails = CompanyEmail::count();
             $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
             $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->count();
-            $company_unread_emails = CompanyEmail::with('employeejob')->whereNotNull('read_at')->Orwhere('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
+            $company_unread_emails = CompanyEmail::with('employeejob')->whereNotNull('read_at')->latest()->get();
         }
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
         return view('backend.emails.sent-email', compact('title', 'company_emails', 'count_emails', 'count_unread_emails', 'employee','sent_email_count','company_unread_emails'));

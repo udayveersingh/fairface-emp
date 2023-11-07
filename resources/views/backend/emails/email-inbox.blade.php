@@ -486,7 +486,7 @@
                         @endphp
                         <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
                             <div class="single-email-inner h-100">
-                                <div class="loader d-none text-secondary"
+                                <div class="loader  text-secondary"
                                     style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                                     <i class="fa-spinner fa fa-spin"></i>
                                 </div>
@@ -515,9 +515,7 @@
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
-                                        <div class="loaderDiv" style="display: none;">
-                                            <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
-                                        </div>
+                                        
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
                                         </div>
@@ -752,6 +750,9 @@
         <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
         <script>
             $(document).ready(function() {
+                setTimeout(function() {
+                    $(".loader").hide();
+                }, 500);
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
@@ -765,11 +766,11 @@
                             id: id,
                         },
                         beforeSend: function() {
-                            $(".loaderDiv").show();
+                            $(".loader").show();
                         },
 
                         complete: function() {
-                            $(".loaderDiv").hide();
+                            $(".loader").hide();
                         },
                         dataType: 'JSON',
                         success: function(data) {
