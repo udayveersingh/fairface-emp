@@ -513,7 +513,7 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
+                                            {{-- <span class="p-1 cursor-pointer text-secondary cursor-pointer"
                                                 data-toggle="modal" data-target="#email_edit"><i title="Edit"
                                                     class="fa fa-edit edit" data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
@@ -522,9 +522,9 @@
                                                     data-email_date="{{ $company_email->date }}"
                                                     data-email_time="{{ $company_email->time }}"
                                                     data-email_subject="{{ $company_email->subject }}"
-                                                    data-email_body="{!! $company_email->body !!}"
+                                                    data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
-                                                Edit</span>
+                                                Edit</span> --}}
                                             <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
@@ -834,7 +834,7 @@
                 setTimeout(function() {
                     $(".loader").hide();
                 }, 500);
-                
+
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
