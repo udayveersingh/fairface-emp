@@ -277,6 +277,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">
                                                                 {{ ucfirst($fullname) }}
@@ -287,6 +289,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">{{ $to_mail_users }}</a>
                                                         </div>
@@ -297,6 +301,8 @@
                                                             data-from_id="{{ $company_email->from_id }}"
                                                             data-email_to="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
+                                                            data-email_cc="{{ $company_email->company_cc }}"
+                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-token="{{ Session::token() }}"
                                                             data-count="{{ $count }}">{{ $company_email->subject }}</a>
 
@@ -316,6 +322,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                                         </div>
@@ -413,6 +421,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">
                                                                 {{ ucfirst($fullname) }}
@@ -423,6 +433,8 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">{{ $to_mail_users }}</a>
                                                         </div>
@@ -433,6 +445,8 @@
                                                             data-from_id="{{ $company_email->from_id }}"
                                                             data-email_to="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
+                                                            data-email_cc="{{ $company_email->company_cc }}"
+                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-token="{{ Session::token() }}"
                                                             data-count="{{ $count }}">{{ $company_email->subject }}</a>
 
@@ -451,7 +465,10 @@
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                data-email_attachment="{{ $company_email->attachment }}"></i>
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                                         </div>
@@ -528,9 +545,9 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            {{-- <span class="p-1 cursor-pointer text-secondary cursor-pointer"
+                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
                                                 data-toggle="modal" data-target="#email_edit"><i title="Edit"
-                                                    class="fa fa-edit edit" data-id="{{ $company_email->id }}"
+                                                    class="fa fa-edit editbtn" data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
                                                     data-email_cc="{{ $company_email->company_cc }}"
@@ -539,7 +556,7 @@
                                                     data-email_subject="{{ $company_email->subject }}"
                                                     data-email_body="{!! $company_email->body !!}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
-                                                Edit</span> --}}
+                                                Edit</span>
                                             <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
@@ -917,14 +934,30 @@
                 $('#edit_body').val(body);
             });
 
+            $('.editbtn').on('click',function(){
+                $('#email_edit').modal('show');
+            })
+
             //reply mail
             $('.get_email_data').on('click', function() {
+                id = $(this).data('com_email_id');
                 from = $(this).data('from_id');
                 to_ids = $(this).data('email_to');
                 reply_subject = $(this).data('subject')
+                edit_cc = $(this).data('email_cc');
+                body = $(this).data('email_body');
+
+                console.log(body , "email_body");
                 $('#reply_from_id').val(from);
                 $('#reply_to_ids').val(to_ids);
                 $('#reply_subject').val(reply_subject);
+                $('#edit_id').val(id);
+                $('#from_id').val(from)
+                // $('#to_id').val(to_ids);
+                $("#to_id").val(to_ids).trigger("change");
+                $('#edit_subject').val(reply_subject);
+                $('#cc').val(edit_cc);
+                $('#edit_body').val(body);
             });
 
             function printDiv(divName) {
