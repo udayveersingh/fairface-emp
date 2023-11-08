@@ -188,11 +188,13 @@
         <div class="table-detail mail-right col-md-10">
             <div class="row">
                 <div class="col-md-6 pr-2 pr-md-0">
-                    <form class="input-group mt-3 pr-3">
-                        <input type="text" class="form-control border-0 bg-light" placeholder="Search"
+                    <form class="input-group mt-3 pr-3" method="post" action="" id="searchform">
+                        @csrf
+                        <input type="text" class="form-control border-0 bg-light" name="search" id="searchvalue" placeholder="Search"
                             aria-label="Search">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         <div class="input-group-append">
-                            <button class="btn btn-light border-0" type="submit">
+                            <button class="btn btn-light border-0" value="submit" id="searchbtn" type="submit">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -937,6 +939,29 @@
                 $('#cc').val(edit_cc);
                 $('#edit_body').val(body);
             });
+
+
+            //Search mail data
+
+            $('#searchform').on('submit', function(e) {
+                   e.preventDefault();
+                    var search = $('#searchvalue').val();
+                    var token = $('#token').val();
+                    console.log( search ,  "search")
+                    $.ajax({
+                        type: 'POST',
+                        url: '/find-search/',
+                        data: {
+                            _token: token,
+                            search:search,
+                        },
+                        dataType: 'JSON',
+                        success: function(data) {
+                            // $.each(data.email_data, function(index, row) {
+                            // });
+                        },
+                    });
+                });
 
             function printDiv(divName) {
                 var printContents = document.getElementById(divName).innerHTML;
