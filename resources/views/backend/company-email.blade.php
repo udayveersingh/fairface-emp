@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                background: #dfe4fa;
-                                            } */
+                                                                        background: #dfe4fa;
+                                                                    } */
 
         .unread {
             font-weight: bold;
@@ -179,6 +179,8 @@
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     {{-- <a href="" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}
+                    <a href="" class="list-group-item border-0 py-2 px-3"><i
+                            class="far fa-star font-13 mr-2"></i>Archive<b></b></a>
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
@@ -280,6 +282,8 @@
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+
+                                                                data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">
@@ -350,9 +354,9 @@
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
                                                             @if (!empty($company_email->attachment))
-                                                            <a href="{{ asset('storage/company_email/attachment/' .$company_email->attachment) }}"
-                                                                target="_blank" download><i
-                                                                class="fa fa-paperclip text-secondary cursor-pointer"></i>
+                                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                                    target="_blank" download><i
+                                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i>
                                                             @endif
                                                         </div>
                                                     </td>
@@ -548,8 +552,9 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
-                                                data-toggle="modal"><i title="Edit" class="fa fa-edit editbtn"
+                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer "
+                                                data-toggle="modal" data-target="#email_edit" data-toggle="modal"><i
+                                                    title="Edit" class="fa fa-edit editbtn"
                                                     data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
@@ -564,13 +569,22 @@
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
+                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                    class="text-secondary company_email_id" id="company_email_id"
+                                                    data-toggle="modal" data-target="#"><i class="far fa-star"></i>
+                                                    Archive</a>
+                                            </div>
                                             <div class="p-1 text-secondary cursor-pointer"
                                                 onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
+                                            </div>
+                                            <div class="p-1 text-secondary cursor-pointer view_attachment">
+                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                    target="_blank" download> <i
+                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
                                             </div>
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
-
 
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
@@ -609,14 +623,16 @@
                                             {!! $company_email->body !!}
                                         </p>
                                     </div>
-                                    <div class="view_attachment">
-                                        {{-- <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png"> --}}
-                                        {{-- <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                    {{-- <div class="view_attachment"> --}}
+                                    {{-- <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png"> --}}
+                                    {{-- <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
                                             target="_blank" download> <i
                                                 class="fa fa-paperclip text-secondary cursor-pointer"></i></a> --}}
-                                    <img class="img-fluid" src="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}" width="150px">
+                                    {{-- <img class="img-fluid"
+                                            src="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                            width="150px"> --}}
 
-                                    </div>
+                                    {{-- </div> --}}
 
                                     <div class="card-footer d-flex align-items-center">
                                         <div class="btn-group ml-auto gap-2">
@@ -749,9 +765,9 @@
                                 <label>Attachment</label>
                                 <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
                             </div>
-                            <div class="attachment">
+                            {{-- <div class="attachment">
 
-                            </div>
+                            </div> --}}
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
                             </div>
@@ -802,6 +818,61 @@
                                     })
                                     ->get();
                             @endphp
+                            <div class="form-group">
+                                <label>From:</label>
+                                <select name="from_id" id="from_id" class="form-control reply_from_id" disabled>
+                                    <option value="">Select to</option>
+                                    @foreach ($to_email_ids as $from_email)
+                                        @php
+                                            $firstname = !empty($from_email->employee->firstname) ? $from_email->employee->firstname : '';
+                                            $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $from_email->id }}">
+                                            {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Sent:</label>
+                                <input class="form-control" type="text" name="email_date" id="sent_date_time" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>To:</label>
+                                <select name="to_id[]" id="to_id" class="form-control reply_to_id select" multiple
+                                    data-mdb-placeholder="Example placeholder" multiple disabled>
+                                    <option value="">Select to</option>
+                                    @foreach ($to_email_ids as $to_email)
+                                        @php
+                                            $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                            $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $to_email->id }}">
+                                            {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label select-label">CC</label>
+                                <select name="cc[]" id="cc" class="form-control select reply_to_cc" multiple
+                                    data-mdb-placeholder="Example placeholder" multiple>
+                                    @foreach ($employee_jobs as $employee_job)
+                                        @php
+                                            $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                            $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                            $emp_name = $firstname . '  ' . $lastname;
+                                        @endphp
+                                        <option value="{{ $employee_job->id }}">
+                                            {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject</label>
+                                <input class="form-control" type="text" name="email_subject" id="edit_subject">
+                            </div>
                             @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                                 <div class="form-group">
                                     <label>From<span class="text-danger">*</span></label>
@@ -823,22 +894,22 @@
                             @elseif(
                                 (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
                                     Auth::user()->role->name == App\Models\Role::ADMIN)
-                                      <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Date</label>
-                                                <input class="form-control date email_date" type="text" name="email_date"
-                                                    id="date">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <label>Time </label>
-                                                <input class="form-control time" type="time" name="email_time"
-                                                    id="time">
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input class="form-control date email_date" type="text" name="email_date"
+                                                id="date">
                                         </div>
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Time </label>
+                                            <input class="form-control time" type="time" name="email_time"
+                                                id="time">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <input type="hidden" name="">
                                 </div>
@@ -951,7 +1022,9 @@
                                 $(".date").html(dateStringWithTime);
                                 if (row.attachment != null) {
                                     $(".view_attachment").html(
-                                        `<img src='{{ asset('storage/company_email/attachment/${row.attachment}') }}' width='150px'>`
+                                        `<a href='{{ asset('storage/company_email/attachment/${row.attachment}') }}'
+                                          target='_blank' download> <i
+                                                    class='fa fa-paperclip text-secondary cursor-pointer'></i></a>`
                                     );
                                 } else {
                                     $(".view_attachment").html('');
@@ -1001,17 +1074,29 @@
             //reply mail
             $('.get_email_data').on('click', function() {
                 id = $(this).data('com_email_id');
+                mail_id = $(this).data('com_email_id');
                 from = $(this).data('from_id');
                 to_ids = $(this).data('email_to');
-                reply_subject = $(this).data('subject')
+                console.log(to_ids, "to_ids");
+                reply_subject = $(this).data('subject');
                 edit_cc = $(this).data('email_cc');
                 body = $(this).data('email_body');
                 edit_date = $(this).data('email_date');
+                date_time = $(this).data('sent_datetime');
                 edit_time = $(this).data('email_time');
                 attachment = $(this).data('email_attachment');
                 console.log(body, "email_body");
                 $('#reply_from_id').val(from);
+                $('.reply_from_id').val(from);
+                $('#sent_date_time').val(date_time);
+                var ids = to_ids.split();
+                console.log(ids ,"ids")
+                // ids.forEach(function(number) {
+                //     $('.reply_to_id').val(number).trigger("change");
+                // });
+                $('.reply_to_id').val(to_ids).trigger("change");
                 $('#reply_to_ids').val(to_ids);
+                $('.reply_to_cc').val(edit_cc);
                 $('#reply_subject').val(reply_subject);
                 $('#edit_id').val(id);
                 $('#from_id').val(from)
@@ -1021,6 +1106,8 @@
                 $('#date').val(edit_date);
                 $('#time').val(edit_time);
                 $('#edit_body').val(body);
+                $('.company_email_id').val(mail_id);
+
                 $(".attachment").html(
                     `<img src='{{ asset('storage/company_email/attachment/${attachment}') }}' width='150px'>`);
             });
@@ -1028,6 +1115,27 @@
 
             //Search mail data
 
+            // $('.').on('click', function() {
+            //     var search = $('#searchvalue').val();
+            //     var token = $('#token').val();
+            //     console.log(search, "search")
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/find-search/',
+            //         data: {
+            //             _token: token,
+            //             search: search,
+            //         },
+            //         dataType: 'JSON',
+            //         success: function(data) {
+            //             // $.each(data.email_data, function(index, row) {
+            //             // });
+            //         },
+            //     });
+            // });
+
+
+            //Archive  funtionality
             $('#searchform').on('submit', function(e) {
                 e.preventDefault();
                 var search = $('#searchvalue').val();

@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-            background: #dfe4fa;
-        } */
+                background: #dfe4fa;
+            } */
 
         .unread {
             font-weight: bold;
@@ -194,7 +194,7 @@
                     <form class="input-group mt-3 pr-3">
                         <input type="text" class="form-control border-0 bg-light" placeholder="Search"
                             aria-label="Search">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="input-group-append">
                             <button class="btn btn-light border-0" type="submit">
                                 <i class="fa fa-search"></i>
@@ -256,7 +256,7 @@
                                                 @endphp
 
                                                 {{-- @dd($company_email) --}}
-                                                <tr class={{$unread}}>
+                                                <tr class={{ $unread }}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -266,7 +266,7 @@
                                                                 data-from_id="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
 
@@ -277,7 +277,7 @@
                                                                 data-from_id="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a>
                                                         </div>
@@ -289,12 +289,12 @@
                                                             data-from_id="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
                                                             data-email_cc="{{ $company_email->company_cc }}"
-                                                            data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-email_attachment="{{ $company_email->attachment }}"
                                                             data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
 
                                                         <div class="d-block fsiziii email-content-wrap">
-                                                            {!! mb_strimwidth("$company_email->body", 0, 200, "..."); !!}
+                                                            {!! mb_strimwidth("$company_email->body", 0, 200, '...') !!}
                                                         </div>
                                                     </td>
 
@@ -327,11 +327,12 @@
                                                                     data-email_date="{{ $company_email->date }}"
                                                                     data-email_time="{{ $company_email->time }}"
                                                                     data-email_subject="{{ $company_email->subject }}"
-                                                                    data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                     data-email_attachment="{{ $company_email->attachment }}"
                                                                     title="Edit"></i></div>
                                                             @if (!empty($company_email->attachment))
-                                                                <a href="{{asset('storage/company_email/attachment/'.$company_email->attachment)}}" target="_blank"> <i
+                                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                                    target="_blank"> <i
                                                                         class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
                                                             @endif
                                                         </div>
@@ -394,7 +395,7 @@
                                                     }
 
                                                 @endphp
-                                                <tr class={{$unread}}>
+                                                <tr class={{ $unread }}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -404,7 +405,7 @@
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
                                                             -
@@ -416,9 +417,9 @@
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                                data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users:''  }}</a>
+                                                                data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users : '' }}</a>
                                                         </div>
 
                                                         <a href="#single-email-wrapper"
@@ -428,7 +429,7 @@
                                                             data-email_to="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
                                                             data-email_cc="{{ $company_email->company_cc }}"
-                                                            data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-email_attachment="{{ $company_email->attachment }}"
                                                             data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
 
@@ -449,7 +450,7 @@
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
                                                         </div>
@@ -519,9 +520,9 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer" data-toggle="modal"
-                                                data-target="#email_edit"><i title="Edit" class="fa fa-edit editbtn"
-                                                    data-id="{{ $company_email->id }}"
+                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
+                                                data-toggle="modal" data-target="#email_edit"><i title="Edit"
+                                                    class="fa fa-edit editbtn" data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
                                                     data-email_cc="{{ $company_email->company_cc }}"
@@ -531,17 +532,22 @@
                                                     data-email_body="{{ $company_email->body }}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
                                                 Edit</span>
-                                                <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
                                             <div class="p-1 text-secondary cursor-pointer"
-                                                    onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
-                                                </div>
+                                                onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
+                                            </div>
+                                            <div class="p-1 text-secondary cursor-pointer view_attachment">
+                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                    target="_blank" download> <i
+                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
+                                            </div>
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
                                         </div>
-                                        
+
                                         <div class="d-flex align-items-center">
                                             <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
                                         </div>
@@ -564,8 +570,8 @@
                                                 data-email_to="{{ $company_email->to_id }}"
                                                 data-subject="{{ $company_email->subject }}"
                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users:''  }}</span>
-                                            </div>
+                                                data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users : '' }}</span>
+                                        </div>
                                     </div>
 
                                     <div class="card-body">
@@ -573,10 +579,10 @@
                                             {!! $company_email->body !!}
                                         </p>
                                     </div>
-                                    <div class="view_attachment">
+                                    {{-- <div class="view_attachment">
                                     <img class="img-fluid" src="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}" width="150px">
 
-                                    </div>
+                                    </div> --}}
 
                                     <div class="card-footer d-flex align-items-center">
                                         <div class="btn-group ml-auto gap-2">
@@ -668,9 +674,9 @@
                                 <label>Attachment</label>
                                 <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
                             </div>
-                            <div class="attachment">
+                            {{-- <div class="attachment">
 
-                            </div>
+                            </div> --}}
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
                             </div>
@@ -810,9 +816,9 @@
                         success: function(data) {
                             // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
-                                var date= new Date(row.created_at);
+                                var date = new Date(row.created_at);
                                 dateStringWithTime = moment(date).format('DD-MM-YYYY');
-                                console.log(dateStringWithTime , row.created_at);
+                                console.log(dateStringWithTime, row.created_at);
                                 var work_email = `<` + row.employeejob.work_email + `>`;
                                 $(".subject").html(row.subject);
                                 $(".card-body").html(row.body);
@@ -823,7 +829,9 @@
                                 $(".date").html(dateStringWithTime);
                                 if (row.attachment != null) {
                                     $(".view_attachment").html(
-                                        `<img src='{{ asset('storage/company_email/attachment/${row.attachment}') }}' width='150px'>`
+                                        `<a href='{{ asset('storage/company_email/attachment/${row.attachment}') }}'
+                                          target='_blank' download> <i
+                                                    class='fa fa-paperclip text-secondary cursor-pointer'></i></a>`
                                     );
                                 } else {
                                     $(".view_attachment").html('');
@@ -842,7 +850,7 @@
             $('.edit').on('click', function() {
                 var id = $(this).data('id');
                 var edit_from = $(this).data('email_from');
-                
+
                 var edit_work_email = $(this).data('work_email');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc = $(this).data('email_cc');
@@ -863,12 +871,12 @@
                     `<img src='{{ asset('storage/company_email/attachment/${attachment}') }}' width='150px'>`);
             });
 
-            $('.editbtn').on('click',function(){
+            $('.editbtn').on('click', function() {
                 $('#email_edit').modal('show');
             })
 
-           //reply mail
-           $('.get_email_data').on('click', function() {
+            //reply mail
+            $('.get_email_data').on('click', function() {
                 id = $(this).data('com_email_id');
                 from = $(this).data('from_id');
                 to_ids = $(this).data('email_to');
@@ -876,7 +884,7 @@
                 edit_cc = $(this).data('email_cc');
                 body = $(this).data('email_body');
                 attachment = $(this).data('email_attachment');
-                console.log(body , "email_body");
+                console.log(body, "email_body");
                 $('#reply_from_id').val(from);
                 $('#reply_to_ids').val(to_ids);
                 $('#reply_subject').val(reply_subject);
