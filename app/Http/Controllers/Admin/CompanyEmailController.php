@@ -150,6 +150,7 @@ class CompanyEmailController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
@@ -171,6 +172,9 @@ class CompanyEmailController extends Controller
         }
         if (!empty($request->id)) {
             $company_email = CompanyEmail::find($request->id);
+            if($imageName == Null){
+                $imageName = $company_email->attachment;
+            }
             $message = "Company Email data has been updated";
         } else {
             $company_email = new CompanyEmail();
@@ -179,7 +183,7 @@ class CompanyEmailController extends Controller
         $company_email->from_id = $request->from_id;
         $company_email->to_id  = $to_mail_ids;
         $company_email->company_cc  = $cc;
-        $company_email->date = $request->email_date;
+        $company_email->date = date('Y-m-d',strtotime($request->email_date));
         $company_email->time = $request->email_time;
         $company_email->subject = $request->email_subject;
         $company_email->body = $request->email_body;
@@ -352,5 +356,16 @@ class CompanyEmailController extends Controller
     {
         $title = "Default Email";
         return view('backend.default-emails', compact('title'));
+    }
+
+
+    // public function SearchMail()
+    // {
+
+    // }
+
+    public function FindSearch(Request $request)
+    {
+        // dd($request->all());
     }
 }

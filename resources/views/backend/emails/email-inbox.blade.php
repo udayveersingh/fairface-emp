@@ -194,6 +194,7 @@
                     <form class="input-group mt-3 pr-3">
                         <input type="text" class="form-control border-0 bg-light" placeholder="Search"
                             aria-label="Search">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="input-group-append">
                             <button class="btn btn-light border-0" type="submit">
                                 <i class="fa fa-search"></i>
@@ -308,10 +309,11 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
-                                                                data-email_cc="{{ $company_email->company_cc }}"
-                                                                data-email_body="{{strip_tags(html_entity_decode($company_email->body))}}"
+                                                                data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+                                                                data-email_time="{{ $company_email->time }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                                data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->created_at)) }}</a>
+                                                                data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}</a>
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
@@ -561,6 +563,7 @@
                                                 data-from_id="{{ $company_email->from_id }}"
                                                 data-email_to="{{ $company_email->to_id }}"
                                                 data-subject="{{ $company_email->subject }}"
+                                                data-email_attachment="{{ $company_email->attachment }}"
                                                 data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users:''  }}</span>
                                             </div>
                                     </div>
@@ -569,6 +572,10 @@
                                         <p class="body">
                                             {!! $company_email->body !!}
                                         </p>
+                                    </div>
+                                    <div class="view_attachment">
+                                    <img class="img-fluid" src="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}" width="150px">
+
                                     </div>
 
                                     <div class="card-footer d-flex align-items-center">
@@ -660,6 +667,9 @@
                             <div class="form-group">
                                 <label>Attachment</label>
                                 <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
+                            </div>
+                            <div class="attachment">
+
                             </div>
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
@@ -811,6 +821,13 @@
                                     .lastname + `</span>` + work_email);
                                 $(".work_email").html(row.employeejob.work_email);
                                 $(".date").html(dateStringWithTime);
+                                if (row.attachment != null) {
+                                    $(".view_attachment").html(
+                                        `<img src='{{ asset('storage/company_email/attachment/${row.attachment}') }}' width='150px'>`
+                                    );
+                                } else {
+                                    $(".view_attachment").html('');
+                                }
                             });
                             // $.each(data.email_data, function(index, row) {
                             //     $(".subject").html(row.subject);
@@ -825,6 +842,7 @@
             $('.edit').on('click', function() {
                 var id = $(this).data('id');
                 var edit_from = $(this).data('email_from');
+                
                 var edit_work_email = $(this).data('work_email');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc = $(this).data('email_cc');
@@ -832,6 +850,7 @@
                 var edit_time = $(this).data('email_time');
                 var edit_subject = $(this).data('email_subject');
                 var body = $(this).data('email_body');
+                var attachment = $(this).data('email_attachment');
                 // console.log(edit_email_to,"email_to");
                 $('#edit_id').val(id);
                 $('#from_id').val(edit_from)
@@ -840,6 +859,8 @@
                 $('#to_id').val(edit_email_to);
                 $('#cc').val(edit_cc);
                 $('#edit_body').val(body);
+                $(".attachment").html(
+                    `<img src='{{ asset('storage/company_email/attachment/${attachment}') }}' width='150px'>`);
             });
 
             $('.editbtn').on('click',function(){
@@ -854,6 +875,7 @@
                 reply_subject = $(this).data('subject')
                 edit_cc = $(this).data('email_cc');
                 body = $(this).data('email_body');
+                attachment = $(this).data('email_attachment');
                 console.log(body , "email_body");
                 $('#reply_from_id').val(from);
                 $('#reply_to_ids').val(to_ids);
@@ -865,6 +887,8 @@
                 $('#edit_subject').val(reply_subject);
                 $('#cc').val(edit_cc);
                 $('#edit_body').val(body);
+                $(".attachment").html(
+                    `<img src='{{ asset('storage/company_email/attachment/${attachment}') }}' width='150px'>`);
             });
 
             function printDiv(divName) {

@@ -88,11 +88,12 @@
                         <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 text-success"><i
                                 class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     @endif
-                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i class="far fa-star font-13 mr-2"></i>Unread<b>({{$count_unread_emails}})</b></a>
+                    <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
+                            class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a>
                     {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
                     {{-- <b>(20)</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
-                        class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ count($company_emails) }})</b></a>
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ count($company_emails) }})</b></a>
                 </div>
 
             </div>
@@ -163,10 +164,12 @@
                             <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 {{-- <input type="hidden" id="edit_id" name="id"> --}}
-                                <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
-                                    id="">
-                                <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
-                                    id="">
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                    <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
+                                        name="email_date" id="">
+                                    <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
+                                        name="email_time" id="">
+                                @endif
                                 @php
                                     $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                         ->whereHas('employee', function ($q) {
@@ -216,12 +219,12 @@
                                     <select name="to_id[]" class="form-control select" multiple
                                         data-mdb-placeholder="Example placeholder" multiple>
                                         @foreach ($to_email_ids as $to_email)
-                                        @php
-                                            $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
-                                            $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
-                                            $emp_name = $firstname . '  ' . $lastname;
-                                        @endphp
-                                            <option value="{{$to_email->id }}">
+                                            @php
+                                                $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                                $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                                $emp_name = $firstname . '  ' . $lastname;
+                                            @endphp
+                                            <option value="{{ $to_email->id }}">
                                                 {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}
                                             </option>
                                         @endforeach
@@ -247,20 +250,25 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Date</label>
-                                            <input class="form-control" type="text" name="email_date" id="">
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Date</label>
+                                                <input class="form-control email_date" type="text" name="email_date" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label>Time </label>
+                                                <input class="form-control " type="time" name="email_time"
+                                                    id="">
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label>Time </label>
-                                            <input class="form-control " type="time" name="email_time" id="">
-                                        </div>
-                                    </div>
-                                </div> --}}
+                                @endif
                                 <div class="form-group">
                                     <label>Subject</label>
                                     <input class="form-control" type="text" name="email_subject" id="">
@@ -295,10 +303,12 @@
                         <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="" id="edit_id" name="id">
-                            <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden" name="email_date"
-                                id="">
-                            <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
-                                id="">
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
+                                    name="email_date" id="">
+                                <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
+                                    name="email_time" id="">
+                            @endif
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
@@ -375,6 +385,25 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @if (
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input class="form-control" type="text" name="email_date" id="">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Time </label>
+                                            <input class="form-control " type="time" name="email_time"
+                                                id="">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <label>Subject</label>
                                 <input class="form-control" type="text" name="email_subject" id="edit_subject">
@@ -592,5 +621,18 @@
             $('input').on('itemAddedOnInit', function(event) {
                 alert(event.item);
             });
+            
+            if ($('.email_date').length > 0) {
+            $('.email_date').datetimepicker({
+                format: 'DD-MM-YYYY',
+                // defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
         </script>
     @endsection
