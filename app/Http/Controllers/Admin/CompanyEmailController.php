@@ -303,7 +303,6 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
-        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
@@ -313,6 +312,12 @@ class CompanyEmailController extends Controller
         if (!empty($request->to_id)) {
             $to_ids = implode(',', $request->to_id);
         }
+
+        $cc_ids = "";
+        if (!empty($request->cc)) {
+            $cc_ids = implode(',', $request->cc);
+        }
+
         $company_email = new CompanyEmail();
         $company_email->from_id = $request->from_id;
         $company_email->to_id  = $to_ids;
@@ -321,6 +326,7 @@ class CompanyEmailController extends Controller
         $company_email->attachment = $imageName;
         $company_email->date = $request->email_date;
         $company_email->time = $request->email_time;
+        $company_email->company_cc = $cc_ids;
         $company_email->read_at = Carbon::now();
         $company_email->sent_by_user_id = Auth::user()->id;
         // $to_email = EmployeeJob::where('id', '=', $company_email->to_id)->value('work_email');

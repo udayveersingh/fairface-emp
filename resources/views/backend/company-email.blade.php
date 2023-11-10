@@ -282,7 +282,7 @@
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
-
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-token="{{ Session::token() }}"
@@ -298,6 +298,7 @@
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                                 data-token="{{ Session::token() }}"
@@ -313,6 +314,7 @@
                                                             data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                             data-email_time="{{ $company_email->time }}"
+                                                            data-email_cc="{{ $company_email->company_cc }}"
                                                             data-email_attachment="{{ $company_email->attachment }}"
                                                             data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                             data-token="{{ Session::token() }}"
@@ -334,6 +336,7 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
@@ -432,6 +435,7 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
@@ -445,6 +449,7 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
@@ -458,6 +463,7 @@
                                                             data-from_id="{{ $company_email->from_id }}"
                                                             data-email_to="{{ $company_email->to_id }}"
                                                             data-subject="{{ $company_email->subject }}"
+                                                            data-email_cc="{{ $company_email->company_cc }}"
                                                             data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                             data-email_attachment="{{ $company_email->attachment }}"
                                                             data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
@@ -480,6 +486,7 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
@@ -806,6 +813,9 @@
                                     value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
                                     id="reply_to_ids" name="to_id[]">
                                 <input type="hidden"
+                                    value="{{ !empty($company_email->company_cc) ? $company_email->company_cc : '' }}"
+                                    id="reply_to_cc" name="cc[]">
+                                <input type="hidden"
                                     value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
                                     id="reply_subject" name="subject">
                                 <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
@@ -856,9 +866,9 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label select-label">CC</label>
+                                <label class="form-label select-label">CC:</label>
                                 <select name="cc[]" id="cc" class="form-control select reply_to_cc" multiple
-                                    data-mdb-placeholder="Example placeholder" multiple>
+                                    data-mdb-placeholder="Example placeholder" multiple disabled>
                                     @foreach ($employee_jobs as $employee_job)
                                         @php
                                             $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
@@ -873,7 +883,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input class="form-control" type="text" name="email_subject" id="edit_subject">
+                                <input class="form-control" type="text" name="email_subject" id="subject" readonly>
                             </div>
                             @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
                                 <div class="form-group">
@@ -1048,6 +1058,7 @@
                 var edit_work_email = $(this).data('work_email');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc = $(this).data('email_cc');
+                console.log(edit_cc, 'edit_cc',"edit_cc");
                 var edit_date = $(this).data('email_date');
                 var edit_time = $(this).data('email_time');
                 var edit_subject = $(this).data('email_subject');
@@ -1060,6 +1071,21 @@
                 $('#edit_subject').val(edit_subject);
                 // $('#to_id option[value=' + edit_email_to + ']').attr('selected', true);
                 $('#to_id').val(edit_email_to);
+                if (typeof edit_email_to === 'string') {
+                    if (edit_email_to.includes(',')) {
+                        var idsArray = edit_email_to.split(',').map(function(id) {
+                            return parseInt(id, 10); // Parse each ID as an integer
+                        });
+                    } else {
+                        // If there's no comma, treat it as a single value
+                        idsArray = [parseInt(edit_email_to, 10)];
+                    }
+                    console.log(idsArray);
+                    console.log("== this is id array ");
+                    $('#to_id').val(idsArray).trigger("change");
+                }else{
+                    $('#to_id').val(edit_email_to).trigger("change");
+                }
                 $('#cc').val(edit_cc);
                 $('#edit_body').val(body);
                 $('#date').val(edit_date);
@@ -1082,6 +1108,8 @@
                 console.log(to_ids, "to_ids");
                 reply_subject = $(this).data('subject');
                 edit_cc = $(this).data('email_cc');
+
+                console.log(edit_cc , "edit_cc");
                 body = $(this).data('email_body');
                 edit_date = $(this).data('email_date');
                 date_time = $(this).data('sent_datetime');
@@ -1091,6 +1119,7 @@
                 $('#reply_from_id').val(from);
                 $('.reply_from_id').val(from);
                 $('#sent_date_time').val(date_time);
+                $('#subject').val(reply_subject);
                 // var ids = to_ids.split();
                 // console.log(ids ,"ids")
                 console.log(to_ids);
@@ -1110,11 +1139,25 @@
                 }else{
                     $('.reply_to_id').val(to_ids).trigger("change");
                 }
-                // ids.forEach(function(number) {
-                //     $('.reply_to_id').val(number).trigger("change");
-                // });
-              
-                $('#reply_to_ids').val(to_ids);
+               
+
+                if (typeof edit_cc === 'string') {
+                    if (edit_cc.includes(',')) {
+                        var idsArray = edit_cc.split(',').map(function(id) {
+                            return parseInt(id, 10); // Parse each ID as an integer
+                        });
+                    } else {
+                        // If there's no comma, treat it as a single value
+                        idsArray = [parseInt(edit_cc, 10)];
+                    }
+                    console.log(idsArray);
+                    console.log("== this is id array ");
+                    $('.reply_to_cc').val(idsArray).trigger("change");
+                }else{
+                    $('.reply_to_cc').val(edit_cc).trigger("change");
+                }
+                $('#reply_to_cc').val(edit_cc);
+                $('#reply_to_ids').val(to_ids).trigger("change");
                 $('.reply_to_cc').val(edit_cc);
                 $('#reply_subject').val(reply_subject);
                 $('#edit_id').val(id);
