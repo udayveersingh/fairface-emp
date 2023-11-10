@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                                                                    background: #dfe4fa;
-                                                                                                } */
+                                                                                                background: #dfe4fa;
+                                                                                            } */
 
         .unread {
             font-weight: bold;
@@ -181,7 +181,7 @@
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}
                     <a href="{{ route('company-email', ['status' => 'archive']) }}"
                         class="list-group-item border-0 py-2 px-3"><i
-                            class="far fa-star font-13 mr-2"></i>Archive<b></b></a>
+                            class="far fa-star font-13 mr-2"></i>Archive<b>({{$archive_count}})</b></a>
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
@@ -583,8 +583,8 @@
                                                 <div class="restore">
                                                     <div class="p-1 text-secondary cursor-pointer"><a
                                                             href="{{ route('restore', $company_email->id) }}"
-                                                            class="text-secondary company_email_id" id="restore"><i
-                                                                class="fas fa-download"></i>
+                                                            class="text-secondary company_email_id"
+                                                            id="restore"><i class="fas fa-download"></i>
                                                             Restore To Inbox</a>
                                                     </div>
                                                 </div>
@@ -1072,13 +1072,18 @@
                                 } else {
                                     $(".view_attachment").html('');
                                 }
-                                console.log(row.archive, "test test");
-                                if (row.archive != 1) {
+                                console.log(row.archive,"test test");
+                                if(row.archive != 1){
                                     $(".archive").html(
-                                        `<div class="p-1 text-secondary cursor-pointer"><a href="archive/${row.id}"
-                                                        class="text-secondary company_email_id" id="company_email_id"><i class="far fa-star"></i>Archive</a></div>`
-                                    );
+                                        `<div class="p-1 text-secondary cursor-pointer"><a href="archive/${row.id}"class="text-secondary company_email_id" id="company_email_id"><i class="far fa-star"></i>Archive</a></div>`
+                                        );
+                                }else{
+                                    var url =@json(url("/restore/"));
+                                    var route=(url+"/"+row.id);
+                                    $(".restore").html(`<div class="p-1 text-secondary cursor-pointer"><a href="${route}" class="text-secondary company_email_id" id="company_email_id" data-company_id=${row.id}><i class="fas fa-download"></i> Restore To Inbox</a>
+                                                    </div>`);
                                 }
+
                             });
                             // $.each(data.email_data, function(index, row) {
                             //     $(".subject").html(row.subject);

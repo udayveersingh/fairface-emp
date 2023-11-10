@@ -37,8 +37,10 @@ class CompanyEmailController extends Controller
 
         if (!empty($status)) {
             $company_emails = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->get();
+            $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         } else {
             $company_emails = CompanyEmail::with('employeejob.employee')->latest()->where('archive','=',Null)->get();
+            $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         }
         $count_emails = CompanyEmail::count();
         $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
@@ -48,7 +50,7 @@ class CompanyEmailController extends Controller
         $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
 
         // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails','archive_count'));
     }
 
 
