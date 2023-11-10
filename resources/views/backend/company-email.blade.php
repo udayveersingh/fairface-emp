@@ -579,6 +579,10 @@
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
+                                            {{-- <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                class=" text-secondary" id="reply" data-toggle="modal"
+                                                data-target="#all_reply_model"><i class="fa fa-mail-reply"></i> Reply all</a>
+                                        </div> --}}
                                             @if (!empty($company_email->archive) && $company_email->archive == 1)
                                                 <div class="restore">
                                                     <div class="p-1 text-secondary cursor-pointer"><a
@@ -674,10 +678,6 @@
                     @endforeach
                 </div>
             </div> <!-- End row -->
-
-
-
-
         </div>
 
         <!-- edit email modal starts -->
@@ -745,8 +745,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>To<span class="text-danger">*</span></label>
-                                        <select name="to_id[]" id="to_id" class="form-control select" multiple
-                                            data-mdb-placeholder="Example placeholder" multiple>
+                                        <select id="to_id" class="form-control reply_to_id select" multiple
+                                        data-mdb-placeholder="Example placeholder" multiple>
                                             <option value="">Select to</option>
                                             @foreach ($to_email_ids as $to_email)
                                                 @php
@@ -874,8 +874,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>To:</label>
-                                        <select id="to_id" class="form-control reply_to_id select" multiple
-                                            data-mdb-placeholder="Example placeholder" multiple>
+                                           <select id="" class="form-control reply_to_id select" multiple
+                                            data-mdb-placeholder="Example-placeholder" multiple>
                                             <option value="">Select to</option>
                                             @foreach ($to_email_ids as $to_email)
                                                 @php
@@ -1010,6 +1010,9 @@
             </div>
         </div>
         <!---reply models --->
+        <!--all reply model -->
+        
+        <!-- all reply model -->
 
 
     @endsection
@@ -1113,7 +1116,7 @@
                 $('#from_id').val(edit_from)
                 $('#edit_subject').val(edit_subject);
                 // $('#to_id option[value=' + edit_email_to + ']').attr('selected', true);
-                $('#to_id').val(edit_email_to);
+                // $('#to_id').val(edit_email_to);
                 if (typeof edit_email_to === 'string') {
                     if (edit_email_to.includes(',')) {
                         var idsArray = edit_email_to.split(',').map(function(id) {
@@ -1137,10 +1140,10 @@
                     `<img src='{{ asset('storage/company_email/attachment/${attachment}') }}' width='150px'>`);
             });
 
-            $('.editbtn').on('click', function() {
-                $('#email_edit').modal('show');
+            // $('.editbtn').on('click', function() {
+            //     $('#email_edit').modal('show');
 
-            })
+            // })
 
             //reply mail
             $('.get_email_data').on('click', function() {
@@ -1207,7 +1210,7 @@
                 $('#reply_subject').val(reply_subject);
                 $('#edit_id').val(id);
                 $('#from_id').val(from)
-                $("#to_id").val(to_ids).trigger("change");
+                // $("#to_id").val(to_ids).trigger("change");
                 $('#edit_subject').val(reply_subject);
                 $('#cc').val(edit_cc);
                 $('#date').val(edit_date);

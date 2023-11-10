@@ -39,7 +39,7 @@ class CompanyEmailController extends Controller
             $company_emails = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->get();
             $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         } else {
-            $company_emails = CompanyEmail::with('employeejob.employee')->latest()->where('archive','=',Null)->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->latest()->where('archive', '=', Null)->get();
             $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         }
         $count_emails = CompanyEmail::count();
@@ -50,7 +50,7 @@ class CompanyEmailController extends Controller
         $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
 
         // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails','archive_count'));
+        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails', 'archive_count'));
     }
 
 
@@ -89,7 +89,7 @@ class CompanyEmailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function emailInbox()
+    public function emailInbox($status = "")
     {
         $title = "User Email";
         $todayDate = Carbon::now()->toDateString();
@@ -107,8 +107,12 @@ class CompanyEmailController extends Controller
                 return view('backend.emails.email-inbox', compact('title', 'errorMessageDuration'));
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
+            if (!empty($status)) {
+                $company_emails = CompanyEmail::with('employeejob.employee')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+            } else {
+                $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+            }
 
-            $company_emails = CompanyEmail::with('employeejob.employee')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
             $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
             $total_mail_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
             $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
@@ -376,8 +380,11 @@ class CompanyEmailController extends Controller
         $company_email = CompanyEmail::find($id);
         $company_email->archive = 1;
         $company_email->save();
-
-        return redirect()->route('company-email',["status" => "archive"])->with('success', "Conversation moved to archive");
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            return redirect()->route('user-email-inbox', ["status" => "archive"])->with('success', "Conversation moved to archive");
+        }else{
+            return redirect()->route('company-email', ["status" => "archive"])->with('success', "Conversation moved to archive");
+        }
     }
 
     public function restoreArchive($id)
@@ -385,7 +392,11 @@ class CompanyEmailController extends Controller
         $company_email = CompanyEmail::find($id);
         $company_email->archive = Null;
         $company_email->save();
-        return redirect()->route('company-email',["status" => "archive"])->with('success',"Conversation moved to inbox");
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+            return redirect()->route('user-email-inbox', ["status" => "archive"])->with('success', "Conversation moved to archive");
+        }else{
+            return redirect()->route('company-email', ["status" => "archive"])->with('success', "Conversation moved to archive");
+        }
     }
 
 
