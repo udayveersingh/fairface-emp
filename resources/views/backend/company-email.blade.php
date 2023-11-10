@@ -299,6 +299,7 @@
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
+                                                                data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                                 data-token="{{ Session::token() }}"
                                                                 data-count="{{ $count }}">{{ $to_mail_users }}</a>
                                                         </div>
@@ -313,6 +314,7 @@
                                                             data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                             data-email_time="{{ $company_email->time }}"
                                                             data-email_attachment="{{ $company_email->attachment }}"
+                                                            data-sent_datetime="{{ !empty($company_email->date) ? date('d-M-Y H:i', strtotime($company_email->date . $company_email->time)) : ''}}"
                                                             data-token="{{ Session::token() }}"
                                                             data-count="{{ $count }}">{{ $company_email->subject }}</a>
 
@@ -1089,12 +1091,29 @@
                 $('#reply_from_id').val(from);
                 $('.reply_from_id').val(from);
                 $('#sent_date_time').val(date_time);
-                var ids = to_ids.split();
-                console.log(ids ,"ids")
+                // var ids = to_ids.split();
+                // console.log(ids ,"ids")
+                console.log(to_ids);
+                // Ensure that to_ids is a string
+                if (typeof to_ids === 'string') {
+                    if (to_ids.includes(',')) {
+                        var idsArray = to_ids.split(',').map(function(id) {
+                            return parseInt(id, 10); // Parse each ID as an integer
+                        });
+                    } else {
+                        // If there's no comma, treat it as a single value
+                        idsArray = [parseInt(to_ids, 10)];
+                    }
+                    console.log(idsArray);
+                    console.log("== this is id array ");
+                    $('.reply_to_id').val(idsArray).trigger("change");
+                }else{
+                    $('.reply_to_id').val(to_ids).trigger("change");
+                }
                 // ids.forEach(function(number) {
                 //     $('.reply_to_id').val(number).trigger("change");
                 // });
-                $('.reply_to_id').val(to_ids).trigger("change");
+              
                 $('#reply_to_ids').val(to_ids);
                 $('.reply_to_cc').val(edit_cc);
                 $('#reply_subject').val(reply_subject);
