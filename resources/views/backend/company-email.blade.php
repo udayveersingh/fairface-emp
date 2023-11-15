@@ -35,7 +35,7 @@
 
         .fsiziii {
             display: block;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .email-content-wrap {
@@ -175,14 +175,14 @@
                     class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light w-100">Compose</a>
 
                 <div class="list-group mail-list mt-3">
-                    <a href="{{ route('company-email') }}" class="list-group-item border-0 py-2 px-3"><i
+                    <a href="{{ route('company-email') }}" class="list-group-item border-0 {{ $keyword=='inbox'?'active':'' }} py-2 px-3"><i
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
                     {{-- <a href="" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}
-                    <a href="{{ route('company-email', ['status' => 'archive']) }}"
-                        class="list-group-item border-0 py-2 px-3"><i
+                    <a href="{{ route('company-email', ['keyword' => 'archive']) }}"
+                        class="list-group-item border-0 py-2 px-3 {{ $keyword=='archive'?'active':'' }}"><i
                             class="far fa-star font-13 mr-2"></i>Archive<b>({{$archive_count}})</b></a>
-                    <a href="{{ route('sent-email') }}" class="list-group-item border-0 py-2 px-3"><i
+                    <a href="{{ route('company-email', ['keyword' => 'sent']) }}" class="list-group-item border-0 {{ $keyword=='sent'?'active':'' }} py-2 px-3"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
                 </div>
             </div>
@@ -202,19 +202,25 @@
                             </button>
                         </div>
                     </form><!-- search bar ends here -->
-
+                    @if($keyword=='inbox')
                     <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all"
+                            <!-- <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all"
                                 type="button" role="tab" aria-controls="all"
-                                aria-selected="true">All({{ $count_emails }})</button>
+                                aria-selected="true">All({{ $count_emails }})</button> -->
+                                <a href="{{ route('company-email', ['keyword' => 'inbox']) }}"><button class="nav-link {{ $keyword=='inbox'?'active':'' }} bg-white">All({{ $count_emails }})</button>
+                                </a>    
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread"
+                            <!-- <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread"
                                 type="button" role="tab" aria-controls="unread"
-                                aria-selected="false">Unread({{ $count_unread_emails }})</button>
+                                aria-selected="false">Unread({{ $count_unread_emails }})</button> -->
+                                <a href="{{ route('company-email', ['keyword' => 'unread']) }}"><button class="nav-link {{ $keyword=='unread'?'active':'' }} bg-white">Unread({{ $count_unread_emails }})</button>
+                                </a>
+                                
                         </li>
                     </ul>
+                    @endif
                     <div class="tab-content pt-0" id="myTabContent">
                         <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
                             <div class="table-responsive mx-100vh">
@@ -1247,9 +1253,15 @@
             $('#searchform').on('submit', function(e) {
                 e.preventDefault();
                 var search = $('#searchvalue').val();
+                if(search==''){
+                    alert('Enter search term');
+                    return false;
+                }
+                
                 var token = $('#token').val();
                 console.log(search, "search")
-                $.ajax({
+                $(location).prop('href', 'company-email?keyword=search&value='+search);
+                /* $.ajax({
                     type: 'POST',
                     url: '/find-search/',
                     data: {
@@ -1261,7 +1273,7 @@
                         // $.each(data.email_data, function(index, row) {
                         // });
                     },
-                });
+                }); */
             });
 
             function printDiv(divName) {

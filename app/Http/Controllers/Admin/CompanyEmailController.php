@@ -9,6 +9,7 @@ use App\Models\EmployeeJob;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 use App\Models\Annoucement;
+use App\Models\User;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -26,31 +27,62 @@ class CompanyEmailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($status = "")
+    public function index(Request $request)
     {
+        
         $title = "Company Email";
+        $keyword = 'inbox';
         $employee_jobs = EmployeeJob::with('employee')->get();
         $todayDate = Carbon::now()->toDateString();
         $annoucement_list = Annoucement::where('start_date', '<=', $todayDate)
-            ->where('end_date', '>=', $todayDate)
-            ->where('status', '=', 'active')->get();
-
-        if (!empty($status)) {
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->get();
-            $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
-        } else {
-            $company_emails = CompanyEmail::with('employeejob.employee')->latest()->where('archive', '=', Null)->get();
-            $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
+                                        ->where('end_date', '>=', $todayDate)
+                                        ->where('status', '=', 'active')->get();
+        
+        if(isset($request) && !empty($request->keyword)){
+            if($request->keyword=='archive'){
+                $keyword='archive';
+                $company_emails = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->get();
+            }else if($request->keyword=='search'){
+                $search_term = $request->value;
+                $company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
+                                           ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
+                if(count($company_emails)==0){
+                    $employee_data = Employeejob::join('employees','employees.id', '=', 'employee_jobs.employee_id')
+                                    ->select(['employee_jobs.id'])
+                                    ->where('employees.firstname', 'LIKE', "%{$search_term}%")
+                                   ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%") 
+                                   ->get();
+                    $empoyee_id = [];
+                    foreach($employee_data as $val){
+                        $empoyee_id[] = $val->id;
+                    }
+                  //  dd($empoyee_id);
+                    $company_emails = CompanyEmail::whereIn("to_id", [$empoyee_id])->get();
+                    // dd($company_emails);
+                }
+            }else if($request->keyword=='inbox'){
+                $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
+            }else if($request->keyword=='unread'){
+                $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+            }
+            else if($request->keyword=='sent'){
+                $keyword='sent';
+                $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
+            }
+        }else{
+            $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
         }
+        
         $count_emails = CompanyEmail::count();
+        $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
+        
         $notifications = DB::table('notifications')->where('type', '=', 'App\Notifications\newMailNotification')->get();
-
         $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
 
         // Notification::send($company_emails, new newMailNotification($company_emails));
-        return view('backend.company-email', compact('title', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails', 'archive_count'));
+        return view('backend.company-email', compact('title', 'keyword', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails', 'archive_count'));
     }
 
 
@@ -381,9 +413,9 @@ class CompanyEmailController extends Controller
         $company_email->archive = 1;
         $company_email->save();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            return redirect()->route('user-email-inbox', ["status" => "archive"])->with('success', "Conversation moved to archive");
+            return redirect()->route('user-email-inbox')->with('success', "Email moved to archive folder");
         }else{
-            return redirect()->route('company-email', ["status" => "archive"])->with('success', "Conversation moved to archive");
+            return redirect()->route('company-email')->with('success', "Email moved to archive folder");
         }
     }
 
@@ -393,9 +425,9 @@ class CompanyEmailController extends Controller
         $company_email->archive = Null;
         $company_email->save();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            return redirect()->route('user-email-inbox', ["status" => "archive"])->with('success', "Conversation moved to archive");
+            return redirect()->route('user-email-inbox')->with('success', "Email restore successfully to inbox");
         }else{
-            return redirect()->route('company-email', ["status" => "archive"])->with('success', "Conversation moved to archive");
+            return redirect()->route('company-email')->with('success', "Email restore successfully to inbox");
         }
     }
 
@@ -407,6 +439,12 @@ class CompanyEmailController extends Controller
 
     public function FindSearch(Request $request)
     {
-        // dd($request->all());
+         // dd($request->all());
+         $search_term = $request->search;
+         $emailData = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
+                                    ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
+                                    
+         return json_encode(array('data' => $emailData));
+
     }
 }
