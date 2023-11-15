@@ -123,7 +123,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>
+            <div class="col-md-6 mb-2"><strong>Employee Name:-{{ expenses}}</strong><span>
                 </span></div>
             <div class="col-md-6 mt-2">
                 {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}

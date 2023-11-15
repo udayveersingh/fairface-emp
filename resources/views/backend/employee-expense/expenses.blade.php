@@ -8,6 +8,10 @@
 @endsection
 
 @section('page-header')
+<?php
+//current logged in user
+$user = Auth::user();
+?>
     <div class="row align-items-center">
         <div class="col">
             <h3 class="page-title">Expenses</h3>
@@ -121,7 +125,8 @@
                                 <div class="form-group">
                                     <label>Expenses Id</label>
                                     <select name="expenses_id" id="expense_id" class="form-control select expense_id">
-                                        <option value="">Select expenses Id</option>
+                                        <option value="">~Select~</option>
+                                        <option value="new">Add new expense</option>
                                         @foreach ($expense_ids as $expense)
                                             <option value="{{ $expense->expense_id }}">{{ $expense->expense_id }}</option>
                                         @endforeach
@@ -139,7 +144,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label>Months</label>
-                                    <select name="month" id="year_month" class="form-control month ">
+                                    <select name="month" id="year_month" class="form-control month select">
                                         <option value="">Select Month</option>
                                     </select>
                                 </div>
@@ -201,12 +206,14 @@
                                     </select>
                                 </div>
                             </div>
+                            
                         </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Expense Type <span class="text-danger">*</span></label>
                                     <select name="expense_type" class="select">
+                                        <option value="">~Select~</option>
                                         @foreach (\App\Models\ExpenseType::get() as $type)
                                             <option value="{{ $type->id }}">{{ $type->type }}</option>
                                         @endforeach
@@ -436,7 +443,7 @@
         var currentYear = new Date().getFullYear();
         console.log(currentYear, "currentYear");
 
-        for (var i = currentYear + 2; i > currentYear - 10; i--) {
+        for (var i = currentYear; i <= currentYear + 12; i++) {
             $("#year").append('<option value="' + i.toString() + '">' + i.toString() + '</option>');
         }
 

@@ -12,6 +12,7 @@ use App\Models\ProjectPhase;
 use App\Models\TimesheetStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+Use DB;
 
 class EmployeeExpenseController extends Controller
 {
@@ -26,7 +27,7 @@ class EmployeeExpenseController extends Controller
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->where('employee_id','=',$employee->id)->groupBy('expense_id')->latest()->get();
         $expense_ids = Expense::groupBy('expense_id')->where('employee_id','=',$employee->id)->orderBy('expense_id', 'DESC')->get();
-        // dd($expenses);
+        //dd($expenses);
         $timesheet_statuses = TimesheetStatus::get();
         $expensive_type = ExpenseType::get();
         $projects = EmployeeProject::with('projects')->where('employee_id','=',$employee->id)->get();
@@ -87,7 +88,14 @@ class EmployeeExpenseController extends Controller
     public function show($expense_id,$emp_id)
     {
        $title = "Expense details";
-       $expenses = Expense::with('expensetype', 'employee', 'project')->where('expense_id','=',$expense_id);
+       // $expenses = Expense::with('expensetype', 'employee', 'project')->where('expense_id','=',$expense_id)->get();
+       //dd($expenses);
+       $expenses = DB::table('projects')
+                       ->leftJoin('employees', 'employees.id', '=', 'expenses.employee_id')
+                       ->leftJoin('projects', 'projects.id', '=', 'expenses.project_id')
+                       ->where('expense_id', '=', $expense_id)
+                       ->get();
+       dd($expenses);
        return view('backend.employee-expense.expense-view',compact('expenses','title'));
     }
 
