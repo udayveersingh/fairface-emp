@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                background: #dfe4fa;
-            } */
+                    background: #dfe4fa;
+                } */
 
         .unread {
             font-weight: bold;
@@ -179,7 +179,7 @@
                             class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $total_mail_count }})</b></a>
                     {{-- <a href="{{ route('unread-email') }}" class="list-group-item border-0"><i
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}
-                    {{-- <a href="#" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive --}}
+                    <a href="{{ route('user-email-inbox', ['status' => 'archive']) }}" class="list-group-item border-0"><i class="far fa-file-alt font-13 mr-2"></i>Archive
                     {{-- <b>(20)</b></a> --}}
                     <a href="{{ route('sent-email') }}" class="list-group-item border-0"><i
                             class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
@@ -536,13 +536,32 @@
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
                                             </div>
-                                            <div class="p-1 text-secondary cursor-pointer"
-                                                onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
-                                            </div>
+                                            @if (!empty($company_email->archive) && $company_email->archive == 1)
+                                                <div class="restore">
+                                                    <div class="p-1 text-secondary cursor-pointer"><a
+                                                            href="{{ route('restore', $company_email->id) }}"
+                                                            class="text-secondary company_email_id" id="restore"><i
+                                                                class="fas fa-download"></i>
+                                                            Restore To Inbox</a>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="archive">
+                                                    <div class="p-1 text-secondary cursor-pointer"><a
+                                                            href="{{ route('archive', $company_email->id) }}"
+                                                            class="text-secondary company_email_id"
+                                                            id="company_email_id"><i class="far fa-star"></i>Archive
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="p-1 text-secondary cursor-pointer view_attachment">
                                                 <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
                                                     target="_blank" download> <i
                                                         class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
+                                            </div>
+                                            <div class="p-1 text-secondary cursor-pointer"
+                                                onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
                                             </div>
                                             {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}

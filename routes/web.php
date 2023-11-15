@@ -322,6 +322,9 @@ Route::group(['middleware'=>['auth']], function (){
     Route::get('sent-email',[CompanyEmailController::class,'sentEmail'])->name('sent-email');
     Route::post('mail-detail/{from}',[CompanyEmailController::class,'mailDetail'])->name('mail-detail');
     Route::get('company-email',[CompanyEmailController::class,'index'])->name('company-email');
+    Route::get('company-email/{status?}',[CompanyEmailController::class,'index'])->name('company-email');
+    Route::get('restore/{id?}',[CompanyEmailController::class,'restoreArchive'])->name('restore');
+    Route::get('archive/{id}',[CompanyEmailController::class,'archive'])->name('archive');
     Route::post('company-email',[CompanyEmailController::class,'store']);
     Route::post('reply-mail',[CompanyEmailController::class,'replyStore'])->name('reply-mail');
     Route::post('/email-read',[CompanyEmailController::class,'emailRead'])->name('email-read');
