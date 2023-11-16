@@ -121,9 +121,10 @@ class CompanyEmailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function emailInbox($status = "")
+    public function emailInbox(Request $request)
     {
         $title = "User Email";
+        $keyword = "inbox";
         $todayDate = Carbon::now()->toDateString();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $annoucement_list = Annoucement::where('start_date', '<=', $todayDate)
@@ -132,6 +133,7 @@ class CompanyEmailController extends Controller
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
+
             $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
             // $company_emails = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_jobs->id)->orwhere('to_id', '=', $employee_jobs->id)->latest()->get();
             if (empty($employee_job)) {
@@ -139,17 +141,56 @@ class CompanyEmailController extends Controller
                 return view('backend.emails.email-inbox', compact('title', 'errorMessageDuration'));
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
-            if (!empty($status)) {
-                $company_emails = CompanyEmail::with('employeejob.employee')->orwhereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
-            } else {
+
+            if(isset($request) && !empty($request->keyword)){
+                if($request->keyword=='archive'){
+                    $keyword='archive';
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->where('archive', '=', true)->latest()->get();
+                }else if($request->keyword=='search'){
+                    $search_term = $request->value;
+                    /*$company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
+                                                    ->orWhere('body', 'LIKE', "%{$search_term}%")
+                                                   // ->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->get();
+                                                   ->whereIn("to_id", [$employee_job->id])->get();*/
+                    //$company_emails = \DB::select('select * from destinations where DestinationName="$destination"');
+                    $company_emails = \DB::select("select * from company_emails where (subject LIKE '%".$search_term."%' or `body` LIKE '%".$search_term."%') 
+                                                    and (to_id in (".$employee_job->id.") or from_id in (".$employee_job->id."))");
+                    
+                    if(count($company_emails)==0){
+                        $employee_data = Employeejob::join('employees','employees.id', '=', 'employee_jobs.employee_id')
+                                        ->select(['employee_jobs.id'])
+                                        ->where('employees.firstname', 'LIKE', "%{$search_term}%")
+                                        ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%") 
+                                       ->get();
+                        $empoyee_id = [0];
+                        foreach($employee_data as $val){
+                            $empoyee_id[] = $val->id;
+                        }
+                      //  dd($empoyee_id);
+                        $company_emails = CompanyEmail::where("from_id",$employee_job->id)->whereIn("to_id", [$empoyee_id])->get();
+                        // dd($company_emails);
+                    }
+                    
+                }else if($request->keyword=='inbox'){
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+                }else if($request->keyword=='unread'){
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->whereNotNull('read_at')->latest()->get();
+                }
+                else if($request->keyword=='sent'){
+                    $keyword='sent';
+                    $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->Orwhere('from_id', '=', $employee_job->id)->latest()->get();
+                }
+            }else{
                 $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
             }
 
-            $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+          
+            $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->whereNotNull('read_at')->latest()->count();
             $total_mail_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
+            $archive_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->where('archive', '=', true)->latest()->count();
             $company_emails_count = CompanyEmail::with('employeejob')->where('from_id', '=', $employee_job->id)->latest()->count();
             $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->Orwhere('from_id', '=', $employee_job->id)->latest()->get()->count();
-            return view('backend.emails.email-inbox', compact('title', 'company_emails', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails', 'total_mail_count', 'company_unread_emails'));
+            return view('backend.emails.email-inbox', compact('title', 'keyword', 'company_emails', 'archive_count', 'company_emails_count', 'annoucement_list', 'employee_job', 'sent_email_count', 'count_unread_emails', 'total_mail_count', 'company_unread_emails'));
         }
     }
 
@@ -382,6 +423,7 @@ class CompanyEmailController extends Controller
         //          'attachment' => $imageName
         //         ]);
         // Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
+        //dd($company_email);
         $company_email->save();
         $company_email->notify(new newMailNotification($company_email));
         // return $company_email;
