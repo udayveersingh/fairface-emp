@@ -181,6 +181,8 @@
                     @else
                         <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 py-2 px-3"><i
                                 class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>
+                        <a href="{{ route('user-email-inbox') }}" class="list-group-item border-0 py-2 px-3"><i
+                                    class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $count_emails }})</b></a>    
                     @endif
                     {{-- <a href="" class="list-group-item border-0 py-2 px-3"><i
                             class="far fa-star font-13 mr-2"></i>Unread<b>({{ $count_unread_emails }})</b></a> --}}

@@ -182,7 +182,7 @@
                         class="far fa-star font-13 mr-2"></i>Archive<b>({{$archive_count}})</b></a>
                     <a href="{{ route('user-email-inbox', ['keyword' => 'sent']) }}" class="list-group-item border-0 {{ $keyword=='sent'?'active':'' }} py-2 px-3"><i
                         class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
-                        {{$keyword}}
+                        
                 </div>
 
             </div>
