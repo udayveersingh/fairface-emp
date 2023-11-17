@@ -184,7 +184,6 @@ class CompanyEmailController extends Controller
                 $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
             }
 
-          
             $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->whereNotNull('read_at')->latest()->count();
             $total_mail_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->count();
             $archive_count = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->where('archive', '=', true)->latest()->count();
@@ -259,10 +258,10 @@ class CompanyEmailController extends Controller
             if ($imageName == Null) {
                 $imageName = $company_email->attachment;
             }
-            $message = "Company Email data has been updated";
+            $message = "Email has been updated successfully!";
         } else {
             $company_email = new CompanyEmail();
-            $message = "Company Email data has been added";
+            $message = "Email has been sent successfully!";
         }
         $company_email->from_id = $request->from_id;
         $company_email->to_id  = $to_mail_ids;
@@ -318,7 +317,7 @@ class CompanyEmailController extends Controller
         // dd($request->all());
         $company_email = CompanyEmail::find($request->id);
         $company_email->delete();
-        return back()->with('success', "Company Email has been deleted successfully!!.");
+        return back()->with('success', "Email has been deleted successfully!!.");
     }
 
     /**
