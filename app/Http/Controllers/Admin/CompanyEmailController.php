@@ -386,6 +386,7 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
+        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
@@ -401,13 +402,20 @@ class CompanyEmailController extends Controller
             $cc_ids = implode(',', $request->cc);
         }
 
+        if($request->email_date != Null){
+            $email_date = date('Y-m-d',strtotime($request->email_date));
+        }else{
+            $email_date = null;
+        }
+
+
         $company_email = new CompanyEmail();
         $company_email->from_id = $request->from_id;
         $company_email->to_id  = $to_ids;
         $company_email->body = $request->email_body;
         $company_email->subject = $request->subject;
         $company_email->attachment = $imageName;
-        $company_email->date = $request->email_date;
+        $company_email->date =  $email_date;
         $company_email->time = $request->email_time;
         $company_email->company_cc = $cc_ids;
         $company_email->read_at = Carbon::now();

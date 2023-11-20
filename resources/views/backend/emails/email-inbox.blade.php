@@ -328,8 +328,8 @@
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                                            <div class="p-1 text-secondary cursor-pointer"
-                                                                data-toggle="modal" data-target="#email_edit"><i
+                                                            {{-- <div class="p-1 text-secondary cursor-pointer"
+                                                                data-toggle="modal" data-target="#allReply"><i
                                                                     class="fa fa-edit edit"
                                                                     data-id="{{ $company_email->id }}"
                                                                     data-email_from="{{ $company_email->from_id }}"
@@ -340,7 +340,7 @@
                                                                     data-email_subject="{{ $company_email->subject }}"
                                                                     data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                     data-email_attachment="{{ $company_email->attachment }}"
-                                                                    title="Edit"></i></div>
+                                                                    title="Edit"></i></div> --}}
                                                             @if (!empty($company_email->attachment))
                                                                 <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
                                                                     target="_blank"> <i
@@ -403,8 +403,8 @@
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
-                                                data-toggle="modal" data-target="#email_edit"><i title="Edit"
-                                                    class="fa fa-edit editbtn" data-id="{{ $company_email->id }}"
+                                                data-toggle="modal" data-target="#allReply"><i title="Edit"
+                                                    class="fa fa-mail-reply" data-id="{{ $company_email->id }}"
                                                     data-email_from="{{ $company_email->from_id }}"
                                                     data-email_to="{{ $company_email->to_id }}"
                                                     data-email_cc="{{ $company_email->company_cc }}"
@@ -413,7 +413,7 @@
                                                     data-email_subject="{{ $company_email->subject }}"
                                                     data-email_body="{{ $company_email->body }}"
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
-                                                Edit</span> 
+                                                ReplyAll</span> 
                                             <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
@@ -465,7 +465,7 @@
                                                 </span>
                                             </div>
                                             @php
-                                                $date = \Carbon\Carbon::parse($company_email->created_at);
+                                                $date = !empty($company_email->created_at) ? \Carbon\Carbon::parse($company_email->created_at):'';
                                             @endphp
                                             <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
                                         </div>
@@ -512,7 +512,7 @@
         </div>
 
         <!-- edit email modal starts -->
-        <div id="email_edit" class="modal custom-modal fade" role="dialog">
+        <div id="allReply" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -528,6 +528,7 @@
                                 id="">
                             <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
                                 id="">
+                             <input type="hidden" value="" id="all_reply_from_id" name="from_id">
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
@@ -535,6 +536,15 @@
                                     })
                                     ->get();
                             @endphp
+                             @foreach ($company_emails as $index => $company_email)
+                             @php
+                                 if ($index > 0) {
+                                     break;
+                                 }
+
+                                $to_array_ids = explode(",",  $company_email->to_id);
+                                $cc_array_ids = explode(",", $company_email->company_cc);
+                           @endphp
                             <div class="form-group">
                                 <label>To<span class="text-danger">*</span></label>
                                 <select name="to_id[]" id="to_id" class="form-control select" multiple
@@ -546,33 +556,38 @@
                                             $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
                                             $emp_name = $firstname . '  ' . $lastname;
                                         @endphp
-                                        <option value="{{ $to_email->id }}">
+                                        <option value="{{ $to_email->id }}"{{ (in_array($to_email->id,  $to_array_ids)) ? 'selected' : '' }}>
                                             {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label class="form-label select-label">CC </label>
-                                <select name="cc[]" id="cc" class="form-control select" data-mdb-placeholder="Example placeholder" multiple>
+                                <select name="cc[]" id="all_reply_cc" class="form-control select all_reply_cc" data-mdb-placeholder="Example placeholder" multiple>
                                     @foreach ($to_email_ids as $employee_job)
                                         @php
                                             $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
                                             $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
                                             $emp_name = $firstname . '  ' . $lastname;
                                         @endphp
-                                        <option value="{{ $employee_job->id }}">
+                                        <option value="{{ $employee_job->id }}"{{ (in_array($employee_job->id,  $cc_array_ids)) ? 'selected' : '' }}>
                                             {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div> 
+                            @endforeach
                             <div class="form-group">
                                 <label>Subject</label>
                                 <input class="form-control reply_subject" type="text" name="email_subject" id="edit_subject">
                             </div>
                             <div class="form-group">
-                                <label>Body<span class="text-danger">*</span></label>
-                                <textarea class="form-control" id="edit_body" name="email_body" rows="4" cols="50"></textarea>
+                                <label>Body</label>
+                                <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly ></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Message<span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="edit_body" name="email_body" rows="4" cols="50" ></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Attachment</label>
@@ -603,22 +618,23 @@
                         <form action="{{ route('reply-mail') }}" id="reply_mail" method="POST" enctype="multipart/form-data">
                             @csrf
                             @foreach ($company_emails as $index => $company_email)
+                        
                                 @php
                                     if ($index > 0) {
                                         break;
                                     }
+                                $company_cc_array = explode(",",$company_email->company_cc) ;
                                 @endphp
                                 <input type="hidden" value="{{ !empty($company_email->id) ? $company_email->id : '' }}"
                                     id="edit_id" name="id">
                                 <input type="hidden"
                                     value="{{ !empty($company_email->from_id) ? $company_email->from_id : '' }}"
                                     id="reply_to_ids" name="to_id[]">
-                                <input type="hidden"
-                                    value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
+                                <input type="hidden" value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
                                     id="reply_from_id" name="from_id">
-                                <input  type="hidden"
-                                    value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
+                                <input  type="hidden" value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
                                     id="reply_subject" name="subject">
+
                                 <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
                                     name="email_date" id="">
                                 <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
@@ -632,10 +648,16 @@
                                     ->get();
                              //   dd($to_email_ids);
                             @endphp
-                            <!--
+                              @foreach ($company_emails as $index => $company_email)
+                              @php
+                                  if ($index > 0) {
+                                      break;
+                                  }
+                                  $company_to_array = explode(",",$company_email->to_id) ;
+                              @endphp
                            <div class="form-group">
                                 <label>To<span class="text-danger">*</span></label>
-                                <select name="to_id[]" class="form-control select" id="reply_to_id" >
+                                <select name="to_id[]" class="form-control select reply_to_id" id="reply_to_id" data-mdb-placeholder="Example placeholder" multiple >
                                     <option value="">Select to</option>
                                     @foreach ($to_email_ids as $to_email)
                                         @php
@@ -643,7 +665,7 @@
                                             $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
                                             $emp_name = $firstname . '  ' . $lastname;
                                         @endphp
-                                        <option value="{{ $to_email->id }}">
+                                        <option value="{{ $to_email->id }}" {{ (in_array($to_email->id,  $company_to_array)) ? 'selected' : '' }}>
                                             {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
                                         @php
                                         if($company_email->from_id==$to_email->id)
@@ -651,9 +673,10 @@
                                         @endphp
                                     @endforeach
                                 </select>
-                            </div> -->
+                            </div>
+                            @endforeach
                             <div class="form-group" id="reply_mail_cc">
-                                <label class="form-label select-label">CC : {{ $company_email->company_cc }}</label>
+                                <label class="form-label select-label">CC : {{ !empty($company_email->company_cc) ? $company_email->company_cc:'' }}</label>
                                 <select name="cc[]" id="reply_to" class="form-control select"  data-mdb-placeholder="Example placeholder" multiple>
                                     @foreach ($to_email_ids as $to_email)
                                         @php
@@ -668,19 +691,19 @@
                             </div> 
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input class="form-control reply_subject" type="text" name="email_subject" value="Re: {{ $company_email->subject }}" id="edit_subject">
+                                <input class="form-control reply_subject" type="text" name="email_subject" value="Re: {{!empty($company_email->subject) ? $company_email->subject:'' }}" id="edit_subject">
                             </div> 
                             <div class="form-group">
-                                <label>Message On: <span class="message_on">{{ date('d-M-Y h:i',strtotime($company_email->created_at)) }}</span></label>
-                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly>{{ str_replace(['<p>', '</p>'], '', $company_email->body); }}</textarea></div>
+                                <label>Message On: <span class="message_on">{{!empty($company_email->created_at) ? date('d-M-Y h:i',strtotime($company_email->created_at)):'' }}</span></label>
+                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly>{{ str_replace(['<p>', '</p>'], '', !empty($company_email->body)) ? $company_email->body:'' }}</textarea></div>
                             <div class="form-group">
                                 <label>Reply Message<span class="text-danger">*</span></label>
                                 <textarea class="form-control ckeditor" id="edit_body" name="email_body" rows="4" cols="50"></textarea>
                             </div>
-                            {{-- <div class="form-group">
+                            <div class="form-group">
                             <label>Attachment</label>
                             <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
-                        </div> --}}
+                        </div>
                             <div class="submit-section">
                                 <button type="submit" class="btn btn-primary submit-btn mb-2">Send</button>
                             </div>
@@ -786,7 +809,6 @@
             $('.edit').on('click', function() {
                 var id = $(this).data('id');
                 var edit_from = $(this).data('email_from');
-
                 var edit_work_email = $(this).data('work_email');
                 var edit_email_to = $(this).data('email_to');
                 var edit_cc = $(this).data('email_cc');
@@ -808,7 +830,7 @@
             });
 
             $('.editbtn').on('click', function() {
-                $('#email_edit').modal('show');
+                $('#allReply').modal('show');
             })
 
             //Archive  funtionality
@@ -830,16 +852,54 @@
                 id = $(this).data('com_email_id');
                 from = $(this).data('from_id');
                 to_ids = $(this).data('email_to');
+                // console.log(to_ids,"to_ids_ids_idsff");
                 reply_subject = $(this).data('subject')
                 edit_cc = $(this).data('email_cc');
                 body = $(this).data('email_body');
                 attachment = $(this).data('email_attachment');
                 console.log(body, "email_body");
                 $('#reply_from_id').val(from);
-                $('#reply_to_ids').val(to_ids);
+
+                // Ensure that to_ids is a string
+                if (typeof to_ids === 'string') {
+                    if (to_ids.includes(',')) {
+                        var idsArray = to_ids.split(',').map(function(id) {
+                            return parseInt(id, 10); // Parse each ID as an integer
+                        });
+                    } else {
+                        // If there's no comma, treat it as a single value
+                        idsArray = [parseInt(to_ids, 10)];
+                    }
+                    console.log(idsArray);
+                    console.log("== this is id array ");
+                    $('.reply_to_id').val(idsArray).trigger("change");
+                } else {
+                    $('.reply_to_id').val(to_ids).trigger("change");
+                }
+
+
+
+                if (typeof edit_cc === 'string') {
+                    if (edit_cc.includes(',')) {
+                        var idsArray = edit_cc.split(',').map(function(id) {
+                            return parseInt(id, 10); // Parse each ID as an integer
+                        });
+                    } else {
+                        // If there's no comma, treat it as a single value
+                        idsArray = [parseInt(edit_cc, 10)];
+                    }
+                    console.log(idsArray);
+                    console.log("== this is id array ");
+                    $('.all_reply_cc').val(idsArray).trigger("change");
+                } else {
+                    $('.all_reply_cc').val(edit_cc).trigger("change");
+                }
+                // $('#reply_to_ids').val(to_ids);
+                
                 $('#reply_subject').val(reply_subject);
                 $('#edit_id').val(id);
-                $('#from_id').val(from)
+                $('#from_id').val(from);
+                $('#all_reply_from_id').val(from);
                 // $('#to_id').val(to_ids);
                 $("#to_id").val(to_ids).trigger("change");
                 $('#edit_subject').val(reply_subject);
