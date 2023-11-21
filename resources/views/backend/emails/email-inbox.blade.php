@@ -528,7 +528,6 @@
                                 id="">
                             <input class="form-control" value="{{ date('H:i:s') }}" type="hidden" name="email_time"
                                 id="">
-                             <input type="hidden" value="" id="all_reply_from_id" name="from_id">
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
@@ -545,6 +544,7 @@
                                 $to_array_ids = explode(",",  $company_email->to_id);
                                 $cc_array_ids = explode(",", $company_email->company_cc);
                            @endphp
+                               <input type="hidden" value="{{$company_email->from_id}}" class="all_reply_from_id" id="all_reply_from_id" name="from_id">
                             <div class="form-group">
                                 <label>To<span class="text-danger">*</span></label>
                                 <select name="to_id[]" id="to_id" class="form-control select" multiple
@@ -576,14 +576,15 @@
                                     @endforeach
                                 </select>
                             </div> 
-                            @endforeach
+                       
                             <div class="form-group">
                                 <label>Subject</label>
-                                <input class="form-control reply_subject" type="text" name="email_subject" id="edit_subject">
+                                <input class="form-control reply_subject" type="text" value="{{!empty($company_email->subject)?$company_email->subject:'RE:Null'}}" name="email_subject" id="edit_subject">
                             </div>
+                            @endforeach
                             <div class="form-group">
                                 <label>Body</label>
-                                <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly ></textarea>
+                                <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly >{{!empty($company_email->body)?$company_email->body:''}}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Message<span class="text-danger">*</span></label>
@@ -769,6 +770,7 @@
                                 let reply_body = row.body;
                                 $(".reply_body").val(reply_body.replace(/(<([^>]+)>)/ig,""));
                                 $(".message_on").html(dateStringWithTime);
+                                $(".card-body").html(row.body);
                                 
                                 $(".email_from_name").html(`<span>` + row.employeejob
                                     .employee.firstname + " " + row.employeejob.employee
@@ -899,7 +901,7 @@
                 $('#reply_subject').val(reply_subject);
                 $('#edit_id').val(id);
                 $('#from_id').val(from);
-                $('#all_reply_from_id').val(from);
+                $('.all_reply_from_id').val(from);
                 // $('#to_id').val(to_ids);
                 $("#to_id").val(to_ids).trigger("change");
                 $('#edit_subject').val(reply_subject);
