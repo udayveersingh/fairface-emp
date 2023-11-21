@@ -231,7 +231,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>To Other Mails</label>
+                                    <label>To Other Mails</label><br>
                                     <input type="text" data-role="tagsinput" name="to_others_mail">
                                 </div>
                                 <div class="form-group">

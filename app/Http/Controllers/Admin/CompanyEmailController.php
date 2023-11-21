@@ -386,7 +386,7 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
-        // dd($request->all());
+        //dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
