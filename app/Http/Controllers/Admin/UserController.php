@@ -114,6 +114,7 @@ class UserController extends Controller
             $imageName = time() . '.' . $request->avatar->extension();
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }
+        $temp_pass="";
         $password = $user->password;
         if ($request->password) {
             $password = Hash::make($request->password);

@@ -35,7 +35,7 @@
 
         .fsiziii {
             display: block;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .email-content-wrap {
@@ -93,11 +93,12 @@
 
         .emails_list tr td {
             border-bottom: 1px solid #dee2e6;
+            width: 60%;
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                        background: #dfe4fa;
-                    } */
+                                                                                                        background: #dfe4fa;
+                                                                                                    } */
 
         .unread {
             font-weight: bold;
@@ -172,7 +173,7 @@
         <div class="table-detail col-md-2">
             <div class="p-4">
                 <a href="{{ route('compose-email') }}"
-                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light">Compose</a>
+                    class="text-white btn btn-danger btn-rounded btn-primary width-lg waves-effect waves-light w-100">Compose</a>
 
                 <div class="list-group mail-list mt-3">
                     <a href="{{ route('user-email-inbox') }}"
@@ -285,15 +286,15 @@
                                                                 data-token="{{ Session::token() }}">{{ $keyword == 'sent' ? 'To: ' : '' }}{{ $fullname }}</a>
 
                                                             <!-- <a href="#single-email-wrapper"
-                                                                    class="email-name mail-detail get_email_data"
-                                                                    data-com_email_id="{{ $company_email->id }}"
-                                                                    data-email_to="{{ $company_email->from_id }}"
-                                                                    data-from_id="{{ $company_email->to_id }}"
-                                                                    data-subject="{{ $company_email->subject }}"
-                                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                                    data-email_attachment="{{ $company_email->attachment }}"
-                                                                    data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
+                                                                            class="email-name mail-detail get_email_data"
+                                                                            data-com_email_id="{{ $company_email->id }}"
+                                                                            data-email_to="{{ $company_email->from_id }}"
+                                                                            data-from_id="{{ $company_email->to_id }}"
+                                                                            data-subject="{{ $company_email->subject }}"
+                                                                            data-email_cc="{{ $company_email->company_cc }}"
+                                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                            data-email_attachment="{{ $company_email->attachment }}"
+                                                                            data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
                                                         </div>
 
                                                         <a href="#single-email-wrapper"
@@ -315,7 +316,6 @@
 
                                                     <td align="end" class="align-middle">
 
-
                                                         <div class="text-right mail-time">
                                                             <a href="#single-email-wrapper"
                                                                 class="email-date mail-detail get_email_data fs-12"
@@ -323,6 +323,7 @@
                                                                 data-from_id="{{ $company_email->from_id }}"
                                                                 data-email_to="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
+                                                                data-email_cc="{{ $company_email->company_cc }}"
                                                                 data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
@@ -346,8 +347,8 @@
                                                                     title="Edit"></i></div> --}}
                                                             @if (!empty($company_email->attachment))
                                                                 <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
-                                                                    target="_blank"> <i
-                                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
+                                                                    target="_blank" download><i
+                                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i>
                                                             @endif
                                                         </div>
                                                     </td>
@@ -422,9 +423,9 @@
                                                     data-email_attachment="{{ $company_email->attachment }}"></i>
                                                 ReplyAll</span>
                                             <!-- <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                                    class=" text-secondary" id="replyAll" data-toggle="modal"
-                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
-                                                </div> -->
+                                                            class=" text-secondary" id="replyAll" data-toggle="modal"
+                                                            data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
+                                                        </div> -->
                                             @if (!empty($company_email->archive) && $company_email->archive == 1)
                                                 <div class="restore">
                                                     <div class="p-1 text-secondary cursor-pointer"><a
@@ -508,10 +509,6 @@
                     @endforeach
                 </div>
             </div> <!-- End row -->
-
-
-
-
         </div>
 
         <!-- all Reply email modal starts -->

@@ -12,7 +12,8 @@ use App\Models\ProjectPhase;
 use App\Models\TimesheetStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-Use DB;
+// Use DB;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeExpenseController extends Controller
 {
@@ -87,15 +88,17 @@ class EmployeeExpenseController extends Controller
      */
     public function show($expense_id,$emp_id)
     {
+        // dd($expense_id);
        $title = "Expense details";
-       // $expenses = Expense::with('expensetype', 'employee', 'project')->where('expense_id','=',$expense_id)->get();
-       //dd($expenses);
-       $expenses = DB::table('projects')
+    //    $expenses = Expense::with('expensetype', 'employee', 'project')->where('expense_id','=',$expense_id)->get();
+    //    dd($expenses);
+       $expenses = DB::table('expenses')
                        ->leftJoin('employees', 'employees.id', '=', 'expenses.employee_id')
                        ->leftJoin('projects', 'projects.id', '=', 'expenses.project_id')
-                       ->where('expense_id', '=', $expense_id)
+                       ->leftJoin('expense_types','expense_types.id','=','expenses.expense_type_id')
+                       ->where('expenses.expense_id', '=', $expense_id)
                        ->get();
-       dd($expenses);
+    //    dd($expenses);
        return view('backend.employee-expense.expense-view',compact('expenses','title'));
     }
 

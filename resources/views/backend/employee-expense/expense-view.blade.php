@@ -1,11 +1,11 @@
 {{-- @extends('layouts.backend')
 
 @section('styles') --}}
-    <!-- Select2 CSS -->
-    {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}"> --}}
+<!-- Select2 CSS -->
+{{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/select2.min.css') }}"> --}}
 
-    <!-- Datatable CSS -->
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
+<!-- Datatable CSS -->
+{{-- <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
 @endsection
 
  @section('content')
@@ -99,13 +99,15 @@
 
     <!-- Datatable CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.bootstrap4.min.css') }}">
-    @endsection
-    <style>
-        table,th,td {
-            border: 1px solid;
-        }
-    </style>
- @section('content')
+@endsection
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid;
+    }
+</style>
+@section('content')
     @php
         //Monthly ending date
         $date = new DateTime('now');
@@ -122,16 +124,23 @@
                 <h1 class="text-left">Employee Expenses Details</h1>
             </div>
         </div>
+        {{-- @dd($expenses); --}}
         <div class="row">
-            <div class="col-md-6 mb-2"><strong>Employee Name:-{{ expenses}}</strong><span>
-                </span></div>
+            <div class="col-md-6 mb-2"><strong>Employee Name:-</strong>{{ ucfirst($expenses[0]->firstname) . ' ' . $expenses[0]->lastname }}
+                </div>
             <div class="col-md-6 mt-2">
                 {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}
-                <a href="" class="btn add-btn mr-2">Back</a>
+                <a href="{{route('emp-expenses')}}" class="btn add-btn mr-2">Back</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-2"><strong>Date Submitted:-</strong>{{date('d-m-Y',strtotime($expenses[0]->created_at))}}</div>
+            <div class="col-md-6 mt-2">
+                {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}
             </div>
         </div>
     </div>
-        {{-- <div class="row">
+    {{-- <div class="row">
             <div class="col-md-6">
                 <p class="mx-0"><strong>Date
                         Starting:-</strong>{{ !empty($start_date) ? date('d-m-Y', strtotime($start_date)) : '' }}</p>
@@ -143,26 +152,64 @@
                 <p class="mx-0"></p>
             </div>
         </div> --}}
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Expense Id</th>
-                        <th>Expense Type</th>
-                        <th>Employee</th>
-                        <th>Supervisor</th>
-                        <th>Project</th>
-                        <th>Occurred Date</th>
-                        <th>Status</th>
-                        <th>Cost</th>
-                    </tr>
+    <div class="row">
+        <table class="table table-bordered">
+            <tr>
+                <th>Expense Id</th>
+                <th>Expense Type</th>
+                {{-- <th>Employee</th> --}}
+                <th>Supervisor</th>
+                <th>Project</th>
+                <th>Occurred Date</th>
+                <th>Status</th>
+                <th>Cost</th>
+            </tr>
+
+            @php
+                $sum = 0;
+                $total_sum = 0;
+            @endphp
+            @foreach ($expenses as $expense)
+                @php
+                    $sum = $expense->cost;
+                    $total_sum += $sum;
+                @endphp
+                <tr>
+
+                    <td>{{ $expense->expense_id }}</td>
+                    <td>{{ $expense->type }}</td>
+                    {{-- <td>{{ ucfirst($expense->firstname) . ' ' . $expense->lastname }}</td> --}}
                     @php
-                        $count = 0;
-                        $total_days_worked = 0;
+                        if (!empty($expense->supervisor_id)) {
+                            $supervisor = App\Models\Employee::find($expense->supervisor_id);
+                            $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
+                        }
                     @endphp
-                    
-                </table>
-        </div>
-    </div> 
-</div>
+                    <td>{{ ucfirst($fullName) }}</td>
+                    <td>{{ $expense->name }}</td>
+                    <td>{{ date('d-m-Y', strtotime($expense->expense_occurred_date)) }}</td>
+                    @php
+                        $status = '';
+                        if (!empty($expense->timesheet_status_id)) {
+                            $timesheet_status = App\Models\TimesheetStatus::find($expense->timesheet_status_id);
+                            $status = ucfirst($timesheet_status->status);
+                        }
+                    @endphp
+                    <td>{{ $status }}</td>
+                    <td>{{ $expense->cost }}</td>
+                </tr>
+            @endforeach
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th>Total</th>
+                <td>{{ $total_sum }}</td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </div>
 @endsection

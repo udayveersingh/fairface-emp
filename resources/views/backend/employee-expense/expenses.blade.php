@@ -36,12 +36,12 @@ $user = Auth::user();
                     <thead>
                         <tr>
                             <th>Expense Id</th>
-                            <th>Expense Type</th>
+                            {{-- <th>Expense Type</th> --}}
                             <th>Employee</th>
                             <th>Supervisor</th>
                             <th>Project</th>
                             <th>Occurred Date</th>
-                            <th>Cost</th>
+                            {{-- <th>Cost</th> --}}
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -61,13 +61,13 @@ $user = Auth::user();
                             @endphp
                             <tr>
                                 <td>{{ $expense->expense_id }}</td>
-                                <td>{{ !empty($expense->expensetype->type) ? $expense->expensetype->type : '' }}</td>
+                                {{-- <td>{{ !empty($expense->expensetype->type) ? $expense->expensetype->type : '' }}</td> --}}
                                 <td>{{ ucfirst($emp_full_name) }}</td>
                                 <td>{{ ucfirst($sup_fullname) }}</td>
                                 <td>{{ !empty($expense->project->name) ? $expense->project->name : '' }}</td>
                                 <td>{{ !empty($expense->expense_occurred_date) ? date('d-m-Y', strtotime($expense->expense_occurred_date)) : '' }}
                                 </td>
-                                <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}
+                                {{-- <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }} --}}
                                 </td>
                                 <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }}
                                 </td>

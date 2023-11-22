@@ -352,8 +352,7 @@
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                                data-token="{{ Session::token() }}"
-                                                                data-count="{{ $count }}">{{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}</a>
+                                                                data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}</a>
                                                         </div>
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
                                                             <div class="p-1 text-secondary cursor-pointer"
