@@ -145,7 +145,7 @@
                         <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
                             <span>Announcement</span></a>
                     </li>
-                    <li><a class="{{ route_is('expenses') ? 'active' : '' }}" href="{{ route('expenses') }}"><i class="fa fa-money"></i><span>Expenses</span></a></li>
+                    <li><a class="{{ route_is('emp-expenses') ? 'active' : '' }}" href="{{ route('emp-expenses') }}"><i class="fa fa-money"></i><span>Expenses</span></a></li>
                     {{-- <li class="{{route_is('tickets') ? 'active' : '' }}">
                     <a href="{{route('tickets')}}"><i class="la la-bullhorn"></i> <span>Email</span></a>
                 </li> --}}

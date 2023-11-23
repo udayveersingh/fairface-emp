@@ -8,10 +8,10 @@
 @endsection
 
 @section('page-header')
-<?php
-//current logged in user
-$user = Auth::user();
-?>
+    <?php
+    //current logged in user
+    $user = Auth::user();
+    ?>
     <div class="row align-items-center">
         <div class="col">
             <h3 class="page-title">Expenses</h3>
@@ -22,7 +22,7 @@ $user = Auth::user();
         </div>
         <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_expense"><i class="fa fa-plus"></i>
-                Add Modal</a>
+                Add Expense</a>
         </div>
     </div>
 @endsection
@@ -37,7 +37,10 @@ $user = Auth::user();
                         <tr>
                             <th>Expense Id</th>
                             {{-- <th>Expense Type</th> --}}
-                            <th>Employee</th>
+                            @if ((Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                    Auth::user()->role->name == app\models\Role::ADMIN)
+                                <th>Employee</th>
+                            @endif
                             <th>Supervisor</th>
                             <th>Project</th>
                             <th>Occurred Date</th>
@@ -47,6 +50,7 @@ $user = Auth::user();
                         </tr>
                     </thead>
                     <tbody>
+                        {{-- @dd($expenses); --}}
                         @foreach ($expenses as $expense)
                             @php
                                 $firstName = !empty($expense->employee->firstname) ? $expense->employee->firstname : '';
@@ -62,7 +66,10 @@ $user = Auth::user();
                             <tr>
                                 <td>{{ $expense->expense_id }}</td>
                                 {{-- <td>{{ !empty($expense->expensetype->type) ? $expense->expensetype->type : '' }}</td> --}}
-                                <td>{{ ucfirst($emp_full_name) }}</td>
+                                @if ((Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == app\models\Role::ADMIN)
+                                    <td>{{ ucfirst($emp_full_name) }}</td>
+                                @endif
                                 <td>{{ ucfirst($sup_fullname) }}</td>
                                 <td>{{ !empty($expense->project->name) ? $expense->project->name : '' }}</td>
                                 <td>{{ !empty($expense->expense_occurred_date) ? date('d-m-Y', strtotime($expense->expense_occurred_date)) : '' }}
@@ -87,11 +94,14 @@ $user = Auth::user();
                                                 data-status_reason="{{ $expense->status_reason }}"
                                                 data-approved_date_time="{{ $expense->approved_date_time }}">
                                                 <i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                            <a class="dropdown-item" href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id , 'emp_id' => $expense->employee_id]) }}"
-                                                data-id="{{ $expense->id }}"
-                                                data-expense_type_id ="{{ $expense->expense_type_id }}"
-                                                data-employee_id="{{ $expense->employee_id }}">
-                                                <i class="fa fa-pencil m-r-5"></i>View</a>
+                                            @if (!empty($expense->expense_id))
+                                                <a class="dropdown-item"
+                                                    href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id, 'emp_id' => $expense->employee_id]) }}"
+                                                    data-id="{{ $expense->id }}"
+                                                    data-expense_type_id ="{{ $expense->expense_type_id }}"
+                                                    data-employee_id="{{ $expense->employee_id }}">
+                                                    <i class="fa fa-pencil m-r-5"></i>View</a>
+                                            @endif
                                             <a class="dropdown-item deletebtn" href="javascript:void(0)"
                                                 data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
                                                 Delete</a>
@@ -166,51 +176,6 @@ $user = Auth::user();
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Supervisor</label>
-                                    <select name="supervisor" class="select">
-                                        @foreach (getSupervisor() as $sup)
-                                            @php
-                                                $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
-                                                $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
-                                                $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
-                                                $fullname = $firstname . ' ' . $lastname;
-                                            @endphp
-                                            @if (!empty($supervisor))
-                                                <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
-                                                    {{ $fullname }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Projects</label>
-                                    <select name="project" class="select">
-                                        <option value="">Select Project</option>
-                                        @foreach ($projects as $project)
-                                            <option
-                                                value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">
-                                                {{ !empty($project->projects->name) ? $project->projects->name : '' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Employee</label>
-                                    <select name="employee" class="select">
-                                        <option value="{{ $employee->id }}">{{ $employee->firstname }}
-                                            {{ $employee->lastname }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
                                     <label>Expense Type <span class="text-danger">*</span></label>
                                     <select name="expense_type" class="select">
                                         <option value="">~Select~</option>
@@ -231,6 +196,58 @@ $user = Auth::user();
                                 <div class="form-group">
                                     <label>Expense cost</label>
                                     <input class="form-control" name="expense_cost" id="expense_cost" type="number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Supervisor</label>
+                                    <select name="supervisor" class="select">
+                                        @foreach (getSupervisor() as $sup)
+                                            @php
+                                                $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
+                                                $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                                $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                                $fullname = $firstname . ' ' . $lastname;
+                                            @endphp
+                                            @if (!empty($supervisor))
+                                                <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                                    {{ $fullname }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @if (
+                                (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                    Auth::user()->role->name == app\models\Role::ADMIN)
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Employee</label>
+                                        <select name="employee" class="select emp_project">
+                                            @foreach ($employees as $employee)
+                                                <option value="{{ $employee->id }}">{{ $employee->firstname }}
+                                                    {{ $employee->lastname }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @else
+                                <input type="hidden" name="employee" value="{{$employee->id}}" id="employee_id">
+                            @endif
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Projects</label>
+                                    <select name="project" class="select emp_project_id">
+                                        <option value="">Select Project</option>
+                                        @foreach ($projects as $project)
+                                            <option
+                                                value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">
+                                                {{ !empty($project->projects->name) ? $project->projects->name : '' }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -295,7 +312,7 @@ $user = Auth::user();
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Employee</label>
                                     <select name="employee" class="select" id="employee_id">
@@ -303,7 +320,7 @@ $user = Auth::user();
                                             {{ $employee->lastname }}</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="row">
                             <div class="col-md-6">
@@ -461,13 +478,16 @@ $user = Auth::user();
 
         $("#expense_id").change(function() {
             var expense_id = $(".expense_id").val();
+            var employee_id = $("#employee_id").val();
             var token = $("#token").val();
             $.ajax({
                 type: 'POST',
                 url: '/get-expense-data/',
                 data: {
                     _token: token,
-                    expense_id: expense_id
+                    expense_id: expense_id,
+                    employee_id:employee_id,
+
                 },
                 dataType: 'JSON',
                 success: function(data) {
@@ -480,12 +500,32 @@ $user = Auth::user();
                     //     var date = new Date(row.created_at);
                     //     dateStringWithTime = moment(date).format('DD-MM-YYYY');
                     // });
-
-
                 },
             });
+        });
 
-
+        $(".emp_project ").change(function() {
+            // var employeeId = $('#employee_id').find('option:selected').text();
+            var selectedEmployee = $(this).val();
+            var token = $("#token").val();
+            $.ajax({
+                type: 'POST',
+                url: '/get-employee-projects',
+                data: {
+                    _token: token,
+                    employeeId: selectedEmployee,
+                },
+                dataType: 'JSON',
+                success: function(dataResult) {
+                    // console.log(dataResult);
+                    // console.log(myArray);
+                    $(".emp_project_id").html("<option value=''>select projects</option>");
+                    $.each(dataResult.data, function(index, row) {
+                        console.log(row.projects,'row');
+                        $(".emp_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
+                    });
+                },
+            });
         });
     </script>
 @endsection

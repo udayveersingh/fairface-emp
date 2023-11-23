@@ -126,20 +126,31 @@
         </div>
         {{-- @dd($expenses); --}}
         <div class="row">
-            <div class="col-md-6 mb-2"><strong>Employee Name:-</strong>{{ ucfirst($expenses[0]->firstname) . ' ' . $expenses[0]->lastname }}
+            @php
+             $firstname = !empty($expenses[0]->firstname) ? ucfirst($expenses[0]->firstname) :'';
+             $lastname = !empty($expenses[0]->lastname) ? ucfirst($expenses[0]->lastname):'';
+             $fullname = $firstname ." ".$lastname;
+                
+            @endphp
+            <div class="col-md-6 mb-2"><strong>Employee Name:-</strong>{{$fullname}}
                 </div>
-            <div class="col-md-6 mt-2">
+            <div class="col-md-6">
+                <strong>Expense ID:-</strong>{{!empty($expenses[0]->expense_id) ? $expenses[0]->expense_id:''}}
                 {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}
                 <a href="{{route('emp-expenses')}}" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 mb-2"><strong>Date Submitted:-</strong>{{date('d-m-Y',strtotime($expenses[0]->created_at))}}</div>
+            @php
+                   $expense_date =  str_replace("Exp-","", !empty($expenses[0]->expense_id) ? $expenses[0]->expense_id:''); 
+                   $year_month = date('Y-M',strtotime( $expense_date));
+            @endphp
+            <div class="col-md-6 mb-2"><strong>Year Month:-</strong>{{$year_month}}</div>
             <div class="col-md-6 mt-2">
+                {{-- <strong>Supervisor:-</strong> --}}
                 {{-- <a href="" class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a> --}}
             </div>
         </div>
-    </div>
     {{-- <div class="row">
             <div class="col-md-6">
                 <p class="mx-0"><strong>Date
@@ -155,7 +166,6 @@
     <div class="row">
         <table class="table table-bordered">
             <tr>
-                <th>Expense Id</th>
                 <th>Expense Type</th>
                 {{-- <th>Employee</th> --}}
                 <th>Supervisor</th>
@@ -175,8 +185,6 @@
                     $total_sum += $sum;
                 @endphp
                 <tr>
-
-                    <td>{{ $expense->expense_id }}</td>
                     <td>{{ $expense->type }}</td>
                     {{-- <td>{{ ucfirst($expense->firstname) . ' ' . $expense->lastname }}</td> --}}
                     @php
@@ -196,7 +204,7 @@
                         }
                     @endphp
                     <td>{{ $status }}</td>
-                    <td>{{ $expense->cost }}</td>
+                    <td>{{app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}</td>
                 </tr>
             @endforeach
             <tr>
@@ -204,12 +212,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
                 <th>Total</th>
-                <td>{{ $total_sum }}</td>
+                <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $total_sum }}</td>
             </tr>
         </table>
     </div>
-    </div>
-    </div>
+</div>
 @endsection
