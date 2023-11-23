@@ -482,7 +482,7 @@
             var token = $("#token").val();
             $.ajax({
                 type: 'POST',
-                url: '/get-expense-data/',
+                url: '/get-expense-data',
                 data: {
                     _token: token,
                     expense_id: expense_id,
