@@ -41,8 +41,7 @@
                 <p class="mt-0 mx-0"><strong>Record start and finish times as well as total daily hours worked. Record
                         weekly and monthly hours and days.</strong></p> --}}
         {{-- </div> --}}
-        {{-- </div> --}}
-
+        </div>
         <form method="POST" action="{{ route('employee-timesheet') }}" enctype="multipart/form-data">
             @csrf
             {{-- <input type="hidden" name="employee_id" value="{{ $employee->id }}"> --}}

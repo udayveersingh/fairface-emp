@@ -244,6 +244,7 @@ Route::group(['middleware'=>['auth']], function (){
 
     Route::get('emp-expenses',[EmployeeExpenseController::class,'index'])->name('emp-expenses');
     Route::get('emp-expenses-view/{expense_id}/{emp_id}',[EmployeeExpenseController::class,'show'])->name('emp-expenses-view');
+    Route::get('emp-expenses-print/{expense_id}/{emp_id}',[EmployeeExpenseController::class,'ExpensePdf'])->name('emp-expenses-print');
     Route::post('get-expense-data',[EmployeeExpenseController::class,'getExpenseId'])->name('get-expense-data');
     Route::post('emp-expenses',[EmployeeExpenseController::class,'store']);
     Route::put('emp-expenses',[EmployeeExpenseController::class,'update']);

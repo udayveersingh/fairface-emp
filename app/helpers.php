@@ -20,7 +20,7 @@ if (!function_exists('getSupervisor')) {
     function getSupervisor()
     {
         return User::where('id', '!=', Auth::user()->id)->whereHas('role', function ($q) {
-            $q->where('name', '=', Role::SUPERVISOR);
+            $q->where('name', '=', Role::ADMIN);
         })->get();
     }
 }

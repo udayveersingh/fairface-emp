@@ -37,7 +37,8 @@
                         <tr>
                             <th>Expense Id</th>
                             {{-- <th>Expense Type</th> --}}
-                            @if ((Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                            @if (
+                                (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
                                     Auth::user()->role->name == app\models\Role::ADMIN)
                                 <th>Employee</th>
                             @endif
@@ -46,12 +47,12 @@
                             <th>Occurred Date</th>
                             {{-- <th>Cost</th> --}}
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{-- @dd($expenses); --}}
-                        @foreach ($expenses as $expense)
+                        @foreach ($expenses as $index => $expense)
                             @php
                                 $firstName = !empty($expense->employee->firstname) ? $expense->employee->firstname : '';
                                 $lastName = !empty($expense->employee->lastname) ? $expense->employee->lastname : '';
@@ -66,7 +67,8 @@
                             <tr>
                                 <td>{{ $expense->expense_id }}</td>
                                 {{-- <td>{{ !empty($expense->expensetype->type) ? $expense->expensetype->type : '' }}</td> --}}
-                                @if ((Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
                                         Auth::user()->role->name == app\models\Role::ADMIN)
                                     <td>{{ ucfirst($emp_full_name) }}</td>
                                 @endif
@@ -74,16 +76,20 @@
                                 <td>{{ !empty($expense->project->name) ? $expense->project->name : '' }}</td>
                                 <td>{{ !empty($expense->expense_occurred_date) ? date('d-m-Y', strtotime($expense->expense_occurred_date)) : '' }}
                                 </td>
-                                {{-- <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }} --}}
+                                {{-- @php
+                                  $get_costs = app\models\Expense::where('expense_id','=',$expense->expense_id)->where('employee_id', '=', $expense->employee_id)->get();
+                                  $total_cost = 0;
+                                  foreach($get_costs as $index=>$cost)
+                                  {
+                                    $total_cost += $cost->cost;
+                                  }
+                                @endphp     
+                                <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $total_cost }} --}}
                                 </td>
                                 <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }}
                                 </td>
-                                <td class="text-end">
-                                    <div class="dropdown dropdown-action">
-                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            {{-- <a class="dropdown-item editbtn" href="javascript:void(0)"
+                                <td class="">
+                                        {{-- <a class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-id="{{ $expense->id }}"
                                                 data-expense_type_id ="{{ $expense->expense_type_id }}"
                                                 data-employee_id="{{ $expense->employee_id }}"
@@ -94,19 +100,14 @@
                                                 data-status_reason="{{ $expense->status_reason }}"
                                                 data-approved_date_time="{{ $expense->approved_date_time }}">
                                                 <i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                            @if (!empty($expense->expense_id))
-                                                <a class="dropdown-item"
-                                                    href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id, 'emp_id' => $expense->employee_id]) }}"
-                                                    data-id="{{ $expense->id }}"
-                                                    data-expense_type_id ="{{ $expense->expense_type_id }}"
-                                                    data-employee_id="{{ $expense->employee_id }}">
-                                                    <i class="fa fa-pencil m-r-5"></i>View</a>
-                                            @endif
-                                            <a class="dropdown-item deletebtn" href="javascript:void(0)"
-                                                data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
-                                                Delete</a>
+                                        @if (!empty($expense->expense_id))
+                                        <div class="dropdown dropdown-action">
+                                            <a class="btn-sm btn-primary"
+                                                href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id, 'emp_id' => $expense->employee_id]) }}">
+                                                <i class="fa fa-eye m-r-5"></i>View</a>
                                         </div>
-                                    </div>
+                                        @endif
+
                                 </td>
                             </tr>
                         @endforeach
@@ -233,8 +234,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                @else
-                                <input type="hidden" name="employee" value="{{$employee->id}}" id="employee_id">
+                            @else
+                                <input type="hidden" name="employee" value="{{ $employee->id }}" id="employee_id">
                             @endif
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -486,8 +487,7 @@
                 data: {
                     _token: token,
                     expense_id: expense_id,
-                    employee_id:employee_id,
-
+                    employee_id: employee_id,
                 },
                 dataType: 'JSON',
                 success: function(data) {
@@ -521,8 +521,10 @@
                     // console.log(myArray);
                     $(".emp_project_id").html("<option value=''>select projects</option>");
                     $.each(dataResult.data, function(index, row) {
-                        console.log(row.projects,'row');
-                        $(".emp_project_id").append(`<option value="${row.project_id}">${row.projects.name}</option>`);
+                        console.log(row.projects, 'row');
+                        $(".emp_project_id").append(
+                            `<option value="${row.project_id}">${row.projects.name}</option>`
+                            );
                     });
                 },
             });
