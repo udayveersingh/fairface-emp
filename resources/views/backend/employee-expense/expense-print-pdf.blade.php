@@ -102,8 +102,8 @@
                 <tr>
                     <td>{{ $expense->type }}</td>
                     @php
-                        if (!empty($expense->supervisor_id)) {
                             $supervisor = App\Models\Employee::find($expense->supervisor_id);
+                            if (!empty($supervisor)) {
                             $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
                         }
                     @endphp
