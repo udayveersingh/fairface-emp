@@ -190,7 +190,7 @@
                                 $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
                             }
                         @endphp
-                        <td>{{ ucfirst($fullName) }}</td>
+                        <td>{{ !empty($fullname) ? ucfirst($fullName) }}</td>
                         <td>{{ $expense->name }}</td>
                         <td>{{ date('d-m-Y', strtotime($expense->expense_occurred_date)) }}</td>
                         @php
