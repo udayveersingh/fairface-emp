@@ -134,7 +134,7 @@
                             <div class="col-lg-4">
                                 <input type="hidden" id="token" value="{{ Session::token() }}">
                                 <div class="form-group">
-                                    <label>Expenses Id</label>
+                                    <label>Expenses Id<span class="text-danger">*</span></label>
                                     <select name="expenses_id" id="expense_id" class="form-control select expense_id">
                                         <option value="">~Select~</option>
                                         <option value="new">Add new expense</option>
@@ -195,7 +195,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Expense cost</label>
+                                    <label>Expense cost<span class="text-danger">*</span></label>
                                     <input class="form-control" name="expense_cost" id="expense_cost" type="number">
                                 </div>
                             </div>

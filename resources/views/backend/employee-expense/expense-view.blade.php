@@ -135,7 +135,7 @@
         <div class="row">
             @php
                 $expense_date = str_replace('Exp-', '', !empty($expenses[0]->expense_id) ? $expenses[0]->expense_id : '');
-                $year_month = !empty($expense_date) ? date('Y-M', strtotime($expense_date)):'';
+                $year_month = !empty($expense_date) ? date('Y-M', strtotime($expense_date)) : '';
             @endphp
             <div class="col-md-6 mb-2"><strong>Year Month:-</strong>{{ $year_month }}</div>
             <div class="col-md-6 mt-2">
@@ -164,6 +164,7 @@
                     <th>Project</th>
                     <th>Occurred Date</th>
                     <th>Status</th>
+                    <th>Status Reason</th>
                     <th>Cost</th>
                     @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
                         <th></th>
@@ -200,33 +201,36 @@
                             }
                         @endphp
                         <td>{{ $status }}</td>
+                        <td>{{ !empty($expense->status_reason) ? $expense->status_reason:''}}</td>
                         <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}</td>
                         @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
-                        <td class="text-end">
-                            <div class="dropdown dropdown-action">
-                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item editbtn" href="javascript:void(0)"
-                                    data-id="{{ $expense->id }}"
-                                    data-expense_id="{{ $expense->expense_id }}"
-                                    data-expense_type_id ="{{ $expense->expense_type_id }}"
-                                    data-employee_id="{{ $expense->employee_id }}"
-                                    data-project_id="{{ $expense->project_id }}"
-                                    data-supervisor_id="{{ $expense->supervisor_id }}"
-                                    data-occurred_date="{{ $expense->expense_occurred_date }}"
-                                    data-expense_cost="{{ $expense->cost }}"
-                                    data-expense_description="{{ $expense->description }}"
-                                    data-status_reason="{{ $expense->status_reason }}"
-                                    data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
-                                    data-approved_date_time="{{ $expense->approved_date_time }}">
-                                        <i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                    <a class="dropdown-item deletebtn" href="javascript:void(0)"
-                                        data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
-                                        Delete</a>
+                            <td class="text-end">
+                                <div class="dropdown dropdown-action">
+                                    <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item editbtn" href="javascript:void(0)"
+                                            data-id="{{ $expense->id }}" data-expense_id="{{ $expense->expense_id }}"
+                                            data-expense_type_id ="{{ $expense->expense_type_id }}"
+                                            data-employee_id="{{ $expense->employee_id }}"
+                                            data-project_id="{{ $expense->project_id }}"
+                                            data-supervisor_id="{{ $expense->supervisor_id }}"
+                                            data-occurred_date="{{ $expense->expense_occurred_date }}"
+                                            data-expense_cost="{{ $expense->cost }}"
+                                            data-expense_description="{{ $expense->description }}"
+                                            data-status_reason="{{ $expense->status_reason }}"
+                                            data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
+                                            data-approved_date_time="{{ $expense->approved_date_time }}">
+                                            <i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                        <a class="dropdown-item deletebtn" href="javascript:void(0)"
+                                            data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
+                                            Delete</a>
+                                        <a class="dropdown-item statusChecked" data-id="{{ $expense->id }}"
+                                            data-status="approved" href="#" data-toggle="modal" id="statusChecked"><i
+                                                class="fa fa-pencil m-r-5"></i>Change Status</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
+                            </td>
                         @endif
                     </tr>
                 @endforeach
@@ -400,6 +404,71 @@
             </div>
         </div>
     </div>
+
+      <!-- update Employee Expense Model-->
+      <div class="modal custom-modal fade" id="update_expense_status" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="modal-body">
+                    <div class="form-header">
+                        <h3>Update {{ ucfirst($title) }} data</h3>
+                        <p>Are you sure want to update status?</p>
+                    </div>
+                    <form action="{{ route('expense-status-update') }}" method="post" id="expense_status_form">
+                        @csrf
+                        <input type="hidden" id="expenses_id" name="id">
+                        @php
+                            $count_errors = '';
+                            if (count($errors) > 0) {
+                                $count_errors = count($errors);
+                            }
+                        @endphp
+                        <input type="hidden" id="error_id" value=" {{ $count_errors }}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Expense Status<span class="text-danger">*</span></label>
+                                    <select name="expense_status" id="expense_status_field"
+                                        class="select form-control  {{ $errors->has('expense_status') ? ' is-invalid' : '' }}">
+                                        <option value="">Select Status</option>
+                                        @foreach (getTimesheetStatus() as $time_status)
+                                            <option value="{{ $time_status->id }}">
+                                                {{ str_replace('_', ' ', ucfirst($time_status->status)) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="status_val_error">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Status Reason</label>
+                                    <textarea name="status_reason" id="status_reason" rows="4"
+                                        class="form-control {{ $errors->has('status_reason') ? ' is-invalid' : '' }}"></textarea>
+                                    <div class="validation_error">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-btn delete-action">
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-primary continue-btn btn-block" type="submit"
+                                        id="update_leave">Update</button>
+                                </div>
+                                <div class="col-6">
+                                    <button data-dismiss="modal"
+                                        class="btn btn-primary cancel-btn btn-block">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- update Employee Expense status Model-->
     <!-- /Edit Expense Modal -->
     <x-modals.delete :route="'emp-expenses'" :title="'Expense'" />
 @endsection
@@ -518,11 +587,18 @@
                             console.log(row.projects, 'row');
                             $(".emp_project_id").append(
                                 `<option value="${row.project_id}">${row.projects.name}</option>`
-                                );
+                            );
                         });
                     },
                 });
             });
+
+            $('.statusChecked').on('click', function() {
+            $('#update_expense_status').modal('show');
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+            var timesheet = $('#expenses_id').val(id);
+        });
         });
     </script>
 @endsection

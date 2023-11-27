@@ -73,6 +73,11 @@ class EmployeeExpenseController extends Controller
     public function store(Request $request)
     {
         // dd($request->all());
+        $this->validate($request, [
+            'expense_cost' => 'required',
+            'expenses_id'  => 'required',
+            'expense_type' => 'required',
+        ]);
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->value('id');
         $date = $request->year . "-" . $request->month . "-01";
         $expense_format = (date("M-Y-d", strtotime($date)));
@@ -167,6 +172,11 @@ class EmployeeExpenseController extends Controller
     public function update(Request $request)
     {
         // dd($request->all());
+        $this->validate($request, [
+            'expense_cost' => 'required',
+            'expenses_id'  => 'required',
+            'expense_type' => 'required',
+        ]);
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->value('id');
         $date = $request->year . "-" . $request->month . "-01";
         $expense_format = (date("M-Y-d", strtotime($date)));
@@ -219,5 +229,28 @@ class EmployeeExpenseController extends Controller
             echo $e->getMessage();
             die;
         }
+    }
+
+    public function ExpenseStatusUpdate(Request $request)
+    {
+        // dd($request->all());
+        $timesheet_status = TimesheetStatus::find($request->expense_status);
+        $status_reason = '';
+        if (!empty($timesheet_status->status) && $timesheet_status->status == TimesheetStatus::REJECTED) {
+            $status_reason = 'required';
+        }
+        $this->validate($request, [
+            'expense_status' => 'required',
+            'status_reason' =>  $status_reason,
+        ]);
+        $emp_expense = Expense::find($request->id);
+        if (!empty($emp_expense)) {
+            $emp_expense->timesheet_status_id =  $request->input('expense_status');
+            $emp_expense->status_reason = $request->input('status_reason');
+            $emp_expense->approved_date_time = date('Y-m-d');
+            $emp_expense->save();
+        }
+        $notification = notify('expense status has been updated');
+        return back()->with($notification);
     }
 }
