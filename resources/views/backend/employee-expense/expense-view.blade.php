@@ -376,7 +376,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button class="btn btn-primary continue-btn btn-block" type="submit"
-                                        id="update_leave">Update</button>
+                                        id="update_expense">Update</button>
                                 </div>
                                 <div class="col-6">
                                     <button data-dismiss="modal"
@@ -438,6 +438,26 @@
                     }
                 });
             }
+
+            $("#update_expense").on("click", function(event) {
+            event.preventDefault()
+
+            var expense_reason="";
+            var status_field_value = $("#expense_status_field").find(":selected").text().trim();
+            var expense_reason = $("#status_reason").val();
+            if ((status_field_value == "Approved")) {
+                $("#expense_status_form").submit();
+            } else if ((status_field_value == "Select Status")) {
+                $(".status_val_error").html("");
+                $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
+            }else if (expense_reason && status_field_value == "Rejected") {
+                $("#expense_status_form").submit();
+            }else if(status_field_value == "Rejected"){
+                $(".status_val_error").html("");
+                $(".validation_error").html("");
+                $(".validation_error").html(`<span class="text-danger">this field is required</span>`);
+            }
+        });
 
             var currentYear = new Date().getFullYear();
             console.log(currentYear, "currentYear");
