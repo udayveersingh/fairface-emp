@@ -185,12 +185,15 @@
                         <td>{{ $expense->type }}</td>
                         {{-- <td>{{ ucfirst($expense->firstname) . ' ' . $expense->lastname }}</td> --}}
                         @php
-                            if (!empty($expense->supervisor_id)) {
+                                $fullName="";
                                 $supervisor = App\Models\Employee::find($expense->supervisor_id);
-                                $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
-                            }
+                                if(!empty($supervisor)){
+                                    $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
+                                }
+
+                            // dd( $fullName);
                         @endphp
-                        <td>{{ !empty($fullname) ? ucfirst($fullName) :'' }}</td>
+                        <td>{{ucfirst($fullName) }}</td>
                         <td>{{ $expense->name }}</td>
                         <td>{{ date('d-m-Y', strtotime($expense->expense_occurred_date)) }}</td>
                         @php
