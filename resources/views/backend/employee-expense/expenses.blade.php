@@ -46,7 +46,7 @@
                             <th>Project</th>
                             <th>Occurred Date</th>
                             {{-- <th>Cost</th> --}}
-                            <th>Status</th>
+                            {{-- <th>Status</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -86,7 +86,7 @@
                                 @endphp     
                                 <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $total_cost }} --}}
                                 </td>
-                                <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }}
+                                {{-- <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }} --}}
                                 </td>
                                 <td class="">
                                         {{-- <a class="dropdown-item editbtn" href="javascript:void(0)"

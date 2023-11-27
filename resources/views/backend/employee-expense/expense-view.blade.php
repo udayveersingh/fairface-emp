@@ -239,7 +239,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    {{-- <td></td> --}}
+                    <td></td>
                     <th>Total</th>
                     <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $total_sum }}</td>
                 </tr>
