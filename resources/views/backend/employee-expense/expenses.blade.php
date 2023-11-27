@@ -418,7 +418,7 @@
     </div>
     <!-- /Edit Expense Modal -->
 
-    <x-modals.delete :route="'expenses'" :title="'Expense'" />
+    <x-modals.delete :route="'emp-expenses'" :title="'Expense'" />
 @endsection
 
 

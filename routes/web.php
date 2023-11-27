@@ -235,13 +235,7 @@ Route::group(['middleware'=>['auth']], function (){
 
     Route::resource('invoices',InvoiceController::class)->except('destroy');
     Route::delete('invoices',[InvoiceController::class,'destroy'])->name('invoices.destroy');
-
-    Route::get('expenses',[ExpenseController::class,'index'])->name('expenses');
-    Route::post('expenses',[ExpenseController::class,'store']);
-    Route::put('expenses',[ExpenseController::class,'update']);
-    Route::delete('expenses',[ExpenseController::class,'destroy']);
-
-
+    
     Route::get('emp-expenses',[EmployeeExpenseController::class,'index'])->name('emp-expenses');
     Route::get('emp-expenses-view/{expense_id}/{emp_id}',[EmployeeExpenseController::class,'show'])->name('emp-expenses-view');
     Route::get('emp-expenses-print/{expense_id}/{emp_id}',[EmployeeExpenseController::class,'ExpensePdf'])->name('emp-expenses-print');

@@ -107,56 +107,49 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="card card-block shadow shadow-sm p-3 h-80">
-                    <h3 class="card-title">Personal Informations</h3>
                     <div class="row">
                         <div class="col-md-12">
-                            <ul class="personal-info">
-                                <li>
-                                    <div class="title">Main Branch Location:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="title">Alternate Phone Number:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->alternate_phone_number) ? $employee->alternate_phone_number : '' }}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="title">Nationality:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->country->name) ? $employee->country->name : '' }}</div>
-                                </li>
-                                <li>
-                                    <div class="title">National Insurance Number:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->national_insurance_number) ? $employee->national_insurance_number : '' }}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="title">Passport Number:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->passport_number) ? $employee->passport_number : '' }}</div>
-                                </li>
-                                <li>
-                                    <div class="title">Passport Issue Date:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->passport_issue_date) ? date('d-m-Y', strtotime($employee->passport_issue_date)) : '' }}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="title">Passport Expire Date:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->passport_expiry_date) ? date('d-m-Y', strtotime($employee->passport_expiry_date)) : '' }}
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="title">Record Status:</div>
-                                    <div class="text">
-                                        {{ !empty($employee->record_status) ? $employee->record_status : '' }}</div>
-                                </li>
-                            </ul>
+                            <div class="card card-block shadow shadow-sm p-3 h-80">
+                                <h3 class="card-title">Personal Informations</h3>
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>Main Branch Location:</th>
+                                        <td>{{ !empty($employee->branch->branch_code) ? $employee->branch->branch_code : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Alternate Phone Number:</th>
+                                        <td>{{!empty($employee->alternate_phone_number) ? $employee->alternate_phone_number : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nationality:</th>
+                                        <td>{{ !empty($employee->country->name) ? $employee->country->name : '' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>National Insurance Number:</th>
+                                        <td>{{!empty($employee->national_insurance_number) ? $employee->national_insurance_number : ''  }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Passport Number:</th>
+                                        <td>{{ !empty($employee->passport_number) ? $employee->passport_number : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Passport Issue Date:</th>
+                                        <td>{{ !empty($employee->passport_issue_date) ? date('d-m-Y', strtotime($employee->passport_issue_date)) : ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Passport Expire Date:</th>
+                                        <td>{{  !empty($employee->passport_expiry_date) ? date('d-m-Y', strtotime($employee->passport_expiry_date)) : ''}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Record Status:</th>
+                                        <td>{{  !empty($employee->record_status) ? $employee->record_status : '' }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
