@@ -27,7 +27,6 @@
     </div>
 @endsection
 
-
 @section('content')
     <div class="row">
         <div class="col-md-12">
@@ -116,7 +115,6 @@
             </div>
         </div>
     </div>
-
     <!-- Add Expense Modal -->
     <div id="add_expense" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -227,9 +225,20 @@
                                     <div class="form-group">
                                         <label>Employee</label>
                                         <select name="employee" class="select emp_project">
-                                            @foreach ($employees as $employee)
-                                                <option value="{{ $employee->id }}">{{ $employee->firstname }}
-                                                    {{ $employee->lastname }}</option>
+                                            <option value="">Select Employee</option>
+                                            @foreach (getEmployee() as $emp)
+                                            @php
+                                                $fullname ="";
+                                                $employee = App\Models\Employee::where('user_id', '=', $emp->id)->where('record_status','=','active')->first();
+                                                if(!empty($employee)){    
+                                                $firstname = !empty($employee->firstname) ? $employee->firstname : '';
+                                                $lastname = !empty($employee->lastname) ? $employee->lastname : '';
+                                                $fullname = $firstname . ' ' . $lastname;
+                                                }
+                                            @endphp
+                                             @if(!empty($employee))
+                                                <option value="{{$employee->id}}">{{  $fullname }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
