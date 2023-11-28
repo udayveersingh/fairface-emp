@@ -106,9 +106,9 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <div class="card card-block shadow shadow-sm p-3 h-80">
+                <div class="">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="card card-block shadow shadow-sm p-3 h-80">
                                 <h3 class="card-title">Personal Informations</h3>
                                 <table class="table table-striped">
