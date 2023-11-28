@@ -36,7 +36,7 @@
                 <strong>Expense ID:-</strong>{{ !empty($expenses[0]->expense_id) ? $expenses[0]->expense_id : '' }}
                 <a href="{{ route('emp-expenses-print', ['expense_id' => $expense_id, 'emp_id' => $emp_id]) }}"
                     class="btn add-btn" target="_blank"><i class="fa fa-download"></i>Print PDF File</a>
-                <a href="{{ route('emp-expenses') }}" class="btn add-btn mr-2">Back</a>
+                <a href="{{ route('emp-expenses') }}" class="btn add-btn mr-1">Back</a>
             </div>
         </div>
         <div class="row">
