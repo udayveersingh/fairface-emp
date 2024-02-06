@@ -346,15 +346,9 @@
                                                             <option value="married"
                                                                 {{ $employee->marital_status == 'married' ? 'selected' : '' }}>
                                                                 Married</option>
-                                                            <option value="unmarried"
-                                                                {{ $employee->marital_status == 'unmarried' ? 'selected' : '' }}>
-                                                                Unmarried</option>
-                                                            <option value="divorced"
-                                                                {{ $employee->marital_status == 'divorced' ? 'selected' : '' }}>
-                                                                Divorced</option>
-                                                            <option value="widowed"
-                                                                {{ $employee->marital_status == 'widowed' ? 'selected' : '' }}>
-                                                                Widowed</option>
+                                                            <option value="single"
+                                                                {{ $employee->marital_status == 'single' ? 'selected' : '' }}>
+                                                                Single</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -538,12 +532,7 @@
                                 <option value="">Select Marital Status</option>
                                 <option value="married" {{ old('marital_status', 'married') ? 'selected' : '' }}>Married
                                 </option>
-                                <option value="unmarried"{{ old('marital_status', 'unmarried') ? 'selected' : '' }}>
-                                    Unmarried</option>
-                                <option value="divorced" {{ old('marital_status', 'divorced') ? 'selected' : '' }}>
-                                    Divorced</option>
-                                <option value="widowed" {{ old('marital_status', 'widowed') ? 'selected' : '' }}>Widowed
-                                </option>
+                                <option value="single"{{ old('marital_status', 'single') ? 'selected' : '' }}>Single</option>
                             </select>
                         </div>
                     </div>
@@ -552,7 +541,7 @@
                             <label>Record Status <span class="text-danger">*</span></label>
                             <select name="record_status" class="form-control select">
                                 <option value="">Select Record Status</option>
-                                <option value="active" {{ old('marital_status', 'active') ? 'selected' : '' }}>Active
+                                <option value="active" {{ old('record_status', 'active') ? 'selected' : '' }}>Active
                                 </option>
                                 {{-- <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>
                                 <option value="delete" {{old('record_status', 'delete') ? 'selected' : '' }}>Delete</option> --}}

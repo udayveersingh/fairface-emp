@@ -30,7 +30,6 @@ class LeaveTypeController extends Controller
     {
         $this->validate($request,[
             'type'=>'required|max:255',
-            'days'=>'required'
         ]);
         LeaveType::create($request->all());
         return back()->with('success',"Leave type has been added");
@@ -58,7 +57,6 @@ class LeaveTypeController extends Controller
     {
         $this->validate($request,[
             'type'=>'required|max:255',
-            'days'=>'required'
         ]);
         
         $leave_type = LeaveType::find($request->id);

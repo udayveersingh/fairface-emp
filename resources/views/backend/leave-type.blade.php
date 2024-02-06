@@ -40,7 +40,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $leave_type->type }}</td>
-                                    <td>{{ $leave_type->days . ' ' . 'days' }}</td>
+                                    <td>{{ !empty($leave_type->days) ? $leave_type->days . ' ' . 'days':''}}</td>
 
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
@@ -85,7 +85,7 @@
                             <input class="form-control" name="type" type="text">
                         </div>
                         <div class="form-group">
-                            <label>Number of days <span class="text-danger">*</span></label>
+                            <label>Number of days</label>
                             <input class="form-control" name="days" type="number">
                         </div>
                         <div class="submit-section">
@@ -118,7 +118,7 @@
                             <input class="form-control edit_type" name="type" type="text">
                         </div>
                         <div class="form-group">
-                            <label>Number of days <span class="text-danger">*</span></label>
+                            <label>Number of days</label>
                             <input class="form-control edit_days" name="days" type="number">
                         </div>
                         <div class="submit-section">

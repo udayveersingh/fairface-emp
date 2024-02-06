@@ -41,13 +41,13 @@
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            @if(!$holiday->completed)
+                                            {{-- @if(!$holiday->completed)
                                                 <form action="{{route('completed',$holiday)}}" method="post">
                                                     @csrf
                                                     <button data-id="{{$holiday->id}}" class="dropdown-item btn mark_as_complete" type="submit"><i class="fa fa-star m-r-5"></i>Completed</button>
                                                     <input type="hidden" id="complete_id" name="id">
                                                 </form>
-                                            @endif
+                                            @endif --}}
                                             <a data-id="{{$holiday->id}}" data-name="{{$holiday->name}}" data-date="{{$holiday->holiday_date}}" class="dropdown-item editbtn" href="javascript:void(0);" data-toggle="modal" data-target="#edit_holiday"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                                             <a data-id="{{$holiday->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-target="#deletebtn" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
                                         </div>

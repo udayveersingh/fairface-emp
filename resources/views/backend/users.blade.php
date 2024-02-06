@@ -159,29 +159,13 @@
                                     <input class="form-control" name="employee_id" type="text">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Marital Status <span class="text-danger">*</span></label>
-                                    <select name="marital_status" class="form-control">
-                                        <option value="">Select Marital Status</option>
-                                        <option value="married">Married</option>
-                                        <option value="unmarried">Unmarried</option>
-                                        <option value="divorced">Divorced</option>
-                                        <option value="widowed">Widowed</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
+                                {{-- <div class="form-group">
                                     <label>Record Status <span class="text-danger">*</span></label>
                                     <select name="record_status" class="form-control">
-                                        <option value="">Select Record Status</option>
                                         <option value="active">Active</option>
-                                        <option value="archieve">Archieve</option>
-                                        <option value="delete">Delete</option>
                                     </select>
-                                </div>
-                            </div>
+                                </div> --}}
+                                <input type="hidden" name="record_status" value="active">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nationality <span class="text-danger">*</span></label>
@@ -277,13 +261,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
                                     <input class="form-control employee_id" name="employee_id" type="text">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Marital Status <span class="text-danger">*</span></label>
                                     <select name="marital_status" class="form-control marital_status">
@@ -294,8 +278,8 @@
                                         <option value="widowed">Widowed</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
+                            </div> --}}
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Record Status <span class="text-danger">*</span></label>
                                     <select name="record_status" class="form-control record_status">
@@ -306,7 +290,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Nationality <span class="text-danger">*</span></label>
                                     <select name="nationality" class="form-control nationality">

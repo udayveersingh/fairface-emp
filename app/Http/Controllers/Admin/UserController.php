@@ -70,13 +70,13 @@ class UserController extends Controller
             'firstname' => $request->input('firstname'),
             'lastname' => $request->input('lastname'),
             'email' => $request->input('email'),
-            'marital_status' => $request->input('marital_status'),
+            // 'marital_status' => $request->input('marital_status'),
             'record_status' => $request->input('record_status'),
             'country_id' => $request->input('nationality'),
             'employee_id' => $request->input('employee_id'),
             'user_id' => $user->id,
         ]);
-        $user->notify(new NewUserNotification($user));
+        // $user->notify(new NewUserNotification($user));
         return back()->with('success', "New user has been added");
     }
 

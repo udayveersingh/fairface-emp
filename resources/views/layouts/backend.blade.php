@@ -201,14 +201,14 @@
 // });
 </script>
 <script src="{{ asset('path/to/logout.js') }}"></script>
-<script>
+{{-- <script>
 window.addEventListener('unload', function() {
 var xhr = new XMLHttpRequest();
 xhr.open('POST', '/logout', true);
 xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
 xhr.send();
 });
-</script>
+</script> --}}
 @yield('scripts')
 
 </html>

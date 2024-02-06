@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                                                                    background: #dfe4fa;
-                                                                                                } */
+                                                                                                        background: #dfe4fa;
+                                                                                                    } */
 
         .unread {
             font-weight: bold;
@@ -208,16 +208,16 @@
                         <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <!-- <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all"
-                                    type="button" role="tab" aria-controls="all"
-                                    aria-selected="true">All({{ $count_emails }})</button> -->
+                                        type="button" role="tab" aria-controls="all"
+                                        aria-selected="true">All({{ $count_emails }})</button> -->
                                 <a href="{{ route('company-email', ['keyword' => 'inbox']) }}"><button
                                         class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ $count_emails }})</button>
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!-- <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread"
-                                    type="button" role="tab" aria-controls="unread"
-                                    aria-selected="false">Unread({{ $count_unread_emails }})</button> -->
+                                        type="button" role="tab" aria-controls="unread"
+                                        aria-selected="false">Unread({{ $count_unread_emails }})</button> -->
                                 <a href="{{ route('company-email', ['keyword' => 'unread']) }}"><button
                                         class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ $count_unread_emails }})</button>
                                 </a>
@@ -707,10 +707,10 @@
                                         break;
                                     }
 
-                                 $to_ids_array = explode(",", $company_email->to_id);   
-                                 $cc_array_ids = explode(",",$company_email->company_cc); 
+                                    $to_ids_array = explode(',', $company_email->to_id);
+                                    $cc_array_ids = explode(',', $company_email->company_cc);
                                 @endphp
-                                <input type="hidden" value="{{$company_email->id}}" id="edit_id" name="id">
+                                <input type="hidden" value="{{ $company_email->id }}" id="edit_id" name="id">
                                 @php
                                     $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                         ->whereHas('employee', function ($q) {
@@ -753,7 +753,8 @@
                                                             $lastname = !empty($from_email->employee->lastname) ? $from_email->employee->lastname : '';
                                                             $emp_name = $firstname . '  ' . $lastname;
                                                         @endphp
-                                                        <option value="{{ $from_email->id }}" {{!empty($from_email->id) && $company_email->from_id == $from_email->id ? 'selected' : '' }}>
+                                                        <option value="{{ $from_email->id }}"
+                                                            {{ !empty($from_email->id) && $company_email->from_id == $from_email->id ? 'selected' : '' }}>
                                                             {{ $emp_name . ' < ' . $from_email->work_email . ' > ' }}
                                                         </option>
                                                     @endforeach
@@ -764,8 +765,8 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>To<span class="text-danger">*</span></label>
-                                            <select id="" name="to_id[]" class="form-control reply_to_id select" multiple
-                                                data-mdb-placeholder="Example placeholder" multiple>
+                                            <select id="" name="to_id[]" class="form-control reply_to_id select"
+                                                multiple data-mdb-placeholder="Example placeholder" multiple>
                                                 <option value="">Select to</option>
                                                 @foreach ($to_email_ids as $to_email)
                                                     @php
@@ -773,7 +774,8 @@
                                                         $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
                                                         $emp_name = $firstname . '  ' . $lastname;
                                                     @endphp
-                                                    <option value="{{ $to_email->id }}" {{ in_array($to_email->id, $to_ids_array) ? 'selected' : '' }}>
+                                                    <option value="{{ $to_email->id }}"
+                                                        {{ in_array($to_email->id, $to_ids_array) ? 'selected' : '' }}>
                                                         {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
                                                 @endforeach
                                             </select>
@@ -801,38 +803,40 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Date</label>
-                                            <input class="form-control date email_date" type="text" value="{{!empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : ''}}" name="email_date"
-                                                id="date">
+                                            <input class="form-control date email_date" type="text"
+                                                value="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+                                                name="email_date" id="date">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Time </label>
-                                            <input class="form-control time" type="time" value="{{$company_email->time}}" name="email_time"
-                                                id="time">
+                                            <input class="form-control time" type="time"
+                                                value="{{ $company_email->time }}" name="email_time" id="time">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Subject</label>
-                                    <input class="form-control" type="text" name="email_subject" id="edit_subject" value="{{$company_email->subject}}">
+                                    <input class="form-control" type="text" name="email_subject" id="edit_subject"
+                                        value="{{ $company_email->subject }}">
                                 </div>
                                 <div class="form-group">
                                     <label>Body<span class="text-danger">*</span></label>
-                                    <textarea class="form-control" id="edit_body" name="email_body" rows="4" cols="50">{{!empty($company_email->body) ? strip_tags(html_entity_decode($company_email->body)):''}}</textarea>
+                                    <textarea class="form-control" id="edit_body" name="email_body" rows="4" cols="50">{{ !empty($company_email->body) ? strip_tags(html_entity_decode($company_email->body)) : '' }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Attachment</label>
                                     <input class="form-control" type="file" name="email_attachment"
                                         id="edit_attachment">
                                 </div>
-                                @endforeach
-                                {{-- <div class="attachment">
+                            @endforeach
+                            {{-- <div class="attachment">
 
                             </div> --}}
-                                <div class="submit-section">
-                                    <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
-                                </div>
+                            <div class="submit-section">
+                                <button type="submit" class="btn btn-primary submit-btn mb-2">Submit</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -1147,7 +1151,7 @@
                             @endforeach
                             <div class="form-group">
                                 <label>Body</label>
-                                <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly>{{ strip_tags(html_entity_decode($company_email->body)) }}</textarea>
+                                <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly>{{ !empty($company_email->body) ? strip_tags(html_entity_decode($company_email->body)) : '' }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Message<span class="text-danger">*</span></label>

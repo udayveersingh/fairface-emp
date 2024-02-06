@@ -102,7 +102,7 @@ class SettingsController extends Controller
 
     public function updateCompany(Request $request, CompanySettings $settings){
         $this->validate($request,[
-            'company_name' => 'required',
+            // 'company_name' => 'required',
             'contact_person' => 'required',
             'address' => 'required',
             'country' => 'required',
@@ -112,12 +112,12 @@ class SettingsController extends Controller
             'email' => 'required',
             'phone' => 'required',
             'mobile' => 'required',
-            'fax' => 'required',
+            // 'fax' => 'required',
             'website_url' => 'required|url',
             'timesheet_interval' => 'required',
         ]);
 
-        $settings->company_name = $request->company_name;
+        $settings->company_name = !empty($request->company_name) ? $request->company_name:'';
         $settings->contact_person = $request->contact_person;
         $settings->address = $request->address;
         $settings->country = $request->country;
@@ -127,7 +127,7 @@ class SettingsController extends Controller
         $settings->email = $request->email;
         $settings->phone = $request->phone;
         $settings->mobile = $request->mobile;
-        $settings->fax = $request->fax;
+        $settings->fax = !empty($request->fax) ? $request->fax:'';
         $settings->website_url = $request->website_url;
         $settings->timesheet_interval = $request->timesheet_interval;
         $settings->save();
