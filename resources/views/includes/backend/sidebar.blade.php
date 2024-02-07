@@ -63,8 +63,8 @@
                                     href="{{ route('project-list') }}">Projects</a></li>
                             <li><a class="{{ route_is('departments') ? 'active' : '' }}"
                                     href="{{ route('departments') }}">Departments</a></li>
-                            <li><a class="{{ route_is('designations') ? 'active' : '' }}"
-                                    href="{{ route('designations') }}">Designations</a></li>
+                            {{-- <li><a class="{{ route_is('designations') ? 'active' : '' }}"
+                                    href="{{ route('designations') }}">Designations</a></li> --}}
                             <li><a class="{{ route_is('expense-type') ? 'active' : '' }}"
                                     href="{{ route('expense-type') }}">Expense Type</a></li>
                             <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa Type</a></li>

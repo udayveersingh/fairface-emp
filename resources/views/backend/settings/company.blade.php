@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Company Name <span class="text-danger">*</span></label>
+                        <label>Company Name</label>
                         <input class="form-control" name="company_name" type="text" value="{{$settings->company_name}}">
                     </div>
                 </div>
