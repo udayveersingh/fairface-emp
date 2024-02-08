@@ -20,9 +20,6 @@
                     </div>
                 </div>
             </div>
-            @php
-                print_r($annoucement_list);
-            @endphp
             @if (count($annoucement_list) > 0)
                 <h1 class="dash-sec-title ml-3">Latest Annoucements</h1>
                 <div class="col-md-12 mb-4">
