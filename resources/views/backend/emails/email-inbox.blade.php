@@ -206,7 +206,7 @@
                         </div>
                     </form><!-- search bar ends here -->
 
-                    @if ($keyword == 'inbox')
+                    @if (isset($keyword) && ($keyword == 'inbox'))
                         <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a href="{{ route('user-email-inbox', ['keyword' => 'inbox']) }}"><button
