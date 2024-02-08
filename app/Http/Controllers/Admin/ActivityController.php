@@ -86,8 +86,8 @@ class ActivityController extends Controller
             'subject' => $request->subject,
             'message' => $request->email_message
         ];
-        Mail::to($content['to'])->send(new SendMessageMail($content));
-        return back()->with('success',"Email has been sent.");
+     //   Mail::to($content['to'])->send(new SendMessageMail($content));
+        return back()->with('success',"Message has been sent.");
     }
 
     public function update(Request $request)
