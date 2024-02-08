@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label>Attachment<span class="text-danger">*</span></label>
                         <input class="form-control" id="attachment" name="attachment" required multiple type="file">
-                        <span class="text-danger">Please upload a valid payslip image. Size of payslip image should not be more than 2MB.</span>
+                        <span class="text-danger">Please upload a valid payslip. Payslip size should be less than 2MB.</span>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -75,11 +75,8 @@
                     @php
                         $extension = pathinfo(storage_path('storage/payslips/'.$employee_payslip->attachment), PATHINFO_EXTENSION);
                     @endphp
-                    <td>@if($extension == "pdf")
-                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
-                        @else
-                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('storage/payslips/'.$employee_payslip->attachment)}}" width="120px" height="100px"></a>
-                        @endif
+                    <td>
+                        <a href="{{asset('storage/payslips/'.$employee_payslip->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/download-file-icon-small.png')}}" width="35px" height="35px"></a>
                     </td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">

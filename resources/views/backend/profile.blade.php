@@ -476,7 +476,7 @@
                     <label class="col-form-label">Attachment</label>
                     <input class="form-control" name="attachment" type="file">
                 </div>
-                <span class="text-danger">Please upload a valid document image. Size of document image should not be more than 2MB.</span>
+                <span class="text-danger">Please upload a valid document. Document size should be less than 2MB.</span>
             </div>
             <div class="col-sm-4">
                 <div class="submit-section">

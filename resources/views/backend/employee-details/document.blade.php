@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label class="col-form-label">Attachment</label>
                         <input class="form-control" name="attachment" type="file">
-                        <span class="text-danger">Please upload a valid document image. Size of document image should not be more than 2MB.</span>
+                        <span class="text-danger">Please upload a valid document. Document size should be less than 2MB.</span>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -54,11 +54,7 @@
                     $extension = pathinfo(storage_path('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
                     @endphp
                     <td>
-                        @if(!empty($extension) && $extension == "pdf")
-                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('assets/img/profiles/photopdf.png')}}" width="100px"></a>
-                        @else
-                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" width="120px" height="100px" ></a>
-                        @endif
+                        <a href="{{asset('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/download-file-icon-small.png')}}" width="35px" height="35px"></a>
                     </td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">

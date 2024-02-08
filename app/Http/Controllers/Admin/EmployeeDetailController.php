@@ -85,7 +85,7 @@ class EmployeeDetailController extends Controller
         $this->validate($request, [
             'month' => 'required',
             'year' => 'required',
-            'attachment' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'attachment' => 'file|max:2048',
         ]);
         $file = null;
         $file_name = "";
@@ -114,7 +114,7 @@ class EmployeeDetailController extends Controller
         // dd($request->all());
         $this->validate($request, [
             'name' => 'required',
-            'attachment' => 'file|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'attachment' => 'file|max:2048',
         ]);
         $file = null;
         $file_name = "";

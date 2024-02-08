@@ -304,10 +304,10 @@
                                                         <label>Nationality <span class="text-danger">*</span></label>
                                                         <select name="nationality" required id="nationality"
                                                             class="form-control">
-                                                            <option value="">Select Nationality</option>
+                                                            <option value="">~Select Nationality~</option>
                                                             @foreach ($countries as $country)
                                                                 <option value="{{ $country->id }}"
-                                                                    {{ $employee->country_id == "$country->id" ? 'selected' : '' }}>
+                                                                    {{ (!empty($employee->country_id) && ($employee->country_id == "$country->id")) ? 'selected':'' }}>
                                                                     {{ $country->name }}</option>
                                                             @endforeach
                                                         </select>
@@ -408,8 +408,7 @@
                             <select name="branch_id" class="form-control select">
                                 <option value="">Select Main Work Location</option>
                                 @foreach ($branches as $branch)
-                                    <option
-                                        value="{{ $branch->id }}"{{ old('branch_id', $branch->id) ? 'selected' : '' }}>
+                                    <option value="{{ $branch->id }}" {{ old('branch_id', $branch->id) ? 'selected' : '' }}>
                                         {{ $branch->branch_code }}</option>
                                 @endforeach
                             </select>
