@@ -137,7 +137,7 @@
             <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="fa fa-home"></i></a>
         </div>
         <div class="col">
-            @if (count($annoucement_list) > 0)
+            @if ( isset($annoucement_list) && (count($annoucement_list) > 0))
                 <div id="carouselExampleFade"
                     class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner">
