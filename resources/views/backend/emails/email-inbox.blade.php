@@ -663,6 +663,7 @@
                                     ->get();
                                 //   dd($to_email_ids);
                             @endphp
+                            @if(isset($company_emails) && !empty($company_emails))
                             @foreach ($company_emails as $index => $company_email)
                                 @php
                                     if ($index > 0) {
@@ -693,6 +694,7 @@
                                     </select>
                                 </div>
                             @endforeach
+                            @endif
                             <div class="form-group" id="reply_mail_cc">
                                 <label class="form-label select-label">CC :
                                     {{ !empty($company_email->company_cc) ? $company_email->company_cc : '' }}</label>
