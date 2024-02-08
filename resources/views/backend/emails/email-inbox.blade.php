@@ -629,6 +629,7 @@
                         <form action="{{ route('reply-mail') }}" id="reply_mail" method="POST"
                             enctype="multipart/form-data">
                             @csrf
+                            @if(isset($company_emails) && !empty($company_emails))
                             @foreach ($company_emails as $index => $company_email)
                                 @php
                                     if ($index > 0) {
@@ -653,6 +654,7 @@
                                 <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
                                     name="email_time" id="">
                             @endforeach
+                            @endif
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
                                     ->whereHas('employee', function ($q) {
