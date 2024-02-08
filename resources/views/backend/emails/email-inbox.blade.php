@@ -210,12 +210,12 @@
                         <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a href="{{ route('user-email-inbox', ['keyword' => 'inbox']) }}"><button
-                                        class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ $total_mail_count }})</button>
+                                        class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ (isset($total_mail_count) && ($total_mail_count > 0))?$total_mail_count:'0'  }})</button>
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="{{ route('user-email-inbox', ['keyword' => 'unread']) }}"><button
-                                        class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ $company_unread_emails }})</button>
+                                        class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ (isset($company_unread_emails) && ($company_unread_emails>0))?$company_unread_emails:0  }})</button>
                                 </a>
 
                             </li>
