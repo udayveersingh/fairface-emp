@@ -178,13 +178,13 @@
                 <div class="list-group mail-list mt-3">
                     <a href="{{ route('user-email-inbox') }}"
                         class="list-group-item border-0 {{ (isset($keyword) && ($keyword == 'inbox')) ? 'active' : '' }} py-2 px-3"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ $total_mail_count }})</b></a>
+                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ isset($total_mail_count) && ($total_mail_count > 0)?$total_mail_count:0 }})</b></a>
                     <a href="{{ route('user-email-inbox', ['keyword' => 'archive']) }}"
                         class="list-group-item border-0 py-2 px-3 {{ (isset($keyword) && ($keyword == 'archive')) ? 'active' : '' }}"><i
-                            class="far fa-star font-13 mr-2"></i>Archive<b>({{ $archive_count }})</b></a>
+                            class="far fa-star font-13 mr-2"></i>Archive<b>({{ isset($archive_count) && ($archive_count > 0)?$archive_count:0  }})</b></a>
                     <a href="{{ route('user-email-inbox', ['keyword' => 'sent']) }}"
                         class="list-group-item border-0 {{ (isset($keyword) && ($keyword == 'sent')) ? 'active' : '' }} py-2 px-3"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ $sent_email_count }})</b></a>
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{  isset($sent_email_count) && ($sent_email_count > 0)?$sent_email_count:0 }})</b></a>
 
                 </div>
 
