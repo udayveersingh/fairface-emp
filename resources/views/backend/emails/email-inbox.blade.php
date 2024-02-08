@@ -537,6 +537,7 @@
                                     })
                                     ->get();
                             @endphp
+                            @if(isset($company_emails) && !empty($company_emails) )
                             @foreach ($company_emails as $index => $company_email)
                                 @php
                                     if ($index > 0) {
@@ -590,6 +591,7 @@
                                         name="email_subject" id="edit_subject">
                                 </div>
                             @endforeach
+                            @endif
                             <div class="form-group">
                                 <label>Body</label>
                                 <textarea class="form-control" id="edit_body" name="" rows="4" cols="50" readonly>{{ !empty($company_email->body) ? $company_email->body : '' }}</textarea>
