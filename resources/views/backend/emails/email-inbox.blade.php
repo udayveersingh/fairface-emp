@@ -365,6 +365,7 @@
 
                 </div> <!-- col-6 ends here -->
                 <div class="col-md-6 pl-2 pl-md-0">
+                    @if(isset($company_emails) && !empty($company_emails))
                     @foreach ($company_emails as $index => $company_email)
                         @php
                             if ($index > 0) {
@@ -507,6 +508,7 @@
                             </div>
                         </div>
                     @endforeach
+                    @endif
                 </div>
             </div> <!-- End row -->
         </div>
