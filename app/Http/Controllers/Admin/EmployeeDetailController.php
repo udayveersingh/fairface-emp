@@ -43,7 +43,7 @@ class EmployeeDetailController extends Controller
         $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
         $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
         $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
-        $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->OrderBy('year')->get();
+        $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->orderBy('year', 'desc')->get();
         $visa_types = Visa::get();
         $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
         $projects = Project::where('status', '=', 1)->get();

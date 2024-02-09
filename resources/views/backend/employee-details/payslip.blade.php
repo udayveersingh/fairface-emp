@@ -57,7 +57,7 @@
         <table class="table table-striped custom-table mb-0 datatable">
             <thead>
                 <tr>
-                    <th style="width: 30px;">Sr No.</th>
+                    {{-- <th style="width: 30px;">Sr No.</th> --}}
                     <th>Month</th>
                     <th>Year</th>
                     {{-- <th>Created</th> --}}
@@ -68,7 +68,7 @@
             <tbody id="bodyData">
                 @foreach ($employee_payslips as $index=>$employee_payslip)
                 <tr>
-                    <td>{{$index+1}}</td>
+                    {{-- <td>{{$index+1}}</td> --}}
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
                     {{-- <td>{{!empty($employee_payslip->created_at) ? date("d-m-Y", strtotime($employee_payslip->created_at)):''}}</td> --}}
