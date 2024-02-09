@@ -282,7 +282,7 @@
                                                 <tr class="check_read_unread {{ $unread }}">
                                                     <td>
                                                         <div class="d-block fsizi">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -298,7 +298,7 @@
                                                                 data-count="{{ $count }}">
                                                                 {{ ucfirst($fullname) }}
                                                             </a>
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -314,7 +314,7 @@
                                                                 data-count="{{ $count }}">{{ $to_mail_users }}</a>
                                                         </div>
 
-                                                        <a href="#single-email-wrapper"
+                                                        <a href="#"
                                                             class="email-msg mail-detail get_email_data fsizii"
                                                             data-com_email_id="{{ $company_email->id }}"
                                                             data-from_id="{{ $company_email->from_id }}"
@@ -339,7 +339,7 @@
 
 
                                                         <div class="text-right mail-time">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-date mail-detail get_email_data fs-12"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -437,7 +437,7 @@
                                                 <tr class=check_read_unread {{ $unread }}>
                                                     <td>
                                                         <div class="d-block fsizi">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -451,7 +451,7 @@
                                                                 data-token="{{ Session::token() }}">{{ ucfirst($fullname) }}</a>
                                                             -
 
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -465,7 +465,7 @@
                                                                 data-token="{{ Session::token() }}">{{ $to_mail_users }}</a>
                                                         </div>
 
-                                                        <a href="#single-email-wrapper"
+                                                        <a href="#"
                                                             class="email-msg mail-detail get_email_data fsizii"
                                                             data-com_email_id="{{ $company_email->id }}"
                                                             data-from_id="{{ $company_email->from_id }}"
@@ -488,7 +488,7 @@
 
 
                                                         <div class="text-right mail-time">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-date mail-detail get_email_data fs-12"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"

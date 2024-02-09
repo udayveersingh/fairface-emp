@@ -271,10 +271,10 @@
                                                 @endphp
 
                                                 {{-- @dd($company_email) --}}
-                                                <tr class=check_read_unread {{ $unread }}>
+                                                <tr class="check_read_unread {{ $unread }}">
                                                     <td>
                                                         <div class="d-block fsizi">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-email_to="{{ $company_email->from_id }}"
@@ -297,7 +297,7 @@
                                                                             data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
                                                         </div>
 
-                                                        <a href="#single-email-wrapper"
+                                                        <a href="#"
                                                             class="email-msg mail-detail get_email_data"
                                                             data-com_email_id="{{ $company_email->id }}"
                                                             data-email_to="{{ $company_email->from_id }}"
@@ -317,7 +317,7 @@
                                                     <td align="end" class="align-middle">
 
                                                         <div class="text-right mail-time">
-                                                            <a href="#single-email-wrapper"
+                                                            <a href="#"
                                                                 class="email-date mail-detail get_email_data fs-12"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-from_id="{{ $company_email->from_id }}"
@@ -328,7 +328,7 @@
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                                data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}</a>
+                                                                data-token="{{ Session::token() }}">@if(!empty($company_email->date)){{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}@endif</a>
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
