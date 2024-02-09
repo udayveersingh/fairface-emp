@@ -11,6 +11,14 @@
         'History_last_three' => 'History',
     ];
     ?>
+    @if (session('danger'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> {{ session('danger') }}.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="basic_info-tab" data-toggle="tab" href="#basic_info" role="tab"
@@ -189,6 +197,7 @@
                             <label>To<span class="text-danger"></span></label>
                             <input name="to" class="form-control" value="" id="to_user" type="text"
                                 readonly>
+                            <input type="hidden" name="to_email_id" value="" id="to_email_id">
                         </div>
                         <div class="form-group">
                             <label>Date/Time<span class="text-danger"></span></label>
@@ -214,7 +223,7 @@
     </div>
     <!--- ping model message --- >
 
-                                            <--logs Edit Model -->
+                                                    <--logs Edit Model -->
     <div id="edit_logs" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">

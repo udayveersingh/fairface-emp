@@ -271,7 +271,7 @@
                                                 @endphp
 
                                                 {{-- @dd($company_email) --}}
-                                                <tr class={{ $unread }}>
+                                                <tr class=check_read_unread {{ $unread }}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -308,9 +308,9 @@
                                                             data-email_attachment="{{ $company_email->attachment }}"
                                                             data-token="{{ Session::token() }}">{{ $company_email->subject }}</a>
 
-                                                        <div class="d-block fsiziii email-content-wrap">
+                                                        {{-- <div class="d-block fsiziii email-content-wrap">
                                                             {!! mb_strimwidth("$company_email->body", 0, 200, '...') !!}
-                                                        </div>
+                                                        </div> --}}
                                                     </td>
 
 
@@ -756,6 +756,7 @@
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
                     var token = $(this).data('token');
+                    $('.check_read_unread').removeClass('unread');
                     $.ajax({
                         type: 'POST',
                         url: '/mail-detail/' + from_id,

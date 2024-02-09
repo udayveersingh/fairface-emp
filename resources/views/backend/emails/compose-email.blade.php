@@ -164,7 +164,7 @@
                             <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 {{-- <input type="hidden" id="edit_id" name="id"> --}}
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE || Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
                                         name="email_date" id="">
                                     <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
@@ -177,7 +177,7 @@
                                         })
                                         ->get();
                                 @endphp
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE ||  Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <div class="form-group">
                                         <label>From<span class="text-danger">*</span></label>
                                         <select name="from_id" id="from_id" class="form-control">
@@ -195,9 +195,7 @@
                                             </option>
                                         </select>
                                     </div>
-                                @elseif(
-                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                        Auth::user()->role->name == App\Models\Role::ADMIN)
+                                @elseif((Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN))
                                     <div class="form-group">
                                         <label>From<span class="text-danger">*</span></label>
                                         <select name="from_id" id="from_id" class="form-control">
@@ -250,9 +248,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                @if (
-                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                        (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group">
@@ -303,7 +299,7 @@
                         <form action="{{ route('company-email') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" value="" id="edit_id" name="id">
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE || Auth::user()->role->name == App\Models\Role::ADMIN)
                                 <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
                                     name="email_date" id="">
                                 <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
@@ -316,7 +312,7 @@
                                     })
                                     ->get();
                             @endphp
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE || Auth::user()->role->name == App\Models\Role::ADMIN)
                                 <div class="form-group">
                                     <label>From<span class="text-danger">*</span></label>
                                     <select name="from_id" id="from_id" class="form-control">
@@ -335,8 +331,7 @@
                                     </select>
                                 </div>
                             @elseif(
-                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                    Auth::user()->role->name == App\Models\Role::ADMIN)
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN))
                                 <div class="form-group">
                                     <label>From<span class="text-danger">*</span></label>
                                     <select name="from_id" id="from_id" class="form-control">
@@ -386,8 +381,7 @@
                                 </select>
                             </div>
                             @if (
-                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN))
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="form-group">
@@ -456,7 +450,7 @@
                                     })
                                     ->get();
                             @endphp
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE)
+                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::EMPLOYEE ||  Auth::user()->role->name == App\Models\Role::ADMIN)
                                 <div class="form-group">
                                     <label>From<span class="text-danger">*</span></label>
                                     <select name="from_id" id="from_id" class="form-control">
@@ -475,8 +469,7 @@
                                     </select>
                                 </div>
                             @elseif(
-                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                    Auth::user()->role->name == App\Models\Role::ADMIN)
+                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN))
                                 <div class="form-group">
                                     <input type="hidden" name="">
                                 </div>

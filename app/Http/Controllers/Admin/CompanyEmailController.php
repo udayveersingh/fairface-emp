@@ -126,7 +126,7 @@ class CompanyEmailController extends Controller
         $title = "User Email";
         $keyword = "inbox";
         $todayDate = Carbon::now()->toDateString();
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::check() && Auth::user()->role->name == Role::ADMIN) {
             $annoucement_list = Annoucement::where('start_date', '<=', $todayDate)
                 ->where('end_date', '>=', $todayDate)
                 ->where('status', '=', 'active')->get();
@@ -142,10 +142,12 @@ class CompanyEmailController extends Controller
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
 
+              $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id','=',$employee_job->id)->where('archive', '=', true)->latest()->get();
+
             if(isset($request) && !empty($request->keyword)){
                 if($request->keyword=='archive'){
                     $keyword='archive';
-                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->where('archive', '=', true)->latest()->get();
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id','=',$employee_job->id)->where('archive', '=', true)->latest()->get();
                 }else if($request->keyword=='search'){
                     $search_term = $request->value;
                     /*$company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
@@ -167,12 +169,10 @@ class CompanyEmailController extends Controller
                             $empoyee_id[] = $val->id;
                         }
                       //  dd($empoyee_id);
-                        $company_emails = CompanyEmail::where("from_id",$employee_job->id)->whereIn("to_id", [$empoyee_id])->get();
-                        // dd($company_emails);
+                        $company_emails = CompanyEmail::where("from_id",$employee_job->id)->whereIn("to_id", [$empoyee_id])->Orwhere('from_id', '=', $employee_job->id)->get();
                     }
-                    
                 }else if($request->keyword=='inbox'){
-                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->Orwhere('from_id', '=', $employee_job->id)->latest()->get();
                 }else if($request->keyword=='unread'){
                     $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->whereNotNull('read_at')->latest()->get();
                 }
@@ -201,7 +201,7 @@ class CompanyEmailController extends Controller
     public function composeEmail()
     {
         $title = "User Email";
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_jobs = EmployeeJob::with('employee')->get();
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
@@ -213,7 +213,7 @@ class CompanyEmailController extends Controller
             $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
             $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
             return view('backend.emails.compose-email', compact('title', 'employee', 'employee_jobs', 'company_emails_count', 'sent_email_count', 'count_emails', 'company_emails', 'count_unread_emails'));
-        } else if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
+        } else if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
             $employee_jobs = EmployeeJob::with('employee')->whereHas('employee', function ($q) {
                 $q->where('record_status', '=', 'active');
             })->get();
@@ -233,7 +233,6 @@ class CompanyEmailController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
@@ -299,7 +298,7 @@ class CompanyEmailController extends Controller
         $company_email->notify(new newMailNotification($company_email));
 
         //    dd("Mail Sent Successfully!");
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::check() && Auth::user()->role->name == Role::ADMIN) {
             return redirect()->route('user-email-inbox')->with('success', $message);
         } else {
             return redirect()->route('company-email')->with('success', $message);
@@ -356,7 +355,6 @@ class CompanyEmailController extends Controller
      */
     public function mailDetail($from_id, Request $request)
     {
-        // dd($request->all());
         $title = "mail";
         $read_at_update = CompanyEmail::find($request->id);
         $read_at_update->read_at = Null;

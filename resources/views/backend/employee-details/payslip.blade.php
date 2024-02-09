@@ -60,7 +60,7 @@
                     <th style="width: 30px;">Sr No.</th>
                     <th>Month</th>
                     <th>Year</th>
-                    <th>Created</th>
+                    {{-- <th>Created</th> --}}
                     <th>Attachment</th>
                     <th class="text-right">Action</th>
                 </tr>
@@ -71,7 +71,7 @@
                     <td>{{$index+1}}</td>
                     <td>{{!empty($employee_payslip->month) ? $employee_payslip->month:'' }}</td>
                     <td>{{!empty($employee_payslip->year)? $employee_payslip->year:''}}</td>
-                    <td>{{!empty($employee_payslip->created_at) ? date("d-m-Y", strtotime($employee_payslip->created_at)):''}}</td>
+                    {{-- <td>{{!empty($employee_payslip->created_at) ? date("d-m-Y", strtotime($employee_payslip->created_at)):''}}</td> --}}
                     @php
                         $extension = pathinfo(storage_path('storage/payslips/'.$employee_payslip->attachment), PATHINFO_EXTENSION);
                     @endphp

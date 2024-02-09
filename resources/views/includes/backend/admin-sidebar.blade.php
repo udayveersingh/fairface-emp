@@ -48,8 +48,8 @@
                             leaves</span></a>
                 </li>
                 <li>
-                    <a class="{{ route_is('company-email') ? 'active' : '' }}"
-                        href="{{ route('company-email') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
+                    <a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
+                        href="{{ route('user-email-inbox') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                 </li>
                 <li class="{{ route_is('announcement') ? 'active' : '' }}">
                     <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>

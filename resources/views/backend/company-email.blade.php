@@ -96,8 +96,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                                                                        background: #dfe4fa;
-                                                                                                    } */
+                                                                                                                            background: #dfe4fa;
+                                                                                                                        } */
 
         .unread {
             font-weight: bold;
@@ -208,16 +208,16 @@
                         <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <!-- <button class="nav-link active bg-white" id="all-tab" data-toggle="tab" data-target="#all"
-                                        type="button" role="tab" aria-controls="all"
-                                        aria-selected="true">All({{ $count_emails }})</button> -->
+                                                            type="button" role="tab" aria-controls="all"
+                                                            aria-selected="true">All({{ $count_emails }})</button> -->
                                 <a href="{{ route('company-email', ['keyword' => 'inbox']) }}"><button
                                         class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ $count_emails }})</button>
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <!-- <button class="nav-link bg-white" id="unread-tab" data-toggle="tab" data-target="#unread"
-                                        type="button" role="tab" aria-controls="unread"
-                                        aria-selected="false">Unread({{ $count_unread_emails }})</button> -->
+                                                            type="button" role="tab" aria-controls="unread"
+                                                            aria-selected="false">Unread({{ $count_unread_emails }})</button> -->
                                 <a href="{{ route('company-email', ['keyword' => 'unread']) }}"><button
                                         class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ $count_unread_emails }})</button>
                                 </a>
@@ -256,9 +256,7 @@
                                                     }
                                                     $to_emails = [];
                                                     foreach ($to_ids as $to_id) {
-                                                        $to_mail_user = App\Models\EmployeeJob::with('employee')
-                                                            ->where('id', '=', $to_id)
-                                                            ->first();
+                                                        $to_mail_user = App\Models\EmployeeJob::with('employee')->where('id', '=', $to_id)->first();
                                                         $to_first_name = !empty($to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
                                                         $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
                                                         $to_fullname = $to_first_name . ' ' . $to_last_name;
@@ -281,7 +279,7 @@
                                                     }
 
                                                 @endphp
-                                                <tr class="{{ $unread }}">
+                                                <tr class="check_read_unread {{ $unread }}">
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -331,9 +329,9 @@
                                                             data-token="{{ Session::token() }}"
                                                             data-count="{{ $count }}">{{ $company_email->subject }}</a>
 
-                                                        <div class="d-block fsiziii email-content-wrap">
+                                                        {{-- <div class="d-block fsiziii email-content-wrap">
                                                             {!! mb_strimwidth("$company_email->body", 0, 200, '...') !!}
-                                                        </div>
+                                                        </div> --}}
                                                     </td>
 
 
@@ -355,19 +353,21 @@
                                                                 data-token="{{ Session::token() }}">{{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}</a>
                                                         </div>
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                                            <div class="p-1 text-secondary cursor-pointer"
-                                                                data-toggle="modal" data-target="#email_edit"><i
-                                                                    class="fa fa-edit edit"
-                                                                    data-id="{{ $company_email->id }}"
-                                                                    data-email_from="{{ $company_email->from_id }}"
-                                                                    data-email_to="{{ $company_email->to_id }}"
-                                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                                    data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
-                                                                    data-email_time="{{ $company_email->time }}"
-                                                                    data-email_subject="{{ $company_email->subject }}"
-                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                                    data-email_attachment="{{ $company_email->attachment }}"
-                                                                    title="Edit"></i></div>
+                                                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                                                <div class="p-1 text-secondary cursor-pointer"
+                                                                    data-toggle="modal" data-target="#email_edit"><i
+                                                                        class="fa fa-edit edit"
+                                                                        data-id="{{ $company_email->id }}"
+                                                                        data-email_from="{{ $company_email->from_id }}"
+                                                                        data-email_to="{{ $company_email->to_id }}"
+                                                                        data-email_cc="{{ $company_email->company_cc }}"
+                                                                        data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+                                                                        data-email_time="{{ $company_email->time }}"
+                                                                        data-email_subject="{{ $company_email->subject }}"
+                                                                        data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                        data-email_attachment="{{ $company_email->attachment }}"
+                                                                        title="Edit"></i></div>
+                                                            @endif
                                                             @if (!empty($company_email->attachment))
                                                                 <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
                                                                     target="_blank" download><i
@@ -411,9 +411,7 @@
                                                     }
                                                     $to_emails = [];
                                                     foreach ($to_ids as $to_id) {
-                                                        $to_mail_user = App\Models\EmployeeJob::with('employee')
-                                                            ->where('id', '=', $to_id)
-                                                            ->first();
+                                                        $to_mail_user = App\Models\EmployeeJob::with('employee')->where('id', '=', $to_id)->first();
                                                         $to_first_name = !empty($to_mail_user->employee->firstname) ? $to_mail_user->employee->firstname : '';
                                                         $to_last_name = !empty($to_mail_user->employee->lastname) ? $to_mail_user->employee->lastname : '';
                                                         $to_fullname = $to_first_name . ' ' . $to_last_name;
@@ -436,7 +434,7 @@
                                                     }
 
                                                 @endphp
-                                                <tr class={{ $unread }}>
+                                                <tr class=check_read_unread {{ $unread }}>
                                                     <td>
                                                         <div class="d-block fsizi">
                                                             <a href="#single-email-wrapper"
@@ -505,19 +503,21 @@
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
-                                                            <div class="p-1 text-secondary cursor-pointer"
-                                                                data-toggle="modal" data-target="#email_edit"><i
-                                                                    class="fa fa-edit edit"
-                                                                    data-id="{{ $company_email->id }}"
-                                                                    data-email_from="{{ $company_email->from_id }}"
-                                                                    data-email_to="{{ $company_email->to_id }}"
-                                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                                    data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
-                                                                    data-email_time="{{ $company_email->time }}"
-                                                                    data-email_subject="{{ $company_email->subject }}"
-                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                                    data-email_attachment="{{ $company_email->attachment }}"
-                                                                    title="Edit"></i></div>
+                                                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                                                <div class="p-1 text-secondary cursor-pointer"
+                                                                    data-toggle="modal" data-target="#email_edit"><i
+                                                                        class="fa fa-edit edit"
+                                                                        data-id="{{ $company_email->id }}"
+                                                                        data-email_from="{{ $company_email->from_id }}"
+                                                                        data-email_to="{{ $company_email->to_id }}"
+                                                                        data-email_cc="{{ $company_email->company_cc }}"
+                                                                        data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+                                                                        data-email_time="{{ $company_email->time }}"
+                                                                        data-email_subject="{{ $company_email->subject }}"
+                                                                        data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                        data-email_attachment="{{ $company_email->attachment }}"
+                                                                        title="Edit"></i></div>
+                                                            @endif
                                                             <i class="fa fa-paperclip text-secondary cursor-pointer"></i>
                                                         </div>
                                                     </td>
@@ -571,19 +571,21 @@
                                 <div class="card m-0 shadow-0">
                                     <div class="card-header">
                                         <div class="d-flex gap-2 text-secondary">
-                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer "
-                                                data-toggle="modal" data-target="#email_edit" data-toggle="modal"><i
-                                                    title="Edit" class="fa fa-edit editbtn"
-                                                    data-id="{{ $company_email->id }}"
-                                                    data-email_from="{{ $company_email->from_id }}"
-                                                    data-email_to="{{ $company_email->to_id }}"
-                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                    data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
-                                                    data-email_time="{{ $company_email->time }}"
-                                                    data-email_subject="{{ $company_email->subject }}"
-                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                    data-email_attachment="{{ $company_email->attachment }}"></i>
-                                                Edit</span>
+                                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                                <span class="p-1 cursor-pointer text-secondary cursor-pointer "
+                                                    data-toggle="modal" data-target="#email_edit" data-toggle="modal"><i
+                                                        title="Edit" class="fa fa-edit editbtn"
+                                                        data-id="{{ $company_email->id }}"
+                                                        data-email_from="{{ $company_email->from_id }}"
+                                                        data-email_to="{{ $company_email->to_id }}"
+                                                        data-email_cc="{{ $company_email->company_cc }}"
+                                                        data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
+                                                        data-email_time="{{ $company_email->time }}"
+                                                        data-email_subject="{{ $company_email->subject }}"
+                                                        data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                        data-email_attachment="{{ $company_email->attachment }}"></i>
+                                                    Edit</span>
+                                            @endif
                                             <div class="p-1 text-secondary cursor-pointer"><a href=""
                                                     class=" text-secondary" id="reply" data-toggle="modal"
                                                     data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
@@ -1194,6 +1196,7 @@
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
                     var token = $(this).data('token');
+                    $('.check_read_unread').removeClass('unread');
                     console.log(token);
                     $.ajax({
                         type: 'POST',
@@ -1216,7 +1219,6 @@
                             // console.log(data)
                             // console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
-                                console.log(row)
                                 // console.log(row.attachment)
                                 var date = new Date(row.created_at);
                                 dateStringWithTime = moment(date).format('DD-MM-YYYY');
@@ -1248,7 +1250,6 @@
                                     $(".restore").html(`<div class="p-1 text-secondary cursor-pointer"><a href="${route}" class="text-secondary company_email_id" id="company_email_id" data-company_id=${row.id}><i class="fas fa-download"></i> Restore To Inbox</a>
                                                     </div>`);
                                 }
-
                             });
                             // $.each(data.email_data, function(index, row) {
                             //     $(".subject").html(row.subject);

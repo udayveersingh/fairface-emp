@@ -21,12 +21,12 @@
     <?php
     $tabs = [
         'document' => 'Document',
-        'job' => 'Job',
-        'visa' => 'Visa',
+        'job'     => 'Job',
+        'visa'    => 'Visa',
         'project' => 'Project',
         'contact' => 'Contact',
         'address' => 'Address',
-        'bank' => 'Bank',
+        'bank'    => 'Bank',
         'payslip' => 'Payslip',
     ];
     ?>
@@ -405,10 +405,10 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Main Work Location<span class="text-danger">*</span></label>
-                            <select name="branch_id" class="form-control select">
-                                <option value="">Select Main Work Location</option>
+                            <select name="branch_id" class="form-control">
+                                <option value="">Select</option>
                                 @foreach ($branches as $branch)
-                                    <option value="{{ $branch->id }}" {{ old('branch_id', $branch->id) ? 'selected' : '' }}>
+                                    <option value="{{ $branch->id }}">
                                         {{ $branch->branch_code }}</option>
                                 @endforeach
                             </select>
@@ -493,11 +493,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Nationality <span class="text-danger">*</span></label>
-                            <select name="nationality" class="form-control select">
-                                <option value="">Select Nationality</option>
+                            <select name="nationality" class="form-control">
+                                <option value="">Select</option>
                                 @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}"
-                                        {{ old('nationality', $country->id) ? 'selected' : '' }}>{{ $country->name }}
+                                    <option value="{{ $country->id }}">{{ $country->name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -527,19 +526,19 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Marital Status <span class="text-danger">*</span></label>
-                            <select name="marital_status" class="form-control select">
-                                <option value="">Select Marital Status</option>
-                                <option value="married" {{ old('marital_status', 'married') ? 'selected' : '' }}>Married
+                            <select name="marital_status" class="form-control">
+                                <option value="">Select</option>
+                                <option value="married">Married
                                 </option>
-                                <option value="single"{{ old('marital_status', 'single') ? 'selected' : '' }}>Single</option>
+                                <option value="single">Single</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Record Status <span class="text-danger">*</span></label>
-                            <select name="record_status" class="form-control select">
-                                <option value="">Select Record Status</option>
+                            <select name="record_status" class="form-control">
+                                <option value="">Select</option>
                                 <option value="active" {{ old('record_status', 'active') ? 'selected' : '' }}>Active
                                 </option>
                                 {{-- <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>

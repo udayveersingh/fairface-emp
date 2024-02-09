@@ -43,11 +43,11 @@
                             <th>Email</th>
                             <th>Mobile</th>
                             <th>Role</th>
-                            @if ($status == 'archieve')
+                            {{-- @if ($status == 'archieve')
                                 <th>Status Change Date</th>
                             @else
                                 <th class="text-nowrap">Created Date</th>
-                            @endif
+                            @endif --}}
                             <th class="text-right no-sort">Action</th>
                         </tr>
                     </thead>
@@ -66,11 +66,11 @@
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->phone }}</td>
                                 <td>{{ !empty($employee->user->role->name) ? $employee->user->role->name : '' }}</td>
-                                @if ($status == 'archieve')
+                                {{-- @if ($status == 'archieve')
                                     <td>{{ !empty($employee->status_change_date) ? (date_format(date_create($employee->status_change_date), 'd-m-Y')):'' }}</td>
                                 @else
                                     <td>{{!empty($employee->created_at) ? (date_format(date_create($employee->created_at), 'd-m-Y')):''}}</td>
-                                @endif
+                                @endif --}}
                                 <td class="text-right">
                                     {{-- <div class="dropdown dropdown-action"> --}}
                                     <a class="btn-sm btn-primary" href="{{ route('employee-detail', $employee->id) }}"
