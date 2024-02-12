@@ -180,11 +180,6 @@ class DashboardController extends Controller
             'regards' => 'Regards,HR Team.'
         ];
 
-        // dd($employee);
-        // Mail::to($employee->email)->send(new SendReminderMail($content));
-        // return back()->with('success', "Reminder email has been sent.");
-
-
         $carbon = Carbon::now();
         $date = date('Y-m-d',(strtotime($carbon)));
         $time = date('H:i:s',(strtotime($carbon)));
@@ -198,17 +193,7 @@ class DashboardController extends Controller
             $company_email->body =  $content['subject'];
             $company_email->read_at = Carbon::now();
             $company_email->sent_by_user_id = Auth::user()->id;
-            // $expire_documents_message = ([
-            //     'to'   => $employee->id,
-            //     'from' =>Auth::user()->id,
-            //     'message' => $content['subject'],
-            // ]);
-
-            // $company_email->notify(new DocumentExpireNotification($company_email));
             $employee->notify(new DocumentExpireNotification($employee, $content));
-
-            // dd($company_email);
-            // Notification::send($company_email, new DocumentExpireNotification($company_email));
             $company_email->save();
             return back()->with('success', "Reminder email has been sent.");
         }else{
