@@ -259,4 +259,20 @@ if (!function_exists('getNewAnnouncementNotification')) {
         }
         return $announcement_notifi;
     }
+
+    //notification 
+    if (!function_exists('getExpiredNotification')) {
+        function getExpiredNotification()
+        {
+            $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+            
+            $expire_document_notifi = [];
+            $expire_document_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\DocumentExpireNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
+            foreach ($expire_document_notifications as $index => $notification) {
+                $expire_document_notifi[$index] = json_decode($notification->data);
+            }
+            return $expire_document_notifi;
+        }
+
+    }
 }

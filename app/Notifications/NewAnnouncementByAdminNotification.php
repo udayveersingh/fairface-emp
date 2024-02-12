@@ -42,6 +42,9 @@ class NewAnnouncementByAdminNotification extends Notification
      */
     public function toMail($notifiable)
     {
+      
+
+
         return (new MailMessage)
                     ->line($this->annoucement['description'])
                     ->action('Notification Action', url('/'))
@@ -56,6 +59,9 @@ class NewAnnouncementByAdminNotification extends Notification
      */
     public function toArray($notifiable)
     {
+
+        dd($this->annoucement, $notifiable);
+        
         return [
             'from' => Auth::user()->id,
             'message' => $this->annoucement['description'],

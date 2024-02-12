@@ -19,8 +19,13 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendReminderMail;
+use App\Models\CompanyEmail;
+use App\Models\EmployeeJob;
 use App\Models\LeaveType;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\DocumentExpireNotification;
+use DocumentExpireNotification as GlobalDocumentExpireNotification;
+use Illuminate\Support\Facades\Notification;
 
 class DashboardController extends Controller
 {
@@ -167,13 +172,47 @@ class DashboardController extends Controller
     public function sendReminderMail($type, $emp_id)
     {
         $employee = Employee::find($emp_id);
+        $employee_job = EmployeeJob::where('employee_id','=',$employee->id)->first();
         $content = [
             'subject_type' => 'Your '. $type . ' application is going to be expire soon!',
             'name' => "Dear " . $employee->firstname . " " . $employee->lastname.",",
             'subject' => "It's a reminder email to notify you that your " . $type . "  is expiring soon. Please contact HR to update your documents.",
             'regards' => 'Regards,HR Team.'
         ];
-        Mail::to($employee->email)->send(new SendReminderMail($content));
-        return back()->with('success', "Reminder email has been sent.");
+
+        // dd($employee);
+        // Mail::to($employee->email)->send(new SendReminderMail($content));
+        // return back()->with('success', "Reminder email has been sent.");
+
+
+        $carbon = Carbon::now();
+        $date = date('Y-m-d',(strtotime($carbon)));
+        $time = date('H:i:s',(strtotime($carbon)));
+
+        if(!empty($employee_job)){
+            $company_email = new CompanyEmail();
+            $company_email->to_id = $employee_job->id;
+            $company_email->date = $date;
+            $company_email->time = $time;
+            $company_email->subject =$content['subject_type'];
+            $company_email->body =  $content['subject'];
+            $company_email->read_at = Carbon::now();
+            $company_email->sent_by_user_id = Auth::user()->id;
+            // $expire_documents_message = ([
+            //     'to'   => $employee->id,
+            //     'from' =>Auth::user()->id,
+            //     'message' => $content['subject'],
+            // ]);
+
+            // $company_email->notify(new DocumentExpireNotification($company_email));
+            $employee->notify(new DocumentExpireNotification($employee, $content));
+
+            // dd($company_email);
+            // Notification::send($company_email, new DocumentExpireNotification($company_email));
+            $company_email->save();
+            return back()->with('success', "Reminder email has been sent.");
+        }else{
+            return back()->with('', "Please add employee job details");
+        }
     }
 }

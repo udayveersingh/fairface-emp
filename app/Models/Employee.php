@@ -6,11 +6,13 @@ use App\Models\Department;
 use App\Models\Designation;
 use Illuminate\Database\Eloquent\Model;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
 {
     use HasFactory;
+    use Notifiable;
 
     protected $table ="employees";
     protected $fillable = [

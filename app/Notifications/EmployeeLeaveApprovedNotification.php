@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class EmployeeLeaveApprovedNotification extends Notification
 {
     use Queueable;
+  
     public $leave_status;
 
     /**

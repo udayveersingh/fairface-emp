@@ -28,6 +28,7 @@
     <!-- Header Menu -->
     <ul class="nav user-menu">
 
+        {{-- @dd(getExpiredNotification()); --}}
             {{-- @dd(getNewLeaveNotifiaction()); --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getRejectedLeaveByAdminNotification()); --}}
@@ -231,6 +232,25 @@
                                     </a>
                                 </li>
                             @endforeach
+
+                            @foreach (getExpiredNotification() as $notification)
+                            <li class="notification-message">
+                                <a href="{{ route('activity') }}">
+                                    <div class="media">
+                                        <span class="avatar">
+                                            <img src="{{ asset('assets/img/user.jpg') }}">
+                                        </span>
+                                        <div class="media-body">
+                                            <p class="noti-details"><span
+                                                    class="noti-title">'{{ $notification->message }}' By Admin.</span>
+                                                <span class="noti-title"></span>
+                                            </p>
+                                            <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
                         @endif
                     </ul>
                 </div>

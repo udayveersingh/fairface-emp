@@ -56,12 +56,10 @@ class CompanyEmailController extends Controller
                     foreach($employee_data as $val){
                         $empoyee_id[] = $val->id;
                     }
-                  //  dd($empoyee_id);
                     $company_emails = CompanyEmail::whereIn("to_id", [$empoyee_id])->get();
-                    // dd($company_emails);
                 }
             }else if($request->keyword=='inbox'){
-                $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
+                $company_emails = CompanyEmail::with('employeejob.employee')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get();
             }else if($request->keyword=='unread'){
                 $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
             }
@@ -70,7 +68,8 @@ class CompanyEmailController extends Controller
                 $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
             }
         }else{
-            $company_emails = CompanyEmail::with('employeejob.employee')->latest()->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get();
+            // dd($company_emails);
         }
         
         $count_emails = CompanyEmail::count();
@@ -365,7 +364,6 @@ class CompanyEmailController extends Controller
             })->first();
             $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('to_id', '=', $from_id)->latest()->get();
 
-
             return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
 
             //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
@@ -384,7 +382,7 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
-        //dd($request->all());
+        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
@@ -394,6 +392,8 @@ class CompanyEmailController extends Controller
         if (!empty($request->to_id)) {
             $to_ids = implode(',', $request->to_id);
         }
+
+        // dd($to_ids);
 
         $cc_ids = "";
         if (!empty($request->cc)) {
@@ -429,8 +429,8 @@ class CompanyEmailController extends Controller
         //         ]);
         // Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
         //dd($company_email);
-        $company_email->save();
         $company_email->notify(new newMailNotification($company_email));
+        $company_email->save();
         // return $company_email;
         // dd($company_email->notifications);
 

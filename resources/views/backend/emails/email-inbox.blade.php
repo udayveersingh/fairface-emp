@@ -97,8 +97,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                                                                        background: #dfe4fa;
-                                                                                                    } */
+                                                                                                                background: #dfe4fa;
+                                                                                                            } */
 
         .unread {
             font-weight: bold;
@@ -137,7 +137,7 @@
             <a href="{{ route('dashboard') }}" class="btn btn-primary"><i class="fa fa-home"></i></a>
         </div>
         <div class="col">
-            @if ( isset($annoucement_list) && (count($annoucement_list) > 0))
+            @if (isset($annoucement_list) && count($annoucement_list) > 0)
                 <div id="carouselExampleFade"
                     class="carousel announcement_slider alert-primary p-3 rounded slide carousel-fade" data-ride="carousel">
                     <div class="carousel-inner">
@@ -177,14 +177,15 @@
 
                 <div class="list-group mail-list mt-3">
                     <a href="{{ route('user-email-inbox') }}"
-                        class="list-group-item border-0 {{ (isset($keyword) && ($keyword == 'inbox')) ? 'active' : '' }} py-2 px-3"><i
-                            class="fas fa-download font-13 mr-2"></i>Inbox <b>({{ isset($total_mail_count) && ($total_mail_count > 0)?$total_mail_count:0 }})</b></a>
+                        class="list-group-item border-0 {{ isset($keyword) && $keyword == 'inbox' ? 'active' : '' }} py-2 px-3"><i
+                            class="fas fa-download font-13 mr-2"></i>Inbox
+                        <b>({{ isset($total_mail_count) && $total_mail_count > 0 ? $total_mail_count : 0 }})</b></a>
                     <a href="{{ route('user-email-inbox', ['keyword' => 'archive']) }}"
-                        class="list-group-item border-0 py-2 px-3 {{ (isset($keyword) && ($keyword == 'archive')) ? 'active' : '' }}"><i
-                            class="far fa-star font-13 mr-2"></i>Archive<b>({{ isset($archive_count) && ($archive_count > 0)?$archive_count:0  }})</b></a>
+                        class="list-group-item border-0 py-2 px-3 {{ isset($keyword) && $keyword == 'archive' ? 'active' : '' }}"><i
+                            class="far fa-star font-13 mr-2"></i>Archive<b>({{ isset($archive_count) && $archive_count > 0 ? $archive_count : 0 }})</b></a>
                     <a href="{{ route('user-email-inbox', ['keyword' => 'sent']) }}"
-                        class="list-group-item border-0 {{ (isset($keyword) && ($keyword == 'sent')) ? 'active' : '' }} py-2 px-3"><i
-                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{  isset($sent_email_count) && ($sent_email_count > 0)?$sent_email_count:0 }})</b></a>
+                        class="list-group-item border-0 {{ isset($keyword) && $keyword == 'sent' ? 'active' : '' }} py-2 px-3"><i
+                            class="far fa-paper-plane font-13 mr-2"></i>Sent<b>({{ isset($sent_email_count) && $sent_email_count > 0 ? $sent_email_count : 0 }})</b></a>
 
                 </div>
 
@@ -206,16 +207,16 @@
                         </div>
                     </form><!-- search bar ends here -->
 
-                    @if (isset($keyword) && ($keyword == 'inbox'))
+                    @if (isset($keyword) && $keyword == 'inbox')
                         <ul class="nav nav-tabs mt-2 email_tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <a href="{{ route('user-email-inbox', ['keyword' => 'inbox']) }}"><button
-                                        class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ (isset($total_mail_count) && ($total_mail_count > 0))?$total_mail_count:'0'  }})</button>
+                                        class="nav-link {{ $keyword == 'inbox' ? 'active' : '' }} bg-white">All({{ isset($total_mail_count) && $total_mail_count > 0 ? $total_mail_count : '0' }})</button>
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a href="{{ route('user-email-inbox', ['keyword' => 'unread']) }}"><button
-                                        class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ (isset($company_unread_emails) && ($company_unread_emails>0))?$company_unread_emails:0  }})</button>
+                                        class="nav-link {{ $keyword == 'unread' ? 'active' : '' }} bg-white">Unread({{ isset($company_unread_emails) && $company_unread_emails > 0 ? $company_unread_emails : 0 }})</button>
                                 </a>
 
                             </li>
@@ -228,6 +229,7 @@
                                     <tbody>
                                         @if (!empty($company_emails))
                                             @foreach ($company_emails as $index => $company_email)
+                                                {{-- @dd($company_email); --}}
                                                 @php
                                                     if ($keyword == 'sent') {
                                                         $from = App\Models\EmployeeJob::with('employee')
@@ -238,15 +240,18 @@
                                                             ->where('id', '=', $company_email->from_id)
                                                             ->first();
                                                     }
-                                                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
-                                                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
-                                                    $fullname = $from_first_name . ' ' . $from_last_name;
+                                                    if ($from == null) {
+                                                        $user = App\Models\User::find($company_email->sent_by_user_id);
+                                                        $fullname = $user->name;
+                                                    } else {
+                                                        $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                                                        $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                                                        $fullname = $from_first_name . ' ' . $from_last_name;
+                                                    }
                                                     $to_emails = [];
                                                     $to_ids = explode(',', $company_email->to_id);
                                                     foreach ($to_ids as $value) {
-                                                        $to = App\Models\EmployeeJob::with('employee')
-                                                            ->where('id', '=', $value)
-                                                            ->first();
+                                                        $to = App\Models\EmployeeJob::with('employee')->where('id', '=', $value)->first();
                                                         $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
                                                         $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
                                                         $to_fullname = $to_first_name . ' ' . $to_last_name;
@@ -274,8 +279,7 @@
                                                 <tr class="check_read_unread {{ $unread }}">
                                                     <td>
                                                         <div class="d-block fsizi">
-                                                            <a href="#"
-                                                                class="email-name mail-detail get_email_data"
+                                                            <a href="#" class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-email_to="{{ $company_email->from_id }}"
                                                                 data-from_id="{{ $company_email->to_id }}"
@@ -286,19 +290,18 @@
                                                                 data-token="{{ Session::token() }}">{{ $keyword == 'sent' ? 'To: ' : '' }}{{ $fullname }}</a>
 
                                                             <!-- <a href="#single-email-wrapper"
-                                                                            class="email-name mail-detail get_email_data"
-                                                                            data-com_email_id="{{ $company_email->id }}"
-                                                                            data-email_to="{{ $company_email->from_id }}"
-                                                                            data-from_id="{{ $company_email->to_id }}"
-                                                                            data-subject="{{ $company_email->subject }}"
-                                                                            data-email_cc="{{ $company_email->company_cc }}"
-                                                                            data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                                            data-email_attachment="{{ $company_email->attachment }}"
-                                                                            data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
+                                                                                    class="email-name mail-detail get_email_data"
+                                                                                    data-com_email_id="{{ $company_email->id }}"
+                                                                                    data-email_to="{{ $company_email->from_id }}"
+                                                                                    data-from_id="{{ $company_email->to_id }}"
+                                                                                    data-subject="{{ $company_email->subject }}"
+                                                                                    data-email_cc="{{ $company_email->company_cc }}"
+                                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                                    data-email_attachment="{{ $company_email->attachment }}"
+                                                                                    data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
                                                         </div>
 
-                                                        <a href="#"
-                                                            class="email-msg mail-detail get_email_data"
+                                                        <a href="#" class="email-msg mail-detail get_email_data"
                                                             data-com_email_id="{{ $company_email->id }}"
                                                             data-email_to="{{ $company_email->from_id }}"
                                                             data-from_id="{{ $company_email->to_id }}"
@@ -328,7 +331,11 @@
                                                                 data-email_date="{{ !empty($company_email->date) ? date('d-m-Y', strtotime($company_email->date)) : '' }}"
                                                                 data-email_time="{{ $company_email->time }}"
                                                                 data-email_attachment="{{ $company_email->attachment }}"
-                                                                data-token="{{ Session::token() }}">@if(!empty($company_email->date)){{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}@endif</a>
+                                                                data-token="{{ Session::token() }}">
+                                                                @if (!empty($company_email->date))
+                                                                    {{ date('d-m-Y H:i', strtotime($company_email->date . $company_email->time)) }}
+                                                                @endif
+                                                            </a>
                                                         </div>
 
                                                         <div class="d-flex align-items-center justify-content-end gap-2">
@@ -365,149 +372,158 @@
 
                 </div> <!-- col-6 ends here -->
                 <div class="col-md-6 pl-2 pl-md-0">
-                    @if(isset($company_emails) && !empty($company_emails))
-                    @foreach ($company_emails as $index => $company_email)
-                        @php
-                            if ($index > 0) {
-                                break;
-                            }
-                            if ($keyword == 'sent') {
-                                $from = App\Models\EmployeeJob::with('employee')
+                    @if (isset($company_emails) && !empty($company_emails))
+                        @foreach ($company_emails as $index => $company_email)
+                            @php
+                                if ($index > 0) {
+                                    break;
+                                }
+                                if ($keyword == 'sent') {
+                                    $from = App\Models\EmployeeJob::with('employee')
+                                        ->where('id', '=', $company_email->to_id)
+                                        ->first();
+                                } else {
+                                    $from = App\Models\EmployeeJob::with('employee')
+                                        ->where('id', '=', $company_email->from_id)
+                                        ->first();
+                                }
+
+                                if ($from == null) {
+                                    $user = App\Models\User::find($company_email->sent_by_user_id);
+                                    $from_name = $user->name;
+                                } else {
+                                    $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
+                                    $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
+                                    $from_name = $from_first_name . ' ' . $from_last_name;
+                                }
+
+                                $to = App\Models\EmployeeJob::with('employee')
                                     ->where('id', '=', $company_email->to_id)
                                     ->first();
-                            } else {
-                                $from = App\Models\EmployeeJob::with('employee')
-                                    ->where('id', '=', $company_email->from_id)
-                                    ->first();
-                            }
-
-                            $from_first_name = !empty($from->employee->firstname) ? $from->employee->firstname : '';
-                            $from_last_name = !empty($from->employee->lastname) ? $from->employee->lastname : '';
-                            $from_name = $from_first_name . ' ' . $from_last_name;
-                            $to = App\Models\EmployeeJob::with('employee')
-                                ->where('id', '=', $company_email->to_id)
-                                ->first();
-                            $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
-                            $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
-                            $to_fullname = $to_first_name . ' ' . $to_last_name;
-                            $multiple_cc = explode(',', $company_email->company_cc);
-                            $cc_emails = [];
-                            foreach ($multiple_cc as $value) {
-                                $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
-                                $cc_emails[] = $cc;
-                            }
-                            $cc = implode(',', $cc_emails);
-                        @endphp
-                        <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
-                            <div class="single-email-inner h-100">
-                                <div class="loader  text-secondary"
-                                    style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fa-spinner fa fa-spin"></i>
-                                </div>
-                                <div class="card m-0 shadow-0">
-                                    <div class="card-header">
-                                        <div class="d-flex gap-2 text-secondary">
-                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                                    class=" text-secondary" id="reply" data-toggle="modal"
-                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
-                                            </div>
-                                            <span class="p-1 cursor-pointer text-secondary cursor-pointer"
-                                                data-toggle="modal" data-target="#allReply"><i title="Edit"
-                                                    class="fa fa-mail-reply" data-id="{{ $company_email->id }}"
-                                                    data-email_from="{{ $company_email->from_id }}"
-                                                    data-email_to="{{ $company_email->to_id }}"
-                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                    data-email_date="{{ $company_email->date }}"
-                                                    data-email_time="{{ $company_email->time }}"
-                                                    data-email_subject="{{ $company_email->subject }}"
-                                                    data-email_body="{{ $company_email->body }}"
-                                                    data-email_attachment="{{ $company_email->attachment }}"></i>
-                                                ReplyAll</span>
-                                            <!-- <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                                            class=" text-secondary" id="replyAll" data-toggle="modal"
-                                                            data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
-                                                        </div> -->
-                                            @if (!empty($company_email->archive) && $company_email->archive == 1)
-                                                <div class="restore">
-                                                    <div class="p-1 text-secondary cursor-pointer"><a
-                                                            href="{{ route('restore', $company_email->id) }}"
-                                                            class="text-secondary company_email_id" id="restore"><i
-                                                                class="fas fa-download"></i>
-                                                            Restore To Inbox</a>
-                                                    </div>
+                                $to_first_name = !empty($to->employee->firstname) ? $to->employee->firstname : '';
+                                $to_last_name = !empty($to->employee->lastname) ? $to->employee->lastname : '';
+                                $to_fullname = $to_first_name . ' ' . $to_last_name;
+                                $multiple_cc = explode(',', $company_email->company_cc);
+                                $cc_emails = [];
+                                foreach ($multiple_cc as $value) {
+                                    $cc = App\Models\EmployeeJob::where('id', '=', $value)->value('work_email');
+                                    $cc_emails[] = $cc;
+                                }
+                                $cc = implode(',', $cc_emails);
+                            @endphp
+                            <div id="single-email-wrapper" class="single-email-wrapper h-100 py-3">
+                                <div class="single-email-inner h-100">
+                                    <div class="loader  text-secondary"
+                                        style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa-spinner fa fa-spin"></i>
+                                    </div>
+                                    <div class="card m-0 shadow-0">
+                                        <div class="card-header">
+                                            <div class="d-flex gap-2 text-secondary">
+                                                <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                        class=" text-secondary" id="reply" data-toggle="modal"
+                                                        data-target="#reply_model"><i class="fa fa-mail-reply"></i>
+                                                        Reply</a>
                                                 </div>
-                                            @else
-                                                <div class="archive">
-                                                    <div class="p-1 text-secondary cursor-pointer"><a
-                                                            href="{{ route('archive', $company_email->id) }}"
-                                                            class="text-secondary company_email_id"
-                                                            id="company_email_id"><i class="far fa-star"></i>Archive
-                                                        </a>
+                                                <span class="p-1 cursor-pointer text-secondary cursor-pointer"
+                                                    data-toggle="modal" data-target="#allReply"><i title="Edit"
+                                                        class="fa fa-mail-reply" data-id="{{ $company_email->id }}"
+                                                        data-email_from="{{ $company_email->from_id }}"
+                                                        data-email_to="{{ $company_email->to_id }}"
+                                                        data-email_cc="{{ $company_email->company_cc }}"
+                                                        data-email_date="{{ $company_email->date }}"
+                                                        data-email_time="{{ $company_email->time }}"
+                                                        data-email_subject="{{ $company_email->subject }}"
+                                                        data-email_body="{{ $company_email->body }}"
+                                                        data-email_attachment="{{ $company_email->attachment }}"></i>
+                                                    ReplyAll</span>
+                                                <!-- <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                                    class=" text-secondary" id="replyAll" data-toggle="modal"
+                                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
+                                                                </div> -->
+                                                @if (!empty($company_email->archive) && $company_email->archive == 1)
+                                                    <div class="restore">
+                                                        <div class="p-1 text-secondary cursor-pointer"><a
+                                                                href="{{ route('restore', $company_email->id) }}"
+                                                                class="text-secondary company_email_id" id="restore"><i
+                                                                    class="fas fa-download"></i>
+                                                                Restore To Inbox</a>
+                                                        </div>
                                                     </div>
+                                                @else
+                                                    <div class="archive">
+                                                        <div class="p-1 text-secondary cursor-pointer"><a
+                                                                href="{{ route('archive', $company_email->id) }}"
+                                                                class="text-secondary company_email_id"
+                                                                id="company_email_id"><i class="far fa-star"></i>Archive
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <div class="p-1 text-secondary cursor-pointer view_attachment">
+                                                    <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
+                                                        target="_blank" download> <i
+                                                            class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
                                                 </div>
-                                            @endif
-                                            <div class="p-1 text-secondary cursor-pointer view_attachment">
-                                                <a href="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}"
-                                                    target="_blank" download> <i
-                                                        class="fa fa-paperclip text-secondary cursor-pointer"></i></a>
-                                            </div>
-                                            <div class="p-1 text-secondary cursor-pointer"
-                                                onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
-                                            </div>
-                                            {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
+                                                <div class="p-1 text-secondary cursor-pointer"
+                                                    onclick="printDiv('single-email-wrapper')"><i class="fa fa-print"></i>
+                                                </div>
+                                                {{-- <span class="cursor-pointer"><i class="fa fa-mail-forward"
                                                     class="Forward"></i> Forward</span> --}}
-                                        </div>
-
-                                        <div class="d-flex align-items-center">
-                                            <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
-                                        </div>
-                                        <div class="email_header d-flex align-items-center">
-                                            <img class="avatar" src="https://bootdey.com/img/Content/avatar/avatar1.png">
-                                            <div class="from email_from_name">
-                                                <span>{{ $from_name }}</span>
-                                                <span class="work_email d-block fs-12">
-                                                    < {{ !empty($from->work_email) ? $from->work_email : '' }}>
-                                                </span>
                                             </div>
-                                            @php
-                                                $date = !empty($company_email->created_at) ? \Carbon\Carbon::parse($company_email->created_at) : '';
-                                            @endphp
-                                            <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
-                                        </div>
-                                        <div class="mt-2 fs-14"> <span class="email-name mail-detail get_email_data"
-                                                data-com_email_id="{{ $company_email->id }}"
-                                                data-from_id="{{ $company_email->from_id }}"
-                                                data-email_to="{{ $company_email->to_id }}"
-                                                data-subject="{{ $company_email->subject }}"
-                                                data-email_attachment="{{ $company_email->attachment }}"
-                                                data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users : '' }}</span>
-                                        </div>
-                                    </div>
 
-                                    <div class="card-body">
-                                        <p class="body">
-                                            {!! $company_email->body !!}
-                                        </p>
-                                    </div>
-                                    {{-- <div class="view_attachment">
+                                            <div class="d-flex align-items-center">
+                                                <h3 class="subject fs-18 mt-2">{{ $company_email->subject }}</h3>
+                                            </div>
+                                            <div class="email_header d-flex align-items-center">
+                                                <img class="avatar"
+                                                    src="https://bootdey.com/img/Content/avatar/avatar1.png">
+                                                <div class="from email_from_name">
+                                                    <span>{{ $from_name }}</span>
+                                                    <span class="work_email d-block fs-12">
+                                                        < {{ !empty($from->work_email) ? $from->work_email : $user->email }}>
+                                                    </span>
+                                                </div>
+                                                @php
+                                                    $date = !empty($company_email->created_at) ? \Carbon\Carbon::parse($company_email->created_at) : '';
+                                                @endphp
+                                                <div class="date ml-auto">{{ $date->diffForHumans() }}</b></div>
+                                            </div>
+                                            <div class="mt-2 fs-14"> <span class="email-name mail-detail get_email_data"
+                                                    data-com_email_id="{{ $company_email->id }}"
+                                                    data-from_id="{{ $company_email->from_id }}"
+                                                    data-email_to="{{ $company_email->to_id }}"
+                                                    data-subject="{{ $company_email->subject }}"
+                                                    data-email_attachment="{{ $company_email->attachment }}"
+                                                    data-token="{{ Session::token() }}">{{ !empty($to_mail_users) ? $to_mail_users : '' }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <p class="body">
+                                                {!! $company_email->body !!}
+                                            </p>
+                                        </div>
+                                        {{-- <div class="view_attachment">
                                     <img class="img-fluid" src="{{ asset('storage/company_email/attachment/' . $company_email->attachment) }}" width="150px">
 
                                     </div> --}}
 
-                                    <div class="card-footer d-flex align-items-center">
-                                        <div class="btn-group ml-auto gap-2">
-                                            <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                                    class=" text-secondary" id="reply" data-toggle="modal"
-                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply</a>
-                                            </div>
-                                            {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"
+                                        <div class="card-footer d-flex align-items-center">
+                                            <div class="btn-group ml-auto gap-2">
+                                                <div class="p-1 text-secondary cursor-pointer"><a href=""
+                                                        class=" text-secondary" id="reply" data-toggle="modal"
+                                                        data-target="#reply_model"><i class="fa fa-mail-reply"></i>
+                                                        Reply</a>
+                                                </div>
+                                                {{-- <div class="p-1 text-secondary cursor-pointer"><i class="fa fa-mail-forward"
                                                     title="Forward"></i> Forward</div> --}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
                     @endif
                 </div>
             </div> <!-- End row -->
@@ -537,60 +553,60 @@
                                     })
                                     ->get();
                             @endphp
-                            @if(isset($company_emails) && !empty($company_emails) )
-                            @foreach ($company_emails as $index => $company_email)
-                                @php
-                                    if ($index > 0) {
-                                        break;
-                                    }
+                            @if (isset($company_emails) && !empty($company_emails))
+                                @foreach ($company_emails as $index => $company_email)
+                                    @php
+                                        if ($index > 0) {
+                                            break;
+                                        }
 
-                                    $to_array_ids = explode(',', $company_email->to_id);
-                                    $cc_array_ids = explode(',', $company_email->company_cc);
-                                @endphp
-                                <input type="hidden" value="{{ $company_email->from_id }}" class="all_reply_from_id"
-                                    id="all_reply_from_id" name="from_id">
-                                <div class="form-group">
-                                    <label>To<span class="text-danger">*</span></label>
-                                    <select name="to_id[]" id="to_id" class="form-control select" multiple
-                                        data-mdb-placeholder="Example placeholder" multiple>
-                                        <option value="">Select to</option>
-                                        @foreach ($to_email_ids as $to_email)
-                                            @php
-                                                $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
-                                                $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
-                                                $emp_name = $firstname . '  ' . $lastname;
-                                            @endphp
-                                            <option
-                                                value="{{ $to_email->id }}"{{ in_array($to_email->id, $to_array_ids) ? 'selected' : '' }}>
-                                                {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label select-label">CC </label>
-                                    <select name="cc[]" id="all_reply_cc" class="form-control select all_reply_cc"
-                                        data-mdb-placeholder="Example placeholder" multiple>
-                                        @foreach ($to_email_ids as $employee_job)
-                                            @php
-                                                $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
-                                                $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
-                                                $emp_name = $firstname . '  ' . $lastname;
-                                            @endphp
-                                            <option
-                                                value="{{ $employee_job->id }}"{{ in_array($employee_job->id, $cc_array_ids) ? 'selected' : '' }}>
-                                                {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                        $to_array_ids = explode(',', $company_email->to_id);
+                                        $cc_array_ids = explode(',', $company_email->company_cc);
+                                    @endphp
+                                    <input type="hidden" value="{{ $company_email->from_id }}"
+                                        class="all_reply_from_id" id="all_reply_from_id" name="from_id">
+                                    <div class="form-group">
+                                        <label>To<span class="text-danger">*</span></label>
+                                        <select name="to_id[]" id="to_id" class="form-control select" multiple
+                                            data-mdb-placeholder="Example placeholder" multiple>
+                                            <option value="">Select to</option>
+                                            @foreach ($to_email_ids as $to_email)
+                                                @php
+                                                    $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                                    $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                                    $emp_name = $firstname . '  ' . $lastname;
+                                                @endphp
+                                                <option
+                                                    value="{{ $to_email->id }}"{{ in_array($to_email->id, $to_array_ids) ? 'selected' : '' }}>
+                                                    {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label select-label">CC </label>
+                                        <select name="cc[]" id="all_reply_cc" class="form-control select all_reply_cc"
+                                            data-mdb-placeholder="Example placeholder" multiple>
+                                            @foreach ($to_email_ids as $employee_job)
+                                                @php
+                                                    $firstname = !empty($employee_job->employee->firstname) ? $employee_job->employee->firstname : '';
+                                                    $lastname = !empty($employee_job->employee->lastname) ? $employee_job->employee->lastname : '';
+                                                    $emp_name = $firstname . '  ' . $lastname;
+                                                @endphp
+                                                <option
+                                                    value="{{ $employee_job->id }}"{{ in_array($employee_job->id, $cc_array_ids) ? 'selected' : '' }}>
+                                                    {{ $emp_name . ' < ' . $employee_job->work_email . ' > ' }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                                <div class="form-group">
-                                    <label>Subject</label>
-                                    <input class="form-control reply_subject" type="text"
-                                        value="{{ !empty($company_email->subject) ? $company_email->subject : 'RE:Null' }}"
-                                        name="email_subject" id="edit_subject">
-                                </div>
-                            @endforeach
+                                    <div class="form-group">
+                                        <label>Subject</label>
+                                        <input class="form-control reply_subject" type="text"
+                                            value="{{ !empty($company_email->subject) ? $company_email->subject : 'RE:Null' }}"
+                                            name="email_subject" id="edit_subject">
+                                    </div>
+                                @endforeach
                             @endif
                             <div class="form-group">
                                 <label>Body</label>
@@ -629,31 +645,32 @@
                         <form action="{{ route('reply-mail') }}" id="reply_mail" method="POST"
                             enctype="multipart/form-data">
                             @csrf
-                            @if(isset($company_emails) && !empty($company_emails))
-                            @foreach ($company_emails as $index => $company_email)
-                                @php
-                                    if ($index > 0) {
-                                        break;
-                                    }
-                                    $company_cc_array = explode(',', $company_email->company_cc);
-                                @endphp
-                                <input type="hidden" value="{{ !empty($company_email->id) ? $company_email->id : '' }}"
-                                    id="edit_id" name="id">
-                                <input type="hidden"
-                                    value="{{ !empty($company_email->from_id) ? $company_email->from_id : '' }}"
-                                    id="reply_to_ids" name="to_id[]">
-                                <input type="hidden"
-                                    value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
-                                    id="reply_from_id" name="from_id">
-                                <input type="hidden"
-                                    value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
-                                    id="reply_subject" name="subject">
+                            @if (isset($company_emails) && !empty($company_emails))
+                                @foreach ($company_emails as $index => $company_email)
+                                    @php
+                                        if ($index > 0) {
+                                            break;
+                                        }
+                                        $company_cc_array = explode(',', $company_email->company_cc);
+                                    @endphp
+                                    <input type="hidden"
+                                        value="{{ !empty($company_email->id) ? $company_email->id : '' }}"
+                                        id="edit_id" name="id">
+                                    <input type="hidden"
+                                        value="{{ !empty($company_email->from_id) ? $company_email->from_id : '' }}"
+                                        id="reply_to_ids" name="to_id[]">
+                                    <input type="hidden"
+                                        value="{{ !empty($company_email->to_id) ? $company_email->to_id : '' }}"
+                                        id="reply_from_id" name="from_id">
+                                    <input type="hidden"
+                                        value="{{ !empty($company_email->subject) ? $company_email->subject : '' }}"
+                                        id="reply_subject" name="subject">
 
-                                <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
-                                    name="email_date" id="">
-                                <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
-                                    name="email_time" id="">
-                            @endforeach
+                                    <input class="form-control" value="{{ date('Y-m-d') }}" type="hidden"
+                                        name="email_date" id="">
+                                    <input class="form-control" value="{{ date('H:i:s') }}" type="hidden"
+                                        name="email_time" id="">
+                                @endforeach
                             @endif
                             @php
                                 $to_email_ids = App\Models\EmployeeJOb::with('employee')
@@ -663,37 +680,37 @@
                                     ->get();
                                 //   dd($to_email_ids);
                             @endphp
-                            @if(isset($company_emails) && !empty($company_emails))
-                            @foreach ($company_emails as $index => $company_email)
-                                @php
-                                    if ($index > 0) {
-                                        break;
-                                    }
-                                    $company_to_array = explode(',', $company_email->to_id);
-                                @endphp
-                                <div class="form-group">
-                                    <label>To<span class="text-danger">*</span></label>
-                                    <select name="to_id[]" class="form-control select reply_to_id" id="reply_to_id"
-                                        data-mdb-placeholder="Example placeholder" multiple>
-                                        <option value="">Select to</option>
-                                        @foreach ($to_email_ids as $to_email)
-                                            @php
-                                                $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
-                                                $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
-                                                $emp_name = $firstname . '  ' . $lastname;
-                                            @endphp
-                                            <option value="{{ $to_email->id }}"
-                                                {{ in_array($to_email->id, $company_to_array) ? 'selected' : '' }}>
-                                                {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
-                                            @php
-                                                if ($company_email->from_id == $to_email->id) {
-                                                    $from_name_email = $emp_name . ' < ' . $to_email->work_email . ' > ';
-                                                }
-                                            @endphp
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endforeach
+                            @if (isset($company_emails) && !empty($company_emails))
+                                @foreach ($company_emails as $index => $company_email)
+                                    @php
+                                        if ($index > 0) {
+                                            break;
+                                        }
+                                        $company_to_array = explode(',', $company_email->to_id);
+                                    @endphp
+                                    <div class="form-group">
+                                        <label>To<span class="text-danger">*</span></label>
+                                        <select name="to_id[]" class="form-control select reply_to_id" id="reply_to_id"
+                                            data-mdb-placeholder="Example placeholder" multiple>
+                                            <option value="">Select to</option>
+                                            @foreach ($to_email_ids as $to_email)
+                                                @php
+                                                    $firstname = !empty($to_email->employee->firstname) ? $to_email->employee->firstname : '';
+                                                    $lastname = !empty($to_email->employee->lastname) ? $to_email->employee->lastname : '';
+                                                    $emp_name = $firstname . '  ' . $lastname;
+                                                @endphp
+                                                <option value="{{ $to_email->id }}"
+                                                    {{ in_array($to_email->id, $company_to_array) ? 'selected' : '' }}>
+                                                    {{ $emp_name . ' < ' . $to_email->work_email . ' > ' }}</option>
+                                                @php
+                                                    if ($company_email->from_id == $to_email->id) {
+                                                        $from_name_email = $emp_name . ' < ' . $to_email->work_email . ' > ';
+                                                    }
+                                                @endphp
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endforeach
                             @endif
                             <div class="form-group" id="reply_mail_cc">
                                 <label class="form-label select-label">CC :
