@@ -44,7 +44,9 @@
                                 <th>IP Address</th>
                                 <th>Login Time</th>
                                 <th>Logout Time</th>
-                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == App\Models\Role::ADMIN)
                                     <th class="text-center">Action</th>
                                 @endif
                             </tr>
@@ -78,20 +80,23 @@
                             <td>{{ $log->location_ip }}</td>
                             <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
                             <td>{{ !empty($log->out_time) ? date('d-m-Y  H:i', strtotime($log->out_time)) : '' }}</td>
-                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                                <td>
+                            <td>
+                                @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                     <a class="btn-sm btn-primary edit_log_btn" data-id="{{ $log->id }}"
                                         data-user_id="{{ $log->user_id }}" data-date_time="{{ $log->date_time }}"
                                         data-time_out="{{ $log->out_time }}" data-location_ip="{{ $log->location_ip }}"
                                         data-location_name="{{ $log->location_name }}" href="#"><i
                                             class="fa fa-pencil m-r-5" aria-hidden="true"></i>Edit</a>
+                                @endif
+                                @if ((Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        Auth::user()->role->name == App\Models\Role::ADMIN)
                                     @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
                                         <button type="button" class="btn btn-sm btn-success Pingbtn"
                                             data-id="{{ $log->user_id }}" data-email="{{ $log->email }}"><i
                                                 class="fa fa-comments m-r-5"></i> PING</button>
                                     @endif
-                                </td>
-                            @endif
+                                @endif
+                            </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -223,7 +228,7 @@
     </div>
     <!--- ping model message --- >
 
-                                                    <--logs Edit Model -->
+                                                        <--logs Edit Model -->
     <div id="edit_logs" class="modal custom-modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
