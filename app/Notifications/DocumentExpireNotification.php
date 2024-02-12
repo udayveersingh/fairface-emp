@@ -19,16 +19,7 @@ class DocumentExpireNotification extends Notification
 
     public function via($notifiable)
     {
-        return ['mail', 'database'];
-    }
-
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-                    ->subject($this->content['subject_type'])
-                    ->line($this->content['name'])
-                    ->line($this->content['subject'])
-                    ->line($this->content['regards']);
+        return ['database'];
     }
 
     public function toArray($notifiable)
