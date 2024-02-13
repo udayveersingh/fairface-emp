@@ -202,12 +202,12 @@
 </script>
 {{-- <script src="{{ asset('path/to/logout.js') }}"></script> --}}
 <script>
-    $(window).on('unload', (function() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/logout', true);
-        xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-        xhr.send();
-    }));
+    // $(window).on('unload', (function() {
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('POST', '/logout', true);
+    //     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    //     xhr.send();
+    // }));
 
 
 
