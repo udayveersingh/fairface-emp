@@ -73,7 +73,9 @@
                     <th>Status</th>
                     <th>Status Reason</th>
                     <th>Cost</th>
-                    @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
+                    @if (
+                        (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                            Auth::user()->role->name == app\models\Role::ADMIN)
                         <th></th>
                     @endif
                 </tr>
@@ -92,15 +94,16 @@
                         <td>{{ $expense->type }}</td>
                         {{-- <td>{{ ucfirst($expense->firstname) . ' ' . $expense->lastname }}</td> --}}
                         @php
-                                $fullName="";
-                                $supervisor = App\Models\Employee::find($expense->supervisor_id);
-                                if(!empty($supervisor)){
-                                    $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
-                                }
+                            $fullName = '';
+                            $supervisor = App\Models\Employee::find($expense->supervisor_id);
+                            if (!empty($supervisor)) {
+                                $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
+                            }
 
                             // dd( $fullName);
+
                         @endphp
-                        <td>{{ucfirst($fullName) }}</td>
+                        <td>{{ ucfirst($fullName) }}</td>
                         <td>{{ $expense->name }}</td>
                         <td>{{ date('d-m-Y', strtotime($expense->expense_occurred_date)) }}</td>
                         @php
@@ -111,33 +114,42 @@
                             }
                         @endphp
                         <td>{{ $status }}</td>
-                        <td>{{ !empty($expense->status_reason) ? $expense->status_reason:''}}</td>
+                        <td>{{ !empty($expense->status_reason) ? $expense->status_reason : '' }}</td>
                         <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}</td>
-                        @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
+                        @if (
+                            (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                (Auth::check() && Auth::user()->role->name == app\models\Role::ADMIN))
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item editbtn" href="javascript:void(0)"
-                                            data-id="{{ $expense->id }}" data-expense_id="{{ $expense->expense_id }}"
-                                            data-expense_type_id ="{{ $expense->expense_type_id }}"
-                                            data-employee_id="{{ $expense->employee_id }}"
-                                            data-project_id="{{ $expense->project_id }}"
-                                            data-supervisor_id="{{ $expense->supervisor_id }}"
-                                            data-occurred_date="{{ $expense->expense_occurred_date }}"
-                                            data-expense_cost="{{ $expense->cost }}"
-                                            data-expense_description="{{ $expense->description }}"
-                                            data-status_reason="{{ $expense->status_reason }}"
-                                            data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
-                                            data-approved_date_time="{{ $expense->approved_date_time }}">
-                                            <i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                        <a class="dropdown-item deletebtn" href="javascript:void(0)"
-                                            data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
-                                            Delete</a>
-                                        <a class="dropdown-item statusChecked" data-id="{{ $expense->id }}"
-                                            data-status="approved" href="#" data-toggle="modal" id="statusChecked"><i
-                                                class="fa fa-pencil m-r-5"></i>Change Status</a>
+                                        @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
+                                            <a class="dropdown-item editbtn" href="javascript:void(0)"
+                                                data-id="{{ $expense->id }}" data-expense_id="{{ $expense->expense_id }}"
+                                                data-expense_type_id ="{{ $expense->expense_type_id }}"
+                                                data-employee_id="{{ $expense->employee_id }}"
+                                                data-project_id="{{ $expense->project_id }}"
+                                                data-supervisor_id="{{ $expense->supervisor_id }}"
+                                                data-occurred_date="{{ $expense->expense_occurred_date }}"
+                                                data-expense_cost="{{ $expense->cost }}"
+                                                data-expense_description="{{ $expense->description }}"
+                                                data-status_reason="{{ $expense->status_reason }}"
+                                                data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
+                                                data-approved_date_time="{{ $expense->approved_date_time }}">
+                                                <i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                            <a class="dropdown-item deletebtn" href="javascript:void(0)"
+                                                data-id="{{ $expense->id }}"><i class="fa fa-trash-o m-r-5"></i>
+                                                Delete</a>
+                                        @endif
+                                        @if (
+                                            (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
+                                                Auth::user()->role->name == app\models\Role::ADMIN)
+                                            <a class="dropdown-item statusChecked" data-id="{{ $expense->id }}"
+                                                data-status="approved" href="#" data-toggle="modal"
+                                                id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change
+                                                Status</a>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
@@ -258,17 +270,19 @@
                                         <select name="employee" class="select emp_project" id="employee_id">
                                             <option value="">Select Employee</option>
                                             @foreach (getEmployee() as $emp)
-                                            @php
-                                                $fullname ="";
-                                                $employee = App\Models\Employee::where('user_id', '=', $emp->id)->where('record_status','=','active')->first();
-                                                if(!empty($employee)){    
-                                                $firstname = !empty($employee->firstname) ? $employee->firstname : '';
-                                                $lastname = !empty($employee->lastname) ? $employee->lastname : '';
-                                                $fullname = $firstname . ' ' . $lastname;
-                                                }
-                                            @endphp
-                                             @if(!empty($employee))
-                                                <option value="{{$employee->id}}">{{  $fullname }}</option>
+                                                @php
+                                                    $fullname = '';
+                                                    $employee = App\Models\Employee::where('user_id', '=', $emp->id)
+                                                        ->where('record_status', '=', 'active')
+                                                        ->first();
+                                                    if (!empty($employee)) {
+                                                        $firstname = !empty($employee->firstname) ? $employee->firstname : '';
+                                                        $lastname = !empty($employee->lastname) ? $employee->lastname : '';
+                                                        $fullname = $firstname . ' ' . $lastname;
+                                                    }
+                                                @endphp
+                                                @if (!empty($employee))
+                                                    <option value="{{ $employee->id }}">{{ $fullname }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -326,8 +340,8 @@
         </div>
     </div>
 
-      <!-- update Employee Expense Model-->
-      <div class="modal custom-modal fade" id="update_expense_status" role="dialog">
+    <!-- update Employee Expense Model-->
+    <div class="modal custom-modal fade" id="update_expense_status" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -440,24 +454,24 @@
             }
 
             $("#update_expense").on("click", function(event) {
-            event.preventDefault()
+                event.preventDefault()
 
-            var expense_reason="";
-            var status_field_value = $("#expense_status_field").find(":selected").text().trim();
-            var expense_reason = $("#status_reason").val();
-            if ((status_field_value == "Approved")) {
-                $("#expense_status_form").submit();
-            } else if ((status_field_value == "Select Status")) {
-                $(".status_val_error").html("");
-                $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
-            }else if (expense_reason && status_field_value == "Rejected") {
-                $("#expense_status_form").submit();
-            }else if(status_field_value == "Rejected"){
-                $(".status_val_error").html("");
-                $(".validation_error").html("");
-                $(".validation_error").html(`<span class="text-danger">this field is required</span>`);
-            }
-        });
+                var expense_reason = "";
+                var status_field_value = $("#expense_status_field").find(":selected").text().trim();
+                var expense_reason = $("#status_reason").val();
+                if ((status_field_value == "Approved")) {
+                    $("#expense_status_form").submit();
+                } else if ((status_field_value == "Select Status")) {
+                    $(".status_val_error").html("");
+                    $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
+                } else if (expense_reason && status_field_value == "Rejected") {
+                    $("#expense_status_form").submit();
+                } else if (status_field_value == "Rejected") {
+                    $(".status_val_error").html("");
+                    $(".validation_error").html("");
+                    $(".validation_error").html(`<span class="text-danger">this field is required</span>`);
+                }
+            });
 
             var currentYear = new Date().getFullYear();
             console.log(currentYear, "currentYear");
@@ -535,11 +549,11 @@
             });
 
             $('.statusChecked').on('click', function() {
-            $('#update_expense_status').modal('show');
-            var id = $(this).data('id');
-            var status = $(this).data('status');
-            var timesheet = $('#expenses_id').val(id);
-        });
+                $('#update_expense_status').modal('show');
+                var id = $(this).data('id');
+                var status = $(this).data('status');
+                var timesheet = $('#expenses_id').val(id);
+            });
         });
     </script>
 @endsection

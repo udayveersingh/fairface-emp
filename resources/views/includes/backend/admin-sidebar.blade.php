@@ -51,6 +51,7 @@
                     <a class="{{ route_is('user-email-inbox') ? 'active' : '' }}"
                         href="{{ route('user-email-inbox') }}" target="_blank"><i class="la la-envelope-o"></i><span>Company Email</span></a>
                 </li>
+                <li><a class="{{ route_is('emp-expenses') ? 'active' : '' }}" href="{{ route('emp-expenses') }}"><i class="fa fa-money"></i><span>Expenses</span></a></li>
                 <li class="{{ route_is('announcement') ? 'active' : '' }}">
                     <a href="{{ route('announcement') }}"><i class="fa fa-bullhorn"></i>
                         <span>Announcement</span></a>

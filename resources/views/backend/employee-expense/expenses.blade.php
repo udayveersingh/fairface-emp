@@ -193,7 +193,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Expense cost<span class="text-danger">*</span></label>
+                                    <label>Expense Cost in GBP(£)<span class="text-danger">*</span></label>
                                     <input class="form-control" name="expense_cost" id="expense_cost" type="number">
                                 </div>
                             </div>

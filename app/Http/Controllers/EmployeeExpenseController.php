@@ -29,7 +29,7 @@ class EmployeeExpenseController extends Controller
         $title = 'expenses';
         $employee = "";
         $employees = "";
-        if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->where('employee_id', '=', $employee->id)->groupBy('expense_id')->orderBy('expense_id', 'ASC')->get();
             $expense_ids = Expense::groupBy('expense_id')->where('employee_id', '=', $employee->id)->orderBy('expense_id', 'DESC')->get();
