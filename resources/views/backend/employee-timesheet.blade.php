@@ -15,10 +15,13 @@
                 <li class="breadcrumb-item active">Employee TimeSheet</li>
             </ul>
         </div>
-        {{-- <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_timesheet"><i
-                    class="fa fa-plus"></i>Add Employee TimeSheet</a>
-        </div> --}}
+
+        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
+            <div class="col-auto float-right ml-auto">
+                <a href="{{ route('employee-timesheet-view') }}" class="btn add-btn"><i class="fa fa-plus"></i>Add Employee
+                    TimeSheet</a>
+            </div>
+        @endif
     </div>
 @endsection
 
@@ -43,31 +46,31 @@
                     </thead>
                     <tbody>
                         @if (!empty($employee_timesheets->count()))
-                        @foreach ($employee_timesheets as $index => $timesheet)
-                                    @php
-                                        $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
-                                        $lastname = !empty($timesheet->employee->lastname) ? $timesheet->employee->lastname : '';
-                                        $supervisor = App\Models\Employee::find($timesheet->supervisor_id);
-                                        if (!empty($supervisor)) {
-                                            $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
-                                        }
-                                        $start_date = explode(',',$timesheet->start_date);
-                                        $end_date = explode(',',$timesheet->end_date);
-                                    @endphp
-                        @if($start_date[0] != null && $end_date[0] != null)
-                                <tr>
-                                    <td>{{ $timesheet->timesheet_id }}</td>
-                                    <td>{{ $firstname . ' ' . $lastname }}</td>
-                                    <td>{{ $supervisor_name }}</td>
-                                    <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
-                                    {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
-                                    {{-- </td> --}}
-                                    <td>{{ date('d-m-Y', strtotime($start_date[0]))}}</td>
-                                    <td>{{ date('d-m-Y',strtotime($end_date[0])) }}</td>
-                                    <td>{{ !empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status) : '' }}
-                                    </td>
-                                    {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
-                                    {{-- <td class="text-center">
+                            @foreach ($employee_timesheets as $index => $timesheet)
+                                @php
+                                    $firstname = !empty($timesheet->employee->firstname) ? $timesheet->employee->firstname : '';
+                                    $lastname = !empty($timesheet->employee->lastname) ? $timesheet->employee->lastname : '';
+                                    $supervisor = App\Models\Employee::find($timesheet->supervisor_id);
+                                    if (!empty($supervisor)) {
+                                        $supervisor_name = $supervisor->firstname . ' ' . $supervisor->lastname;
+                                    }
+                                    $start_date = explode(',', $timesheet->start_date);
+                                    $end_date = explode(',', $timesheet->end_date);
+                                @endphp
+                                @if ($start_date[0] != null && $end_date[0] != null)
+                                    <tr>
+                                        <td>{{ $timesheet->timesheet_id }}</td>
+                                        <td>{{ $firstname . ' ' . $lastname }}</td>
+                                        <td>{{ $supervisor_name }}</td>
+                                        <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
+                                        {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
+                                        {{-- </td> --}}
+                                        <td>{{ date('d-m-Y', strtotime($start_date[0])) }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($end_date[0])) }}</td>
+                                        <td>{{ !empty($timesheet->timesheet_status->status) ? ucfirst($timesheet->timesheet_status->status) : '' }}
+                                        </td>
+                                        {{-- {{!empty($timesheet->timesheet_status->status) && $timesheet->timesheet_status->status == "approved" ? 'checked' : ''}} --}}
+                                        {{-- <td class="text-center">
                                         <div class="action-label">
                                             <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
                                                 <i
@@ -78,18 +81,20 @@
                                                 id="statusChecked">Change Status</a>
                                         </div>
                                     </td> --}}
-                                    <td class="d-flex" style="align-items: center;">
-                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
-                                        title="{{ $timesheet->status_reason }}">
-                                        {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p>
-                                    
-                                   </td>
-                                    <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                            @if($start_date[0] != null && $end_date[0] != null) 
-                                            <a class="btn-sm btn-primary" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id ,'start_date'=> $start_date[0] ,'end_date' => $end_date[0]])}}"><i class="fa fa-eye" aria-hidden="true"></i>View</a>    
-                                            @endif
-                                            {{-- <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                        <td class="d-flex" style="align-items: center;">
+                                            <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip"
+                                                data-html="true" title="{{ $timesheet->status_reason }}">
+                                                {{ substr($timesheet->status_reason, 0, 10) . ' ...' }}</p>
+
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="dropdown dropdown-action">
+                                                @if ($start_date[0] != null && $end_date[0] != null)
+                                                    <a class="btn-sm btn-primary"
+                                                        href="{{ route('employee-timesheet-detail', ['id' => $timesheet->employee_id, 'start_date' => $start_date[0], 'end_date' => $end_date[0]]) }}"><i
+                                                            class="fa fa-eye" aria-hidden="true"></i>View</a>
+                                                @endif
+                                                {{-- <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                                 aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                             <div class="dropdown-menu dropdown-menu-right"> --}}
                                                 {{-- <a class="dropdown-item statusChecked" data-id="{{ $timesheet->id }}"
@@ -115,13 +120,13 @@
                                                 <a data-id="{{ $timesheet->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0);" data-target="#deletebtn"
                                                     data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a> --}}
-                                                    {{-- @if($start_date[0] != null && $end_date[0] != null) 
+                                                {{-- @if ($start_date[0] != null && $end_date[0] != null) 
                                                     <a class="dropdown-item" href="{{route('employee-timesheet-detail',['id' => $timesheet->employee_id ,'start_date'=> $start_date[0] ,'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>View</a>    
                                                     @endif --}}
-                                            {{-- </div> --}}
-                                        </div>
-                                    </td>
-                                </tr>
+                                                {{-- </div> --}}
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endif
                             @endforeach
                             <x-modals.delete :route="'employee-timesheet.destroy'" :title="'Employee Timesheet'" />

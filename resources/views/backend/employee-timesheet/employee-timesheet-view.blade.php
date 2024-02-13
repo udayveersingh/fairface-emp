@@ -18,21 +18,21 @@
         @php
             $date = new DateTime('now');
             $date->modify('last day of this month');
-            
+
             //calender date store
             $first_day = new DateTime('now');
             $first_day->modify('first day of this month');
             $first_day->modify('-1 days')->format('l d-m-Y');
-            
+
             //display day this week
             $day_display = new DateTime('now');
             $day_display->modify('first day of this month');
             $day_display->modify('-1 days')->format('l');
-            
+
             // //display week starting date
             // $week_starting = new DateTime('now');
             // $week_starting->modify('first day of this month');
-            
+
         @endphp
         {{-- <div class="col-md-6">Month Ending:- <span>{{ $date->format('d-m-Y') }}</span></div>
             <div class="col-md-6">Designation:- <span>Business Analyst </span></div>
@@ -61,26 +61,27 @@
                             $end = strtotime('next sunday, 12:00am', $time);
                             $format = 'l, F j, Y g:i A';
                             $end_day = date($format, $end);
-                        
+
                             return [\carbon\Carbon::parse($start)->format('m-d-Y'), \carbon\Carbon::parse($end_day)->format('m-d-Y')];
                         };
-                        
+
                         $weeks += [
                             'w1' => $get_week_dates('first'),
                             'w2' => $get_week_dates('second'),
                             'w3' => $get_week_dates('third'),
                             'w4' => $get_week_dates('fourth'),
                         ];
-                        
+
                         // dd($weeks);
                         // $weeks_merge_data = array_merge($weeks['w1'],$weeks['w2'],$weeks['w3'],$weeks['w4']);
                         // dd($weeks_merge_data);
-                        
+
                         $holidays = [];
                         foreach (getHoliday() as $holiday) {
                             $holidays[] = ['name' => $holiday->name, 'holiday_date' => $holiday->holiday_date];
                         }
                     @endphp
+
                     <div class="col-lg-4">
                         <div class="form-group">
                             <label>Supervisor<span class="text-danger">*</span></label>
@@ -88,14 +89,18 @@
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
                                     @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)
+                                            ->where('record_status', '!=', 'delete')
+                                            ->first();
                                         $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
                                         $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                         $fullname = $firstname . ' ' . $lastname;
                                     @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
-                                        {{ $fullname }}
-                                    </option>
+                                    @if (!empty($supervisor))
+                                        <option value="{{ $supervisor->id }}">
+                                            {{ $fullname }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -169,14 +174,18 @@
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)
                                     @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
+                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)
+                                            ->where('record_status', '!=', 'delete')
+                                            ->first();
                                         $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
                                         $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                         $fullname = $firstname . ' ' . $lastname;
                                     @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
-                                        {{ $fullname }}
-                                    </option>
+                                    @if (!empty($supervisor))
+                                        <option value="{{ $supervisor->id }}">
+                                            {{ $fullname }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -373,7 +382,7 @@
 
                 var dayColSpan = holidayName = heading = "";
                 var leaveReason = "";
-                var bgcolor ="";
+                var bgcolor = "";
                 var width = "width:70%";
                 var renderReasonHolidayHtml = "";
                 if (HolidayDataArrayForm !== false && HolidayDataArrayForm != '') {
@@ -410,7 +419,8 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     date + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="'+ width +';'+ bgcolor + '"class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + ';' + bgcolor +
+                    '"class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {
@@ -553,7 +563,8 @@
                             heading += "Holiday";
                             width = "width:52%";
                             bgcolor = "background-color: #e9ecef";
-                            renderReasonHolidayHtml =`<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            renderReasonHolidayHtml =
+                                `<td colspan="2"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</td>`;
@@ -564,7 +575,8 @@
                             heading += "Leave";
                             width = "width:52%";
                             bgcolor = "background-color: #e9ecef";
-                            renderReasonHolidayHtml = `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
+                            renderReasonHolidayHtml =
+                                `<td colspan="2" style="background-color:#d0d5db;"><input name="start_time[]" value="" class="form-control start_time" type="hidden">
                                 <input name="end_time[]" value="" type="hidden" class="form-control"><input name="hours[]" value="" type="hidden" class="form-control">
                                 <input name="project_id[]" value="" type="hidden" class="form-control"> <input name="project_phase_id[]" value="" type="hidden" class="form-control">
                                 <input name="notes[]" value="" type="hidden" class="form-control">${heading}:${holidayName}</br>Leave Reason:${leaveReason}</td>`;
@@ -576,7 +588,8 @@
                     '<tr><td><input type="text" style="width:80%" class="form-control" name="calender_date[]" value="' +
                     dateFormat + '" readonly></td>' +
                     '<td colspan="' + dayColSpan +
-                    '"><input type="text" style="' + width +';'+ bgcolor + '" class="form-control" name="calender_day[]" value="' +
+                    '"><input type="text" style="' + width + ';' + bgcolor +
+                    '" class="form-control" name="calender_day[]" value="' +
                     day +
                     '"></td>';
                 if (dayColSpan == "") {

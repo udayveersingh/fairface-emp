@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
 if (!function_exists('getSupervisor')) {
     function getSupervisor()
     {
-        return User::where('id', '!=', Auth::user()->id)->whereHas('role', function ($q) {
+        return User::whereHas('role', function ($q) {
             $q->where('name', '=', Role::ADMIN);
         })->get();
     }
