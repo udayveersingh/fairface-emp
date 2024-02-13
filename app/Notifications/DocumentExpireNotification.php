@@ -27,9 +27,11 @@ class DocumentExpireNotification extends Notification
         return [
             'from' => Auth::user()->id, // Assuming this is correct
             'to' => $this->employee->id, // Assuming this is correct
-            'user_id' => $notifiable->id, // Assuming you're passing the user as notifiable
+            // 'user_id' => $notifiable->id, // Assuming you're passing the user as notifiable
             'message' => $this->content['subject'],
-            'created_at' => now()->toDateTimeString(),
+            'user_id' => Auth::user()->id,
+            'created_at' =>date('Y-m-d H:i:s'),
+            'status' => 'active',
         ];
     }
 }

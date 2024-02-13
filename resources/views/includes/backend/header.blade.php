@@ -29,7 +29,7 @@
     <ul class="nav user-menu">
 
         {{-- @dd(getExpiredNotification()); --}}
-            {{-- @dd(getNewLeaveNotifiaction()); --}}
+        {{-- @dd(getNewLeaveNotifiaction()); --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getRejectedLeaveByAdminNotification()); --}}
         <!-- Notifications -->
@@ -80,26 +80,28 @@
                                     $emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
                                     $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
                                 @endphp
-                                @if(!empty($leave))
-                                <li class="notification-message">
-                                    <a href="{{ route('activity') }}">
-                                        <div class="media">
-                                            <span class="avatar">
-                                                <img
-                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span
-                                                        class="noti-title">{{ ucfirst($emp_full_name) }}</span>
-                                                    <span class="noti-title">added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:'' }}.</span>
-                                                </p>
-                                                <p class="noti-time">
-                                                    <span class="notification-time">{{ $leave->created_at->diffForHumans() }}</span>
-                                                </p>
+                                @if (!empty($leave))
+                                    <li class="notification-message">
+                                        <a href="{{ route('activity') }}">
+                                            <div class="media">
+                                                <span class="avatar">
+                                                    <img
+                                                        src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span
+                                                            class="noti-title">{{ ucfirst($emp_full_name) }}</span>
+                                                        <span class="noti-title">added new
+                                                            {{ !empty($leave->leaveType->type) ? $leave->leaveType->type : '' }}.</span>
+                                                    </p>
+                                                    <p class="noti-time">
+                                                        <span
+                                                            class="notification-time">{{ $leave->created_at->diffForHumans() }}</span>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
                                 @endif
                             @endforeach
                             @foreach (sendNewTimeSheetNotifiaction() as $notification)
@@ -138,19 +140,43 @@
                                 </li>
                             @endforeach
                         @else
+                            @foreach (getExpiredNotification() as $notification)
+                                <li class="notification-message">
+                                    <a href="{{ route('activity') }}">
+                                        <div class="media">
+                                            <span class="avatar">
+                                                <img src="{{ asset('assets/img/user.jpg') }}">
+                                            </span>
+                                            <div class="media-body">
+                                                <p class="noti-details"><span
+                                                        class="noti-title">'{{ $notification->message }}' By
+                                                        Admin.</span>
+                                                    <span class="noti-title"></span>
+                                                </p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
                             @foreach (getEmployeeLeaveApprovedNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
                                             <span class="avatar">
-                                                <img src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
+                                                <img
+                                                    src="{{ !empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </a>
@@ -169,7 +195,9 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </a>
@@ -189,7 +217,9 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </a>
@@ -208,7 +238,9 @@
                                                         class="noti-title">{{ $notification->message }}</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </a>
@@ -223,34 +255,18 @@
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span
-                                                        class="noti-title">'{{ $notification->message }}' By Admin.</span>
+                                                        class="noti-title">'{{ $notification->message }}' By
+                                                        Admin.</span>
                                                     <span class="noti-title"></span>
                                                 </p>
-                                                <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
+                                                <p class="noti-time"><span
+                                                        class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                                                </p>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
                             @endforeach
-
-                            @foreach (getExpiredNotification() as $notification)
-                            <li class="notification-message">
-                                <a href="{{ route('activity') }}">
-                                    <div class="media">
-                                        <span class="avatar">
-                                            <img src="{{ asset('assets/img/user.jpg') }}">
-                                        </span>
-                                        <div class="media-body">
-                                            <p class="noti-details"><span
-                                                    class="noti-title">'{{ $notification->message }}' By Admin.</span>
-                                                <span class="noti-title"></span>
-                                            </p>
-                                            <p class="noti-time"><span class="notification-time">{{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span></p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach
                         @endif
                     </ul>
                 </div>
@@ -298,4 +314,3 @@
     </div>
     <!-- /Mobile Menu -->
 </div>
-

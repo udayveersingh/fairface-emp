@@ -22,6 +22,7 @@ use App\Mail\SendReminderMail;
 use App\Models\CompanyEmail;
 use App\Models\EmployeeJob;
 use App\Models\LeaveType;
+use App\Models\UserLog;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\DocumentExpireNotification;
 use DocumentExpireNotification as GlobalDocumentExpireNotification;

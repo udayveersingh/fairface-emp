@@ -200,14 +200,18 @@
     // });
     // });
 </script>
-<script src="{{ asset('path/to/logout.js') }}"></script>
+{{-- <script src="{{ asset('path/to/logout.js') }}"></script> --}}
 <script>
-    // window.addEventListener('unload', function() {
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open('POST', '/logout', true);
-    //     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-    //     xhr.send();
-    // });
+    $(window).on('unload', (function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/logout', true);
+        xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+        xhr.send();
+    }));
+
+
+
+
     // $(window).on('mouseout', (function() {
     //     window.onbeforeunload = ConfirmLeave;
     // }));
@@ -218,7 +222,7 @@
     // var prevKey = "";
     // $(window).on("beforeunload", function() {
     //  runBeforeClose();
-// });
+    // });
 </script>
 @yield('scripts')
 
