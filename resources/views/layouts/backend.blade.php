@@ -30,7 +30,7 @@
     <!-- Toastify css -->
     <link rel="stylesheet" href="{{ asset('assets/plugins/toastify/src/toastify.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -131,7 +131,7 @@
 <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
 
 <!--tags input -->
-<script src="{{asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js')}}"></script>
+<script src="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
 
 <script src="{{ asset('assets/js/app.js') }}"></script>
 <script>
@@ -198,17 +198,28 @@
     //  		url: '/logout'
     //  	});
     // });
-// });
+    // });
 </script>
 <script src="{{ asset('path/to/logout.js') }}"></script>
-{{-- <script>
-window.addEventListener('unload', function() {
-var xhr = new XMLHttpRequest();
-xhr.open('POST', '/logout', true);
-xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-xhr.send();
-});
-</script> --}}
+<script>
+    // window.addEventListener('unload', function() {
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open('POST', '/logout', true);
+    //     xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+    //     xhr.send();
+    // });
+    // $(window).on('mouseout', (function() {
+    //     window.onbeforeunload = ConfirmLeave;
+    // }));
+
+    // function ConfirmLeave() {
+    //     return "";
+    // }
+    // var prevKey = "";
+    // $(window).on("beforeunload", function() {
+    //  runBeforeClose();
+// });
+</script>
 @yield('scripts')
 
 </html>

@@ -70,10 +70,12 @@ class ActivityController extends Controller
         $title = 'Employee Activity';
         if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
 
-            $today_logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name')->whereDay('user_logs.created_at', now()->day)->where('roles.name', '!=', 'Super admin')->orderBy('user_logs.id', 'DESC')->get();
+            $userID = Auth::user()->id;
+            // dd($userID);
+            $today_logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name')->whereDay('user_logs.created_at', now()->day)->where('roles.name', '!=', 'Super admin')->where('users.id','!=',$userID)->orderBy('user_logs.id', 'DESC')->get();
             $date = \Carbon\Carbon::today()->subDays(3);
             // dd($date);
-            $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name')->where('user_logs.created_at', '>', $date)->where('roles.name', '!=', 'Super admin')->orderBy('user_logs.id', 'DESC')->get();
+            $logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name')->where('user_logs.created_at', '>', $date)->where('roles.name', '!=', 'Super admin')->where('users.id','!=',$userID)->orderBy('user_logs.id', 'DESC')->get();
         }
 
 
