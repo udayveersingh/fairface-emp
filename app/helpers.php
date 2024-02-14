@@ -148,7 +148,23 @@ if (!function_exists('getEmployeeNewNotification')) {
         $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
             $q->where('name', '!=', Role::SUPERADMIN);
         })->first();
-        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->status', '=', 'active')->get();
+        $employee =  Employee::where('user_id', '=', $user->id)->first();
+        return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->where('data->to', '=', $employee->id)->where('data->status', '=', 'active')->get();
+    }
+}
+
+if(!function_exists('getAllEmployeeNewNotification'))
+{
+    function getAllEmployeeNewNotification()
+    {
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+        $getAllEmployeeNewNotifi = [];
+        $employee_all_notifiactions =  DB::table('notifications')->whereNull('read_at')->where('data->to', $employee->id)->latest()->get();
+        foreach ($employee_all_notifiactions as $index => $notification) {
+            $getAllEmployeeNewNotifi[$index] = json_decode($notification->data);
+        }
+        return $getAllEmployeeNewNotifi;
+
     }
 }
 
@@ -265,7 +281,7 @@ if (!function_exists('getNewAnnouncementNotification')) {
         function getExpiredNotification()
         {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-            
+
             $expire_document_notifi = [];
             $expire_document_notifications =  DB::table('notifications')->where('type', '=', 'App\Notifications\DocumentExpireNotification')->whereNull('read_at')->where('data->to', $employee->id)->get();
             foreach ($expire_document_notifications as $index => $notification) {
@@ -273,6 +289,5 @@ if (!function_exists('getNewAnnouncementNotification')) {
             }
             return $expire_document_notifi;
         }
-
     }
 }

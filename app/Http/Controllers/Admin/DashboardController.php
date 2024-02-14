@@ -198,7 +198,7 @@ class DashboardController extends Controller
             $company_email->save();
             return back()->with('success', "Reminder email has been sent.");
         }else{
-            return back()->with('', "Please add employee job details");
+            return back()->with('success', "Please add employee job details");
         }
     }
 }

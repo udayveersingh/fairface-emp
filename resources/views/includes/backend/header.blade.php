@@ -27,7 +27,7 @@
 
     <!-- Header Menu -->
     <ul class="nav user-menu">
-
+        {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getExpiredNotification()); --}}
         {{-- @dd(getNewLeaveNotifiaction()); --}}
         {{-- @dd(getNewNotification()); --}}
@@ -140,7 +140,7 @@
                                 </li>
                             @endforeach
                         @else
-                            @foreach (getExpiredNotification() as $notification)
+                            @foreach (getAllEmployeeNewNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -161,7 +161,7 @@
                                     </a>
                                 </li>
                             @endforeach
-                            @foreach (getEmployeeLeaveApprovedNotification() as $notification)
+                            {{-- @foreach (getEmployeeLeaveApprovedNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -181,8 +181,8 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach
-                            @foreach (getRejectedLeaveByAdminNotification() as $notification)
+                            @endforeach --}}
+                            {{-- @foreach (getRejectedLeaveByAdminNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -202,9 +202,9 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach
+                            @endforeach --}}
 
-                            @foreach (getEmployeeTimesheetApprovedNotification() as $notification)
+                            {{-- @foreach (getEmployeeTimesheetApprovedNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -224,8 +224,8 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach
-                            @foreach (getEmployeeTimesheetRejectedNotification() as $notification)
+                            @endforeach --}}
+                            {{-- @foreach (getEmployeeTimesheetRejectedNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
                                         <div class="media">
@@ -245,7 +245,7 @@
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach()
+                            @endforeach() --}}
                             @foreach (getNewAnnouncementNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">
