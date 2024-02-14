@@ -142,7 +142,7 @@
                         @else
                             @if (!empty(getAllEmployeeNewNotification()) && count(getAllEmployeeNewNotification()) > 0)
                                 @foreach (getAllEmployeeNewNotification() as $notification)
-                                    @if (!empty($notification))
+                                    @if (!empty($notification->message))
                                         <li class="notification-message">
                                             <a href="{{ route('activity') }}">
                                                 <div class="media">
