@@ -646,6 +646,66 @@
         </div>
     </div> --}}
         <!-- /Statistics Widget -->
+
+
+        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <section class="dash-section">
+                        <h1 class="dash-sec-title">Latest Notifications</h1>
+                        <div class="dash-sec-content">
+                            @if (!empty(getAllEmployeeNewNotification()) && count(getAllEmployeeNewNotification()) > 0)
+                                @foreach (getAllEmployeeNewNotification() as $index => $notification)
+                                    @php
+                                        if ($index > 2) {
+                                            break;
+                                        }
+                                    @endphp
+                                    @if (!empty($notification->message))
+                                        <div class="dash-info-list">
+                                            <a href="#" class="dash-card text-danger">
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        {{-- @dd( $notification); --}}
+                                                        <div class="dash-card-content">
+                                                            <div class="dash-card-icon">
+                                                                <i class="fa fa-hourglass-o"></i>
+                                                            </div>
+                                                            <p>{{ $notification->message }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2 text-right">
+                                                        <div class="">
+                                                            <span class="badge bg-inverse-danger">Notification</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+
+                            {{-- <div class="dash-info-list">
+                            <a href="#" class="dash-card">
+                                <div class="dash-card-container">
+                                    <div class="dash-card-icon">
+                                        <i class="fa fa-building-o"></i>
+                                    </div>
+                                    <div class="dash-card-content">
+                                        <p>You are working from home today</p>
+                                    </div>
+                                    <div class="dash-card-avatars">
+                                        <div class="e-avatar"><img src="assets/img/profiles/avatar-02.jpg" alt></div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div> --}}
+                        </div>
+                    </section>
+                </div>
+            </div>
+        @endif
     @endsection
     @section('scripts')
         <!-- Chart JS -->

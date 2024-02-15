@@ -174,10 +174,11 @@ class DashboardController extends Controller
     {
         $employee = Employee::find($emp_id);
         $employee_job = EmployeeJob::where('employee_id','=',$employee->id)->first();
+        $date = !empty($employee->passport_expiry_date) ? $employee->passport_expiry_date:'';
         $content = [
             'subject_type' => 'Your '. $type . ' application is going to be expire soon!',
             'name' => "Dear " . $employee->firstname . " " . $employee->lastname.",",
-            'subject' => "It's a reminder to notify you that your " . $type . "  is expiring soon. Please contact HR to update your documents.",
+            'subject' => "This is a reminder to notify you that your" . $type . "will be expired on  " .$date. "."."Pls contact HR to update your document.",
             'regards' => 'Regards,HR Team.'
         ];
 
