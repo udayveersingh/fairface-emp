@@ -55,7 +55,7 @@
                             <div class="request-btn">
                                 <div class="dash-stats-list">
                                     @if (!empty($total_annual_leaves) && $total_annual_leaves > 0)
-                                        <h4>{{$total_annual_leaves }}</h4>
+                                        <h4>{{ $total_annual_leaves }}</h4>
                                     @else
                                         <h4>0</h4>
                                     @endif
@@ -197,33 +197,35 @@
                 <section class="dash-section">
                     <h1 class="dash-sec-title">Latest Notifications</h1>
                     <div class="dash-sec-content">
-                        @if (count(getEmployeeLeaveApprovedNotification()) > 0)
-                            @foreach (getEmployeeLeaveApprovedNotification() as $index => $notification)
+                        @if (!empty(getAllEmployeeNewNotification()) && count(getAllEmployeeNewNotification()) > 0)
+                            @foreach (getAllEmployeeNewNotification() as $index => $notification)
                                 @php
-                                    if ($index > 1) {
+                                    if ($index > 2) {
                                         break;
                                     }
                                 @endphp
-                                <div class="dash-info-list">
-                                    <a href="#" class="dash-card text-danger">
-                                        <div class="row">
-                                            <div class="col-10">
-                                                {{-- @dd( $notification); --}}
-                                                <div class="dash-card-content">
-                                                    <div class="dash-card-icon">
-                                                        <i class="fa fa-hourglass-o"></i>
+                                @if (!empty($notification->message))
+                                    <div class="dash-info-list">
+                                        <a href="#" class="dash-card text-danger">
+                                            <div class="row">
+                                                <div class="col-10">
+                                                    {{-- @dd( $notification); --}}
+                                                    <div class="dash-card-content">
+                                                        <div class="dash-card-icon">
+                                                            <i class="fa fa-hourglass-o"></i>
+                                                        </div>
+                                                        <p>{{ $notification->message }}</p>
                                                     </div>
-                                                    <p>{{ $notification->message }}</p>
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <div class="">
+                                                        <span class="badge bg-inverse-danger">Notification</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-2 text-right">
-                                                <div class="">
-                                                    <span class="badge bg-inverse-danger">Notification</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
+                                        </a>
+                                    </div>
+                                @endif
                             @endforeach
                         @endif
 
