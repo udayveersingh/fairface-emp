@@ -482,7 +482,7 @@
                                         <td>
                                             <span class="badge bg-inverse-warning">Paasport Expiry</span>
                                         </td>
-                                        <td><a href="{{ route('send-reminder-mail', [$user_pass_list->id, 'type' => 'passport']) }}"
+                                        <td><a href="{{ route('send-reminder-mail', [$user_pass_list->id, 'type' => 'passport','expiry_date' => date('d-m-Y', strtotime($user_pass_list->passport_expiry_date)) ]) }}"
                                                 class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                     </tr>
                                 @endforeach
@@ -498,7 +498,7 @@
                                         <td>
                                             <span class="badge bg-inverse-danger">Visa Expiry</span>
                                         </td>
-                                        <td> <a href="{{ route('send-reminder-mail', [$user_visa_list->id, 'type' => 'visa']) }}"
+                                        <td> <a href="{{ route('send-reminder-mail', [$user_visa_list->id, 'type' => 'visa','expiry_date' => date('d-m-Y', strtotime($user_visa_list->visa_expiry_date))]) }}"
                                                 class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                     </tr>
                                 @endforeach
@@ -514,7 +514,7 @@
                                         <td>
                                             <span class="badge bg-inverse-success">COS Expiry</span>
                                         </td>
-                                        <td> <a href="{{ route('send-reminder-mail', [$user_cos_list->id, 'type' => 'cos']) }}"
+                                        <td> <a href="{{ route('send-reminder-mail', [$user_cos_list->id, 'type' => 'cos','expiry_date' => date('d-m-Y', strtotime($user_cos_list->cos_expiry_date))]) }}"
                                                 class="btn-sm btn-primary editbtn">Send Reminder</a></td>
                                     </tr>
                                 @endforeach

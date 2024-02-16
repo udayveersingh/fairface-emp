@@ -175,15 +175,15 @@ class DashboardController extends Controller
         }
     }
 
-    public function sendReminderMail($type, $emp_id)
+    public function sendReminderMail($expiry_date,$type, $emp_id)
     {
         $employee = Employee::find($emp_id);
         $employee_job = EmployeeJob::where('employee_id', '=', $employee->id)->first();
-        $date = !empty($employee->passport_expiry_date) ? $employee->passport_expiry_date : '';
+        $expiry_date = !empty($expiry_date) ? $expiry_date : '';
         $content = [
             'subject_type' => 'Your ' . $type . ' application is going to be expire soon!',
             'name' => "Dear " . $employee->firstname . " " . $employee->lastname . ",",
-            'subject' => "This is a reminder to notify you that your " . $type . " will be expired on  " . $date . "." . "Pls contact HR to update your document.",
+            'subject' => "This is a reminder to notify you that your " . $type . " will be expired on  " . $expiry_date . "." . "Pls contact HR to update your document.",
             'regards' => 'Regards,HR Team.'
         ];
 
