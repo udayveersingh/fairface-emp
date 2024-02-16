@@ -29,54 +29,53 @@ class CompanyEmailController extends Controller
      */
     public function index(Request $request)
     {
-        
+
         $title = "Company Email";
         $keyword = 'inbox';
         $employee_jobs = EmployeeJob::with('employee')->get();
         $todayDate = Carbon::now()->toDateString();
         $annoucement_list = Annoucement::where('start_date', '<=', $todayDate)
-                                        ->where('end_date', '>=', $todayDate)
-                                        ->where('status', '=', 'active')->get();
-        
-        if(isset($request) && !empty($request->keyword)){
-            if($request->keyword=='archive'){
-                $keyword='archive';
+            ->where('end_date', '>=', $todayDate)
+            ->where('status', '=', 'active')->get();
+
+        if (isset($request) && !empty($request->keyword)) {
+            if ($request->keyword == 'archive') {
+                $keyword = 'archive';
                 $company_emails = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->get();
-            }else if($request->keyword=='search'){
+            } else if ($request->keyword == 'search') {
                 $search_term = $request->value;
                 $company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
-                                           ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
-                if(count($company_emails)==0){
-                    $employee_data = Employeejob::join('employees','employees.id', '=', 'employee_jobs.employee_id')
-                                    ->select(['employee_jobs.id'])
-                                    ->where('employees.firstname', 'LIKE', "%{$search_term}%")
-                                   ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%") 
-                                   ->get();
+                    ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
+                if (count($company_emails) == 0) {
+                    $employee_data = Employeejob::join('employees', 'employees.id', '=', 'employee_jobs.employee_id')
+                        ->select(['employee_jobs.id'])
+                        ->where('employees.firstname', 'LIKE', "%{$search_term}%")
+                        ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%")
+                        ->get();
                     $empoyee_id = [];
-                    foreach($employee_data as $val){
+                    foreach ($employee_data as $val) {
                         $empoyee_id[] = $val->id;
                     }
                     $company_emails = CompanyEmail::whereIn("to_id", [$empoyee_id])->get();
                 }
-            }else if($request->keyword=='inbox'){
+            } else if ($request->keyword == 'inbox') {
                 $company_emails = CompanyEmail::with('employeejob.employee')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get();
-            }else if($request->keyword=='unread'){
+            } else if ($request->keyword == 'unread') {
                 $company_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
-            }
-            else if($request->keyword=='sent'){
-                $keyword='sent';
+            } else if ($request->keyword == 'sent') {
+                $keyword = 'sent';
                 $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get();
             }
-        }else{
+        } else {
             $company_emails = CompanyEmail::with('employeejob.employee')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get();
             // dd($company_emails);
         }
-        
+
         $count_emails = CompanyEmail::count();
         $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
         $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
-        
+
         $notifications = DB::table('notifications')->where('type', '=', 'App\Notifications\newMailNotification')->get();
         $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
 
@@ -141,45 +140,44 @@ class CompanyEmailController extends Controller
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
 
-              $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id','=',$employee_job->id)->where('archive', '=', true)->latest()->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id', '=', $employee_job->id)->where('archive', '=', true)->latest()->get();
 
-            if(isset($request) && !empty($request->keyword)){
-                if($request->keyword=='archive'){
-                    $keyword='archive';
-                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id','=',$employee_job->id)->where('archive', '=', true)->latest()->get();
-                }else if($request->keyword=='search'){
+            if (isset($request) && !empty($request->keyword)) {
+                if ($request->keyword == 'archive') {
+                    $keyword = 'archive';
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id', '=', $employee_job->id)->where('archive', '=', true)->latest()->get();
+                } else if ($request->keyword == 'search') {
                     $search_term = $request->value;
                     /*$company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
                                                     ->orWhere('body', 'LIKE', "%{$search_term}%")
                                                    // ->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->get();
                                                    ->whereIn("to_id", [$employee_job->id])->get();*/
                     //$company_emails = \DB::select('select * from destinations where DestinationName="$destination"');
-                    $company_emails = \DB::select("select * from company_emails where (subject LIKE '%".$search_term."%' or `body` LIKE '%".$search_term."%') 
-                                                    and (to_id in (".$employee_job->id.") or from_id in (".$employee_job->id."))");
-                    
-                    if(count($company_emails)==0){
-                        $employee_data = Employeejob::join('employees','employees.id', '=', 'employee_jobs.employee_id')
-                                        ->select(['employee_jobs.id'])
-                                        ->where('employees.firstname', 'LIKE', "%{$search_term}%")
-                                        ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%") 
-                                       ->get();
+                    $company_emails = \DB::select("select * from company_emails where (subject LIKE '%" . $search_term . "%' or `body` LIKE '%" . $search_term . "%') 
+                                                    and (to_id in (" . $employee_job->id . ") or from_id in (" . $employee_job->id . "))");
+
+                    if (count($company_emails) == 0) {
+                        $employee_data = Employeejob::join('employees', 'employees.id', '=', 'employee_jobs.employee_id')
+                            ->select(['employee_jobs.id'])
+                            ->where('employees.firstname', 'LIKE', "%{$search_term}%")
+                            ->orWhere('employee_jobs.work_email', 'LIKE', "%{$search_term}%")
+                            ->get();
                         $empoyee_id = [0];
-                        foreach($employee_data as $val){
+                        foreach ($employee_data as $val) {
                             $empoyee_id[] = $val->id;
                         }
-                      //  dd($empoyee_id);
-                        $company_emails = CompanyEmail::where("from_id",$employee_job->id)->whereIn("to_id", [$empoyee_id])->Orwhere('from_id', '=', $employee_job->id)->get();
+                        //  dd($empoyee_id);
+                        $company_emails = CompanyEmail::where("from_id", $employee_job->id)->whereIn("to_id", [$empoyee_id])->Orwhere('from_id', '=', $employee_job->id)->get();
                     }
-                }else if($request->keyword=='inbox'){
+                } else if ($request->keyword == 'inbox') {
                     $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->Orwhere('from_id', '=', $employee_job->id)->latest()->get();
-                }else if($request->keyword=='unread'){
+                } else if ($request->keyword == 'unread') {
                     $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->whereNotNull('read_at')->latest()->get();
-                }
-                else if($request->keyword=='sent'){
-                    $keyword='sent';
+                } else if ($request->keyword == 'sent') {
+                    $keyword = 'sent';
                     $company_emails = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->Orwhere('from_id', '=', $employee_job->id)->latest()->get();
                 }
-            }else{
+            } else {
                 $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->latest()->get();
             }
 
@@ -354,6 +352,7 @@ class CompanyEmailController extends Controller
      */
     public function mailDetail($from_id, Request $request)
     {
+        // dd($request->all(), $from_id);
         $title = "mail";
         $read_at_update = CompanyEmail::find($request->id);
         $read_at_update->read_at = Null;
@@ -362,8 +361,20 @@ class CompanyEmailController extends Controller
             $employee_job = EmployeeJob::with('employee')->whereHas('employee', function (Builder $query) {
                 $query->where('user_id', '=', Auth::user()->id);
             })->first();
-            $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('to_id', '=', $from_id)->latest()->get();
+            // $user = "";
+            // if($request->to_id == null){
+            //     $user = User::find($request->sent_user_id);
+            // }
 
+            if ($request->to_id == null) {
+                $company_emails = DB::table('company_emails')
+                    ->select('company_emails.*','company_emails.created_at','users.*')
+                    ->join('users', 'users.id', '=', 'company_emails.sent_by_user_id')->where('company_emails.id', '=', $request->id)
+                    ->where('company_emails.to_id', '=', $from_id)
+                    ->get();
+            } else {
+                $company_emails = CompanyEmail::with('employeejob.employee')->where('id', '=', $request->id)->where('to_id', '=', $from_id)->latest()->get();
+            }
             return json_encode(array('employee_data' => $employee_job, 'email_data' => $company_emails));
 
             //   $company_emails = CompanyEmail::with('employeejob.employee')->where('from_id','=',decrypt($from_id))->orwhere('to_id','=',$to_id)->get();
@@ -400,9 +411,9 @@ class CompanyEmailController extends Controller
             $cc_ids = implode(',', $request->cc);
         }
 
-        if($request->email_date != Null){
-            $email_date = date('Y-m-d',strtotime($request->email_date));
-        }else{
+        if ($request->email_date != Null) {
+            $email_date = date('Y-m-d', strtotime($request->email_date));
+        } else {
             $email_date = null;
         }
 
@@ -461,7 +472,7 @@ class CompanyEmailController extends Controller
         $company_email->save();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             return redirect()->route('user-email-inbox')->with('success', "Email moved to archive folder");
-        }else{
+        } else {
             return redirect()->route('company-email')->with('success', "Email moved to archive folder");
         }
     }
@@ -473,7 +484,7 @@ class CompanyEmailController extends Controller
         $company_email->save();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             return redirect()->route('user-email-inbox')->with('success', "Email restore successfully to inbox");
-        }else{
+        } else {
             return redirect()->route('company-email')->with('success', "Email restore successfully to inbox");
         }
     }
@@ -486,12 +497,11 @@ class CompanyEmailController extends Controller
 
     public function FindSearch(Request $request)
     {
-         // dd($request->all());
-         $search_term = $request->search;
-         $emailData = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
-                                    ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
-                                    
-         return json_encode(array('data' => $emailData));
+        // dd($request->all());
+        $search_term = $request->search;
+        $emailData = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")
+            ->orWhere('body', 'LIKE', "%{$search_term}%")->get();
 
+        return json_encode(array('data' => $emailData));
     }
 }

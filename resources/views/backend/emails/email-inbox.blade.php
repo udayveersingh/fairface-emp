@@ -97,8 +97,8 @@
         }
 
         /* .emails_list tr.active:nth-child(1) td {
-                                                                                                                background: #dfe4fa;
-                                                                                                            } */
+                                                                                                                    background: #dfe4fa;
+                                                                                                                } */
 
         .unread {
             font-weight: bold;
@@ -282,6 +282,7 @@
                                                             <a href="#" class="email-name mail-detail get_email_data"
                                                                 data-com_email_id="{{ $company_email->id }}"
                                                                 data-email_to="{{ $company_email->from_id }}"
+                                                                data-sent_user="{{ $company_email->sent_by_user_id }}"
                                                                 data-from_id="{{ $company_email->to_id }}"
                                                                 data-subject="{{ $company_email->subject }}"
                                                                 data-email_cc="{{ $company_email->company_cc }}"
@@ -290,15 +291,15 @@
                                                                 data-token="{{ Session::token() }}">{{ $keyword == 'sent' ? 'To: ' : '' }}{{ $fullname }}</a>
 
                                                             <!-- <a href="#single-email-wrapper"
-                                                                                    class="email-name mail-detail get_email_data"
-                                                                                    data-com_email_id="{{ $company_email->id }}"
-                                                                                    data-email_to="{{ $company_email->from_id }}"
-                                                                                    data-from_id="{{ $company_email->to_id }}"
-                                                                                    data-subject="{{ $company_email->subject }}"
-                                                                                    data-email_cc="{{ $company_email->company_cc }}"
-                                                                                    data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
-                                                                                    data-email_attachment="{{ $company_email->attachment }}"
-                                                                                    data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
+                                                                                        class="email-name mail-detail get_email_data"
+                                                                                        data-com_email_id="{{ $company_email->id }}"
+                                                                                        data-email_to="{{ $company_email->from_id }}"
+                                                                                        data-from_id="{{ $company_email->to_id }}"
+                                                                                        data-subject="{{ $company_email->subject }}"
+                                                                                        data-email_cc="{{ $company_email->company_cc }}"
+                                                                                        data-email_body="{{ strip_tags(html_entity_decode($company_email->body)) }}"
+                                                                                        data-email_attachment="{{ $company_email->attachment }}"
+                                                                                        data-token="{{ Session::token() }}">{{ ucfirst($to_emails) }}</a> -->
                                                         </div>
 
                                                         <a href="#" class="email-msg mail-detail get_email_data"
@@ -438,9 +439,9 @@
                                                         data-email_attachment="{{ $company_email->attachment }}"></i>
                                                     ReplyAll</span>
                                                 <!-- <div class="p-1 text-secondary cursor-pointer"><a href=""
-                                                                    class=" text-secondary" id="replyAll" data-toggle="modal"
-                                                                    data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
-                                                                </div> -->
+                                                                        class=" text-secondary" id="replyAll" data-toggle="modal"
+                                                                        data-target="#reply_model"><i class="fa fa-mail-reply"></i> Reply All</a>
+                                                                    </div> -->
                                                 @if (!empty($company_email->archive) && $company_email->archive == 1)
                                                     <div class="restore">
                                                         <div class="p-1 text-secondary cursor-pointer"><a
@@ -481,7 +482,8 @@
                                                 <div class="from email_from_name">
                                                     <span>{{ $from_name }}</span>
                                                     <span class="work_email d-block fs-12">
-                                                        < {{ !empty($from->work_email) ? $from->work_email : $user->email }}>
+                                                        <
+                                                            {{ !empty($from->work_email) ? $from->work_email : $user->email }}>
                                                     </span>
                                                 </div>
                                                 @php
@@ -678,6 +680,11 @@
                                         $q->where('record_status', '=', 'active');
                                     })
                                     ->get();
+
+                                //   $super_admin =App\Models\User::whereHas('roles', function ($q) { 
+                                //     $q->where('name', '==', App\Models\Role::SUPERADMIN);})->get();
+                                //   dd($super_admin);
+
                                 //   dd($to_email_ids);
                             @endphp
                             @if (isset($company_emails) && !empty($company_emails))
@@ -772,6 +779,8 @@
                 $('.mail-detail').on('click', function() {
                     var id = $(this).data('com_email_id');
                     var from_id = $(this).data('from_id');
+                    var sent_user_id = $(this).data('sent_user');
+                    var to_id = $(this).data('email_to');
                     var token = $(this).data('token');
                     $('.check_read_unread').removeClass('unread');
                     $.ajax({
@@ -779,8 +788,10 @@
                         url: '/mail-detail/' + from_id,
                         data: {
                             _token: token,
-                            from_id: from_id,
                             id: id,
+                            to_id: to_id,
+                            from_id: from_id,
+                            sent_user_id: sent_user_id,
                         },
                         beforeSend: function() {
                             $(".loader").show();
@@ -793,9 +804,15 @@
                         success: function(data) {
                             console.log(data.email_data, "data");
                             $.each(data.email_data, function(index, row) {
-                                var date = new Date(row.created_at);
+
+                                if (row.from_id == null) {
+                                    var work_email = `<` + row.email + `>`;
+                                    var date = new Date(row.date);
+                                } else {
+                                    var work_email = `<` + row.employeejob.work_email + `>`;
+                                    var date = new Date(row.created_at);
+                                }
                                 dateStringWithTime = moment(date).format('DD-MM-YYYY');
-                                var work_email = `<` + row.employeejob.work_email + `>`;
                                 // make reply modal filled with dynamic data
                                 // make selected to
                                 $("#reply_to_id option").each(function() {
@@ -816,10 +833,13 @@
                                 $(".message_on").html(dateStringWithTime);
                                 $(".card-body").html(row.body);
 
-                                $(".email_from_name").html(`<span>` + row.employeejob
-                                    .employee.firstname + " " + row.employeejob.employee
-                                    .lastname + `</span>` + work_email);
-                                $(".work_email").html(row.employeejob.work_email);
+                                if (row.from_id == null) {
+                                    $(".email_from_name").html(`<span>` + row.name +`</span>` + `<span>` + work_email + `</span>`);
+                                    $(".work_email").html(work_email);
+                                } else {
+                                    $(".email_from_name").html(`<span>` + row.employeejob.employee.firstname + " " + row.employeejob.employee.lastname + `</span>` + work_email);
+                                    $(".work_email").html(row.employeejob.work_email);
+                                }
                                 $(".date").html(dateStringWithTime);
 
                                 if (row.attachment != null) {
