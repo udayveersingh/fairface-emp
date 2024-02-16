@@ -53,17 +53,20 @@ class DashboardController extends Controller
         $lastDayLastMonth = Carbon::now()->subMonth()->endOfMonth()->toDateString();
 
         $timesheet_approval_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
-            $q->where('status', '=', TimesheetStatus::APPROVED);})->groupBy('end_date')->latest()->get();
+            $q->where('status', '=', TimesheetStatus::APPROVED);
+        })->groupBy('end_date')->latest()->get();
 
         // $timesheet_pending_app_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
         //     $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
         // })->count();
 
         $timesheet_pending_app_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
-                $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);})->groupBy('end_date')->latest()->get();
+            $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
+        })->groupBy('end_date')->latest()->get();
 
         $timesheet_rejected_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
-            $q->where('status', '=', TimesheetStatus::REJECTED);})->groupBy('end_date')->latest()->get();
+            $q->where('status', '=', TimesheetStatus::REJECTED);
+        })->groupBy('end_date')->latest()->get();
 
         // $timesheet_submitted_count = EmployeeTimesheet::join('timesheet_statuses', 'timesheet_statuses.id', '=', 'employee_timesheets.timesheet_status_id')
         //     ->whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])
@@ -74,15 +77,15 @@ class DashboardController extends Controller
 
         // Leaves
 
-        $leaves_approval_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
+        $leaves_approval_count = Leave::whereYear('created_at', date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::APPROVED);
         })->count();
 
-        $leaves_pending_app_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
+        $leaves_pending_app_count = Leave::whereYear('created_at', date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
         })->count();
 
-        $leaves_rejected_count = Leave::whereYear('created_at',date('Y'))->whereHas('time_sheet_status', function ($q) {
+        $leaves_rejected_count = Leave::whereYear('created_at', date('Y'))->whereHas('time_sheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::REJECTED);
         })->count();
 
@@ -151,54 +154,56 @@ class DashboardController extends Controller
 
             $currentYear = date('Y');
             $employee_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
-                $q->where('status', '=', TimesheetStatus::APPROVED);})->whereHas('leaveType', function ($q) {
-                    $q->where('type', '=','Annual Holiday');
+                $q->where('status', '=', TimesheetStatus::APPROVED);
+            })->whereHas('leaveType', function ($q) {
+                $q->where('type', '=', 'Annual Holiday');
             })->whereYear('created_at', $currentYear)->count();
 
             $employee_others_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
-                $q->where('status', '=', TimesheetStatus::APPROVED);})->whereHas('leaveType', function ($q) {
-                    $q->where('type', '!=','Annual Holiday');
+                $q->where('status', '=', TimesheetStatus::APPROVED);
+            })->whereHas('leaveType', function ($q) {
+                $q->where('type', '!=', 'Annual Holiday');
             })->whereYear('created_at', $currentYear)->count();
 
-            $total_annual_leaves = LeaveType::where('type','=','Annual Holiday')->value('days');
-            $remaining_leaves = $total_annual_leaves -  $employee_leaves; 
+            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Holiday')->value('days');
+            $remaining_leaves = $total_annual_leaves -  $employee_leaves;
 
             $timesheet_submitted_count = EmployeeTimesheet::where('employee_id', '=', $employee->id)->where('created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString())->whereHas('timesheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::SUBMITTED);
             })->count();
-            return view('includes.frontend.employee-dashboard', compact('title', 'annoucement_list', 'leaves_list', 'timesheet_list', 'employee', 'employee_leaves', 'timesheet_submitted_count','remaining_leaves','total_annual_leaves','employee_others_leaves'));
+            return view('includes.frontend.employee-dashboard', compact('title', 'annoucement_list', 'leaves_list', 'timesheet_list', 'employee', 'employee_leaves', 'timesheet_submitted_count', 'remaining_leaves', 'total_annual_leaves', 'employee_others_leaves'));
         }
     }
 
     public function sendReminderMail($type, $emp_id)
     {
         $employee = Employee::find($emp_id);
-        $employee_job = EmployeeJob::where('employee_id','=',$employee->id)->first();
-        $date = !empty($employee->passport_expiry_date) ? $employee->passport_expiry_date:'';
+        $employee_job = EmployeeJob::where('employee_id', '=', $employee->id)->first();
+        $date = !empty($employee->passport_expiry_date) ? $employee->passport_expiry_date : '';
         $content = [
-            'subject_type' => 'Your '. $type . ' application is going to be expire soon!',
-            'name' => "Dear " . $employee->firstname . " " . $employee->lastname.",",
-            'subject' => "This is a reminder to notify you that your" . $type . "will be expired on  " .$date. "."."Pls contact HR to update your document.",
+            'subject_type' => 'Your ' . $type . ' application is going to be expire soon!',
+            'name' => "Dear " . $employee->firstname . " " . $employee->lastname . ",",
+            'subject' => "This is a reminder to notify you that your " . $type . " will be expired on  " . $date . "." . "Pls contact HR to update your document.",
             'regards' => 'Regards,HR Team.'
         ];
 
         $carbon = Carbon::now();
-        $date = date('Y-m-d',(strtotime($carbon)));
-        $time = date('H:i:s',(strtotime($carbon)));
+        $date = date('Y-m-d', (strtotime($carbon)));
+        $time = date('H:i:s', (strtotime($carbon)));
 
-        if(!empty($employee_job)){
+        if (!empty($employee_job)) {
             $company_email = new CompanyEmail();
             $company_email->to_id = $employee_job->id;
             $company_email->date = $date;
             $company_email->time = $time;
-            $company_email->subject =$content['subject_type'];
+            $company_email->subject = $content['subject_type'];
             $company_email->body =  $content['subject'];
             $company_email->read_at = Carbon::now();
             $company_email->sent_by_user_id = Auth::user()->id;
             $employee->notify(new DocumentExpireNotification($employee, $content));
             $company_email->save();
             return back()->with('success', "Reminder email has been sent.");
-        }else{
+        } else {
             return back()->with('success', "Please add employee job details");
         }
     }
