@@ -9,7 +9,7 @@
         </a>
     </div>
     <!-- /Logo -->
-
+    
     <a id="toggle_btn" href="javascript:void(0);">
         <span class="bar-icon">
             <span></span>
@@ -22,11 +22,14 @@
         <h3>{{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? 'Smart HR') }}</h3>
     </div>
     <!-- /Header Title -->
-
+    
     <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-
+    
     <!-- Header Menu -->
     <ul class="nav user-menu">
+        {{-- <li class="chat-notification-message">
+            testestest         
+       </li> --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getExpiredNotification()); --}}
         {{-- @dd(getNewLeaveNotifiaction()); --}}
@@ -250,6 +253,7 @@
                                     </a>
                                 </li>
                             @endforeach() --}}
+
                             @foreach (getNewAnnouncementNotification() as $notification)
                                 <li class="notification-message">
                                     <a href="{{ route('activity') }}">

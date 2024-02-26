@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory,SoftDeletes, Notifiable, HasRoles;
+    use HasFactory, SoftDeletes, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -50,5 +50,15 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * A user can have many messages
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 }

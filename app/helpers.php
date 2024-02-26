@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Annoucement;
+use App\Models\ChMessage;
 use App\Models\CompanyEmail;
 use App\Models\Employee;
 use App\Models\EmployeeJob;
@@ -80,6 +81,14 @@ if (!function_exists('getMonth')) {
             $months[] = date('F', mktime(0, 0, 0, $m, 1, date('Y')));
         }
         return $months;
+    }
+}
+
+if (!function_exists('getChatMessage')) {
+    function getChatMessage()
+    {
+        $newMessage = ChMessage::where('to_id','=',Auth::user()->id)->where('from_id','!=',Auth::user()->id)->latest()->get();
+        return $newMessage;
     }
 }
 

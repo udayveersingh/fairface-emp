@@ -161,6 +161,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Chatify\ChatifyServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -171,12 +172,13 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\LaravelBackupPanelServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
+
     ],
 
     /*
@@ -231,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'Chatify' => Chatify\Facades\ChatifyMessenger::class,
     ],
 
 ];

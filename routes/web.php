@@ -58,6 +58,7 @@ use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmployeeExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PusherController;
 use Illuminate\Http\Request;
 
 /*
@@ -372,15 +373,22 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('default-emails', [CompanyEmailController::class, 'defaultEmails'])->name('default-emails');
 
-    // Route::get('chat-view', [ChatsController::class, 'index'])->name('chat-view');
-    // Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('messages');
-    // // Route::post('admin-send-message',function (Request $request){
-    // //     event(new Message($request->username, $request->message));
-    // //     return ['success' => true];
-    // // });
+    Route::get('chat-view', [ChatsController::class, 'index'])->name('chat-view');
+    Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('messages');
+    // Route::post('admin-send-message',function (Request $request){
+    //     event(new Message($request->username, $request->message));
+    //     return ['success' => true];
+    // });
     // Route::post('admin-send-message',[ChatsController::class, 'sendMessage'])->name('admin-send-message');
+
 });
 
+Route::get('chat-view/{id?}',[PusherController::class,'index'])->name('chat-view');
+// Route::get('all-chats/{id?}',[PusherController::class,'allchats']);
+Route::post('broadcast',[PusherController::class,'broadCast']);
+Route::post('receive',[PusherController::class,'receive']);
+
+Route::get('show-chat-message/',[PusherController::class,'showChatMessage'])->name('showChatMessage');
 
 Route::get('', function () {
     return redirect()->route('dashboard');

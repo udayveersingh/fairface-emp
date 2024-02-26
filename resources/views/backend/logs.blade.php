@@ -94,6 +94,8 @@
                                         <button type="button" class="btn btn-sm btn-success Pingbtn"
                                             data-id="{{ $log->user_id }}" data-email="{{ $log->email }}"><i
                                                 class="fa fa-comments m-r-5"></i> PING</button>
+                                                <a href="{{route('chat-view',$log->user_id)}}" class="btn btn-sm btn-success" target="_blank"><i
+                                                    class="fa fa-comments m-r-5"></i>Chat</a>
                                     @endif
                                 @endif
                             </td>

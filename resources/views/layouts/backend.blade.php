@@ -35,9 +35,12 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <!--Chat Main -->
+
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}">
     <!-- Page Css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/chat-style.css') }}"> --}}
     @yield('styles')
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -65,9 +68,46 @@
 
         <!-- Page Wrapper -->
         <div class="page-wrapper">
+
             @yield('content_one')
-            <!-- Page Content -->
             <div class="content container-fluid">
+                <!-- Page Content -->
+                @foreach (getChatMessage() as $index => $message)
+                    @php
+                        if ($index > 0) {
+                            break;
+                        }
+                    @endphp
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card flex-fill">
+                                <div class="card-body">
+                                    <div class="chat-info-box">
+                                        <a href="{{route('chat-view',$message->from_id)}}">
+                                            @php
+                                                $user = app\Models\User::find($message->from_id);
+                                            @endphp
+                                            <div class="media">
+                                                <span class="avatar">
+                                                    <img src="{{ asset('storage/employees/'.$user->avatar) }}">
+                                                </span>
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span class="noti-title">You Have new
+                                                            Message. By {{$user->name}}</span>
+                                                        <span class="noti-title"></span>
+                                                    </p>
+                                                    <p class="noti-time"><span
+                                                            class="notification-time">{{ \Carbon\Carbon::parse()->diffForHumans() }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
 
                 <!-- Page Header -->
                 <div class="page-header">
@@ -93,18 +133,54 @@
                         </button>
                     </div>
                 @endif
-                <!-- Content Starts -->
-                @yield('content')
-                <!-- /Content End -->
 
+
+                <!-- chat notification model -->
+                <div class="modal custom-modal fade" id="chat_message_notification" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered" width="900px">
+                        <div class="modal-content">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <div class="form-header">
+                                <h3 class="mt-2"> <i class="fa fa-comments m-r-5"></i>Chat Notifications</h3>
+                            </div>
+                            <div class="card flex-fill">
+                                <div class="card-body">
+                                    <div class="card-scroll p-1">
+                                        <div class="chat-info-box">
+                                            {{-- <div class="media align-items-center">
+                                                <a href="" class="avatar">
+                                                </a>
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span class="noti-title"></span>
+                                                        <span class="noti-title">tested</span>
+                                                    </p>
+                                                </div> --}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /Page Content -->
+            <!-- Content Starts -->
+            @yield('content')
+            <!-- /Content End -->
+
+
+            <div class="footer">
+                <i class="fa fa-comments m-r-5"></i>Chat
+            </div>
 
         </div>
-        <!-- /Page Wrapper -->
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Wrapper -->
     </div>
     <!-- /Main Wrapper -->
-
 
 </body>
 <!-- jQuery -->
@@ -132,8 +208,12 @@
 
 <!--tags input -->
 <script src="{{ asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
-
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}" defer></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     $(document).ready(function() {
         $('body').on('click', '.deletebtn', function() {
@@ -209,7 +289,7 @@
     //     xhr.send();
     // }));
 
-    
+
     // $(window).on('mouseout', (function() {
     //     window.onbeforeunload = ConfirmLeave;
     // }));
@@ -221,7 +301,35 @@
     // $(window).on("beforeunload", function() {
     //  runBeforeClose();
     // });
+
+    // Function to handle sending messages
+    // setInterval(function() {
+    // alert("hello");
+    $.ajax({
+        url: "/show-chat-message",
+        dataType: 'json',
+        success: function(data) {
+            // console.log(data, "message data data");
+            // $('#chat_message_notification').modal('show');
+            $.each(data.newmessage, function(index, row) {
+                console.log(row, "row testtest");
+                var url = `/chat-view/${row.from_id}`;
+                var html = `<div class="media align-items-center">
+            <a href="${url}" class="avatar"><div class ="media-body"><p class="noti-details"><span class ="noti-title"></span><span class = "noti-title">${row.body}</span>
+            </p></div></a></div>`;
+                $(".chat-notification-message").append(html);
+            });
+        }
+    });
+    // }, 3000);
 </script>
+
+
+
+
+
+
+
 @yield('scripts')
 
 </html>
