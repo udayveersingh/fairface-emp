@@ -161,7 +161,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Chatify\ChatifyServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -233,7 +232,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        'Chatify' => Chatify\Facades\ChatifyMessenger::class,
     ],
 
 ];
