@@ -87,7 +87,7 @@ if (!function_exists('getMonth')) {
 if (!function_exists('getChatMessage')) {
     function getChatMessage()
     {
-        $newMessage = ChMessage::where('to_id','=',Auth::user()->id)->where('from_id','!=',Auth::user()->id)->latest()->get();
+        $newMessage = ChMessage::where('to_id','=',Auth::user()->id)->where('from_id','!=',Auth::user()->id)->where('seen','=',0)->latest()->get();
         return $newMessage;
     }
 }

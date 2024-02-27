@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chat-style.css') }}">
     <div class="row">
         <div class="col-md-12">
-            <div class="welcome-box">
+            <div class="welcome-box" style="margin:0px;">
                 <div class="welcome-img">
                     <img src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
                         alt="user">
@@ -17,7 +17,6 @@
                     <p>{{ $formatedDate }}</p>
                 </div>
             </div>
-        </div>
         <div class="chat">
 
             <!-- Header -->
@@ -51,18 +50,19 @@
             <!-- Footer -->
             <div class="bottom">
                 {{-- @dd($from_id); --}}
-                <form>
+                <form style="display:flex; gap:10px;">
                     <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
                     <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
                     <input type="hidden" id="to_id" value="{{ $user->id }}">
                     {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
-                    <button id="send-message" type="submit"></button>
+                    <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-paper-plane"></i></button>
                 </form>
             </div>
             <!-- End Footer -->
 
         </div>
+    </div>
         {{-- </body> --}}
     @endsection
     @section('scripts')

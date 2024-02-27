@@ -9,7 +9,7 @@
         </a>
     </div>
     <!-- /Logo -->
-    
+
     <a id="toggle_btn" href="javascript:void(0);">
         <span class="bar-icon">
             <span></span>
@@ -22,14 +22,14 @@
         <h3>{{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? 'Smart HR') }}</h3>
     </div>
     <!-- /Header Title -->
-    
+
     <a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa fa-bars"></i></a>
-    
+
     <!-- Header Menu -->
     <ul class="nav user-menu">
         {{-- <li class="chat-notification-message">
             testestest         
-       </li> --}}
+        </li> --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getExpiredNotification()); --}}
         {{-- @dd(getNewLeaveNotifiaction()); --}}
@@ -37,6 +37,48 @@
         {{-- @dd(getRejectedLeaveByAdminNotification()); --}}
         <!-- Notifications -->
         <li class="nav-item dropdown">
+
+            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                <i class="fa fa-comments"></i><span class="badge badge-pill">{{ count(getChatMessage()) }}</span>
+            </a>
+            <div class="dropdown-menu notifications">
+                <div class="topnav-dropdown-header">
+                    <span class="notification-title">Notifications</span>
+                    <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a>
+                </div>
+                <div class="noti-content">
+                    <ul class="notification-list">
+                        @foreach (getChatMessage() as $index => $message)
+                            @php
+                                $user = app\Models\User::find($message->from_id);
+                            @endphp
+                            <li class="notification-message">
+                                <a href="{{route('chat-view',$user->id)}}" target="_blank">
+                                    <div class="media">
+                                        <span class="avatar">
+                                            <img src="{{ asset('storage/employees/'.$user->avatar) }}">
+                                        </span>
+                                        <div class="media-body">
+                                            <p class="noti-details"><span class="noti-title">Added new message from {{ucfirst($user->name)}} </span>
+                                            </p>
+                                            <p class="noti-time">
+                                                <span
+                                                    class="notification-time">{{ $message->created_at->diffForHumans() }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a href="{{ route('activity') }}">View all Notifications</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item dropdown">
+
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                     <i class="fa fa-bell-o"></i><span class="badge badge-pill">{{ count(getNewNotification()) }}</span>

@@ -12,11 +12,18 @@ class PusherController extends Controller
 {
     public function index($id)
     {
-        // dd($id);
         $title = "chat";
         // $id = decrypt($id);
         $user = User::find($id);
         $messages = CHMessage::orderBy('id')->get();
+        $seenMsg = ChMessage::where('from_id','=',$id)->where('seen','=',0)->first();
+        // dd($seenMsg);
+        if(!empty($seenMsg)){
+            $seenMsg->seen = 1;
+            $seenMsg->save();
+        }
+
+        // $seenMsg = ChMessage::where('from_id','=',$id)->update(['seen' => 1]);
         // $from_id = CHMessage::where('from_id','=',$id)->first();
         // return json_encode(array('messages' => $messages));
         return view('index', compact('title', 'user', 'messages'));
@@ -39,6 +46,7 @@ class PusherController extends Controller
         $messages->body = $request->get('message');
         $messages->save();
         $chat_messages = ChMessage::latest()->first();
+        getChatMessage($request->get('to_id'));
         // $user = User::find($request->get('to_id'));
         return view('broadcast', ['messages' => $chat_messages]);
     }

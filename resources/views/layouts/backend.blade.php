@@ -72,14 +72,14 @@
             @yield('content_one')
             <div class="content container-fluid">
                 <!-- Page Content -->
-                @foreach (getChatMessage() as $index => $message)
+                {{-- @foreach (getChatMessage() as $index => $message)
                     @php
                         if ($index > 0) {
                             break;
                         }
                     @endphp
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="card flex-fill">
                                 <div class="card-body">
                                     <div class="chat-info-box">
@@ -92,12 +92,12 @@
                                                     <img src="{{ asset('storage/employees/'.$user->avatar) }}">
                                                 </span>
                                                 <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">You Have new
-                                                            Message. By {{$user->name}}</span>
-                                                        <span class="noti-title"></span>
+                                                    <p class="noti-details"><span class="noti-title">You have new
+                                                            message by {{ucfirst($user->name)}}.</span>
+                                                        <span class="noti-title">  <i class="fa fa-comments m-r-5"></i></span>
                                                     </p>
                                                     <p class="noti-time"><span
-                                                            class="notification-time">{{ \Carbon\Carbon::parse()->diffForHumans() }}</span>
+                                                            class="notification-time">{{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @endforeach --}}
 
                 <!-- Page Header -->
                 <div class="page-header">
@@ -157,7 +157,7 @@
                                                         <span class="noti-title">tested</span>
                                                     </p>
                                                 </div> --}}
-                                        </div>
+                                        {{-- </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -165,18 +165,13 @@
                     </div>
                 </div>
             </div>
+
             <!-- Content Starts -->
             @yield('content')
             <!-- /Content End -->
 
-
-            <div class="footer">
-                <i class="fa fa-comments m-r-5"></i>Chat
-            </div>
-
         </div>
         <!-- /Page Content -->
-
     </div>
     <!-- /Page Wrapper -->
     </div>
@@ -305,20 +300,12 @@
     // Function to handle sending messages
     // setInterval(function() {
     // alert("hello");
+
     $.ajax({
         url: "/show-chat-message",
         dataType: 'json',
         success: function(data) {
-            // console.log(data, "message data data");
-            // $('#chat_message_notification').modal('show');
-            $.each(data.newmessage, function(index, row) {
-                console.log(row, "row testtest");
-                var url = `/chat-view/${row.from_id}`;
-                var html = `<div class="media align-items-center">
-            <a href="${url}" class="avatar"><div class ="media-body"><p class="noti-details"><span class ="noti-title"></span><span class = "noti-title">${row.body}</span>
-            </p></div></a></div>`;
-                $(".chat-notification-message").append(html);
-            });
+            // getChatMessage();
         }
     });
     // }, 3000);
