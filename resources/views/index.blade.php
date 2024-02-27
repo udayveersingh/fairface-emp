@@ -21,7 +21,7 @@
 
             <!-- Header -->
             <div class="top">
-                <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="10%" alt="Avatar">
+                <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;" alt="Avatar">
                 <div>
                     <p>{{ ucFirst($user->name) }}</p>
                     <small>Online</small>
@@ -50,7 +50,7 @@
             <!-- Footer -->
             <div class="bottom">
                 {{-- @dd($from_id); --}}
-                <form style="display:flex; gap:10px;">
+                <form style="display:flex; gap:10px;" id="chat-form">
                     <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
                     <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
                     <input type="hidden" id="to_id" value="{{ $user->id }}">
@@ -106,7 +106,7 @@
 
 
                 // Function to handle sending messages
-                $('form').submit(function(event) {
+                $('#chat-form').submit(function(event) {
                     event.preventDefault();
                     let message = $('#message').val();
 
