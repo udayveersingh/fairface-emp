@@ -54,7 +54,6 @@ use App\Http\Controllers\Admin\ProjectPhaseController;
 use App\Http\Controllers\Admin\TimeSheetController;
 use App\Http\Controllers\Admin\VisaController;
 use App\Http\Controllers\AnnoucementController;
-use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\EmployeeExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\PdfController;
@@ -373,8 +372,6 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('default-emails', [CompanyEmailController::class, 'defaultEmails'])->name('default-emails');
 
-    Route::get('chat-view', [ChatsController::class, 'index'])->name('chat-view');
-    Route::get('messages', [ChatsController::class, 'fetchMessages'])->name('messages');
     // Route::post('admin-send-message',function (Request $request){
     //     event(new Message($request->username, $request->message));
     //     return ['success' => true];
