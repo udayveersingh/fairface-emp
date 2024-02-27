@@ -60,7 +60,7 @@ class NewAnnouncementByAdminNotification extends Notification
     public function toArray($notifiable)
     {
 
-        dd($this->annoucement, $notifiable);
+        // dd($this->annoucement, $notifiable);
         
         return [
             'from' => Auth::user()->id,
