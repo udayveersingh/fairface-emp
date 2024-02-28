@@ -39,7 +39,8 @@
         <li class="nav-item dropdown">
 
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <i class="fa fa-comments"></i><span class="badge badge-pill">{{ count(getChatMessage()) }}</span>
+                <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
+                {{-- {{ count(getChatMessage()) }} --}}
             </a>
             <div class="dropdown-menu notifications">
                 <div class="topnav-dropdown-header">
@@ -47,8 +48,8 @@
                     <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a>
                 </div>
                 <div class="noti-content">
-                    <ul class="notification-list">
-                        @foreach (getChatMessage() as $index => $message)
+                    <ul class="notification-list getChatMessage">
+                        {{-- @foreach (getChatMessage() as $index => $message)
                             @php
                                 $user = app\Models\User::find($message->from_id);
                             @endphp
@@ -69,7 +70,7 @@
                                     </div>
                                 </a>
                             </li>
-                        @endforeach
+                        @endforeach --}}
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">

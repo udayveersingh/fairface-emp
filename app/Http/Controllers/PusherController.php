@@ -16,9 +16,9 @@ class PusherController extends Controller
         // $id = decrypt($id);
         $user = User::find($id);
         $messages = CHMessage::orderBy('id')->get();
-        $seenMsg = ChMessage::where('from_id','=',$id)->where('seen','=',0)->first();
+        $seenMsg = ChMessage::where('from_id', '=', $id)->where('seen', '=', 0)->first();
         // dd($seenMsg);
-        if(!empty($seenMsg)){
+        if (!empty($seenMsg)) {
             $seenMsg->seen = 1;
             $seenMsg->save();
         }
@@ -54,7 +54,7 @@ class PusherController extends Controller
     public function receive(Request $request)
     {
         // Fetch messages from the database
-        $receiver =ChMessage::where('from_id','=',$request->input('userID'))->first();
+        $receiver = ChMessage::where('from_id', '=', $request->input('userID'))->first();
 
         $message = $request->get('message');
         // Pass the messages to the receive.blade.php view
@@ -65,8 +65,8 @@ class PusherController extends Controller
 
     public function showChatMessage()
     {
-        $newMessage = ChMessage::where('to_id','=',Auth::user()->id)->latest()->get();
-        return json_encode(array('newmessage' => $newMessage));
-        // dd($newMessage);
+        $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->get();
+        $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
+        return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
     }
 }

@@ -17,52 +17,55 @@
                     <p>{{ $formatedDate }}</p>
                 </div>
             </div>
-        <div class="chat">
+            <div class="chat">
 
-            <!-- Header -->
-            <div class="top">
-                <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;" alt="Avatar">
-                <div>
-                    <p>{{ ucFirst($user->name) }}</p>
-                    <small>Online</small>
+                <!-- Header -->
+                <div class="top">
+                    <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
+                        alt="Avatar">
+                    <div>
+                        <p>{{ ucFirst($user->name) }}</p>
+                        <small>Online</small>
+                    </div>
                 </div>
-            </div>
-            <!-- End Header -->
-            <div class="card-scroll p-1">
+                <!-- End Header -->
+                <div class="card-scroll p-1">
 
-                <!-- Chat -->
-                <div class="messages">
-                    {{-- @if (empty($messages)) --}}
-                    @include('receive', ['message' => "Hey! What's up!  👋"])
-                    {{-- @else --}}
-                    {{-- @include('receive', [
+                    <!-- Chat -->
+                    <div class="messages">
+                        {{-- @if (empty($messages)) --}}
+                        @include('receive', ['message' => "Hey! What's up!  👋"])
+                        {{-- @else --}}
+                        {{-- @include('receive', [
                 'message' => 'Ask a friend to open this link and you can chat with them!',
             ]) --}}
 
-                    {{-- @include('receive', [
+                        {{-- @include('receive', [
                     'message' => $messages,
                 ]) --}}
-                    {{-- @endif --}}
+                        {{-- @endif --}}
+                    </div>
+                    <!-- End Chat -->
+
                 </div>
-                <!-- End Chat -->
-
-            </div>
-            <!-- Footer -->
-            <div class="bottom">
-                {{-- @dd($from_id); --}}
-                <form style="display:flex; gap:10px;" id="chat-form">
-                    <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
-                    <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
-                    <input type="hidden" id="to_id" value="{{ $user->id }}">
-                    {{-- <input type="hidden" id="receiver_user"
+                <!-- Footer -->
+                <div class="bottom">
+                    {{-- @dd($from_id); --}}
+                    <form style="display:flex; gap:10px;" id="chat-form">
+                        <input type="text" id="message" name="message" placeholder="Enter message..."
+                            autocomplete="off">
+                        <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
+                        <input type="hidden" id="to_id" value="{{ $user->id }}">
+                        {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
-                    <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i class="fa fa-paper-plane"></i></button>
-                </form>
-            </div>
-            <!-- End Footer -->
+                        <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
+                                class="fa fa-paper-plane"></i></button>
+                    </form>
+                </div>
+                <!-- End Footer -->
 
+            </div>
         </div>
-    </div>
         {{-- </body> --}}
     @endsection
     @section('scripts')

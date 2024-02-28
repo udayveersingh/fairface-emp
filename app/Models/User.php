@@ -57,8 +57,4 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function messages()
-    {
-        return $this->hasMany(Message::class);
-    }
 }

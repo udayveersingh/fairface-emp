@@ -177,7 +177,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         Mews\Captcha\CaptchaServiceProvider::class,
-
     ],
 
     /*
