@@ -307,6 +307,12 @@
                 $('.countNewMsg').html(data.count);
                 var html = "";
                 $.each(data.newmessage, function(index, row) {
+                    if(data.count > 0){
+                        $('.chatShowDropDown').addClass('show');
+                        $('.chatShowDropDown').css("transform","translate3d(-136px, 5px, 0px)");
+                    }else{
+                        $('.chatShowDropDown').hide();
+                    }
                     var UserID = row.from_user.id;
                     var url = "/chat-view/" + UserID;
                     var avatarImg = row.from_user.avatar;
