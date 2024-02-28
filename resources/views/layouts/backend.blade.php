@@ -301,13 +301,13 @@
     // setInterval(function() {
     // alert("hello");
 
-    $.ajax({
-        url: "/show-chat-message",
-        dataType: 'json',
-        success: function(data) {
-            // getChatMessage();
-        }
-    });
+    // $.ajax({
+    //     url: "/show-chat-message",
+    //     dataType: 'json',
+    //     success: function(data) {
+    //         // getChatMessage();
+    //     }
+    // });
     // }, 3000);
 </script>
 
