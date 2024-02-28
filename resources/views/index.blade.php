@@ -59,7 +59,7 @@
                         {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
                         <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
-                                class="fa fa-paper-plane"></i></button>
+                                class="fa fa-paper-plane mt-2"></i></button>
                     </form>
                 </div>
                 <!-- End Footer -->

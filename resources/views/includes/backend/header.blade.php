@@ -36,16 +36,16 @@
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getRejectedLeaveByAdminNotification()); --}}
         <!-- Notifications -->
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown show">
 
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
                 {{-- {{ count(getChatMessage()) }} --}}
             </a>
-            <div class="dropdown-menu notifications">
+            <div class="dropdown-menu notifications chatShowDropDown">
                 <div class="topnav-dropdown-header">
-                    <span class="notification-title">Notifications</span>
-                    <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a>
+                    <span class="notification-title">New Chat Alert</span>
+                    {{-- <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a> --}}
                 </div>
                 <div class="noti-content">
                     <ul class="notification-list getChatMessage">
