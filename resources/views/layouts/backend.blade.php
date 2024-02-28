@@ -157,23 +157,23 @@
                                                         <span class="noti-title">tested</span>
                                                     </p>
                                                 </div> --}}
-                                        {{-- </div> --}}
+                                            {{-- </div> --}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Content Starts -->
+                @yield('content')
+                <!-- /Content End -->
+
             </div>
-
-            <!-- Content Starts -->
-            @yield('content')
-            <!-- /Content End -->
-
+            <!-- /Page Content -->
         </div>
-        <!-- /Page Content -->
-    </div>
-    <!-- /Page Wrapper -->
+        <!-- /Page Wrapper -->
     </div>
     <!-- /Main Wrapper -->
 
@@ -298,17 +298,26 @@
     // });
 
     // Function to handle sending messages
-    // setInterval(function() {
-    // alert("hello");
-
-    // $.ajax({
-    //     url: "/show-chat-message",
-    //     dataType: 'json',
-    //     success: function(data) {
-    //         // getChatMessage();
-    //     }
-    // });
-    // }, 3000);
+    setInterval(function() {
+    // setTimeout(function() {
+        $.ajax({
+            url: "/show-chat-message",
+            dataType: 'json',
+            success: function(data) {
+                $('.countNewMsg').html(data.count);
+                var html = "";
+                $.each(data.newmessage, function(index, row) {
+                    var UserID = row.from_user.id;
+                    var url = "/chat-view/" + UserID;
+                    var avatarImg = row.from_user.avatar;
+                    html += `<li class="notification-message"><a href="${url}" target="_blank"><div class="media"><span class="avatar">
+                            <img src="{{ asset('storage/employees/${avatarImg}') }}"></span><div class="media-body"><p class="noti-details"><span class="noti-title">Added new message from ${row.from_user.name} </span>
+                            </p><p class="noti-time"><span class="notification-time"></span></p></div></div></a></li>`;
+                });
+                $('.getChatMessage').html(html);
+            }
+        });
+    }, 3000);
 </script>
 
 

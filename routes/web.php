@@ -384,7 +384,7 @@ Route::get('chat-view/{id?}',[PusherController::class,'index'])->name('chat-view
 Route::post('broadcast',[PusherController::class,'broadCast'])->name('broadcast');
 Route::post('receive',[PusherController::class,'receive'])->name('receive');
 
-// Route::get('show-chat-message/',[PusherController::class,'showChatMessage'])->name('showChatMessage');
+Route::get('show-chat-message/',[PusherController::class,'showChatMessage'])->name('showChatMessage');
 
 Route::get('', function () {
     return redirect()->route('dashboard');
