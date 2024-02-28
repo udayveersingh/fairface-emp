@@ -74,7 +74,7 @@
                     </ul>
                 </div>
                 <div class="topnav-dropdown-footer">
-                    <a href="{{ route('activity') }}">View all Notifications</a>
+                    {{-- <a href="{{ route('activity') }}">View all Notifications</a> --}}
                 </div>
             </div>
         </li>
