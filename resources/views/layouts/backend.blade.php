@@ -307,16 +307,17 @@
                 $('.countNewMsg').html(data.count);
                 var html = "";
                 $.each(data.newmessage, function(index, row) {
-                    if(data.count > 0){
-                        $('.chatShowDropDown').addClass('show');
-                        $('.chatShowDropDown').css("transform","translate3d(-136px, 5px, 0px)");
-                    }else{
-                        $('.chatShowDropDown').hide();
-                    }
+                    // if(data.count != ""){
+                    //     console.log(data.count);
+                    //     $('.chatShowDropDown').addClass('show');
+                    //     $('.chatShowDropDown').css("transform","translate3d(-136px, 5px, 0px)");
+                    // }else{
+                    //     $('.chatShowDropDown').removeClass('show');
+                    // }
                     var UserID = row.from_user.id;
                     var url = "/chat-view/" + UserID;
                     var avatarImg = row.from_user.avatar;
-                    html += `<li class="notification-message"><a href="${url}" target="_blank"><div class="media"><span class="avatar">
+                    html += `<li class="notification-message"><a href="${url}"><div class="media"><span class="avatar">
                             <img src="{{ asset('storage/employees/${avatarImg}') }}"></span><div class="media-body"><p class="noti-details"><span class="noti-title">Added new message from ${row.from_user.name} </span>
                             </p><p class="noti-time"><span class="notification-time"></span></p></div></div></a></li>`;
                 });
