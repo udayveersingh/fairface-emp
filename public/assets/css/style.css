@@ -9811,8 +9811,13 @@ ul.comment-list li ul.children {
 }
 
 .card-box-height {
-   min-height: 135px;
+	min-height: 135px;
 
 }
 
-
+.user-chat-info-box {
+	border: 1px solid #e5e5e5;
+    padding: 6px;
+    margin-bottom: 14px;
+    height: 39px;
+}

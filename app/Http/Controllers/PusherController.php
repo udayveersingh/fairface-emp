@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Events\PusherBroadcast;
 use App\Models\ChMessage;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Support\Facades\Auth;
 
 class PusherController extends Controller
@@ -15,18 +17,28 @@ class PusherController extends Controller
         $title = "chat";
         // $id = decrypt($id);
         $user = User::find($id);
-        $messages = CHMessage::orderBy('id')->get();
+        // $url = request()->segments();
+        // if (!empty($url['1'])) {
+        //     $seenMsg = ChMessage::where('from_id', '=', $url['1'])->where('seen', '=', 0)->first();
+        // } else {
         $seenMsg = ChMessage::where('from_id', '=', $id)->where('seen', '=', 0)->first();
+        // }
+
+        $messages = CHMessage::orderBy('id')->get();
         // dd($seenMsg);
         if (!empty($seenMsg)) {
             $seenMsg->seen = 1;
             $seenMsg->save();
         }
-
-        // $seenMsg = ChMessage::where('from_id','=',$id)->update(['seen' => 1]);
-        // $from_id = CHMessage::where('from_id','=',$id)->first();
+        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
+            $userID = Auth::user()->id;
+            $today_logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name','users.avatar')->whereDay('user_logs.created_at', now()->day)->where('roles.name', '!=', 'Super admin')->where('users.id', '!=', $userID)
+            ->where('status','=',1)->orderBy('user_logs.id', 'DESC')->get();
+            return view('index', compact('title', 'user', 'messages','today_logs'));
+        } else {
+            return view('index', compact('title', 'user', 'messages'));
+        }
         // return json_encode(array('messages' => $messages));
-        return view('index', compact('title', 'user', 'messages'));
     }
 
     public function allchats()
