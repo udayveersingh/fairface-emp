@@ -381,10 +381,7 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::get('chat-view/{id?}',[PusherController::class,'index'])->name('chat-view');
-<<<<<<< HEAD
-// Route::get('all-chats/{id?}',[PusherController::class,'allchats'])->name('showChatMessage');
-=======
->>>>>>> origin/main
+Route::get('chat/{id?}',[PusherController::class,'chatView'])->name('chat');
 Route::post('broadcast',[PusherController::class,'broadCast'])->name('broadcast');
 Route::post('receive',[PusherController::class,'receive'])->name('receive');
 
