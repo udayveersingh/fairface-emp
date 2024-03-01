@@ -305,15 +305,9 @@
             dataType: 'json',
             success: function(data) {
                 $('.countNewMsg').html(data.count);
+                // console.log(data ,"data message");
                 var html = "";
                 $.each(data.newmessage, function(index, row) {
-                    // if(data.count != ""){
-                    //     console.log(data.count);
-                    //     $('.chatShowDropDown').addClass('show');
-                    //     $('.chatShowDropDown').css("transform","translate3d(-136px, 5px, 0px)");
-                    // }else{
-                    //     $('.chatShowDropDown').removeClass('show');
-                    // }
                     var UserID = row.from_user.id;
                     var url = "/chat-view/" + UserID;
                     var avatarImg = row.from_user.avatar;

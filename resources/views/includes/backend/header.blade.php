@@ -38,45 +38,38 @@
         <!-- Notifications -->
         <li class="nav-item dropdown show">
 
-            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
-                {{-- {{ count(getChatMessage()) }} --}}
-            </a>
-            <div class="dropdown-menu notifications chatShowDropDown">
-                <div class="topnav-dropdown-header">
-                    <span class="notification-title">New Chat Alert</span>
-                    {{-- <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a> --}}
+            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
+                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                    <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
+                    {{-- {{ count(getChatMessage()) }} --}}
+                </a>
+                <div class="dropdown-menu notifications chatShowDropDown">
+                    <div class="topnav-dropdown-header">
+                        <span class="notification-title">New Chat Alert</span>
+                        {{-- <a href="{{ route('clear-all') }}" class="clear-noti"> Clear All</a> --}}
+                    </div>
+                    <div class="noti-content">
+                        <ul class="notification-list getChatMessage">
+
+
+
+                        </ul>
+                    </div>
+                    <div class="topnav-dropdown-footer">
+                        {{-- <a href="{{ route('activity') }}">View all Notifications</a> --}}
+                    </div>
                 </div>
-                <div class="noti-content">
-                    <ul class="notification-list getChatMessage">
-                        {{-- @foreach (getChatMessage() as $index => $message)
-                            @php
-                                $user = app\Models\User::find($message->from_id);
-                            @endphp
-                            <li class="notification-message">
-                                <a href="{{route('chat-view',$user->id)}}" target="_blank">
-                                    <div class="media">
-                                        <span class="avatar">
-                                            <img src="{{ asset('storage/employees/'.$user->avatar) }}">
-                                        </span>
-                                        <div class="media-body">
-                                            <p class="noti-details"><span class="noti-title">Added new message from {{ucfirst($user->name)}} </span>
-                                            </p>
-                                            <p class="noti-time">
-                                                <span
-                                                    class="notification-time">{{ $message->created_at->diffForHumans() }}</span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach --}}
-                    </ul>
-                </div>
-                <div class="topnav-dropdown-footer">
-                    {{-- <a href="{{ route('activity') }}">View all Notifications</a> --}}
-                </div>
-            </div>
+            @else
+                @php
+                    $roleID = App\Models\Role::where('name', '=', App\Models\Role::SUPERADMIN)->value('id');
+                    if (!empty($roleID)) {
+                        $userID = App\Models\User::where('role_id', '=', $roleID)->value('id');
+                    }
+                @endphp
+                <a href="{{ route('chat-view', $userID) }}" class="dropdown-toggle nav-link">
+                    <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
+                </a>
+            @endif
         </li>
         <li class="nav-item dropdown">
 
@@ -121,9 +114,15 @@
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             @foreach (getNewLeaveNotifiaction() as $notification)
                                 @php
-                                    $leave = App\Models\Leave::with('leaveType', 'employee', 'time_sheet_status')->find($notification->leave);
-                                    $emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname : '';
-                                    $emp_last_name = !empty($leave->employee->lastname) ? $leave->employee->lastname : '';
+                                    $leave = App\Models\Leave::with('leaveType', 'employee', 'time_sheet_status')->find(
+                                        $notification->leave,
+                                    );
+                                    $emp_first_name = !empty($leave->employee->firstname)
+                                        ? $leave->employee->firstname
+                                        : '';
+                                    $emp_last_name = !empty($leave->employee->lastname)
+                                        ? $leave->employee->lastname
+                                        : '';
                                     $emp_full_name = $emp_first_name . ' ' . $emp_last_name;
                                 @endphp
                                 @if (!empty($leave))

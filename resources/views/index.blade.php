@@ -4,7 +4,7 @@
     @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
         <div class="row">
             <div class="col-md-3">
-                <div class="card flex-fill" style="height: 38rem;">
+                <div class="card flex-fill" style="height: 35rem;">
                     <div class="card-body">
                         <h4 class="card-title">Online Users<span class="badge bg-inverse-danger ml-2"></span></h4>
                         <div class="card-scroll p-1 chat-card-scroll">
@@ -14,25 +14,33 @@
                                     $current_date = date('Y-m-d');
                                     $login_date = date('Y-m-d', strtotime($log->date_time));
                                 @endphp
-                                <div class="user-chat-info-box user-chat-btn px-3" data-from_id="{{ Auth::user()->id }}"
-                                    data-to_id="{{ $log->user_id }}">
-                                    <div class="media align-items-center">
-                                        <a href="#">
-                                            {{-- <img
+                                <div class="d-flex gap-3 align-items-center justify-content-between mb-3">
+
+
+                                    <div class="user-chat-info-box user-chat-btn px-3 m-0 flex-auto w-100"
+                                        data-from_id="{{ Auth::user()->id }}" data-to_id="{{ $log->user_id }}">
+                                        <div class="media align-items-center">
+                                            <a href="#">
+                                                {{-- <img
                                                 src="{{ !empty($log->avatar) ? asset('storage/employees/' . $log->avatar) : asset('assets/img/user.jpg') }}"> --}}
-                                            {{-- <div class="media-body"> --}}
-                                            <div class="online-dot-icon">
-                                                @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
-                                                    <div class="noti-dot text-success"></div>
-                                                @else
-                                                    <div class="noti-dot text-danger"></div>
-                                                @endif
-                                            </div>
-                                            <p class="noti-details"><span class="noti-title">{{ $log->username }}
-                                                </span>
-                                            </p>
-                                            {{-- </div> --}}
-                                        </a>
+                                                {{-- <div class="media-body"> --}}
+                                                <div class="online-dot-icon">
+                                                    @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
+                                                        <div class="noti-dot text-success"></div>
+                                                    @else
+                                                        <div class="noti-dot text-danger"></div>
+                                                    @endif
+                                                </div>
+                                                <p class="noti-details"><span class="noti-title">{{ $log->username }}</span>
+                                                </p>
+                                                {{-- </div> --}}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ml-2 flex-0 d-flex">
+
+                                        <i class="fa fa-comments"></i>
+                                        <sup class="text-danger" id="counter_{{ $log->user_id }}"></sup>
                                     </div>
                                 </div>
                             @endforeach
@@ -42,13 +50,13 @@
 
             </div>
             <div class="col-md-9">
-                <div class="welcome-box" style="margin:0px;">
-                    <div class="welcome-img">
+                <div class="welcome-box p-1" style="margin:0px;">
+                    <div class="welcome-image pr-2">
                         <img src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
                             alt="user">
                     </div>
                     <div class="welcome-det">
-                        <h3>Welcome,{{ Auth::user()->name }}</h3>
+                        <h4>Welcome,{{ Auth::user()->name }}</h4>
                         @php
                             $date = Carbon\Carbon::now();
                             $formatedDate = $date->format('l' . ',' . 'd M Y');
@@ -57,7 +65,7 @@
                     </div>
                 </div>
                 <div class="chat">
-                    
+
                     <div class="chat-section">
                         <!-- Header -->
                         <div class="top">
@@ -79,23 +87,23 @@
 
                         </div>
                     </div>
-                        <!-- Footer -->
-                        <div class="bottom">
-                            {{-- @dd($from_id); --}}
-                            <form style="display:flex; gap:10px;" class="chat-form">
-                                <input type="text" id="message" name="message" placeholder="Enter message..."
-                                    autocomplete="off">
-                                <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" id="to_id" value="{{ $user->id }}">
-                                {{-- <input type="hidden" id="receiver_user"
+                    <!-- Footer -->
+                    <div class="bottom">
+                        {{-- @dd($from_id); --}}
+                        <form style="display:flex; gap:10px;" class="chat-form">
+                            <input type="text" id="message" name="message" placeholder="Enter message..."
+                                autocomplete="off">
+                            <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
+                            <input type="hidden" id="to_id" value="{{ $user->id }}">
+                            {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
-                                <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
-                                        class="fa fa-paper-plane mt-2"></i></button>
-                            </form>
-                        </div>
-                        <!-- End Footer -->
-
+                            <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
+                                    class="fa fa-paper-plane mt-2"></i></button>
+                        </form>
                     </div>
+                    <!-- End Footer -->
+
+                </div>
             </div>
         @else
             <div class="row">
@@ -159,7 +167,6 @@
     <script>
         $(document).ready(function() {
             var userID = $('#to_id').val();
-            console.log(userID, "userID ");
             // const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             //     cluster: 'ap2'
             // });
@@ -189,6 +196,7 @@
                                 '<div class="message left"><img src="{{ asset('storage/employees/' . $user->avatar) }}" alt="Avatar"><p>' +
                                 data.message + '</p></div>';
                         };
+                        MessageCounter();
                         $('.messages').append(html);
                     });
 
@@ -240,7 +248,7 @@
                 var to_id = $(this).data('to_id');
                 $('#from_id').val(from_id);
                 $('#to_id').val(to_id);
-                console.log(from_id, to_id , "from_id","to_id");
+                console.log(from_id, to_id, "from_id", "to_id");
                 $.ajax({
                     url: '/chat/' + to_id,
                     dataType: 'json',
@@ -269,8 +277,48 @@
                         $('.chat-section').html(chatHtml);
                     },
                 });
+                MessageCounter();
             });
 
+
+
+            // var array = [];
+            // $(".user-chat-btn").each(function() {
+            //     array.push($(this).data("to_id"));
+            // });
+
+            // console.log(array, "array");
+
+
+
+
+
+            // $("#result").append("Results "+array.join(","))
+
+
+
+            //   setInterval(function() {
+            // setTimeout(function() {
+
+            function MessageCounter() {
+                $(".user-chat-btn").each(function() {
+                    $.ajax({
+                        url: "/chat-message-counter",
+                        method: "POST",
+                        dataType: 'json',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            to_id: $(this).data("to_id"),
+                        },
+                        success: function(data) {
+                            console.log(data, "data data")
+                            console.log(data.message_counter);
+                            $('#counter_' + data.to_id).html(data.message_counter);
+                        }
+                    });
+                    // }, 3000);
+                });
+            };
         });
     </script>
 @endsection

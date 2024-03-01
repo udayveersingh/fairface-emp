@@ -17,24 +17,19 @@ class PusherController extends Controller
         $title = "chat";
         // $id = decrypt($id);
         $user = User::find($id);
-        // $url = request()->segments();
-        // if (!empty($url['1'])) {
-        //     $seenMsg = ChMessage::where('from_id', '=', $url['1'])->where('seen', '=', 0)->first();
-        // } else {
-        $seenMsg = ChMessage::where('from_id', '=', $id)->where('seen', '=', 0)->first();
-        // }
-
+        $seenMsgs = ChMessage::where('from_id', '=', $id)->where('seen', '=', 0)->get();
         $messages = CHMessage::orderBy('id')->get();
-        // dd($seenMsg);
-        if (!empty($seenMsg)) {
-            $seenMsg->seen = 1;
-            $seenMsg->save();
+        if (!empty($seenMsgs)) {
+            foreach ($seenMsgs as $msg) {
+                $msg->seen = 1;
+                $msg->save();
+            }
         }
-        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN || Auth::user()->role->name == Role::ADMIN) {
+        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
             $userID = Auth::user()->id;
-            $today_logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name','users.avatar')->whereDay('user_logs.created_at', now()->day)->where('roles.name', '!=', 'Super admin')->where('users.id', '!=', $userID)
-            ->where('status','=',1)->orderBy('user_logs.id', 'DESC')->get();
-            return view('index', compact('title', 'user', 'messages','today_logs'));
+            $today_logs = UserLog::join('users', 'users.id', '=', 'user_logs.user_id')->join('roles', 'roles.id', '=', 'users.role_id')->select('user_logs.*', 'users.username', 'users.email', 'roles.name', 'users.avatar')->whereDay('user_logs.created_at', now()->day)->where('roles.name', '!=', 'Super admin')->where('users.id', '!=', $userID)
+                ->where('status', '=', 1)->orderBy('user_logs.id', 'DESC')->get();
+            return view('index', compact('title', 'user', 'messages', 'today_logs'));
         } else {
             return view('index', compact('title', 'user', 'messages'));
         }
@@ -58,8 +53,6 @@ class PusherController extends Controller
         $messages->body = $request->get('message');
         $messages->save();
         $chat_messages = ChMessage::latest()->first();
-        getChatMessage($request->get('to_id'));
-        // $user = User::find($request->get('to_id'));
         return view('broadcast', ['messages' => $chat_messages]);
     }
 
@@ -77,9 +70,15 @@ class PusherController extends Controller
 
     public function showChatMessage()
     {
-        $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->get();
-        $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
-        return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
+        if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
+            $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->get();
+            $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
+            return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
+        } else {
+            $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->get();
+            $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
+            return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
+        }
     }
 
 
@@ -94,7 +93,19 @@ class PusherController extends Controller
             $seenMsg->seen = 1;
             $seenMsg->save();
         }
-        return json_encode(array('messages' => $messages, 'user' => $user , 'loginUser' => $loginUser ));
+        return json_encode(array('messages' => $messages, 'user' => $user, 'loginUser' => $loginUser));
+    }
 
+
+
+    function chatMessageCounter(Request $request)
+    {
+        $messageCounter = ChMessage::where('from_id', '=', $request->to_id)
+            ->where('seen', '=', 0)
+            ->latest()
+            ->count();
+        // dd($messageCounter);
+        return json_encode(array('message_counter' => !empty($messageCounter) ? $messageCounter : '', 'to_id' => $request->to_id));
+        // Alternatively, you can return json_encode(array('message_counter' => $messageCounter));
     }
 }
