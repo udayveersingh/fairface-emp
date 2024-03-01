@@ -7,19 +7,20 @@
                 <div class="card flex-fill" style="height: 38rem;">
                     <div class="card-body">
                         <h4 class="card-title">Online Users<span class="badge bg-inverse-danger ml-2"></span></h4>
-                        <div class="card-scroll p-1">
+                        <div class="card-scroll p-1 chat-card-scroll">
                             @foreach ($today_logs as $log)
                                 @php
                                     $login_date = '';
                                     $current_date = date('Y-m-d');
                                     $login_date = date('Y-m-d', strtotime($log->date_time));
                                 @endphp
-                                <div class="user-chat-info-box">
+                                <div class="user-chat-info-box user-chat-btn px-3" data-from_id="{{ Auth::user()->id }}"
+                                    data-to_id="{{ $log->user_id }}">
                                     <div class="media align-items-center">
-                                        <a href="{{route('chat-view',$log->user_id)}}">
+                                        <a href="#">
                                             {{-- <img
                                                 src="{{ !empty($log->avatar) ? asset('storage/employees/' . $log->avatar) : asset('assets/img/user.jpg') }}"> --}}
-                                        {{-- <div class="media-body"> --}}
+                                            {{-- <div class="media-body"> --}}
                                             <div class="online-dot-icon">
                                                 @if (!empty($log->status == '1') && !empty($login_date) && $login_date == $current_date)
                                                     <div class="noti-dot text-success"></div>
@@ -30,8 +31,8 @@
                                             <p class="noti-details"><span class="noti-title">{{ $log->username }}
                                                 </span>
                                             </p>
-                                        {{-- </div> --}}
-                                    </a>
+                                            {{-- </div> --}}
+                                        </a>
                                     </div>
                                 </div>
                             @endforeach
@@ -56,43 +57,45 @@
                     </div>
                 </div>
                 <div class="chat">
+                    
+                    <div class="chat-section">
+                        <!-- Header -->
+                        <div class="top">
+                            <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
+                                alt="Avatar">
+                            <div>
+                                <p>{{ ucFirst($user->name) }}</p>
+                                <small>Online</small>
+                            </div>
+                        </div>
+                        <!-- End Header -->
+                        <div class="card-scroll p-1">
 
-                    <!-- Header -->
-                    <div class="top">
-                        <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
-                            alt="Avatar">
-                        <div>
-                            <p>{{ ucFirst($user->name) }}</p>
-                            <small>Online</small>
+                            <!-- Chat -->
+                            <div class="messages">
+                                @include('receive', ['message' => "Hey! What's up!  👋"])
+                            </div>
+                            <!-- End Chat -->
+
                         </div>
                     </div>
-                    <!-- End Header -->
-                    <div class="card-scroll p-1">
-
-                        <!-- Chat -->
-                        <div class="messages">
-                            @include('receive', ['message' => "Hey! What's up!  👋"])
-                        </div>
-                        <!-- End Chat -->
-
-                    </div>
-                    <!-- Footer -->
-                    <div class="bottom">
-                        {{-- @dd($from_id); --}}
-                        <form style="display:flex; gap:10px;" id="chat-form">
-                            <input type="text" id="message" name="message" placeholder="Enter message..."
-                                autocomplete="off">
-                            <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
-                            <input type="hidden" id="to_id" value="{{ $user->id }}">
-                            {{-- <input type="hidden" id="receiver_user"
+                        <!-- Footer -->
+                        <div class="bottom">
+                            {{-- @dd($from_id); --}}
+                            <form style="display:flex; gap:10px;" class="chat-form">
+                                <input type="text" id="message" name="message" placeholder="Enter message..."
+                                    autocomplete="off">
+                                <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
+                                <input type="hidden" id="to_id" value="{{ $user->id }}">
+                                {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
-                            <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
-                                    class="fa fa-paper-plane mt-2"></i></button>
-                        </form>
-                    </div>
-                    <!-- End Footer -->
+                                <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
+                                        class="fa fa-paper-plane mt-2"></i></button>
+                            </form>
+                        </div>
+                        <!-- End Footer -->
 
-                </div>
+                    </div>
             </div>
         @else
             <div class="row">
@@ -134,7 +137,7 @@
                         <!-- Footer -->
                         <div class="bottom">
                             {{-- @dd($from_id); --}}
-                            <form style="display:flex; gap:10px;" id="chat-form">
+                            <form style="display:flex; gap:10px;" class="chat-form">
                                 <input type="text" id="message" name="message" placeholder="Enter message..."
                                     autocomplete="off">
                                 <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
@@ -193,7 +196,7 @@
 
 
             // Function to handle sending messages
-            $('#chat-form').submit(function(event) {
+            $('.chat-form').submit(function(event) {
                 event.preventDefault();
                 let message = $('#message').val();
 
@@ -230,6 +233,44 @@
                     }
                 });
             });
+
+
+            $(".user-chat-btn").on("click", function() {
+                var from_id = $(this).data('from_id');
+                var to_id = $(this).data('to_id');
+                $('#from_id').val(from_id);
+                $('#to_id').val(to_id);
+                console.log(from_id, to_id , "from_id","to_id");
+                $.ajax({
+                    url: '/chat/' + to_id,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data.user.avatar);
+                        let avatarIMG = data.user.avatar;
+                        let username = data.user.name;
+                        let messages = data.messages;
+                        console.log(messages, "message");
+                        var chatHtml =
+                            `<div class="chat"><div class="top"><img src="{{ asset('storage/employees/${avatarIMG}') }}" width="50px;" height="50px;"
+                            alt="Avatar"><div><p>${username}</p><small>Online</small></div></div><div class="card-scroll p-1">`;
+                        chatHtml += `<div class="messages">`;
+                        $.each(data.messages, function(index, row) {
+                            if (row.to_id == data.loginUser && row.from_id == data.user
+                                .id) {
+                                chatHtml +=
+                                    `<div class="message left"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`;
+                            } else if (row.from_id == data.loginUser && row.to_id ==
+                                data.user.id) {
+                                chatHtml +=
+                                    `<div class="message right"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`
+                            }
+                        });
+                        chatHtml += `<div class="left message"></div></div></div></div>`;
+                        $('.chat-section').html(chatHtml);
+                    },
+                });
+            });
+
         });
     </script>
 @endsection

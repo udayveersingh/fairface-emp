@@ -81,4 +81,20 @@ class PusherController extends Controller
         $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
         return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
     }
+
+
+    public function chatView($id)
+    {
+        $user = User::find($id);
+        $seenMsg = ChMessage::where('from_id', '=', $id)->where('seen', '=', 0)->first();
+        $messages = CHMessage::with('from_user')->orderBy('id')->get();
+        $loginUser = Auth::user()->id;
+        // dd($seenMsg);
+        if (!empty($seenMsg)) {
+            $seenMsg->seen = 1;
+            $seenMsg->save();
+        }
+        return json_encode(array('messages' => $messages, 'user' => $user , 'loginUser' => $loginUser ));
+
+    }
 }

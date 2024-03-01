@@ -9821,3 +9821,9 @@ ul.comment-list li ul.children {
     margin-bottom: 14px;
     height: 39px;
 }
+
+.chat-card-scroll
+{
+	overflow-y: auto;
+    height: 400px;
+}
