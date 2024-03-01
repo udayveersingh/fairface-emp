@@ -34,7 +34,8 @@
   box-sizing: border-box;
   border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
   justify-content: space-between !important;
-  padding: 1.5rem !important;
+  /* padding: 1.5rem !important; */
+  padding: 1.5rem;
 }
 .chat .top img {
   display: inline-block;

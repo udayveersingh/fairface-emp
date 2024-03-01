@@ -7606,6 +7606,11 @@ ul.comment-list li ul.children {
 	width: 60px;
 }
 
+.welcome-image img {
+	border-radius: 8px;
+	width: 30px;
+}
+
 .welcome-det p {
 	color: #777;
 	font-size: 18px;
@@ -9817,12 +9822,12 @@ ul.comment-list li ul.children {
 
 .user-chat-info-box {
 	border: 1px solid #e5e5e5;
-    padding: 6px;
-    margin-bottom: 14px;
-    height: 39px;
+	padding: 6px;
+	margin-bottom: 14px;
+	height: 39px;
 }
- .chat-card-scroll
-{
+
+.chat-card-scroll {
 	overflow-y: auto;
-    height: 400px;
+	height: 400px;
 }
