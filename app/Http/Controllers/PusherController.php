@@ -71,7 +71,8 @@ class PusherController extends Controller
     public function showChatMessage()
     {
         if (Auth::check() && Auth::user()->role->name == Role::SUPERADMIN) {
-            $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->get();
+            $newMessage = ChMessage::with('from_user')->where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->groupBy('to_id')->latest()->get();
+            // dd( $newMessage);
             $newMessageCount = ChMessage::where('to_id', '=', Auth::user()->id)->where('from_id', '!=', Auth::user()->id)->where('seen', '=', 0)->latest()->count();
             return json_encode(array('newmessage' => $newMessage, 'count' => $newMessageCount));
         } else {
