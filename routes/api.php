@@ -26,3 +26,9 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 
 Route::resource('/user-profile', UserController::class);
+Route::get('/user-address', [UserController::class,'Address']);
+Route::get('/user-document',[UserController::class,'Document']);
+Route::get('/user-job',[UserController::class,'Job']);
+Route::get('/user-visa',[UserController::class,'Visa']);
+Route::get('/user-project',[UserController::class,'Project']);
+Route::get('/user-payslip',[UserController::class,'Payslip']);
