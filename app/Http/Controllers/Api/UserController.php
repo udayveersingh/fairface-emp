@@ -145,20 +145,35 @@ class UserController extends Controller
             return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
-            $employee_addresses = EmployeeAddress::where('employee_id', '=', $employeeID)->select('home_address_line_1','home_address_line_2','address_type','post_code','from_date','to_date')->latest()->get();
-            return response()->json(['success' => true, 'data' =>  $employee_addresses ], 201);
+            $employee_addresses = EmployeeAddress::where('employee_id', '=', $employeeID)->select('home_address_line_1', 'home_address_line_2', 'address_type', 'post_code', 'from_date', 'to_date')->latest()->get();
+            return response()->json(['success' => true, 'data' =>  $employee_addresses], 201);
         }
     }
 
     public function Document()
     {
         $user = auth()->user();
-        if(is_null($user)){
-            return response()->json(['success' => false, 'message' => "Invalid Request"],401);
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
-            $employee_documents = EmployeeDocument::where('employee_id', '=', $employeeID)->select('name','attachment')->latest()->get();
-            return response()->json(['success' => true, 'data' => $employee_documents], 201);
+            $employee_documents = EmployeeDocument::where('employee_id', '=', $employeeID)->select('employee_id','name', 'attachment')->latest()->get();
+
+            $documents = [];
+            foreach ($employee_documents as $document) {
+                if (!empty($document->attachment)) {
+                    $record = [];
+                    $record['name'] = $document->name;
+                    if (file_exists(public_path() . '/storage/documents/employee/'.$document->employee_id.'/'. $document->attachment)) {
+                        $record['attachment'] = asset('/storage/documents/employee/'.$document->employee_id.'/'. $document->attachment);
+                    }
+
+                    $documents[] = $record;
+                }
+            }
+
+
+            return response()->json(['success' => true, 'data' => $documents], 201);
         }
     }
 
@@ -166,13 +181,12 @@ class UserController extends Controller
     public function Job()
     {
         $user = auth()->user();
-        if(is_null($user)){
-            return response()->json(['success' => false, 'message' => "Invalid Request"],401);
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
             $employee_jobs = EmployeeJob::where('employee_id', '=', $employeeID)->latest()->get();
             return response()->json(['success' => true, 'data' => $employee_jobs], 201);
-
         }
     }
 
@@ -180,42 +194,50 @@ class UserController extends Controller
     {
 
         $user = auth()->user();
-        if(is_null($user)){
-            return response()->json(['success' => false, 'message' => "Invalid Request"],401);
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
             $employee_visas = EmployeeVisa::where('employee_id', '=', $employeeID)->latest()->get();
             return response()->json(['success' => true, 'data' => $employee_visas], 201);
-
         }
-
-
     }
 
 
     public function Project()
     {
-
         $user = auth()->user();
-        if(is_null($user)){
-            return response()->json(['success' => false, 'message' => "Invalid Request"],401);
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
             $employee_projects = EmployeeProject::where('employee_id', '=', $employeeID)->latest()->get();
             return response()->json(['success' => true, 'data' => $employee_projects], 201);
-
         }
     }
 
     public function Payslip()
     {
-         $user = auth()->user();
-        if(is_null($user)){
-            return response()->json(['success' => false, 'message' => "Invalid Request"],401);
+        $user = auth()->user();
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
-            $employee_payslips = EmployeePayslip::where('employee_id', '=', $employeeID)->select('month','year','attachment')->latest()->get();
-            return response()->json(['success' => true, 'data' => $employee_payslips], 201);
+            $employee_payslips = EmployeePayslip::where('employee_id', '=', $employeeID)->select('month', 'year', 'attachment')->latest()->get();
+
+            $payslips = [];
+            foreach ($employee_payslips as $payslip) {
+                if (!empty($payslip->attachment)) {
+                    $record = [];
+                    $record['year'] = $payslip->year;
+                    $record['month'] = $payslip->month;
+                    if (file_exists(public_path() . '/storage/payslips/'. $payslip->attachment)) {
+                        $record['attachment'] = asset('/storage/payslips/'.$payslip->attachment);
+                    }
+                    $payslips[] = $record;
+                }
+            }
+            return response()->json(['success' => true, 'data' => $payslips], 201);
         }
     }
 }
