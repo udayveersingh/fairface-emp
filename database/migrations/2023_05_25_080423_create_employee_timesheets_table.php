@@ -30,6 +30,8 @@ class CreateEmployeeTimesheetsTable extends Migration
             $table->string('reason')->nullable();
             $table->string('status_reason')->nullable();
             $table->dateTime('approved_date_time')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }

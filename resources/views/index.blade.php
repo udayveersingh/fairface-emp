@@ -125,8 +125,13 @@
                     <div class="chat">
                         <!-- Header -->
                         <div class="top">
+                            @if(!empty($user->avatar))
                             <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
                                 alt="Avatar">
+                                @else
+                                <img src="{{ asset('assets/img/placeholder_image.jpg') }}" width="50px;" height="50px;"
+                                alt="Avatar">
+                                @endif
                             <div>
                                 <p>{{ ucFirst($user->name) }}</p>
                                 <small>Online</small>

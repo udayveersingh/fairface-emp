@@ -14,7 +14,7 @@ class AlterAddColumnUserIdInEmployeesTable extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade'); 
+            $table->bigInteger('user_id')->nullable(); 
         });
     }
 
@@ -26,8 +26,7 @@ class AlterAddColumnUserIdInEmployeesTable extends Migration
     public function down()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-            $table->dropForeign('users_user_id_foreign');
+            $table->dropColumn('user_id')->nullable();
         });
     }
 }
