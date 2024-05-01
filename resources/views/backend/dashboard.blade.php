@@ -647,7 +647,6 @@
     </div> --}}
         <!-- /Statistics Widget -->
 
-
         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
             <div class="row">
                 <div class="col-lg-12 col-md-12">

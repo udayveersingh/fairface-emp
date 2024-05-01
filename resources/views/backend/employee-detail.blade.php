@@ -234,7 +234,7 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="col-form-label">Phone Number Main </label>
+                                                        <label class="col-form-label">Phone Number Main <span class="text-danger">*</span></label>
                                                         <input class="form-control edit_phone mask_phone_number"
                                                             name="phone" required value="{{ $employee->phone }}"
                                                             type="text">
@@ -417,7 +417,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
-                            <input class="form-control floating" name="avatar" type="file">
+                            <input class="form-control floating" name="avatar" type="file" required>
                             {{-- <div class="text-center"> --}}
                                 <span class="text-danger">Please upload a valid image file. Size of image should not be more than 2MB.</span>
                                {{-- </div> --}}

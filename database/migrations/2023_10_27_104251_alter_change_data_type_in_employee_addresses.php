@@ -18,7 +18,11 @@ class AlterChangeDataTypeInEmployeeAddresses extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->string('temp_password')->nullable();
+            $table->string('temp_password')->after('avatar')->nullable();
+            $table->boolean('active_status')->after('temp_password')->default(0);
+            $table->boolean('dark_mode')->after('active_status')->default(0);
+            $table->string('messenger_color')->after('dark_mode')->nullable();
+            $table->string('role_id')->after('messenger_color')->nullable();
         });
     }
 
@@ -35,6 +39,10 @@ class AlterChangeDataTypeInEmployeeAddresses extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('temp_password')->nullable();
+            $table->dropColumn('active_status')->after('temp_password')->default(0);
+            $table->dropColumn('dark_mode')->after('active_status')->default(0);
+            $table->dropColumn('messenger_color')->after('dark_mode')->nullable();
+
         });
     }
 }

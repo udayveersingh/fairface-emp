@@ -27,6 +27,9 @@ class User extends Authenticatable implements JWTSubject
         'avatar',
         'role_id',
         'temp_password',
+        'active_status',
+        'dark_mode',
+        'messenger_color',
     ];
 
     /**
@@ -50,7 +53,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class,'role_id','id');
     }
 
     /**

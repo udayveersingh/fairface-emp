@@ -18,5 +18,6 @@ class CreateCompanySettings extends SettingsMigration
         $this->migrator->add('company.mobile','233209229025');
         $this->migrator->add('company.fax','818-978-7102');
         $this->migrator->add('company.website_url','https://www.example.com');
+        $this->migrator->add('company.timesheet_interval','weekly');
     }
 }

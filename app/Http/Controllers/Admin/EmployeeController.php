@@ -54,8 +54,9 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
-            'employee_id' => 'required',
+            'employee_id' => 'required|unique:employees,employee_id',
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',
@@ -132,7 +133,7 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'employee_id' => 'required',
+            'employee_id' =>  'required|unique:employees,employee_id,'.$request->id,
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',

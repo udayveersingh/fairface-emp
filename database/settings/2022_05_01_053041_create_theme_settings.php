@@ -11,5 +11,6 @@ class CreateThemeSettings extends SettingsMigration
         $this->migrator->add('theme.favicon','');
         $this->migrator->add('theme.currency_symbol','$');
         $this->migrator->add('theme.currency_code','USD');
+        $this->migrator->add('theme.theme_color','purple');
     }
 }

@@ -27,7 +27,6 @@ class AlterAddCountryColumnInEmployeesTable extends Migration
     public function down()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->dropColumn('country_id');
             $table->dropForeign('employees_country_id_foreign');
         });
     }

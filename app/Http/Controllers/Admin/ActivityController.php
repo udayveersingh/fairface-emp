@@ -87,6 +87,7 @@ class ActivityController extends Controller
 
     public function sendMessage(Request $request)
     {
+        // dd($request->all());
         // dd( $request->user_id);
         // $content = [
         //     'from' => $request->from,
@@ -114,7 +115,7 @@ class ActivityController extends Controller
             $company_email->save();
             return back()->with('success', "Message has been sent.");
         } else {
-            return back()->with('', "Please add employee job details");
+            return back()->with('danger', "Please add employee job details");
         }
     }
 

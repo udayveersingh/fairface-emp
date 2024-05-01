@@ -70,8 +70,8 @@
                             <li><a class="{{ route_is('visa') ? 'active' : '' }}" href="{{ route('visa') }}">Visa Type</a></li>
                             <li><a class="{{ route_is('project-phase') ? 'active' : '' }}"
                                     href="{{ route('project-phase') }}">Project Phase</a></li>
-                            <li><a class="{{ route_is('timesheet-status') ? 'active' : '' }}"
-                                    href="{{ route('timesheet-status') }}">Timesheet Status</a></li>
+                            {{-- <li><a class="{{ route_is('timesheet-status') ? 'active' : '' }}"
+                                    href="{{ route('timesheet-status') }}">Timesheet Status</a></li> --}}
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
 
