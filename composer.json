@@ -14,7 +14,6 @@
         "haruncpi/laravel-id-generator": "^1.0",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4",
         "mews/captcha": "^3.3",
         "mpdf/mpdf": "^8.2",
         "pavel-mironchik/laravel-backup-panel": "^2.2",
