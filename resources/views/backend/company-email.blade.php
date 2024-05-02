@@ -855,7 +855,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('reply-mail') }}" method="POST" enctype="multipart/form-data" id="reply_mail">
                             @csrf
                             @foreach ($company_emails as $index => $company_email)
                                 @php
@@ -1064,7 +1064,7 @@
                             <input class="form-control" type="file" name="email_attachment" id="edit_attachment">
                         </div> --}}
                             <div class="submit-section">
-                                <button type="submit" class="btn btn-primary submit-btn mb-2">Send</button>
+                                <button type="submit" class="btn btn-primary submit-btn mb-2" id="replySendMessage">Send</button>
                             </div>
                         </form>
                     </div>
@@ -1431,6 +1431,21 @@
                         // });
                     },
                 }); */
+            });
+
+            $("#replySendMessage").on("click", function(event) {
+                event.preventDefault()
+                // var edit_body = "";
+                // var edit_body = $(".replyMessage").text();
+                var description = CKEDITOR.instances['edit_body'].getData();
+                console.log(description ,"edit_body edit_body");
+                if (description != "") {
+                    $("#reply_mail").submit();
+                } else {
+                    // $(".status_val_error").html("");
+                    // $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
+                    alert("Reply Message field is required.");
+                }
             });
 
             function printDiv(divName) {

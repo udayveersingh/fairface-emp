@@ -71,13 +71,13 @@ class CompanyEmailController extends Controller
             // dd($company_emails);
         }
 
-        $count_emails = CompanyEmail::count();
+        $count_emails = CompanyEmail::where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get()->count();
         $archive_count = CompanyEmail::with('employeejob.employee')->where('archive', '=', true)->latest()->count();
         $sent_email_count = CompanyEmail::with('employeejob')->where('sent_by_user_id', '=', Auth::user()->id)->latest()->get()->count();
-        $count_unread_emails = CompanyEmail::whereNotNull('read_at')->latest()->count();
+        $count_unread_emails = CompanyEmail::whereNotNull('read_at')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->count();
 
         $notifications = DB::table('notifications')->where('type', '=', 'App\Notifications\newMailNotification')->get();
-        $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->latest()->get();
+        $company_unread_emails = CompanyEmail::with('employeejob.employee')->whereNotNull('read_at')->where('sent_by_user_id', '!=', Auth::user()->id)->latest()->get();
 
         // Notification::send($company_emails, new newMailNotification($company_emails));
         return view('backend.company-email', compact('title', 'keyword', 'company_emails', 'employee_jobs', 'count_emails', 'count_unread_emails', 'annoucement_list', 'sent_email_count', 'company_unread_emails', 'archive_count'));
@@ -240,6 +240,7 @@ class CompanyEmailController extends Controller
         $request->validate([
             'from_id' => 'required',
             'to_id' => 'required',
+            'email_body' => 'required'
         ]);
         $cc = Null;
         $to_mail_ids = "";
@@ -400,7 +401,6 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
-        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
@@ -447,8 +447,21 @@ class CompanyEmailController extends Controller
         //         ]);
         // Mail::to($to_email)->send(new WelcomeMail($emp_job_detail));
         //dd($company_email);
-        $company_email->notify(new newMailNotification($company_email));
+
         $company_email->save();
+        $company_email->notify(new newMailNotification($company_email));
+        // $notificationData = [
+        //     'company_email' => [
+        //         'id' => $company_email->id,
+        //         'from_id' => $company_email->from_id,
+        //         'to_id' => $company_email->to_id,
+        //         'subject' => $company_email->subject,
+        //         'body' => $company_email->body,
+        //         'attachment' => $company_email->attachment,
+        //     ]
+        // ];
+        
+        // $company_email->notify(new newMailNotification($notificationData));
         // return $company_email;
         // dd($company_email->notifications);
 
