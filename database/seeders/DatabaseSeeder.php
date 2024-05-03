@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             UserSeeder::class,
             TimesheetStatusSeeder::class,
+            HolidaysSeeder::class
+
         ]);
     }
 }
