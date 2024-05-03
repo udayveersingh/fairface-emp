@@ -34,8 +34,10 @@
     }
 </style>
 <div class="header">
-    <img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
-        style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
+    @if (!empty($employee->avatar))
+        <img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
+            style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
+    @endif
     <table style="border:none;" cellpadding="0" cellspacing="0">
         <tr>
             <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
@@ -107,12 +109,13 @@
             <th>Nationality</th>
             <td>{{ !empty($employee->country->name) ? $employee->country->name : '' }}</td>
         </tr>
-        <tr>
-            <th>Address</th>
-            <td>{{ $employee_address->home_address_line_1 . ',' . $employee_address->home_address_line_2 }}
-
-            </td>
-        </tr>
+        @if (!empty($employee_address->home_address_line_1))
+            <tr>
+                <th>Address</th>
+                <td>{{ $employee_address->home_address_line_1 . ',' . !empty($employee_address->home_address_line_2) ? $employee_address->home_address_line_2 : '' }}
+                </td>
+            </tr>
+        @endif
         <tr>
             <th>Passport Number</th>
             <td>{{ $employee->passport_number }}</td>
@@ -141,7 +144,7 @@
         </tr>
         <tr>
             <th>Cos Number</th>
-            <td>{{ $employee_visa->cos_number }}</td>
+            <td>{{ !empty($employee_visa->cos_number) ? $employee_visa->cos_number : '' }}</td>
         </tr>
         <tr>
             <th>Cos Issue Date</th>
