@@ -401,17 +401,17 @@ class CompanyEmailController extends Controller
      */
     public function replyStore(Request $request)
     {
+        // dd($request->all());
         $imageName = Null;
         if ($request->hasFile('email_attachment')) {
             $imageName = time() . '.' . $request->email_attachment->extension();
             $request->email_attachment->move(public_path('storage/company_email/attachment'), $imageName);
         }
         $to_ids = "";
-        if (!empty($request->to_id)) {
-            $to_ids = implode(',', $request->to_id);
+        $unique_ids = array_unique($request->to_id);
+        if (!empty($unique_ids)) {
+            $to_ids = implode(',',$unique_ids);
         }
-
-        // dd($to_ids);
 
         $cc_ids = "";
         if (!empty($request->cc)) {

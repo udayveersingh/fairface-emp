@@ -723,7 +723,7 @@
                                         if ($index > 0) {
                                             break;
                                         }
-                                        $company_to_array = explode(',', $company_email->to_id);
+                                        $company_to_array = explode(',', $company_email->from_id);
                                     @endphp
                                     <div class="form-group">
                                         <label>To<span class="text-danger">*</span></label>
@@ -783,7 +783,7 @@
                             <div class="form-group">
                                 <label>Message On: <span
                                         class="message_on">{{ !empty($company_email->created_at) ? date('d-M-Y h:i', strtotime($company_email->created_at)) : '' }}</span></label>
-                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly>{{ str_replace(['<p>', '</p>'], '', !empty($company_email->body)) ? $company_email->body : '' }}</textarea>
+                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly> {{ strip_tags(html_entity_decode($company_email->body)) }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Reply Message<span class="text-danger">*</span></label>
@@ -867,9 +867,12 @@
                                 });
                                 $(".subject").html(row.subject);
                                 $(".reply_subject").val('Re: ' + row.subject);
-                                let reply_body = row.body;
-                                $(".reply_body").val(reply_body.replace(/(<([^>]+)>)/ig,
-                                    ""));
+                                // let reply_body = row.body.replace(/(<([^>]+)>)/ig,"");
+                                let reply_body = $($.parseHTML(row.body)).text();
+                                
+                                // $(".reply_body").val(reply_body.replace(/(<([^>]+)>)/ig,""));
+                                $(".reply_body").val(reply_body)
+
                                 $(".message_on").html(dateStringWithTime);
                                 $(".card-body").html(row.body);
 

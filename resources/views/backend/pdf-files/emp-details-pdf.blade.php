@@ -43,7 +43,7 @@
             <td colspan="2" align="middle" style="padding:0; font-weight:bold; border:none;">
                 <table style="border:none;padding-bottom:10px;" cellpadding="0" cellspacing="0">
                     <tr>
-                        <td style="border:none; width:1cm; ">
+                        <td style="border:none; width:1cm;">
                             <img src="storage/settings/theme/{{ app(App\Settings\ThemeSettings::class)->logo }}"
                                 alt="profile" border="0"
                                 style="height:50px; vertical-align:middle;margin-right:5px; vertical-align:middle;">
