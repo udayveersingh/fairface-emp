@@ -783,7 +783,7 @@
                             <div class="form-group">
                                 <label>Message On: <span
                                         class="message_on">{{ !empty($company_email->created_at) ? date('d-M-Y h:i', strtotime($company_email->created_at)) : '' }}</span></label>
-                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly> {{ strip_tags(html_entity_decode($company_email->body)) }}</textarea>
+                                <textarea class="form-control reply_body" id="edit_body" name="email_body" rows="4" cols="50" readonly> {{ !empty($company_email->body) ? strip_tags(html_entity_decode($company_email->body)) : '' }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label>Reply Message<span class="text-danger">*</span></label>
