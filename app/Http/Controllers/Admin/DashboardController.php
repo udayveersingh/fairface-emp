@@ -175,7 +175,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function sendReminderMail($expiry_date,$type, $emp_id)
+    public function sendReminderMail($type,$expiry_date,$emp_id)
     {
         $employee = Employee::find($emp_id);
         $employee_job = EmployeeJob::where('employee_id', '=', $employee->id)->first();
