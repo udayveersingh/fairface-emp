@@ -29,7 +29,6 @@ class CompanyEmailController extends Controller
      */
     public function index(Request $request)
     {
-
         $title = "Company Email";
         $keyword = 'inbox';
         $employee_jobs = EmployeeJob::with('employee')->get();
@@ -145,12 +144,12 @@ class CompanyEmailController extends Controller
                 // return redirect()->route('user-email-inbox')->with('success', 'please add job information');
             }
 
-            $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id', '=', $employee_job->id)->where('archive', '=', true)->latest()->get();
+            $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id', '=', $employee_job->id)->where('archive', '=', null)->latest()->get();
 
             if (isset($request) && !empty($request->keyword)) {
                 if ($request->keyword == 'archive') {
                     $keyword = 'archive';
-                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->orwhere('from_id', '=', $employee_job->id)->where('archive', '=', true)->latest()->get();
+                    $company_emails = CompanyEmail::with('employeejob.employee')->whereRaw("FIND_IN_SET(?, to_id)", [$employee_job->id])->where('archive', '=', true)->latest()->get();
                 } else if ($request->keyword == 'search') {
                     $search_term = $request->value;
                     /*$company_emails = CompanyEmail::where('subject', 'LIKE', "%{$search_term}%")

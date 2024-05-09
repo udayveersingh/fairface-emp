@@ -228,6 +228,7 @@
                                 <table class="table table-hover mails m-0 no-border emails_list" style="border:none;">
                                     <tbody>
                                         @if (!empty($company_emails))
+                                        {{-- @dd($company_emails); --}}
                                             @foreach ($company_emails as $index => $company_email)
                                                 {{-- @dd($company_email); --}}
                                                 @php
