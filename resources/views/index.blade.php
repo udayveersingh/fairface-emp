@@ -197,8 +197,9 @@
                         var ToID = userID;
                         var LoginUser = '{{ Auth::user()->id }}';
                         if (LoginUser == data.to_id && userID == data.from_id) {
-                            var html =
-                                '<div class="message left"><img src="{{ asset('storage/employees/' . $user->avatar) }}" alt="Avatar"><p>' +
+                            var html ='<div class="message left">@if (file_exists(public_path().'storage/employees/'. $user->avatar))'+
+                            '<img src="{{ asset('storage/employees/'. $user->avatar) }}" alt="Avatar">'+
+                            '@else<img src="{{ asset('assets/img/user.jpg')}}" alt="Avatar">@endif<p>' +
                                 data.message + '</p></div>';
                         };
                         MessageCounter();
@@ -232,7 +233,9 @@
                     success: function(res) {
                         // Append the sent message to the chat interface
                         $('.messages').append(
-                            '<div class="message right"><p><img src="{{ asset('storage/employees/' . Auth::user()->avatar) }}" alt="Profile picture">' +
+                            '<div class="message right"><p>@if (file_exists(public_path().'storage/employees/'. Auth::user()->avatar))'+
+                            '<img src="{{ asset('storage/employees/'. Auth::user()->avatar) }}" alt="Avatar">'+
+                            '@else<img src="{{ asset('assets/img/user.jpg')}}" alt="Avatar">@endif' +
                             $('#message')
                             .val() +
                             '</p></div>'

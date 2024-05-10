@@ -73,7 +73,7 @@
                                                 @method('PUT')
                                                 <input type="hidden" id="edit_id" name="id">
                                                 <label>Project Phase<span class="text-danger">*</span></label>
-                                                <input class="form-control" name="project_phase" id="project_phase"
+                                                <input class="form-control" name="project_phase" required id="project_phase"
                                                     type="text">
                                                 <div class="submit-section">
                                                     <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -106,7 +106,7 @@
                         @csrf
                         <input type="hidden" id="edit_id" name="id">
                         <label>Project Phase<span class="text-danger">*</span></label>
-                        <input class="form-control" name="project_phase" type="text">
+                        <input class="form-control" name="project_phase" required type="text">
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Save</button>
                         </div>

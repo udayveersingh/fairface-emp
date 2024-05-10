@@ -21,12 +21,12 @@
     <?php
     $tabs = [
         'document' => 'Document',
-        'job'     => 'Job',
-        'visa'    => 'Visa',
+        'job' => 'Job',
+        'visa' => 'Visa',
         'project' => 'Project',
         'contact' => 'Contact',
         'address' => 'Address',
-        'bank'    => 'Bank',
+        'bank' => 'Bank',
         'payslip' => 'Payslip',
     ];
     ?>
@@ -85,7 +85,8 @@
                                 </tr>
                                 <tr>
                                     <th>Date of Birth</th>
-                                    <td>{{ !empty($employee->date_of_birth) ? date('d-m-Y',strtotime($employee->date_of_birth)):'' }}</td>
+                                    <td>{{ !empty($employee->date_of_birth) ? date('d-m-Y', strtotime($employee->date_of_birth)) : '' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Nationality</th>
@@ -101,11 +102,13 @@
                                 </tr>
                                 <tr>
                                     <th>Passport Issue Date</th>
-                                    <td>{{ !empty($employee->passport_issue_date) ? date('d-m-Y',strtotime($employee->passport_issue_date)):''}}</td>
+                                    <td>{{ !empty($employee->passport_issue_date) ? date('d-m-Y', strtotime($employee->passport_issue_date)) : '' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Passport Expire Date</th>
-                                    <td>{{ !empty($employee->passport_expiry_date) ? date('d-m-Y',strtotime($employee->passport_expiry_date)):'' }}</td>
+                                    <td>{{ !empty($employee->passport_expiry_date) ? date('d-m-Y', strtotime($employee->passport_expiry_date)) : '' }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Marital Status</th>
@@ -119,12 +122,14 @@
                                 @if ($employee->record_status == 'archieve')
                                     <tr>
                                         <th>Status Change Date</th>
-                                        <td>{{ !empty($employee->status_change_date) ? date( 'd-m-Y',strtotime($employee->status_change_date)) :'' }}</td>
+                                        <td>{{ !empty($employee->status_change_date) ? date('d-m-Y', strtotime($employee->status_change_date)) : '' }}
+                                        </td>
                                     </tr>
                                 @else
                                     <tr>
                                         <th>Created date</th>
-                                        <td>{{ !empty($employee->created_at) ? (date_format(date_create($employee->created_at), 'd-m-Y')):"" }}</td>
+                                        <td>{{ !empty($employee->created_at) ? date_format(date_create($employee->created_at), 'd-m-Y') : '' }}
+                                        </td>
                                     </tr>
                                 @endif
                             </table>
@@ -234,7 +239,8 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="col-form-label">Phone Number Main <span class="text-danger">*</span></label>
+                                                        <label class="col-form-label">Phone Number Main <span
+                                                                class="text-danger">*</span></label>
                                                         <input class="form-control edit_phone mask_phone_number"
                                                             name="phone" required value="{{ $employee->phone }}"
                                                             type="text">
@@ -252,7 +258,7 @@
 
                                                 <div class="col-sm-4">
                                                     <div class="form-group">
-                                                        <label class="col-form-label">Email <span
+                                                        <label class="col-form-label">Work Email <span
                                                                 class="text-danger">*</span></label>
                                                         <input class="form-control edit_email"
                                                             value="{{ $employee->email }}" name="email" required
@@ -307,7 +313,7 @@
                                                             <option value="">~Select Nationality~</option>
                                                             @foreach ($countries as $country)
                                                                 <option value="{{ $country->id }}"
-                                                                    {{ (!empty($employee->country_id) && ($employee->country_id == "$country->id")) ? 'selected':'' }}>
+                                                                    {{ !empty($employee->country_id) && $employee->country_id == "$country->id" ? 'selected' : '' }}>
                                                                     {{ $country->name }}</option>
                                                             @endforeach
                                                         </select>
@@ -395,11 +401,17 @@
             <form method="POST" action="{{ route('employee.add') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
+                    <input type="hidden" name="record_status" value="active">
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Employee ID <span class="text-danger">*</span></label>
                             <input class="form-control" name="employee_id" value="{{ old('employee_id') }}"
                                 type="text">
+                            @if ($errors->has('employee_id'))
+                                <span class="text-danger">
+                                    {{ $errors->first('employee_id') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -412,34 +424,55 @@
                                         {{ $branch->branch_code }}</option>
                                 @endforeach
                             </select>
+                            @if ($errors->has('branch_id'))
+                                <span class="text-danger">
+                                    The main work location field is required.
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label class="col-form-label">Employee Picture<span class="text-danger">*</span></label>
-                            <input class="form-control floating" name="avatar" type="file" required>
+                            <label class="col-form-label">Employee Picture</label>
+                            <input class="form-control floating" name="avatar" type="file">
                             {{-- <div class="text-center"> --}}
-                                <span class="text-danger">Please upload a valid image file. Size of image should not be more than 2MB.</span>
-                               {{-- </div> --}}
+                            <span class="text-danger">Please upload a valid image file. Size of image should not be more
+                                than 2MB.</span>
+                            {{-- </div> --}}
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">First Name <span class="text-danger">*</span></label>
                             <input class="form-control" name="firstname" value="{{ old('firstname') }}" type="text">
+                            @if ($errors->has('firstname'))
+                                <span class="text-danger">
+                                    {{ $errors->first('firstname') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Last Name<span class="text-danger">*</span></label>
                             <input class="form-control" name="lastname" value="{{ old('lastname') }}" type="text">
+                            @if ($errors->has('lastname'))
+                                <span class="text-danger">
+                                    {{ $errors->first('lastname') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="col-form-label">Phone Number Main </label>
+                            <label class="col-form-label">Phone Number Main <span class="text-danger">*</span> </label>
                             <input class="form-control mask_phone_number" value="{{ old('phone') }}" name="phone"
                                 type="text">
+                            @if ($errors->has('phone'))
+                                <span class="text-danger">
+                                    {{ $errors->first('phone') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -451,8 +484,13 @@
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="col-form-label">Email <span class="text-danger">*</span></label>
+                            <label class="col-form-label">Work Email <span class="text-danger">*</span></label>
                             <input class="form-control" name="email" value="{{ old('email') }}" type="email">
+                            @if ($errors->has('email'))
+                                <span class="text-danger">
+                                    {{ $errors->first('email') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-4">
@@ -474,23 +512,33 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @if ($errors->has('role_id'))
+                                <span class="text-danger">
+                                    {{ $errors->first('role_id') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
-                            <label class="col-form-label">Date of Birth</label>
+                            <label class="col-form-label">Date of Birth<span class="text-danger">*</span></label>
                             <input class="form-control edit_date_of_birth" value="{{ old('date_of_birth') }}"
                                 name="date_of_birth" type="date">
+                            @if ($errors->has('date_of_birth'))
+                                <span class="text-danger">
+                                    {{ $errors->first('date_of_birth') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">National Insurance Number</label>
                             <input class="form-control edit_insurance_number" value="{{ old('nat_insurance_number') }}"
                                 name="nat_insurance_number" type="text">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label>Nationality <span class="text-danger">*</span></label>
                             <select name="nationality" class="form-control">
@@ -500,6 +548,11 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @if ($errors->has('nationality'))
+                                <span class="text-danger">
+                                    {{ $errors->first('nationality') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -532,30 +585,33 @@
                                 </option>
                                 <option value="single">Single</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Record Status <span class="text-danger">*</span></label>
-                            <select name="record_status" class="form-control">
-                                <option value="">Select</option>
-                                <option value="active" {{ old('record_status', 'active') ? 'selected' : '' }}>Active
-                                </option>
-                                {{-- <option value="archieve" {{old('record_status', 'archieve') ? 'selected' : '' }}>Archieve</option>
-                                <option value="delete" {{old('record_status', 'delete') ? 'selected' : '' }}>Delete</option> --}}
-                            </select>
+                            @if ($errors->has('marital_status'))
+                                <span class="text-danger">
+                                    {{ $errors->first('marital_status') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Password <span class="text-danger">*</span></label>
                             <input class="form-control edit_password" name="password" type="password">
+                            @if ($errors->has('password'))
+                                <span class="text-danger">
+                                    {{ $errors->first('password') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Confirm Password <span class="text-danger">*</span></label>
                             <input class="form-control edit_password" name="password_confirmation" type="password">
+                            @if ($errors->has('password_confirmation'))
+                                <span class="text-danger">
+                                    {{ $errors->first('password_confirmation') }}
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -623,7 +679,8 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                 <span class="text-danger">Please upload a valid image file. Size of image should not be more than 2MB.</span>
+                                    <span class="text-danger">Please upload a valid image file. Size of image should not be
+                                        more than 2MB.</span>
                                 </div>
                             </div>
                         </div>

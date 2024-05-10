@@ -43,7 +43,7 @@ class EmployeeController extends Controller
         $employees = Employee::with('branch', 'user.role')->where('record_status', '=', $status)->orderBy('created_at', 'desc')->get();
         // return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
 
-        return view('backend.employees-list', compact('title', 'employees', 'branches', 'countries','status'));
+        return view('backend.employees-list', compact('title', 'employees', 'branches', 'countries', 'status'));
     }
 
     /**
@@ -54,13 +54,14 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $this->validate($request, [
             'employee_id' => 'required|unique:employees,employee_id',
+            'branch_id' => 'required',
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',
-            'phone' => 'nullable|max:25',
+            'phone' => 'required|max:12',
+            'date_of_birth' => 'required',
             'nat_insurance_number' => 'nullable|max:25',
             'passport_number' => 'nullable|max:25',
             // 'pass_issue_date' => 'required',
@@ -133,7 +134,7 @@ class EmployeeController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
-            'employee_id' =>  'required|unique:employees,employee_id,'.$request->id,
+            'employee_id' =>  'required|unique:employees,employee_id,' . $request->id,
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',

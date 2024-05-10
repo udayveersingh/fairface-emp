@@ -163,6 +163,11 @@ class EmployeeDetailController extends Controller
             $employee_payslip = EmployeePayslip::find($request->id);
             $employee_payslip->delete();
             $message = "Employee Payslip has been deleted.";
+        }elseif($request->data_model == "Employee Address")
+        {
+            $employee_address = EmployeeAddress::find($request->id);
+            $employee_address->delete();
+            $message = "Employee Address has been deleted.";  
         }
         return back()->with('success', $message);
     }

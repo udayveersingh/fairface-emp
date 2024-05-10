@@ -39,6 +39,28 @@ class ProjectController extends Controller
     }
 
     /**
+     * Display a create form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id="")
+    {
+        $title = 'projects';
+        if(!empty($id)){
+            $project = Project::find($id); 
+        }else{
+            $project="";
+        }
+
+        return view('backend.projects.create', compact(
+            'title',
+            'project'
+        ));
+    }
+
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -64,9 +86,9 @@ class ProjectController extends Controller
         $request->validate([
             'project_name' => 'required',
             'project_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'client_name' => 'required',
+            // 'start_date' => 'required',
+            // 'end_date' => 'required',
+            // 'client_name' => 'required',
         ]);
         // $files = null;
         // if($request->hasFile('project_files')){
@@ -88,7 +110,7 @@ class ProjectController extends Controller
             'client_address' => $request->client_address,
         ]);
         $notification = notify('project has been added');
-        return back()->with($notification);
+        return redirect()->route('project-list')->with($notification);
     }
 
     /**
@@ -121,9 +143,6 @@ class ProjectController extends Controller
         $request->validate([
             'project_name' => 'required',
             'project_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'client_name' => 'required',
         ]);
         $project = Project::findOrfail($request->id);
         // $files = $project->files;
@@ -146,7 +165,7 @@ class ProjectController extends Controller
             'client_address' => $request->client_address,
         ]);
         $notification = notify('project has been updated');
-        return back()->with($notification);
+        return redirect()->route('project-list')->with($notification);
     }
 
     /**

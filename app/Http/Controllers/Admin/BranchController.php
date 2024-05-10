@@ -28,10 +28,10 @@ class BranchController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'branch_code' => 'required|max:100',
-            'branch_address' => 'required|max:200',
-        ]);
+        // $this->validate($request, [
+        //     'branch_code' => 'required|max:100',
+        //     'branch_address' => 'required|max:200',
+        // ]);
 
         Branch::create($request->all());
         return back()->with('success', "Branch has been added successfully!!.");

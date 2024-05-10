@@ -72,7 +72,7 @@
                                                 <input type="hidden" id="edit_id" name="id">
                                                 <div class="form-group">
                                                     <label>Department Name <span class="text-danger">*</span></label>
-                                                    <input class="form-control" name="name" id="edit_name"
+                                                    <input class="form-control" required name="name" id="edit_name"
                                                         type="text">
                                                 </div>
                                                 <div class="submit-section">
@@ -106,7 +106,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Department Name <span class="text-danger">*</span></label>
-                            <input class="form-control" name="name" type="text">
+                            <input class="form-control" name="name" required type="text">
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>

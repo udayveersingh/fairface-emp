@@ -79,7 +79,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Expense Type <span class="text-danger">*</span></label>
-                            <input class="form-control" name="type" type="text">
+                            <input class="form-control" name="type" required type="text">
                         </div>
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
@@ -108,7 +108,7 @@
                         <input id="edit_id" type="hidden" name="id">
                         <div class="form-group">
                             <label>Expense Type <span class="text-danger">*</span></label>
-                            <input class="form-control edit_type" name="type" type="text">
+                            <input class="form-control edit_type" name="type" required type="text">
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Save</button>

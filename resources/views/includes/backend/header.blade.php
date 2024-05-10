@@ -41,7 +41,6 @@
             @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                     <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
-                    {{-- {{ count(getChatMessage()) }} --}}
                 </a>
                 <div class="dropdown-menu notifications chatShowDropDown">
                     <div class="topnav-dropdown-header">

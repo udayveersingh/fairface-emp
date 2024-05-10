@@ -22,6 +22,18 @@
 @endsection
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="list-unstyled">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -40,7 +52,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $leave_type->type }}</td>
-                                    <td>{{ !empty($leave_type->days) ? $leave_type->days . ' ' . 'days':''}}</td>
+                                    <td>{{ !empty($leave_type->days) ? $leave_type->days . ' ' . 'days' : '' }}</td>
 
                                     <td class="text-right">
                                         <div class="dropdown dropdown-action">
@@ -115,11 +127,11 @@
                         <input id="edit_id" type="hidden" name="id">
                         <div class="form-group">
                             <label>Leave Type <span class="text-danger">*</span></label>
-                            <input class="form-control edit_type" name="type" type="text">
+                            <input class="form-control edit_type" name="type" type="text" required>
                         </div>
                         <div class="form-group">
                             <label>Number of days</label>
-                            <input class="form-control edit_days" name="days" type="number">
+                            <input class="form-control edit_days" name="days" type="number" required>
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Save</button>

@@ -6,6 +6,7 @@ use App\Models\CompanyEmail;
 use App\Models\Employee;
 use App\Models\EmployeeJob;
 use App\Models\Holiday;
+use App\Models\JobTitle;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\Project;
@@ -84,11 +85,10 @@ if (!function_exists('getMonth')) {
     }
 }
 
-if (!function_exists('getChatMessage')) {
-    function getChatMessage()
+if (!function_exists('getJobTitle')) {
+    function getJobTitle()
     {
-        $newMessage = ChMessage::where('to_id','=',Auth::user()->id)->where('from_id','!=',Auth::user()->id)->where('seen','=',0)->latest()->get();
-        return $newMessage;
+        return JobTitle::get();
     }
 }
 
@@ -162,8 +162,7 @@ if (!function_exists('getEmployeeNewNotification')) {
     }
 }
 
-if(!function_exists('getAllEmployeeNewNotification'))
-{
+if (!function_exists('getAllEmployeeNewNotification')) {
     function getAllEmployeeNewNotification()
     {
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
@@ -173,7 +172,6 @@ if(!function_exists('getAllEmployeeNewNotification'))
             $getAllEmployeeNewNotifi[$index] = json_decode($notification->data);
         }
         return $getAllEmployeeNewNotifi;
-
     }
 }
 

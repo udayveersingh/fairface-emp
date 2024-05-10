@@ -300,6 +300,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('overtime', [OvertimeController::class, 'destroy']);
 
     Route::get('projects', [ProjectController::class, 'index'])->name('projects');
+    Route::get('projects/create/{id?}',[ProjectController::class, 'create'])->name('projects.create');
     Route::get('projects/show/{name}', [ProjectController::class, 'show'])->name('project.show');
     Route::post('projects', [ProjectController::class, 'store']);
     Route::put('projects', [ProjectController::class, 'update']);

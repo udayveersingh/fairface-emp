@@ -71,50 +71,12 @@
 
             @yield('content_one')
             <div class="content container-fluid">
-                <!-- Page Content -->
-                {{-- @foreach (getChatMessage() as $index => $message)
-                    @php
-                        if ($index > 0) {
-                            break;
-                        }
-                    @endphp
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="chat-info-box">
-                                        <a href="{{route('chat-view',$message->from_id)}}">
-                                            @php
-                                                $user = app\Models\User::find($message->from_id);
-                                            @endphp
-                                            <div class="media">
-                                                <span class="avatar">
-                                                    <img src="{{ asset('storage/employees/'.$user->avatar) }}">
-                                                </span>
-                                                <div class="media-body">
-                                                    <p class="noti-details"><span class="noti-title">You have new
-                                                            message by {{ucfirst($user->name)}}.</span>
-                                                        <span class="noti-title">  <i class="fa fa-comments m-r-5"></i></span>
-                                                    </p>
-                                                    <p class="noti-time"><span
-                                                            class="notification-time">{{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }}</span>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach --}}
-
                 <!-- Page Header -->
                 <div class="page-header">
                     @yield('page-header')
                 </div>
                 <!-- /Page Header -->
-
+{{-- 
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         @foreach ($errors->all() as $error)
@@ -124,7 +86,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                @endif
+                @endif --}}
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong>Success! </strong>{{ session('success') }}
@@ -217,7 +179,7 @@
             $('#delete_id').val(id);
         });
 
-        $('.alert').delay(10000).fadeOut();
+        // $('.alert').delay(10000).fadeOut();
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', '') }}";
             switch (type) {

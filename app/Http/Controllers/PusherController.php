@@ -60,6 +60,9 @@ class PusherController extends Controller
     {
         // Fetch messages from the database
         $receiver = ChMessage::where('from_id', '=', $request->input('userID'))->first();
+        
+        // $userImage = User::find($receiver->id);
+        // dd($userImage); 
 
         $message = $request->get('message');
         // Pass the messages to the receive.blade.php view

@@ -20,14 +20,13 @@
             </ul>
         </div>
         <div class="col-auto float-right ml-auto">
-            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i
-                    class="fa fa-plus"></i> Add Project</a>
+            {{-- <a href="#" class="btn add-btn" data-toggle="modal" data-target="#create_project"><i
+                    class="fa fa-plus"></i> Add Project</a> --}}
+            <a href="{{route('projects.create')}}" class="btn add-btn"><i class="fa fa-plus"></i> Add Project</a>
             <div class="view-icons">
-                <a href="{{ route('projects') }}"
-                    class="grid-view btn btn-link {{ route_is('projects') ? 'active' : '' }}"><i class="fa fa-th"></i></a>
-                <a href="{{ route('project-list') }}"
-                    class="list-view btn btn-link {{ route_is('project-list') ? 'active' : '' }}" class=><i
-                        class="fa fa-bars"></i></a>
+                {{-- <a href="{{ route('project-list') }}"
+                    class="list-view btn btn-link {{ route_is('project-list') ? 'active' : '' }}" class=""><i
+                        class="fa fa-bars"></i></a> --}}
             </div>
         </div>
     </div>
@@ -42,9 +41,9 @@
                         <tr>
                             <th>Sr No.</th>
                             <th>Project Name</th>
+                            <th>Project Type</th>
                             <th>Contract Id</th>
                             <th>Client Name</th>
-                            <th>Work Location</th>
                             {{-- <th>Project Type</th> --}}
                             <th>Start Date</th>
                             <th>End Date</th>
@@ -52,24 +51,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($projects as $index => $project)
+                        @php
+                            $i=1;
+                        @endphp
+                        @foreach ($projects as $project)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $i }}</td>
                                 <td>
                                     <a href="#">{{ $project->name }}</a>
                                 </td>
+                                <td>{{$project->project_type}}</td>
                                 <td>{{ $project->contract_id}}</td>
                                 <td>{{ $project->client_name }}</td>
-                                <td>{{$project->work_location}}</td>
                                 {{-- <td>{{ $project->project_type }}</td> --}}
-                                <td>{{ date_format(date_create($project->client_cont_start_date), 'D M, Y') }}</td>
-                                <td>{{ date_format(date_create($project->client_cont_end_date), 'D M, Y') }}</td>
+                                <td>{{!empty($project->client_cont_start_date) ? date_format(date_create($project->client_cont_start_date), 'D M, Y'):'' }}</td>
+                                <td>{{ !empty($project->client_cont_end_date) ? date_format(date_create($project->client_cont_end_date), 'D M, Y'):'' }}</td>
                                 <td class="text-end">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                             aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item editbtn" href="javascript:void(0)"
+                                            <a class="dropdown-item" href="{{route('projects.create', $project->id)}}"
                                                 data-id="{{ $project->id }}" data-name="{{ $project->name }}"
                                                 data-project_type="{{ $project->project_type }}"
                                                 data-client_name="{{ $project->client_name }}"
@@ -86,6 +88,9 @@
                                     </div>
                                 </td>
                             </tr>
+                            @php
+                                $i++;
+                            @endphp
                         @endforeach
                     </tbody>
                 </table>
@@ -93,8 +98,6 @@
         </div>
     </div>
     <!-- /Page Content -->
-
-    <x-modals.popup />
     <x-modals.delete route="projects" title="Project" />
 @endsection
 

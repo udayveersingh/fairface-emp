@@ -110,18 +110,18 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Post Code</label>
+                                <label>Post Code<span class="text-danger">*</span></label>
                                 <input class="form-control" name="post_code" id="edit_post_code"
                                     value="{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}"
-                                    type="text">
+                                    type="text" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>From Date</label>
+                                <label>From Date<spna class="text-danger">*</span></label>
                                 <input class="form-control" name="from_date" id="edit_from_date"
                                     value="{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}"
-                                    type="date">
+                                    type="date" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -162,9 +162,9 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Address Type<span class="text-danger mr-2">*</span></label>
-                                <input type="radio" id="main-add" name="address_type" value="main" required  />
+                                <input type="radio" id="main-add" name="address_type" value="main" {{!empty($employee_address->address_type) && $employee_address->address_type == "main" ? "checked" :'' }} required  />
                                 <label for="add" class="mr-2">Main</label>
-                                <input type="radio" id="temprarory" name="address_type" value="temprarory" required />
+                                <input type="radio" id="temprarory" name="address_type" value="temprarory" {{!empty($employee_address->address_type) && $employee_address->address_type == "temprarory" ? "checked" :'' }} required />
                                 <label for="temprarory">Temprarory</label>
                             </div>
                         </div>
@@ -186,18 +186,18 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Post Code</label>
+                                <label>Post Code<span class="text-danger">*</span></label>
                                 <input class="form-control edit_post_code" name="post_code" id="edit_post_code"
                                     value="{{ !empty($employee_address->post_code) ? $employee_address->post_code : '' }}"
-                                    type="text">
+                                    type="text" required>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>From Date</label>
+                                <label>From Date<span class="text-danger">*</span></label>
                                 <input class="form-control edit_from_date" name="from_date" id="edit_from_date"
                                     value="{{ !empty($employee_address->from_date) ? $employee_address->from_date : '' }}"
-                                    type="date">
+                                    required type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">

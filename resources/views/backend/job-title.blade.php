@@ -74,11 +74,11 @@
                                                 <div class="form-group">
                                                     <label>Job Title <span class="text-danger">*</span></label>
                                                     <input class="form-control" name="title" id="job_title"
-                                                        type="text">
+                                                        required type="text">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Job Description <span class="text-danger">*</span></label>
-                                                    <textarea class="form-control" id="edit_job_description" name="description" rows="4" cols="50"></textarea>
+                                                    <textarea class="form-control" id="edit_job_description" required name="description" rows="4" cols="50"></textarea>
                                                 </div>
                                                 <div class="submit-section">
                                                     <button type="submit" class="btn btn-primary submit-btn">Save</button>

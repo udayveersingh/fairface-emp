@@ -91,7 +91,7 @@ class HolidaysSeeder extends Seeder
         foreach ($types as $key => $value) {
             $leave_type = LeaveType::where('type', '=', $value)->where('days', '=', $days[$key])->first();
             if (!empty($leave_type)) {
-                $leave_types = LeaveType::find($holiday->id);
+                $leave_types = LeaveType::find($leave_type->id);
             } else {
                 $leave_types = new LeaveType();
             }

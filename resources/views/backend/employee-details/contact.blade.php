@@ -37,7 +37,7 @@
             <div class="card card-block shadow shadow-sm p-3 h-100">
                 <table class="table table-striped">
                     <tr>
-                        <th>Overseas & Local Contact Name</th>
+                        <th>Overseas Contact Name</th>
                         <td>{{!empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}
                         </td>
                     </tr>
@@ -138,7 +138,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label>Overseas & Local Contact Name</label>
+                                        <label>Overseas Contact Name</label>
                                         <input class="form-control" name="overseas_name"
                                             value="{{ !empty($emergency_contact->overseas_full_name) ? $emergency_contact->overseas_full_name : '' }}"
                                             id="edit_overseas_name" type="text">

@@ -73,7 +73,7 @@
                                                 <div class="form-group">
                                                     <label>Visa Type <span class="text-danger">*</span></label>
                                                     <input class="form-control" name="visa_type" id="edit_visa_type"
-                                                        type="text">
+                                                        required type="text">
                                                 </div>
                                                 <div class="submit-section">
                                                     <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -106,7 +106,7 @@
                         @csrf
                         <div class="form-group">
                             <label>Visa Type <span class="text-danger">*</span></label>
-                            <input class="form-control" name="visa_type" id="edit_visa_type" type="text">
+                            <input class="form-control" name="visa_type" required id="edit_visa_type" type="text">
                         </div>
                         <div class="submit-section">
                             <button type="submit" class="btn btn-primary submit-btn">Submit</button>

@@ -43,12 +43,12 @@ class EmployeeJobController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'supervisor' => 'required',
-            'job_title' => 'required',
-            'department' => 'required',
-            'work_phone_number' => 'nullable|max:20'
-        ]);
+        // $request->validate([
+        //     'supervisor' => 'required',
+        //     'job_title' => 'required',
+        //     'department' => 'required',
+        //     'work_phone_number' => 'nullable|max:20'
+        // ]);
 
         EmployeeJob::create([
             'employee_id' => $request->emp_id,
@@ -74,11 +74,11 @@ class EmployeeJobController extends Controller
      */
     public function update(Request $request)
     {
-        $request->validate([
-            'supervisor' => 'required',
-            'job_title' => 'required',
-            'department' => 'required',
-        ]);
+        // $request->validate([
+        //     'supervisor' => 'required',
+        //     'job_title' => 'required',
+        //     'department' => 'required',
+        // ]);
         if (!empty($request->edit_id)) {
             $employee_job = EmployeeJob::find($request->edit_id);
             $message = "Employee Job has been Updated successfully.";

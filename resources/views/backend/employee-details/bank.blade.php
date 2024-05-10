@@ -89,10 +89,10 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label>Bank Sort Code</label>
+                                        <label>Bank Sort Code<span class="text-danger">*</span></label>
                                         <input class="form-control" name="bank_sort_code"
                                             value="{{ !empty($employee_bank->bank_sort_code) ? $employee_bank->bank_sort_code : '' }}"
-                                            id="edit_sort_code" type="text">
+                                            id="edit_sort_code" required type="text">
                                     </div>
                                 </div>
                                 <div class="col-sm-12">

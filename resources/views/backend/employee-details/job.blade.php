@@ -1,4 +1,4 @@
-@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0 )
+@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0)
     <div class="row align-items-center mb-2">
         <div class="col-auto float-right ml-auto">
             <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_employee_job"><i
@@ -15,7 +15,7 @@
         </div>
     </div>
 @endif
-@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0 )
+@if (!empty($employee_jobs->count()) && $employee_jobs->count() > 0)
     <div class="row">
         @foreach ($employee_jobs as $job)
             @php
@@ -27,7 +27,8 @@
                 }
                 if (!empty($job->timesheet_approval_incharge)) {
                     $timesheet_approval_incharge = App\Models\Employee::find($job->timesheet_approval_incharge);
-                    $incharge_name = $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
+                    $incharge_name =
+                        $timesheet_approval_incharge->firstname . ' ' . $timesheet_approval_incharge->lastname;
                 } else {
                     $incharge_name = '';
                 }
@@ -61,11 +62,11 @@
                         </tr>
                         <tr>
                             <th>Start Date</th>
-                            <td>{{ !empty($job->start_date) ? date('d-m-Y',strtotime($job->start_date)):''}}</td>
+                            <td>{{ !empty($job->start_date) ? date('d-m-Y', strtotime($job->start_date)) : '' }}</td>
                         </tr>
                         <tr>
                             <th>End Date</th>
-                            <td>{{!empty($job->end_date) ? date('d-m-Y',strtotime($job->end_date)):'' }}</td>
+                            <td>{{ !empty($job->end_date) ? date('d-m-Y', strtotime($job->end_date)) : '' }}</td>
                         </tr>
                         <tr>
                             <th>Job Type</th>
@@ -110,6 +111,9 @@
                 <form action="{{ route('employee-job.store') }}" method="POST">
                     @csrf
                     <div class="row">
+
+                        <input class="" name="work_email" id="work_email" value="{{ $employee->email }}"
+                            type="hidden">
                         <input type="hidden" value="{{ $employee->id }}" id="emp_id" name="emp_id">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -121,7 +125,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
-                                <input class="form-control" name="job_title" required id="job_title" type="text">
+                                <select name="job_title" id="job_title" required class="form-control select">
+                                    <option value="">Select</option>
+                                    @foreach (getJobTitle() as $title)
+                                        <option value="{{ !empty($title->title) ? $title->title : '' }}">
+                                            {{ $title->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -130,16 +141,20 @@
                                 <select name="supervisor" id="supervisor" required class="form-control select">
                                     <option value="">Select Supervisor</option>
                                     @foreach (getSupervisor() as $supervisor)
-                                    @php
-                                        $supervisor = App\Models\Employee::where('user_id', '=', $supervisor->id)->first();
-                                        $firstname = !empty($supervisor->firstname) ? $supervisor->firstname:'';
-                                        $lastname = !empty($supervisor->lastname) ? $supervisor->lastname:'';
-                                        $fullname = $firstname." ".$lastname
-                                    @endphp
-                                    <option value="{{ !empty($supervisor->id) ? $supervisor->id:'' }}">
-                                        {{$fullname}}
-                                    </option>
-                                @endforeach
+                                        @php
+                                            $supervisor = App\Models\Employee::where(
+                                                'user_id',
+                                                '=',
+                                                $supervisor->id,
+                                            )->first();
+                                            $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                            $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                            $fullname = $firstname . ' ' . $lastname;
+                                        @endphp
+                                        <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                            {{ $fullname }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -147,8 +162,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>TimeSheet Approval Incharge<span class="text-danger">*</span></label>
-                                <select name="timesheet_approval_inch" required id="" class="form-control select">
+                                <label>TimeSheet Approval Incharge</label>
+                                <select name="timesheet_approval_inch" id="" class="form-control select">
                                     <option value="">Select Approval Incharge</option>
                                     @foreach ($employees as $employee)
                                         <option value="{{ $employee->id }}">
@@ -159,8 +174,8 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Department<span class="text-danger">*</span></label>
-                                <select name="department" required id="department" class="form-control select">
+                                <label>Department</label>
+                                <select name="department" id="department" class="form-control select">
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $department)
                                         <option value="{{ $department->id }}">{{ $department->name }}</option>
@@ -172,23 +187,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Work Email<span class="text-danger">*</span></label>
-                                <input class="form-control" required name="work_email" id="work_email" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Work Phone Number</label>
-                                <input class="form-control mask_phone_number"  name="work_phone_number"
-                                    id="phone_number" type="text">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                <input class="form-control" name="start_date" id="start_date" type="date">
+                                <label>Start Date<span class="text-danger">*</span></label>
+                                <input class="form-control" name="start_date" required id="start_date"
+                                    type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -199,8 +200,8 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Job Type<span class="text-danger">*</span></label>
-                                <select name="job_type" id="job_type" required class="form-control select">
+                                <label>Job Type</label>
+                                <select name="job_type" id="job_type" class="form-control select">
                                     <option value="">Select Job Type</option>
                                     <option value="full_time">Full Time</option>
                                     <option value="part_time">Part Time</option>
@@ -209,8 +210,8 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Contracted Weekly Hours</label>
-                                <input class="form-control" name="contract_weekly_hours" id=""
+                                <label>Contracted Weekly Hours<span class="text-danger">*</span></label>
+                                <input class="form-control" required name="contract_weekly_hours" id=""
                                     type="text">
                             </div>
                         </div>
@@ -239,6 +240,8 @@
                     @csrf
                     @method('PUT')
                     <div class="row">
+                        <input class="" name="work_email" id="work_email" value="{{ $employee->email }}"
+                            type="hidden">
                         <input type="hidden" id="edit_job_id" name="edit_id">
                         <input type="hidden" id="employee_id" name="emp_id">
                         <div class="col-sm-12">
@@ -264,7 +267,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>TimeSheet Approval Incharge<span class="text-danger">*</span></label>
+                                <label>TimeSheet Approval Incharge</label>
                                 <select name="timesheet_approval_inch" id="timesheet_approval_inch"
                                     class="form-control select">
                                     <option value="">Select Approval Incharge</option>
@@ -277,7 +280,7 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Department<span class="text-danger">*</span></label>
+                                <label>Department</label>
                                 <select name="department" id="edit_department" class="form-control select">
                                     <option value="">Select Department</option>
                                     @foreach ($departments as $department)
@@ -290,23 +293,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Work Email<span class="text-danger">*</span></label>
-                                <input class="form-control" name="work_email" id="edit_work_email" type="text">
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Work Phone Number</label>
-                                <input class="form-control mask_phone_number" name="work_phone_number"
-                                    id="edit_phone_number" type="text">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                <input class="form-control" name="start_date" id="edit_start_date" type="date">
+                                <label>Start Date<span class="text-danger">*</span></label>
+                                <input class="form-control" required name="start_date" id="edit_start_date" type="date">
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -317,7 +305,7 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Job Type<span class="text-danger">*</span></label>
+                                <label>Job Type</label>
                                 <select name="job_type" id="edit_job_type" class="form-control select">
                                     <option value="">Select Job Type</option>
                                     <option value="full_time">Full Time</option>
@@ -327,9 +315,9 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
-                                <label>Contracted Weekly Hours</label>
-                                <input class="form-control" name="contract_weekly_hours" id="contracted_weekly_hours"
-                                    type="text">
+                                <label>Contracted Weekly Hours<span class="text-danger">*</span></label>
+                                <input class="form-control" name="contract_weekly_hours" required
+                                    id="contracted_weekly_hours" type="text">
                             </div>
                         </div>
                     </div>
