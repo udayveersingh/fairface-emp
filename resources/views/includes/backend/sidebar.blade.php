@@ -74,6 +74,8 @@
                                     href="{{ route('timesheet-status') }}">Timesheet Status</a></li> --}}
                             <li><a class="{{ route_is('job-title') ? 'active' : '' }}"
                                     href="{{ route('job-title') }}">Job Title</a></li>
+                            <li><a class="{{ route_is('company-document') ? 'active' : '' }}"
+                                href="{{ route('company-document') }}">Company Document</a></li>        
 
                             {{-- <li><a class="{{ route_is('employees.attendance') ? 'active' : '' }}" href="{{route('employees.attendance')}}">Attendance</a></li> --}}
                             {{-- <li><a class="{{ route_is('employee-leave') ? 'active' : '' }}" href="{{route('employee-leave')}}">Leaves (Employee)</a></li> --}}

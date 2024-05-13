@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             TimesheetStatusSeeder::class,
             HolidaysSeeder::class,
             JobTitleSeeder::class,
+            CompanyDocumentSeeder::class
         ]);
     }
 }

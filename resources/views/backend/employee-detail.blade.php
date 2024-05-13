@@ -370,9 +370,11 @@
                                                             <option value="archieve"
                                                                 {{ $employee->record_status == 'archieve' ? 'selected' : '' }}>
                                                                 Archieve</option>
-                                                            <option value="delete"
-                                                                {{ $employee->record_status == 'delete' ? 'selected' : '' }}>
-                                                                Delete</option>
+                                                            @if (Auth::user()->role->name == App\models\Role::SUPERADMIN)
+                                                                <option value="delete"
+                                                                    {{ $employee->record_status == 'delete' ? 'selected' : '' }}>
+                                                                    Delete</option>
+                                                            @endif
                                                         </select>
                                                     </div>
                                                 </div>

@@ -6,6 +6,10 @@
                 <li class="{{ route_is('dashboard') ? 'active' : '' }}">
                     <a href="{{ route('dashboard') }}"><i class="la la-dashboard"></i> <span>Home</span></a>
                 </li>
+                <li class="{{ route_is('company-document') ? 'active' : '' }}">
+                    <a href="{{ route('company-document') }}"><i class="fa-solid fa-file"></i><span>Company Document</span></a>
+                </li>
+                
                 <li class="submenu">
                     <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
                             class="la la-user"></i><span>Employees</span> <span class="menu-arrow"></span></a>

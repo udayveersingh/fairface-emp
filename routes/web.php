@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\EmployeeAttendanceController;
 use App\Http\Controllers\Admin\InvoiceController;
 use App\Http\Controllers\Admin\JobController as BackendJobController;
 use App\Http\Controllers\Admin\BranchController;
+use App\Http\Controllers\Admin\CompanyDocumentController;
 use App\Http\Controllers\Admin\CompanyEmailController;
 use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\EmployeeBankController;
@@ -226,6 +227,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('leave-type', [LeaveTypeController::class, 'store']);
     Route::delete('leave-type', [LeaveTypeController::class, 'destroy'])->name('leave-type.destroy');
     Route::put('leave-type', [LeaveTypeController::class, 'update']);
+
+    Route::get('company-document', [CompanyDocumentController::class, 'index'])->name('company-document');
+    // Route::get('company-document/create',[CompanyDocumentController::class, 'create'])->name('company-document.create');
+    Route::post('company-document', [CompanyDocumentController::class, 'store']);
+    Route::put('company-document', [CompanyDocumentController::class, 'update']);
+    Route::delete('company-document', [CompanyDocumentController::class, 'destroy'])->name('company-document.destroy');
 
     Route::get('expense-type', [ExpenseTypeController::class, 'index'])->name('expense-type');
     Route::post('expense-type', [ExpenseTypeController::class, 'store']);

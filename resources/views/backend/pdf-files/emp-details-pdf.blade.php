@@ -35,7 +35,7 @@
 </style>
 <div class="header">
     @if (!empty($employee->avatar))
-        <img src="storage/employees/{{ $employee->avatar }}" alt="profile" border="0"
+        <img src="storage/employees/{{$employee->avatar}}" alt="profile" border="0"
             style="height:125px; width:125px; float:right; vertical-align:middle;margin-right:0px; vertical-align:middle;">
     @endif
     <table style="border:none;" cellpadding="0" cellspacing="0">

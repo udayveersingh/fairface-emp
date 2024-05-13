@@ -29,6 +29,18 @@
 @endsection
 
 @section('content')
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <ul class="list-unstyled">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
@@ -82,7 +94,9 @@
                                     @php
                                         $start = new DateTime($leave->to);
                                         $end_date = new DateTime($leave->from);
-                                        $timesheet_status = App\Models\TimesheetStatus::find($leave->timesheet_status_id);
+                                        $timesheet_status = App\Models\TimesheetStatus::find(
+                                            $leave->timesheet_status_id,
+                                        );
                                     @endphp
                                     @if ($start == $end_date)
                                         {{ '1 Days' }}
@@ -98,54 +112,19 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="action-label">
-                                        {{-- @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
-                                            <a class="btn btn-warning btn-sm btn-rounded" href="javascript:void(0);">
-                                            @elseif ($timesheet_status->status == App\Models\TimesheetStatus::APPROVED)
-                                                <a class="btn btn-success btn-sm btn-rounded" href="javascript:void(0);">
-                                                @else
-                                                    <a class="btn btn-danger btn-sm btn-rounded" href="javascript:void(0);">
-                                        @endif --}}
-                                        @if ($timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
+                                        @if (!empty($leave->time_sheet_status->status) && $leave->time_sheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
                                             Pending
                                         @else
                                             {{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
                                         @endif
-                                        {{-- </a> --}}
-                                        {{-- @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN && $timesheet_status->status == App\Models\TimesheetStatus::PENDING_APPROVED)
-                                            <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
-                                                data-status="approved" href="#" data-toggle="modal"
-                                                id="statusChecked">Change Status</a>
-                                        @endif --}}
                                     </div>
-                                    {{-- <div class="action-label">
-                                        <a class="btn btn-white btn-sm btn-rounded" href="javascript:void(0);">
-                                            {{-- @if ($leave->status == 'Approved') --}}
-                                    {{-- <i class="fa fa-dot-circle-o text-success"></i>{{ !empty($leave->time_sheet_status->status) ? ucfirst($leave->time_sheet_status->status) : '' }}
-                                        </a> --}}
-                                    {{-- @else --}}
-                                    {{-- <i class="fa fa-dot-circle-o text-danger"></i> Declined
-									@endif --}}
-                                    {{-- <a class="btn text-danger statusChecked" data-id="{{ $leave->id }}"
-                                            data-status="approved" href="#" data-toggle="modal"
-                                            id="statusChecked">Change Status</a> --}}
-                                    {{-- </div> --}}
                                 </td>
-                                {{-- <td class="d-flex" style="
-                                align-items: center;">
-                                    <p style="white-space:nowrap;" class="m-0" data-toggle="tooltip" data-html="true"
-                                        title="{{ $leave->status_reason }}">
-                                        {{ substr($leave->status_reason, 0, 10) . ' ...' }}</p>
-                                    <i class="la la la-eye"></i>
-                                </td> --}}
-                                {{-- <td>{{!empty($leave->approved_date_time) ? date('d-m-Y', strtotime($leave->approved_date_time)) : '' }}</td> --}}
-                                @if (
-                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                        Auth::user()->role->name == App\Models\Role::ADMIN)
-                                    <td class="text-right">
-                                        <div class="dropdown dropdown-action">
-                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
-                                                aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                            <div class="dropdown-menu dropdown-menu-right">
+                                <td class="text-right">
+                                    <div class="dropdown dropdown-action">
+                                        <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
+                                            aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                                                 <a class="dropdown-item" data-id="{{ $leave->id }}"
                                                     data-status="approved"
                                                     href="{{ route('employee-leave-view', $leave->id) }}" id=""><i
@@ -166,13 +145,17 @@
                                                 <a data-id="{{ $leave->id }}" class="dropdown-item deletebtn"
                                                     href="javascript:void(0)" data-toggle="modal"><i
                                                         class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                            @endif
+                                            @if (
+                                                (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
                                                 <a class="dropdown-item statusChecked" data-id="{{ $leave->id }}"
                                                     data-status="approved" href="#" data-toggle="modal"
                                                     id="statusChecked"><i class="fa fa-pencil m-r-5"></i>Change Status</a>
-                                            </div>
+                                            @endif
                                         </div>
-                                    </td>
-                                @endif
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                         <!-- delete Leave Modal -->
@@ -199,15 +182,14 @@
                         @csrf
                         <div class="form-group">
                             <label>Leave Type <span class="text-danger">*</span></label>
-                            <select name="leave_type" class="select">
+                            <select name="leave_type" class="select" required>
+                                <option value="">select leave type</option>
                                 @foreach ($leave_types as $leave_type)
                                     <option value="{{ $leave_type->id }}">{{ $leave_type->type }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        @if (
-                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                Auth::user()->role->name == App\Models\Role::ADMIN)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>Employee</label>
                                 <select name="employee" class="select">
@@ -270,9 +252,7 @@
                             <label>Leave Reason <span class="text-danger">*</span></label>
                             <textarea name="reason" required rows="4" class="form-control"></textarea>
                         </div>
-                        @if (
-                            (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
-                                Auth::user()->role->name == App\Models\Role::ADMIN)
+                        @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>Leave Status<span class="text-danger">*</span></label>
                                 <select name="timesheet_status" class="select form-control">
@@ -292,15 +272,6 @@
                                 <input class="form-control datetimepicker" name="approved_date_time" type="text">
                             </div>
                         @endif
-                        <!-- <div class="form-group">
-                                                                                                          <label>Status </label>
-                                                                                                          <select name="status" class="select">
-                                                                                                          <option value="null" disabled selected>Select Status</option>
-                                                                                                          <option>Approved</option>
-                                                                                                          <option>Pending</option>
-                                                                                                          <option>Declined</option>
-                                                                                                          </select>
-                                                                                                          </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -402,7 +373,7 @@
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                <select name="timesheet_status" id="edit_status" class="select form-control">
+                                <select name="timesheet_status" id="edit_status" class="select form-control" required>
                                     <option value="">Select TimeSheet Status</option>
                                     @foreach (getTimesheetStatus() as $time_status)
                                         <option value="{{ $time_status->id }}">
@@ -422,14 +393,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                                                                              <label>Status </label>
-                                                                                                              <select name="status" class="select2 form-control" id="edit_status">
-                                                                                                              <option value="null">Select Status</option>
-                                                                                                              <option>Approved</option>
-                                                                                                              <option>Pending</option>
-                                                                                                              <option>Declined</option>
-                                                                                                              </select>
-                                                                                                              </div> -->
+                                                                                                                      <label>Status </label>
+                                                                                                                      <select name="status" class="select2 form-control" id="edit_status">
+                                                                                                                      <option value="null">Select Status</option>
+                                                                                                                      <option>Approved</option>
+                                                                                                                      <option>Pending</option>
+                                                                                                                      <option>Declined</option>
+                                                                                                                      </select>
+                                                                                                                      </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -577,7 +548,7 @@
 
         $("#update_leave").on("click", function(event) {
             event.preventDefault()
-            var leave_reason="";
+            var leave_reason = "";
             var status_field_value = $("#timesheet_status_field").find(":selected").text().trim();
             var leave_reason = $("#status_reason").val();
             if ((status_field_value == "Approved")) {
@@ -585,15 +556,15 @@
             } else if ((status_field_value == "Select Status")) {
                 $(".status_val_error").html("");
                 $(".status_val_error").html(`<span class="text-danger">this field is required</span>`);
-            }else if (leave_reason && status_field_value == "Rejected") {
+            } else if (leave_reason && status_field_value == "Rejected") {
                 $("#leave_status_form").submit();
-            }else if(status_field_value == "Rejected"){
+            } else if (status_field_value == "Rejected") {
                 $(".status_val_error").html("");
                 $(".validation_error").html("");
                 $(".validation_error").html(`<span class="text-danger">this field is required</span>`);
             }
         });
-        
+
         $('.statusChecked').on('click', function() {
             $('#update_leave_status').modal('show');
             var id = $(this).data('id');

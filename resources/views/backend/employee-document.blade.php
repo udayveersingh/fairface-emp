@@ -66,7 +66,6 @@
                                         @csrf
                                         @method("PUT")
                                         <input type="hidden" id="edit_id" name="id">
-                                        <div class="row">
                                             <div class="row">
                                                 <input type="hidden" value="{{$empId}}" id="emp_id" name="emp_id">
                                                 <div class="col-sm-6">

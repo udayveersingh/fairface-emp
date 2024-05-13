@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeProject;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -28,15 +29,20 @@ class EmployeeLeaveController extends Controller
     public function index()
     {
         $title = "employee leave";
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->orderBy('id', 'desc')->get();
-        } else {
+        } else if(Auth::user()->role->name == Role::ADMIN) {
+            $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)
+            ->orWhere('supervisor_id','=',$employee->id)->orderBy('id', 'desc')->get();
+            // $projects = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
+        }else {
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->orderBy('id', 'desc')->get();
         }
         $timesheet_statuses = TimesheetStatus::get();
         $leave_types = LeaveType::get();
-        $employees = Employee::get();
+        $employees = Employee::where('record_status','!=','delete')->get();
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
         return view('backend.employee-leaves', compact('title', 'leaves', 'leave_types', 'employees', 'projects', 'timesheet_statuses', 'project_phases'));
@@ -45,7 +51,7 @@ class EmployeeLeaveController extends Controller
     public function LeaveView($id)
     {
         $title = "employee leave";
-        $leave = Leave::with('leaveType', 'employee', 'time_sheet_status')->find($id);
+        $leave = Leave::with('leaveType','employee', 'time_sheet_status')->find($id);
         return view('backend.leave-view', compact('leave','title'));
     }
 
@@ -66,19 +72,20 @@ class EmployeeLeaveController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
         $days = $start->diff($end_date, '%d')->days;
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
             $total_leaves = LeaveType::where('id','=',$request->leave_type)->value('days');
             $old_leaves = Leave::where('leave_type_id','=',$request->leave_type)->where('employee_id','=',$employee_id)->sum('no_of_days');
             // $pending_leave = (int)$total_leaves - (int)$old_leaves;
             $new_leaves = (int)$old_leaves + (int)$days;
-             if($new_leaves >  $total_leaves)
+             if($new_leaves > $total_leaves)
              {
-                return back()->with('success', "Your leave has been completed. Therefore you cannot take any more leave.");
+                return back()->with('danger',"Your leave has been completed. Therefore you cannot take any more leave.");
              }
 
             $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
@@ -128,6 +135,7 @@ class EmployeeLeaveController extends Controller
      */
     public function update(Request $request)
     {
+        // dd($request->all());
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
@@ -142,14 +150,14 @@ class EmployeeLeaveController extends Controller
             $timesheet_status_field = 'required';
         }
 
-        $this->validate($request, [
-            'employee' => $employee_field,
-            'leave_type' => 'required',
-            'from' => 'required',
-            'to' => 'required',
-            'reason' => 'required',
-            'timesheet_status' => $timesheet_status_field,
-        ]);
+        // $this->validate($request, [
+        //     'employee' => $employee_field,
+        //     'leave_type' => 'required',
+        //     'from' => 'required',
+        //     'to' => 'required',
+        //     'reason' => 'required',
+        //     'timesheet_status' => $timesheet_status_field,
+        // ]);
         $leave = Leave::find($request->id);
         $leave->update([
             'leave_type_id' => $request->leave_type,
