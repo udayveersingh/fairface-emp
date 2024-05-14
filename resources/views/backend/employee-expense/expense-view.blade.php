@@ -116,9 +116,7 @@
                         <td>{{ $status }}</td>
                         <td>{{ !empty($expense->status_reason) ? $expense->status_reason : '' }}</td>
                         <td>{{ app(App\Settings\ThemeSettings::class)->currency_symbol . ' ' . $expense->cost }}</td>
-                        @if (
-                            (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
-                                (Auth::check() && Auth::user()->role->name == app\models\Role::ADMIN))
+                        @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN || Auth::user()->role->name == app\models\Role::ADMIN)
                             <td class="text-end">
                                 <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"

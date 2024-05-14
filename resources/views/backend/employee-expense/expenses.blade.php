@@ -88,25 +88,13 @@
                                 {{-- <td>{{ !empty($expense->time_sheet_status->status) ? ucfirst($expense->time_sheet_status->status) : '' }} --}}
                                 </td>
                                 <td class="">
-                                        {{-- <a class="dropdown-item editbtn" href="javascript:void(0)"
-                                                data-id="{{ $expense->id }}"
-                                                data-expense_type_id ="{{ $expense->expense_type_id }}"
-                                                data-employee_id="{{ $expense->employee_id }}"
-                                                data-supervisor_id="{{ $expense->supervisor_id }}"
-                                                data-project_id="{{ $expense->project_id }}"
-                                                data-project_phase_id="{{ $expense->project_phase_id }}"
-                                                data-timesheet_status_id="{{ $expense->timesheet_status_id }}"
-                                                data-status_reason="{{ $expense->status_reason }}"
-                                                data-approved_date_time="{{ $expense->approved_date_time }}">
-                                                <i class="fa fa-pencil m-r-5"></i> Edit</a> --}}
-                                        @if (!empty($expense->expense_id))
+                                    @if (!empty($expense->expense_id))
                                         <div class="dropdown dropdown-action">
                                             <a class="btn-sm btn-primary"
                                                 href="{{ route('emp-expenses-view', ['expense_id' => $expense->expense_id, 'emp_id' => $expense->employee_id]) }}">
                                                 <i class="fa fa-eye m-r-5"></i>View</a>
                                         </div>
-                                        @endif
-
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -205,8 +193,14 @@
                                     <select name="supervisor" class="select">
                                         @foreach (getSupervisor() as $sup)
                                             @php
-                                                $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
-                                                $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                                $supervisor = App\Models\Employee::where(
+                                                    'user_id',
+                                                    '=',
+                                                    $sup->id,
+                                                )->first();
+                                                $firstname = !empty($supervisor->firstname)
+                                                    ? $supervisor->firstname
+                                                    : '';
                                                 $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                                 $fullname = $firstname . ' ' . $lastname;
                                             @endphp
@@ -219,25 +213,30 @@
                                 </div>
                             </div>
                             @if (
-                                (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
-                                    Auth::user()->role->name == app\models\Role::ADMIN)
+                                (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN))
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Employee</label>
                                         <select name="employee" class="select emp_project">
                                             <option value="">Select Employee</option>
                                             @foreach (getEmployee() as $emp)
-                                            @php
-                                                $fullname ="";
-                                                $employee = App\Models\Employee::where('user_id', '=', $emp->id)->where('record_status','=','active')->first();
-                                                if(!empty($employee)){    
-                                                $firstname = !empty($employee->firstname) ? $employee->firstname : '';
-                                                $lastname = !empty($employee->lastname) ? $employee->lastname : '';
-                                                $fullname = $firstname . ' ' . $lastname;
-                                                }
-                                            @endphp
-                                             @if(!empty($employee))
-                                                <option value="{{$employee->id}}">{{  $fullname }}</option>
+                                                @php
+                                                    $fullname = '';
+                                                    $employee = App\Models\Employee::where('user_id', '=', $emp->id)
+                                                        ->where('record_status', '=', 'active')
+                                                        ->first();
+                                                    if (!empty($employee)) {
+                                                        $firstname = !empty($employee->firstname)
+                                                            ? $employee->firstname
+                                                            : '';
+                                                        $lastname = !empty($employee->lastname)
+                                                            ? $employee->lastname
+                                                            : '';
+                                                        $fullname = $firstname . ' ' . $lastname;
+                                                    }
+                                                @endphp
+                                                @if (!empty($employee))
+                                                    <option value="{{ $employee->id }}">{{ $fullname }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -339,8 +338,14 @@
                                     <select name="supervisor" class="select form-control" id="supervisor_id">
                                         @foreach (getSupervisor() as $sup)
                                             @php
-                                                $supervisor = App\Models\Employee::where('user_id', '=', $sup->id)->first();
-                                                $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                                $supervisor = App\Models\Employee::where(
+                                                    'user_id',
+                                                    '=',
+                                                    $sup->id,
+                                                )->first();
+                                                $firstname = !empty($supervisor->firstname)
+                                                    ? $supervisor->firstname
+                                                    : '';
                                                 $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
                                                 $fullname = $firstname . ' ' . $lastname;
                                             @endphp
@@ -533,7 +538,7 @@
                         console.log(row.projects, 'row');
                         $(".emp_project_id").append(
                             `<option value="${row.project_id}">${row.projects.name}</option>`
-                            );
+                        );
                     });
                 },
             });

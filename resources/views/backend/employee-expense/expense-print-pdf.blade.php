@@ -60,7 +60,7 @@
                     $fullname = $firstname . ' ' . $lastname;
                 @endphp
                 <td style="border:none; border-bottom:1px dashed #ddd;">
-                    <strong>Employee Name:</strong> {{ $fullname }}
+                    <strong>Employee Name:</strong> {{!empty($fullname) ? $fullname:'' }}
                 </td>
                 <td style="border:none; border-bottom:1px dashed #ddd;"><strong>Expense
                         ID:</strong>{{ !empty($expenses[0]->expense_id) ? $expenses[0]->expense_id : '' }}</td>
@@ -107,7 +107,7 @@
                             $fullName = $supervisor->firstname . ' ' . $supervisor->lastname;
                         }
                     @endphp
-                    <td>{{ ucfirst($fullName) }}</td>
+                    <td>{{!empty($fullName) ? ucfirst($fullName) :''}}</td>
                     <td>{{ $expense->name }}</td>
                     <td>{{ date('d-m-Y', strtotime($expense->expense_occurred_date)) }}</td>
                     @php

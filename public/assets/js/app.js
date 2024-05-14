@@ -3,6 +3,8 @@ $(document).ready(function() {
 	if ($('.datatable').length > 0) {
         $('.datatable').DataTable({
             "bFilter": true,
+			"targets": 'no-sort',
+			"bSort": false,
 			order: [[ 0 , "asc" ]],
         });
     }

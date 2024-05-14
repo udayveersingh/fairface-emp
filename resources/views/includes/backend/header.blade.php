@@ -40,7 +40,7 @@
 
             @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                 <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                    <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
+                    <i class="CheckMessage fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
                 </a>
                 <div class="dropdown-menu notifications chatShowDropDown">
                     <div class="topnav-dropdown-header">
@@ -49,9 +49,6 @@
                     </div>
                     <div class="noti-content">
                         <ul class="notification-list getChatMessage">
-
-
-
                         </ul>
                     </div>
                     <div class="topnav-dropdown-footer">
@@ -66,7 +63,7 @@
                     }
                 @endphp
                 <a href="{{ route('chat-view', $userID) }}" class="dropdown-toggle nav-link">
-                    <i class="fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
+                    <i class="CheckMessage  fa fa-comments"></i><span class="badge badge-pill countNewMsg"></span>
                 </a>
             @endif
         </li>

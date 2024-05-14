@@ -29,13 +29,18 @@ class EmployeeExpenseController extends Controller
         $title = 'expenses';
         $employee = "";
         $employees = "";
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
-            $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->where('employee_id', '=', $employee->id)->groupBy('expense_id')->orderBy('expense_id', 'ASC')->get();
+            $expense_ids = Expense::groupBy('expense_id')->where('employee_id', '=', $employee->id)->orderBy('expense_id', 'DESC')->get();
+            $projects = EmployeeProject::with('projects')->where('employee_id','=', $employee->id)->get();
+        } elseif (Auth::user()->role->name == Role::ADMIN) {
+            $expenses = Expense::with('expensetype', 'employee', 'project','projectphase')->Orwhere('employee_id', '=', $employee->id)
+                ->OrWhere('supervisor_id','=',$employee->id)->groupBy(['expense_id','employee_id'])->orderBy('expense_id', 'ASC')->get();
             $expense_ids = Expense::groupBy('expense_id')->where('employee_id', '=', $employee->id)->orderBy('expense_id', 'DESC')->get();
             $projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
         } else {
-            $expenses = Expense::with('expensetype', 'employee', 'project', 'projectphase')->groupBy('expense_id')->latest()->get();
+            $expenses = Expense::with('expensetype','employee','project','projectphase')->groupBy(['expense_id','employee_id'])->latest()->get();
             $expense_ids = Expense::groupBy('expense_id')->orderBy('expense_id', 'DESC')->get();
             $projects = EmployeeProject::with('projects')->get();
             $employees = Employee::get();
@@ -217,7 +222,7 @@ class EmployeeExpenseController extends Controller
             ->leftJoin('employees', 'employees.id', '=', 'expenses.employee_id')
             ->leftJoin('projects', 'projects.id', '=', 'expenses.project_id')
             ->leftJoin('expense_types', 'expense_types.id', '=', 'expenses.expense_type_id')
-            ->where('expenses.expense_id', '=', $expense_id)
+            ->where('expenses.expense_id', '=', $expense_id)->where('expenses.employee_id','=',$emp_id)
             ->get();
         try {
             $mpdf = new \Mpdf\Mpdf();

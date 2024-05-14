@@ -278,6 +278,10 @@
             dataType: 'json',
             success: function(data) {
                 $('.countNewMsg').html(data.count);
+                if(data.count > 0)
+                {
+                    $('.CheckMessage').addClass('bell');
+                }
                 // console.log(data ,"data message");
                 var html = "";
                 $.each(data.newmessage, function(index, row) {
