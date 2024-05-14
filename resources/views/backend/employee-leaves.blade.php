@@ -91,18 +91,7 @@
                                 <td>{{ !empty($leave->from) ? date_format(date_create($leave->from), 'd-m-Y') : '' }}</td>
                                 <td>{{ !empty($leave->to) ? date_format(date_create($leave->to), 'd-m-Y') : '' }}</td>
                                 <td>
-                                    @php
-                                        $start = new DateTime($leave->to);
-                                        $end_date = new DateTime($leave->from);
-                                        $timesheet_status = App\Models\TimesheetStatus::find(
-                                            $leave->timesheet_status_id,
-                                        );
-                                    @endphp
-                                    @if ($start == $end_date)
-                                        {{ '1 Days' }}
-                                    @else
-                                        {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
-                                    @endif
+                                  {{$leave->no_of_days}}
                                 </td>
                                 <td class="d-flex" style="
                                 align-items: center;">
@@ -119,6 +108,9 @@
                                         @endif
                                     </div>
                                 </td>
+                                @if (
+                                    (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) ||
+                                        (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN))
                                 <td class="text-right">
                                     <div class="dropdown dropdown-action">
                                         <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
@@ -156,6 +148,7 @@
                                         </div>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                         <!-- delete Leave Modal -->

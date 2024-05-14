@@ -7,7 +7,8 @@
                 @else
                     <img src="{{ asset('assets/img/user.jpg')}}" alt="Avatar">
                 @endif
-                <p>{{ $message->body }}</p>
+                <p>{{ $message->body }}</p><br>
+                <p><span class="date">{{$message->created_at->diffForHumans();}}</span><p>
             </div>
         @elseif($message->from_id == Auth::id() && $message->to_id == $user->id)
             <div class="message right">
@@ -21,7 +22,8 @@
                 @else
                 <img src="{{ asset('assets/img/user.jpg') }}" alt="Avatar">
                 @endif --}}
-                <p>{{ $message->body }}</p>
+                <p>{{ $message->body }}</p><br>
+                <p><span class="date">{{$message->created_at->diffForHumans();}}</span><p>
             </div>
         @endif
     @endforeach

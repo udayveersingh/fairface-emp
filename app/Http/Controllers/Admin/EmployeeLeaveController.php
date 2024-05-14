@@ -8,6 +8,7 @@ use App\Models\LeaveType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\EmployeeProject;
+use App\Models\Holiday;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use App\Models\Role;
@@ -75,7 +76,13 @@ class EmployeeLeaveController extends Controller
         // dd($request->all());
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
-        $days = $start->diff($end_date, '%d')->days;
+
+        $holidays = Holiday::whereBetween('holiday_date',[$start,$end_date])->count();
+        $days = $start->diff($end_date, '%d')->days + 1;
+       if(!empty($holidays))
+       {
+        $days = (int)$days - $holidays;
+       }
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
