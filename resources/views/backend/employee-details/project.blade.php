@@ -144,15 +144,15 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Start Date</label>
-                                <input class="form-control" name="start_date" id="pro_edit_start_date"
+                                <label>Start Date <span class="text-danger">*</span></label>
+                                <input class="form-control" name="start_date" required id="pro_edit_start_date"
                                     type="date">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>End Date</label>
-                                <input class="form-control" name="end_date" id="edit_end_date" type="date">
+                                <label>End Date <span class="text-danger">*</span></label>
+                                <input class="form-control" name="end_date" required id="pro_edit_end_date" type="date">
                             </div>
                         </div>
                     </div>

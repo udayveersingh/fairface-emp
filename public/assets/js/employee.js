@@ -120,7 +120,7 @@ $(document).ready(function() {
           $('#edit_project_id').val(id);
           $('#project_employee_id').val(emp_id);
           $('#pro_edit_start_date').val(start_date);
-          $('#edit_end_date').val(end_date);
+          $('#pro_edit_end_date').val(end_date);
           $('#edit_project').val(project);
           $('.select').select2('destroy').select2();
       });

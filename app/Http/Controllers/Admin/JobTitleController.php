@@ -16,7 +16,7 @@ class JobTitleController extends Controller
     public function index()
     {
         $title = "Job Title";
-        $job_titles = JobTitle::get();
+        $job_titles = JobTitle::latest()->get();
         return view('backend.job-title', compact('title', 'job_titles'));
     }
 
@@ -30,7 +30,6 @@ class JobTitleController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:100',
-            'description' => 'required|max:500',
         ]);
 
         JobTitle::create($request->all());
@@ -59,7 +58,6 @@ class JobTitleController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:100',
-            'description' => 'required|max:500',
         ]);
         $job_title = JobTitle::find($request->id);
         $job_title->update([

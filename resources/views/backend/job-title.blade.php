@@ -55,7 +55,7 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            <x-modals.delete :route="'job-title.destroy'" :title="'JOb Title'" />
+                            <x-modals.delete :route="'job-title.destroy'" :title="'Job Title'" />
                             <!-- Edit Job Title Modal -->
                             <div id="edit_job_title" class="modal custom-modal fade" role="dialog">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -73,12 +73,11 @@
                                                 <input type="hidden" id="edit_id" name="id">
                                                 <div class="form-group">
                                                     <label>Job Title <span class="text-danger">*</span></label>
-                                                    <input class="form-control" name="title" id="job_title"
-                                                        required type="text">
+                                                    <input class="form-control" name="title" id="job_title" required type="text">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Job Description <span class="text-danger">*</span></label>
-                                                    <textarea class="form-control" id="edit_job_description" required name="description" rows="4" cols="50"></textarea>
+                                                    <label>Job Description</label>
+                                                    <textarea class="form-control" id="edit_job_description" name="description" rows="4" cols="50"></textarea>
                                                 </div>
                                                 <div class="submit-section">
                                                     <button type="submit" class="btn btn-primary submit-btn">Save</button>
@@ -111,10 +110,10 @@
                         @csrf
                         <div class="form-group">
                             <label>Job Title <span class="text-danger">*</span></label>
-                            <input class="form-control" name="title" id="edit_job_title" type="text">
+                            <input class="form-control" name="title" id="edit_job_title" required type="text">
                         </div>
                         <div class="form-group">
-                            <label>Job Description <span class="text-danger">*</span></label>
+                            <label>Job Description</label>
                             <textarea class="form-control" id="edit_job_description" name="description" rows="4" cols="50"></textarea>
                         </div>
                         <div class="submit-section">

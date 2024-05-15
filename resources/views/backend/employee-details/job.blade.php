@@ -247,8 +247,14 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Job Title<span class="text-danger">*</span></label>
-                                <input class="form-control" name="job_title" value="" id="edit_job_title"
-                                    type="text">
+                                <select name="job_title" id="edit_job_title" required class="form-control select">
+                                    <option value="">Select</option>
+                                    @foreach (getJobTitle() as $title)
+                                        <option value="{{ !empty($title->title) ? $title->title : '' }}">
+                                            {{ $title->title }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-sm-12">

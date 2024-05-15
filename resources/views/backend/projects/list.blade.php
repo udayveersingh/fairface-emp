@@ -57,10 +57,8 @@
                         @foreach ($projects as $project)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>
-                                    <a href="#">{{ $project->name }}</a>
-                                </td>
-                                <td>{{$project->project_type}}</td>
+                                <td>{{ $project->name}}</td>
+                                <td>{{ $project->project_type}}</td>
                                 <td>{{ $project->contract_id}}</td>
                                 <td>{{ $project->client_name }}</td>
                                 {{-- <td>{{ $project->project_type }}</td> --}}

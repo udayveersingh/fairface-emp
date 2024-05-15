@@ -120,8 +120,8 @@
                             <div class="col-lg-4">
                                 <input type="hidden" id="token" value="{{ Session::token() }}">
                                 <div class="form-group">
-                                    <label>Expenses Id<span class="text-danger">*</span></label>
-                                    <select name="expenses_id" id="expense_id" class="form-control select expense_id">
+                                    <label>Expenses<span class="text-danger">*</span></label>
+                                    <select name="expenses_id" id="expense_id" class="form-control select expense_id" required>
                                         <option value="">~Select~</option>
                                         <option value="new">Add new expense</option>
                                         @foreach ($expense_ids as $expense)
@@ -164,7 +164,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Expense Type <span class="text-danger">*</span></label>
-                                    <select name="expense_type" class="select">
+                                    <select name="expense_type" class="select" required>
                                         <option value="">~Select~</option>
                                         @foreach (\App\Models\ExpenseType::get() as $type)
                                             <option value="{{ $type->id }}">{{ $type->type }}</option>
@@ -182,7 +182,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Expense Cost in GBP(£)<span class="text-danger">*</span></label>
-                                    <input class="form-control" name="expense_cost" id="expense_cost" type="number">
+                                    <input class="form-control" name="expense_cost" id="expense_cost" required type="number">
                                 </div>
                             </div>
                         </div>
@@ -216,8 +216,8 @@
                                 (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN))
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Employee</label>
-                                        <select name="employee" class="select emp_project">
+                                        <label>Employee<span class="text-danger">*</span></label>
+                                        <select name="employee" class="select emp_project" required>
                                             <option value="">Select Employee</option>
                                             @foreach (getEmployee() as $emp)
                                                 @php
@@ -314,7 +314,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Expense Type <span class="text-danger">*</span></label>
-                                    <select name="expense_type" class="select" id="expense_type_id">
+                                    <select name="expense_type" class="select" id="expense_type_id" required>
                                         @foreach ($expensive_type as $type)
                                             <option value="{{ $type->id }}">{{ $type->type }}</option>
                                         @endforeach

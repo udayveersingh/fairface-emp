@@ -186,10 +186,10 @@
                             <div class="col-lg-4">
                                 <input type="hidden" id="token" value="{{ Session::token() }}">
                                 <div class="form-group">
-                                    <label>Expenses Id</label>
-                                    <select name="expenses_id" id="expense_id" class="form-control select expense_id">
+                                    <label>Expenses Id <span class="text-danger">*</span></label>
+                                    <select name="expenses_id" id="expense_id" class="form-control select expense_id" required>
                                         <option value="">~Select~</option>
-                                        <option value="new">Add new expense</option>
+                                        {{-- <option value="new">Add new expense</option> --}}
                                         @foreach ($expense_ids as $expense)
                                             <option value="{{ $expense->expense_id }}">{{ $expense->expense_id }}</option>
                                         @endforeach
@@ -259,13 +259,11 @@
                                     </select>
                                 </div>
                             </div>
-                            @if (
-                                (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN) ||
-                                    Auth::user()->role->name == app\models\Role::ADMIN)
+                            @if (Auth::check() && Auth::user()->role->name == app\models\Role::SUPERADMIN)
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Employee</label>
-                                        <select name="employee" class="select emp_project" id="employee_id">
+                                        <label>Employee<span class="text-danger">*</span></label>
+                                        <select name="employee" class="select emp_project" id="employee_id" required>
                                             <option value="">Select Employee</option>
                                             @foreach (getEmployee() as $emp)
                                                 @php
@@ -295,8 +293,7 @@
                                     <select name="project" class="select emp_project_id" id="project_id">
                                         <option value="">Select Project</option>
                                         @foreach ($projects as $project)
-                                            <option
-                                                value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">
+                                            <option value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">
                                                 {{ !empty($project->projects->name) ? $project->projects->name : '' }}
                                             </option>
                                         @endforeach
