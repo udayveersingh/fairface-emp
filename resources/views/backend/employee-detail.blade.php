@@ -26,8 +26,9 @@
         'project' => 'Project',
         'contact' => 'Contact',
         'address' => 'Address',
-        'bank' => 'Bank',
-        'payslip' => 'Payslip',
+        'bank' =>'Bank',
+        'payslip' =>'Payslip',
+        'rlmt' => 'RLMT',
     ];
     ?>
     <ul class="nav nav-tabs" id="myTab" role="tablist">

@@ -9839,11 +9839,11 @@ ul.comment-list li ul.children {
 	font-size: 40px;
 	font-size:27px!important;
 	color: #fff;
-	-webkit-animation: ring 4s .7s ease-in-out infinite;
+	-webkit-animation: ring 5s .7s ease-in-out infinite;
 	-webkit-transform-origin: 50% 4px;
-	-moz-animation: ring 4s .7s ease-in-out infinite;
+	-moz-animation: ring 5s .7s ease-in-out infinite;
 	-moz-transform-origin: 50% 4px;
-	animation: ring 4s .7s ease-in-out infinite;
+	animation:ring 10s 2.7s ease-in-out infinite;
 	transform-origin: 50% 4px;
   }
   
