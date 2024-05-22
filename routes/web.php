@@ -318,6 +318,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('employee-leave', [EmployeeLeaveController::class, 'index'])->name('employee-leave');
     Route::get('employee-leave-view/{id}', [EmployeeLeaveController::class, 'LeaveView'])->name('employee-leave-view');
+    Route::post('/get-projects', [EmployeeLeaveController::class, 'getProjects'])->name('get-projects');
     // Route::get('print-leave-detail',[EmployeeLeaveController::class,'leavePdf'])->name('print-leave-detail');
     Route::post('employee-leave', [EmployeeLeaveController::class, 'store']);
     Route::put('employee-leave', [EmployeeLeaveController::class, 'update']);

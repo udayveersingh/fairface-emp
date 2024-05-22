@@ -233,4 +233,22 @@ class EmployeeLeaveController extends Controller
         $employee_leave_status->save();
         return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
     }
+
+
+    public function getProjects(Request $request)
+    {
+        $fromDate = date('Y-m-d',strtotime($request->input('fromDate')));
+        $toDate = date('Y-m-d',strtotime($request->input('toDate')));
+        $projects = Project::whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=',$toDate)->Orwhere("client_cont_start_date",'=',NULL)->Orwhere("client_cont_end_date",'=',NULL)->get();
+
+            // $projects = EmployeeProject::with('projects')->whereHas('projects', function($q){
+            //     $q->whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=',$toDate)->Orwhere("client_cont_start_date",'=',NULL)->Orwhere("client_cont_end_date",'=',NULL)
+            // })->get();
+            // $projects = EmployeeProject::with('projects')->where('employee_id', $id)->get();
+            // dd($projects);
+            return json_encode(array('data' =>  $projects));
+    }
+
+
+
 }

@@ -211,14 +211,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Projects</label>
-                            <select name="project" class="select">
-                                @foreach ($projects as $project)
-                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Project Phase</label>
                             <select name="project_phase_id" id="project_phase" class="select form-control">
                                 <option value="">Select Project</option>
@@ -231,14 +223,22 @@
                         <div class="form-group">
                             <label>From <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="from" required class="form-control datetimepicker" type="text">
+                                <input name="from" required class="form-control  from_date" type="date">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>To <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="to" required class="form-control datetimepicker" type="text">
+                                <input name="to" required class="form-control to_date" type="date">
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Projects</label>
+                            <select name="project" class="select project">
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -290,6 +290,7 @@
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" id="leave_edit_id">
+                        <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}">
                         <div class="form-group">
                             <label>Leave Type <span class="text-danger">*</span></label>
                             <select name="leave_type" class="select2" id="edit_leave_type">
@@ -330,7 +331,7 @@
                         </div>
                         <div class="form-group">
                             <label>Projects</label>
-                            <select name="project" id="edit_project_id" class="select">
+                            <select name="project" id="edit_project_id" class="select ">
                                 @foreach ($projects as $project)
                                     <option value="{{ $project->id }}">{{ $project->name }}</option>
                                 @endforeach
@@ -386,14 +387,14 @@
                         @endif
 
                         <!-- <div class="form-group">
-                                                                                                                      <label>Status </label>
-                                                                                                                      <select name="status" class="select2 form-control" id="edit_status">
-                                                                                                                      <option value="null">Select Status</option>
-                                                                                                                      <option>Approved</option>
-                                                                                                                      <option>Pending</option>
-                                                                                                                      <option>Declined</option>
-                                                                                                                      </select>
-                                                                                                                      </div> -->
+                        <label>Status </label>
+                        <select name="status" class="select2 form-control" id="edit_status">
+                        <option value="null">Select Status</option>
+                        <option>Approved</option>
+                        <option>Pending</option>
+                        <option>Declined</option>
+                        </select>
+                        </div> -->
                         <div class="submit-section">
                             <button class="btn btn-primary submit-btn">Submit</button>
                         </div>
@@ -477,6 +478,35 @@
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
+
+        // Event listener for the date change
+        $('.to_date').on('change', function() {
+            var fromDate = $('.from_date').val();
+            var toDate = $('.to_date').val();
+            console.log(fromDate,toDate);  
+            $.ajax({
+                type: 'POST',
+                url: '/get-projects',
+                data: {
+                    _token: $("#csrf").val(),
+                    fromDate: fromDate,
+                    toDate:toDate,
+                },
+                success: function(dataResult) {
+                    getData = JSON.parse(dataResult);
+                    console.log(getData);
+                    $(".project").html("<option value=''>select project</option>");
+                    var count = 1;
+                    $.each(getData.data, function(index, row) {
+                        $(".project").append(`<option value="${row.id}">${row.name}
+                            </option>`);
+                        count++;
+                    });
+                }
+            });
+        });
+
+
         $('.editbtn').click(function() {
             var leave_id = $(this).data('id');
             console.log(leave_id, 'testid');
