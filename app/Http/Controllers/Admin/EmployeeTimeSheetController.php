@@ -57,10 +57,10 @@ class EmployeeTimeSheetController extends Controller
             $employees = Employee::get();
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_leave = Leave::where('employee_id', '=', $employee->id)->get();
-            $employee_project = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
+            // $employee_project = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
             $employee_timesheets = EmployeeTimesheet::with('project', 'projectphase')->where('employee_id', '=', $employee->id)->first();
         }
-        return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_project', 'employee_leave'));
+        return view('backend.employee-timesheet.employee-timesheet-view', compact('title', 'employee', 'settings', 'employee_timesheets', 'employees', 'employee_leave'));
     }
 
     public function TimesheetView(CompanySettings $settings)
@@ -126,6 +126,7 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -188,7 +189,7 @@ class EmployeeTimeSheetController extends Controller
             $emp_timesheet->calender_date = $calender_date[$key];
             if ($value == Null && !empty($hours[$key]) && $hours[$key] == "full_day" ||  $hours[$key] == "half_day") {
                 $emp_timesheet->from_time = "9:00";
-            }else{
+            } else {
                 $emp_timesheet->from_time = $value;
             }
 
@@ -196,7 +197,7 @@ class EmployeeTimeSheetController extends Controller
                 $emp_timesheet->to_time = "17:00";
             } else if ($end_time[$key] == Null && !empty($hours[$key]) && $hours[$key] == "half_day") {
                 $emp_timesheet->to_time = "13:00";
-            }else{
+            } else {
                 $emp_timesheet->to_time = $end_time[$key];
             }
             $emp_timesheet->notes =  $notes[$key];
@@ -321,6 +322,7 @@ class EmployeeTimeSheetController extends Controller
             ];
             $weekStartDate = date("d-m-Y", strtotime($week_end_date . "+1 day"));
 
+
             if (date("m", strtotime($weekStartDate)) != $month) {
                 break;
             }
@@ -397,9 +399,11 @@ class EmployeeTimeSheetController extends Controller
             $start_date = date("Y-m-d", strtotime($selectedWeek[0]));
             $end_date = date("Y-m-d", strtotime($selectedWeek[1]));
         } else {
-            $start_date = $year . "-" . $month . "-01";;
+            $start_date = $year . "-" . $month . "-01";
             $end_date =  date("Y-m-t", strtotime($start_date));
         }
+
+        // dd( $start_date,$end_date);
 
         // $dates = [];
         // $start = strtotime($start_date);
@@ -431,13 +435,24 @@ class EmployeeTimeSheetController extends Controller
             $employeeID = $request->employeeId;
         }
 
+        // dd($start_date,$end_date);
         $employee_leaves = Leave::with('leaveType', 'time_sheet_status')
             ->where('employee_id', '=', $employeeID)
-            ->where('from', '>=', $start_date)
-            ->where('to', '<=', $end_date)->whereHas('time_sheet_status', function ($q) {
+            ->whereDate('from', '>=', $start_date)
+            ->whereDate('to', '<=', $end_date)->whereHas('time_sheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::APPROVED);
             })->get();
 
+
+        // $employeeProejcts =[];
+
+        // $datesArray =[];
+        // while($start_date <= $end_date ) {
+        // $datesArray[$start_date] = 0;
+        // $start_date = strtotime( '+1 day',$start_date );
+        // }
+
+        // dd($datesArray);
         if ($employee_leaves) {
             foreach ($employee_leaves as $leave) {
 
@@ -456,7 +471,34 @@ class EmployeeTimeSheetController extends Controller
                 }
             }
         }
-        return json_encode(array('data' => $holidaysData));
+
+        // $startDate = date('Y-m-d', strtotime($start_date));
+        // $endDate = date('Y-m-d', strtotime($end_date));
+
+        // Step 1: Setting the Start and End Dates
+        $startDate = date_create($start_date);
+        $endDate = date_create($end_date);
+
+        // // Step 2: Defining the Date Interval
+        $interval = new DateInterval('P1D');
+
+        // // Step 3: Creating the Date Range
+        $date_range = new DatePeriod($startDate, $interval, $endDate);
+
+        $employee_projects = [];
+
+        // Step 4: Looping Through the Date Range
+        foreach ($date_range as $index => $date) {
+            $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
+                ->whereDate('start_date', '=', $date->format('Y-m-d'))->whereDate('end_date', '>=', $end_date)
+                ->orwhereDate('end_date','=',$end_date)->first();
+
+            if (!empty($emp_projects)) {
+                $employee_projects[$index] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
+            }
+        }
+
+        return json_encode(array('data' => $holidaysData, 'employee_projects' => $employee_projects));
     }
 
 

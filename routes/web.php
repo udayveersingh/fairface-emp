@@ -250,6 +250,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('emp-expenses-view/{expense_id}/{emp_id}', [EmployeeExpenseController::class, 'show'])->name('emp-expenses-view');
     Route::get('emp-expenses-print/{expense_id}/{emp_id}', [EmployeeExpenseController::class, 'ExpensePdf'])->name('emp-expenses-print');
     Route::post('get-expense-data', [EmployeeExpenseController::class, 'getExpenseId'])->name('get-expense-data');
+    Route::post('get-projects-data', [EmployeeExpenseController::class, 'getProjects'])->name('get-projects-data');
+    Route::post('/expenses-employee-projects', [EmployeeExpenseController::class, 'getEmployeeProjects'])->name('expenses-employee-projects');
     Route::post('emp-expenses', [EmployeeExpenseController::class, 'store']);
     Route::post('expense-status-update', [EmployeeExpenseController::class, 'ExpenseStatusUpdate'])->name('expense-status-update');
     Route::put('emp-expenses', [EmployeeExpenseController::class, 'update']);
@@ -274,6 +276,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('employee-view-details/{id}',[EmployeeDetailController::class,'employeeViewDetail'])->name('employee-view-details');
     Route::match(['get', 'post'], 'employee-detail/{id?}', [EmployeeDetailController::class, 'index'])->name('employee-detail');
     Route::post('employee-document-detail', [EmployeeDetailController::class, 'EmployeeDocumentUpload'])->name('employee-document-update');
+    Route::post('employee-rlmt-detail', [EmployeeDetailController::class, 'RLMTDocumentUpload'])->name('rlmt-document-update');
     Route::post('employee-payslip-detail', [EmployeeDetailController::class, 'EmployeePayslipUpload'])->name('employee-payslip-update');
     Route::delete('employee-detail-delete', [EmployeeDetailController::class, 'DeleteResource'])->name('employee.detail.delete');
 
@@ -317,6 +320,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('employee-leave', [EmployeeLeaveController::class, 'index'])->name('employee-leave');
     Route::get('employee-leave-view/{id}', [EmployeeLeaveController::class, 'LeaveView'])->name('employee-leave-view');
+    Route::post('/get-projects', [EmployeeLeaveController::class, 'getProjects'])->name('get-projects');
     // Route::get('print-leave-detail',[EmployeeLeaveController::class,'leavePdf'])->name('print-leave-detail');
     Route::post('employee-leave', [EmployeeLeaveController::class, 'store']);
     Route::put('employee-leave', [EmployeeLeaveController::class, 'update']);

@@ -45,7 +45,7 @@
 
         <form method="POST" action="{{ route('employee-timesheet') }}" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="employee_id" value="{{ $employee->id }}">
+            <input type="hidden" name="employee_id" id="employee_id" value="{{ $employee->id }}">
             @if ($settings->timesheet_interval == 'weekly')
                 <div class="row">
                     @php
@@ -62,7 +62,10 @@
                             $format = 'l, F j, Y g:i A';
                             $end_day = date($format, $end);
 
-                            return [\carbon\Carbon::parse($start)->format('m-d-Y'), \carbon\Carbon::parse($end_day)->format('m-d-Y')];
+                            return [
+                                \carbon\Carbon::parse($start)->format('m-d-Y'),
+                                \carbon\Carbon::parse($end_day)->format('m-d-Y'),
+                            ];
                         };
 
                         $weeks += [
@@ -329,12 +332,14 @@
 
         $("#week").change(function() {
             var selectedWeek = $(this).val();
+            var EmployeeId = $('#employee_id').val();
             $.ajax({
                 type: 'POST',
                 url: '/get-holiday-days',
                 data: {
                     _token: $("#csrf").val(),
                     selectedWeek: selectedWeek,
+                    EmployeeId: EmployeeId,
                 },
                 dataType: 'JSON',
                 success: function(dataResult) {
@@ -346,13 +351,19 @@
                         ];
                     });
 
+                    ProjectDataArrayForm =[];
+                    $.each(dataResult.employee_projects, function(index, row) {
+                        ProjectDataArrayForm[index] =  `<option value="${row.id}">${row.name}</option>`; 
+                    });
+                    console.log(ProjectDataArrayForm,"ProjectDataArrayForm");
+                    
                     // console.log(leavesDataArrayForm, " leavesDataArrayForm");
-                    getWeekData(selectedWeek, HolidayDataArrayForm);
+                    getWeekData(selectedWeek, HolidayDataArrayForm,ProjectDataArrayForm);
                 }
             });
         });
 
-        function getWeekData(selectedWeek, HolidayDataArrayForm) {
+        function getWeekData(selectedWeek,HolidayDataArrayForm,ProjectDataArrayForm) {
 
             selectedWeekDate = selectedWeek.split(',');
             // console.log(selectedWeekDate, "selectedWeekDate");
@@ -435,12 +446,9 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control">' +
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                        disabled +
-                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                        '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
-                        readonly + ' id="project_phase_id" class="select form-control">' +
+                        ' id="edit_project_id" class="select form-control project">' +
+                        '<option value="">Select Project</option>'+ ProjectDataArrayForm +'</select></td><td><select name="project_phase_id[]"  ' +
+                        readonly + 'id="project_phase_id" class="select form-control">' +
                         '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
                         disabled +
                         ' value="{{ !empty($phase->id) ? $phase->id : '' }}">{{ !empty($phase->name) ? $phase->name : '' }}</option>@endforeach</select></td>' +
@@ -503,6 +511,16 @@
 
                     console.log(HolidayDataArrayForm, "HolidayDataArrayForm");
 
+                    console.log(dataResult.employee_projects,"dataResult.employee_projects");
+
+                    ProjectDataArrayForm = [];
+
+                    $.each( dataResult.employee_projects, function(index,row) {
+                            ProjectDataArrayForm[index] =`<option value="${row.id}">${row.name}</option>`; 
+                    });
+
+                    console.log(ProjectDataArrayForm,"ProjectDataArrayForm");
+
                     // leavesDataArrayForm = [];
                     // $.each(dataResult.leavesdata, function(index, row) {
                     //     leavesDataArrayForm[index] = [row.from, row.to, row.leave_type,row.reason];
@@ -517,12 +535,12 @@
 
                     // console.log(getRangeleavedates[0] ,"getRangeleavedates");
 
-                    renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm)
+                    renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm,ProjectDataArrayForm)
                 }
             });
         });
 
-        function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm) {
+        function renderMonthlyHtml(SelectedMonthValue, SelectedYearValue, HolidayDataArrayForm,ProjectDataArrayForm) {
 
             var TimesheetData = '';
             $("#bodyData").html(" ");
@@ -604,11 +622,8 @@
                         ' value="half_day">Half Day</option>' +
                         '<option ' + disabled + ' value="full_day">Full Day</option></select></td>' +
                         '<td><select name="project_id[]" ' + readonly +
-                        ' id="edit_project_id" class="select form-control">' +
-                        '<option value="">Select Project</option>@foreach ($employee_project as $project) <option ' +
-                        disabled +
-                        ' value="{{ !empty($project->projects->id) ? $project->projects->id : '' }}">{{ !empty($project->projects->name) ? $project->projects->name : '' }}</option>' +
-                        '@endforeach</select></td><td><select name="project_phase_id[]"  ' +
+                        ' id="edit_project_id" class="select form-control project">' +
+                        '<option value="">Select Project</option>'+ ProjectDataArrayForm +'</select></td><td><select name="project_phase_id[]"  ' +
                         readonly + ' id="project_phase_id" class="select form-control">' +
                         '<option value="">Select Project Phase</option>@foreach (getProjectPhase() as $phase)<option ' +
                         disabled +

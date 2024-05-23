@@ -491,6 +491,34 @@
             }
         });
 
+
+        // $("#year_month").change(function() {
+        //     var month = $(this).val();
+        //     var year = $("#year").val();
+        //     var employee_id = $("#employee_id").val();
+        //     var token = $("#token").val();
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/get-projects-data',
+        //         data: {
+        //             _token: token,
+        //             year:year,
+        //             month:month,
+        //             employee_id: employee_id,
+        //         },
+        //         dataType: 'JSON',
+        //         success: function(data) {
+        //             $(".emp_project_id").html("<option value=''>select projects</option>");
+        //             $.each(dataResult.emp_projects, function(index, row) {
+        //                 console.log(row.projects, 'row');
+        //                 $(".emp_project_id").append(
+        //                     `<option value="${row.project_id}">${row.projects.name}</option>`
+        //                 );
+        //             });
+        //         },
+        //     });
+        // });
+
         $("#expense_id").change(function() {
             var expense_id = $(".expense_id").val();
             var employee_id = $("#employee_id").val();
@@ -524,7 +552,7 @@
             var token = $("#token").val();
             $.ajax({
                 type: 'POST',
-                url: '/get-employee-projects',
+                url: '/expenses-employee-projects',
                 data: {
                     _token: token,
                     employeeId: selectedEmployee,

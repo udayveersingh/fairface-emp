@@ -17,6 +17,7 @@ use App\Models\EmployeePayslip;
 use App\Models\EmployeeProject;
 use App\Models\EmployeeVisa;
 use App\Models\Project;
+use App\Models\RLMTDocument;
 use App\Models\Visa;
 use Illuminate\Http\Request;
 use PDF;
@@ -43,6 +44,8 @@ class EmployeeDetailController extends Controller
         $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
         $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
         $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
+        $rlmt_documents = RLMTDocument::where('employee_id', '=', $employee->id)->latest()->get();
+        // @dd($rlmt_documents);
         $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->orderBy('year', 'desc')->get();
         $visa_types = Visa::get();
         $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
@@ -65,7 +68,8 @@ class EmployeeDetailController extends Controller
             'employee_jobs',
             'employees',
             'countries',
-            'branches'
+            'branches',
+            'rlmt_documents'
         ));
         }else{
              $employee = "";
@@ -138,6 +142,41 @@ class EmployeeDetailController extends Controller
         $notification = notify('Your record saved!');
         return back()->with($notification);
     }
+
+
+    public function RLMTDocumentUpload(Request $request)
+    {
+        // dd($request->all());
+        $this->validate($request, [
+            'document_name' => 'required',
+            'attachment' => 'file|max:2048',
+        ]);
+        $file = null;
+        $file_name = "";
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+           
+           // $file_name = time() . '.' . $file->extension();
+            $file_name = $file->getClientOriginalName();
+            $file->move(public_path('storage/rlmt/document/employee/' . $request->emp_id), $file_name);
+        }
+        $Employee_document = new RLMTDocument();
+        $Employee_document->employee_id = $request->emp_id;
+        $Employee_document->name = $request->document_name;
+        $Employee_document->attachment = $file_name;
+        $Employee_document->save();
+        // $getEmployeeSlips = EmployeePayslip::where('employee_id', '=', $request->emp_id)->get();
+        // return response()->json([
+        //     // 'data' => $getEmployeeSlips,
+        // ]);
+
+        $notification = notify('Your record saved!');
+        return back()->with($notification);
+    }
+
+
+
+
 
     public function DeleteResource(Request $request)
     {
