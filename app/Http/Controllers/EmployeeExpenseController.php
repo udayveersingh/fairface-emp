@@ -153,7 +153,27 @@ class EmployeeExpenseController extends Controller
             $month =  $months;
         }
 
-        return json_encode(array('expense_id' => $request->expense_id, 'year' => $year, 'month' => $month));
+        $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $request->employeeId)
+        ->whereYear('start_date',$year)->whereMonth('start_date',$month)->get();
+
+        return json_encode(array('expense_id' => $request->expense_id, 'year' => $year, 'month' => $month , 'emp_projects',$emp_projects));
+    }
+
+
+    public function getProjects(Request $request)
+    {
+        // dd($request->all());
+        $year = $request->year;
+        $month =  $request->month;
+
+       // Fetch employee projects based on year and month
+    $emp_projects = EmployeeProject::with('projects')
+    ->where('employee_id', $request->employee_id)
+    ->whereYear('start_date', $year)
+    ->whereMonth('start_date', $month)
+    ->get();
+
+        return json_encode(array('emp_projects',$emp_projects));
     }
 
     /**
@@ -257,5 +277,11 @@ class EmployeeExpenseController extends Controller
         }
         $notification = notify('expense status has been updated');
         return back()->with($notification);
+    }
+
+    public function getEmployeeProjects(Request $request)
+    {
+        $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $request->employeeId)->get();
+        return json_encode(array('data' => $emp_projects));
     }
 }

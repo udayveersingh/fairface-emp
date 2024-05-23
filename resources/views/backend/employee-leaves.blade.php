@@ -221,6 +221,15 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label>Projects</label>
+                            <select name="project" class="select project">
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label>From <span class="text-danger">*</span></label>
                             <div class="cal-icon">
                                 <input name="from" required class="form-control  from_date" type="date">
@@ -231,14 +240,6 @@
                             <div class="cal-icon">
                                 <input name="to" required class="form-control to_date" type="date">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Projects</label>
-                            <select name="project" class="select project">
-                                @foreach ($projects as $project)
-                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
 
                         <div class="form-group">
