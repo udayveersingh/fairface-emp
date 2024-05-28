@@ -232,13 +232,13 @@
                         <div class="form-group">
                             <label>From <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="from" required class="form-control  from_date" type="date">
+                                <input type="text" name="from" required class="form-control from_date">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>To <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="to" required class="form-control to_date" type="date">
+                                <input type="text" name="to" required class="form-control to_date">
                             </div>
                         </div>
 
@@ -506,6 +506,32 @@
                 }
             });
         });
+
+        if ($('.from_date').length > 0) {
+            $('.from_date').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
+
+        if ($('.to_date').length > 0) {
+            $('.to_date').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
 
 
         $('.editbtn').click(function() {
