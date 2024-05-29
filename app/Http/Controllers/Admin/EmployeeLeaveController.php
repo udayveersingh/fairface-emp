@@ -33,17 +33,17 @@ class EmployeeLeaveController extends Controller
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->orderBy('id', 'desc')->get();
-        } else if(Auth::user()->role->name == Role::ADMIN) {
+        } else if (Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)
-            ->orWhere('supervisor_id','=',$employee->id)->orderBy('id', 'desc')->get();
+                ->orWhere('supervisor_id', '=', $employee->id)->orderBy('id', 'desc')->get();
             // $projects = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
-        }else {
+        } else {
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->orderBy('id', 'desc')->get();
         }
         $timesheet_statuses = TimesheetStatus::get();
         $leave_types = LeaveType::get();
-        $employees = Employee::where('record_status','!=','delete')->get();
+        $employees = Employee::where('record_status', '!=', 'delete')->get();
         $projects = Project::get();
         $project_phases = ProjectPhase::get();
         return view('backend.employee-leaves', compact('title', 'leaves', 'leave_types', 'employees', 'projects', 'timesheet_statuses', 'project_phases'));
@@ -52,8 +52,8 @@ class EmployeeLeaveController extends Controller
     public function LeaveView($id)
     {
         $title = "employee leave";
-        $leave = Leave::with('leaveType','employee', 'time_sheet_status')->find($id);
-        return view('backend.leave-view', compact('leave','title'));
+        $leave = Leave::with('leaveType', 'employee', 'time_sheet_status')->find($id);
+        return view('backend.leave-view', compact('leave', 'title'));
     }
 
 
@@ -77,23 +77,61 @@ class EmployeeLeaveController extends Controller
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
 
-        $holidays = Holiday::whereBetween('holiday_date',[$start,$end_date])->count();
-        $days = $start->diff($end_date, '%d')->days + 1;
-       if(!empty($holidays))
-       {
-        $days = (int)$days - $holidays;
-       }
+
+        $interval = $start->diff($end_date);
+
+        $days = 0;
+        for ($i = 0; $i <= $interval->d; $i++) {
+            $start->modify('+1 day');
+            $weekday = $start->format('w');
+
+            if ($weekday !== "0" && $weekday !== "6") { // 0 for Sunday and 6 for Saturday
+                $days++;
+            }
+        }
+
+        // echo $days." days without weekend";
+
+        $start_date = new DateTime($request->from);
+        $holidays = Holiday::whereBetween('holiday_date', [$start_date, $end_date])->get();
+        $holidays_date = [];
+        if (!empty($holidays)) {
+            foreach ($holidays as $date) {
+                $holidays_date[] = $date->holiday_date;
+            }
+        }
+
+        $StartHoliday = new DateTime(current($holidays_date));
+        $EndHoliday =  new DateTime(end($holidays_date));
+
+        $interval =  $StartHoliday->diff($EndHoliday);
+
+        $countHolidays = 0;
+        for ($i = 0; $i <= $interval->d; $i++) {
+             $StartHoliday->modify('+1 day');
+            $weekday =  $StartHoliday->format('w');
+
+            if ($weekday !== "0" && $weekday !== "6") { // 0 for Sunday and 6 for Saturday
+                $countHolidays++;
+            }
+        }
+
+        $total_days = (int)$days - (int)$countHolidays;
+        // dd($total_days);
+        
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
-            $total_leaves = LeaveType::where('id','=',$request->leave_type)->value('days');
-            $old_leaves = Leave::where('leave_type_id','=',$request->leave_type)->where('employee_id','=',$employee_id)->sum('no_of_days');
+            $company_total_leaves = LeaveType::where('id', '=', $request->leave_type)->value('days');
+            $old_leaves = Leave::with('time_sheet_status')->where('leave_type_id', '=', $request->leave_type)->where('employee_id', '=', $employee_id)->whereHas('time_sheet_status', function ($query) {
+                $query->where('status', '!=', TimeSheetStatus::REJECTED);
+            })->sum('no_of_days');
             // $pending_leave = (int)$total_leaves - (int)$old_leaves;
-            $new_leaves = (int)$old_leaves + (int)$days;
-             if($new_leaves > $total_leaves)
-             {
-                return back()->with('danger',"Your leave has been completed. Therefore you cannot take any more leave.");
-             }
+            $comp_leave_type = LeaveType::where('id', '=', $request->leave_type)->value('type');
+            $new_leaves = (int)$old_leaves + (int) $total_days;
+            if ($new_leaves >= $company_total_leaves) {
+                return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves");
+            }
 
             $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
@@ -113,6 +151,11 @@ class EmployeeLeaveController extends Controller
             'reason' => 'required',
             'timesheet_status' => $timesheet_status_field
         ]);
+        $days = 1;
+        if($total_days != 0){
+            $days =$total_days;
+        }
+        
         $leave = Leave::create([
             'leave_type_id' => $request->leave_type,
             'employee_id' => $employee_id,
@@ -122,13 +165,14 @@ class EmployeeLeaveController extends Controller
             'from' => $request->from,
             'to' => $request->to,
             'reason' => $request->reason,
+            'no_of_days' => $days,
             'timesheet_status_id' =>  $timesheet_status_id,
             'status_reason' => $request->status_reason,
             'approved_date_time' => $request->approved_date_time,
-            'no_of_days' => $days,
+          
         ]);
         $leave->notify(new NewLeaveNotification($leave));
-        $notification = notify("Employee leave has been added");
+        $notification = notify("Employee leave has been added.");
         return back()->with($notification);
     }
 
@@ -214,9 +258,9 @@ class EmployeeLeaveController extends Controller
         $employee_leave_status = Leave::with('leaveType', 'time_sheet_status')->find($request->id);
         $employee_leave_status->timesheet_status_id =  $request->input('timesheet_status');
         $employee_leave_status->status_reason = $request->input('status_reason');
-        $employee_leave_status->approved_date_time =  $date;   
+        $employee_leave_status->approved_date_time =  $date;
         $timesheet_status = TimesheetStatus::find($request->timesheet_status);
-        
+
         $leave_status = ([
             'to'   => $employee_leave_status->employee_id,
             'from' => $employee_leave_status->supervisor_id,
@@ -231,24 +275,21 @@ class EmployeeLeaveController extends Controller
             $employee_leave_status->notify(new RejectedLeaveByAdminNotification($leave_status));
         }
         $employee_leave_status->save();
-        return back()->with('success', "Employee Leave TimeSheet status has been updated successfully!!.");
+        return back()->with('success', "Employee Leave status has been updated successfully!!.");
     }
 
 
     public function getProjects(Request $request)
     {
-        $fromDate = date('Y-m-d',strtotime($request->input('fromDate')));
-        $toDate = date('Y-m-d',strtotime($request->input('toDate')));
-        $projects = Project::whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=',$toDate)->Orwhere("client_cont_start_date",'=',NULL)->Orwhere("client_cont_end_date",'=',NULL)->get();
+        $fromDate = date('Y-m-d', strtotime($request->input('fromDate')));
+        $toDate = date('Y-m-d', strtotime($request->input('toDate')));
+        $projects = Project::whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=', $toDate)->Orwhere("client_cont_start_date", '=', NULL)->Orwhere("client_cont_end_date", '=', NULL)->get();
 
-            // $projects = EmployeeProject::with('projects')->whereHas('projects', function($q){
-            //     $q->whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=',$toDate)->Orwhere("client_cont_start_date",'=',NULL)->Orwhere("client_cont_end_date",'=',NULL)
-            // })->get();
-            // $projects = EmployeeProject::with('projects')->where('employee_id', $id)->get();
-            // dd($projects);
-            return json_encode(array('data' =>  $projects));
+        // $projects = EmployeeProject::with('projects')->whereHas('projects', function($q){
+        //     $q->whereDate('client_cont_start_date', '>=', $fromDate)->whereDate('client_cont_end_date', '<=',$toDate)->Orwhere("client_cont_start_date",'=',NULL)->Orwhere("client_cont_end_date",'=',NULL)
+        // })->get();
+        // $projects = EmployeeProject::with('projects')->where('employee_id', $id)->get();
+        // dd($projects);
+        return json_encode(array('data' =>  $projects));
     }
-
-
-
 }

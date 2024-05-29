@@ -60,15 +60,8 @@
                 <tr>
                     <th>No. of Days</th>
                     <td>
-                        @php
-                            $start = new DateTime($leave->to);
-                            $end_date = new DateTime($leave->from);
-                        @endphp
-                        @if ($start == $end_date)
-                            {{ '1 Days' }}
-                        @else
-                            {{ $start->diff($end_date, '%d')->days . ' ' . Str::plural('Days', $start->diff($end_date, '%d')->days) }}
-                        @endif
+                        {{$leave->no_of_days}}
+                       
                     </td>
                 </tr>
                 <tr>
