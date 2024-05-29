@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+$(document).ready(function () {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         localStorage.setItem('activeTab', $(this).attr('href'));
         test = $(this).attr('href');
     });
@@ -30,20 +30,20 @@ $(document).ready(function() {
     //     });
     // });
 
-    $(document).on('click', '#employee_edit_btn', function() {
+    $(document).on('click', '#employee_edit_btn', function () {
         console.log('edit clicked');
         $('#edit_employee_detail').modal("show");
     });
 
     console.log("Element ", $(document).find(".edit_btn").length);
-    $(document).on('click', '#edit_btn', function() {
+    $(document).on('click', '#edit_btn', function () {
         console.log('edit clicked');
         $('#employee_job').modal("show");
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');
         var job_title = $(this).data('job_title');
         var supervisor = $(this).data('supervisor');
-        console.log(edit_supervisor,"edit_supervisor");
+        console.log(edit_supervisor, "edit_supervisor");
         var edit_timesheet_approval_inch = $(this).data('timesheet_approval_inch');
         var edit_department = $(this).data('department');
         var edit_work_email = $(this).data('work_email');
@@ -88,7 +88,7 @@ $(document).ready(function() {
 
 
     //Edit Form of Visa
-    $(document).on('click', '#edit_btn_visa', function() {
+    $(document).on('click', '#edit_btn_visa', function () {
         $('#edit_employee_visa').modal('show');
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');
@@ -110,28 +110,28 @@ $(document).ready(function() {
     });
 
     //Edit form of Project
-      $(document).on('click', '.edit_btn', function() {
-          $('#edit_employee_project').modal('show');
-          var id = $(this).data('id');
-          var emp_id = $(this).data('employee_id');
-          var start_date = $(this).data('start_date');
-          var end_date = $(this).data('end_date');
-          var project = $(this).data('project');
-          $('#edit_project_id').val(id);
-          $('#project_employee_id').val(emp_id);
-          $('#pro_edit_start_date').val(start_date);
-          $('#pro_edit_end_date').val(end_date);
-          $('#edit_project').val(project);
-          $('.select').select2('destroy').select2();
-      });
+    $(document).on('click', '.edit_btn', function () {
+        $('#edit_employee_project').modal('show');
+        var id = $(this).data('id');
+        var emp_id = $(this).data('employee_id');
+        var start_date = $(this).data('start_date');
+        var end_date = $(this).data('end_date');
+        var project = $(this).data('project');
+        $('#edit_project_id').val(id);
+        $('#project_employee_id').val(emp_id);
+        $('#pro_edit_start_date').val(start_date);
+        $('#pro_edit_end_date').val(end_date);
+        $('#edit_project').val(project);
+        $('.select').select2('destroy').select2();
+    });
 
     //Edit Emergency contact form
-    $(document).on('click', '#employee_contact_btn', function() {
+    $(document).on('click', '#employee_contact_btn', function () {
         $('#edit_contact_detail').modal("show");
     });
 
     //Edit Employee Address form
-    $(document).on('click', '#edit_btn_employee_address', function() {
+    $(document).on('click', '#edit_btn_employee_address', function () {
         $('#edit_employee_address').modal("show");
         var id = $(this).data('id');
         var emp_id = $(this).data('employee_id');
@@ -139,7 +139,7 @@ $(document).ready(function() {
         var address_line_2 = $(this).data('home_address_line_2');
         var post_code = $(this).data('post_code');
         var from_date = $(this).data('from_date');
-        console.log(from_date , 'from_date');
+        console.log(from_date, 'from_date');
         var to_date = $(this).data('to_date');
         $('#edit_emp_address_id').val(id);
         $('#address_employee_id').val(emp_id);
@@ -153,12 +153,12 @@ $(document).ready(function() {
     });
 
     //Edit Employee Bank Detail form
-    $(document).on('click', '#employee_bank_btn', function() {
+    $(document).on('click', '#employee_bank_btn', function () {
         $('#edit_bank_detail').modal("show");
     });
 
 
-    $(".mask_phone_number").keyup(function() {
+    $(".mask_phone_number").keyup(function () {
         // $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
         $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
     });
@@ -167,4 +167,14 @@ $(document).ready(function() {
     //     $('.select').select2();
     // });
 
+
+    // $(".newDocument").hide();
+    $(".selectDocument").on('change', function () {
+        var selectedDocument = $(this).val();
+        if (selectedDocument == "add new") {
+            $(".newDocument").html(`<input type="text" name="new_document" value="" id="newDocument" required="" class="form-control">`)
+        } else {
+            $(".newDocument").html('');
+        }
+    });
 });

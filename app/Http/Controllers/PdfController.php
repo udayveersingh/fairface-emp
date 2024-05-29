@@ -35,9 +35,8 @@ class PdfController extends Controller
             $employee = Employee::with('country', 'branch', 'user')->find($id);
             $employee_address = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->first();
             $employee_visa = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->first();
-            $employee_job_title = EmployeeJob::where('employee_id', '=', $employee->id)
-                ->latest()
-                ->value('job_title');
+            $employee_job_title = EmployeeJob::where('employee_id', '=', $employee->id)->latest()->value('job_title');
+            // dd( $employee_job_title);
             try {
                 $mpdf = new \Mpdf\Mpdf();
                 $content = view('backend.pdf-files.emp-details-pdf', compact('employee', 'employee_address', 'employee_visa', 'employee_job_title'))->render();

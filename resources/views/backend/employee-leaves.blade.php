@@ -232,13 +232,13 @@
                         <div class="form-group">
                             <label>From <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="from" required class="form-control  from_date" type="date">
+                                <input type="text" name="from" required class="form-control from_date">
                             </div>
                         </div>
                         <div class="form-group">
                             <label>To <span class="text-danger">*</span></label>
                             <div class="cal-icon">
-                                <input name="to" required class="form-control to_date" type="date">
+                                <input type="text" name="to" required class="form-control to_date">
                             </div>
                         </div>
 
@@ -258,7 +258,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Status Reason <span class="text-danger">*</span></label>
+                                <label>Status Reason</label>
                                 <textarea name="status_reason" rows="4" class="form-control"></textarea>
                             </div>
                             <div class="form-group">
@@ -368,7 +368,7 @@
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>TimeSheet Status<span class="text-danger">*</span></label>
-                                <select name="timesheet_status" id="edit_status" class="select form-control" required>
+                                <select name="timesheet_status" id="edit_status" class="select form-control">
                                     <option value="">Select TimeSheet Status</option>
                                     @foreach (getTimesheetStatus() as $time_status)
                                         <option value="{{ $time_status->id }}">
@@ -377,7 +377,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Status Reason <span class="text-danger">*</span></label>
+                                <label>Status Reason</label>
                                 <textarea name="status_reason" id="edit_status_reason" rows="4" class="form-control"></textarea>
                             </div>
                             <div class="form-group">
@@ -506,6 +506,32 @@
                 }
             });
         });
+
+        if ($('.from_date').length > 0) {
+            $('.from_date').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
+
+        if ($('.to_date').length > 0) {
+            $('.to_date').datetimepicker({
+                format: 'YYYY-MM-DD',
+                defaultDate: new Date(),
+                icons: {
+                    up: "fa fa-angle-up",
+                    down: "fa fa-angle-down",
+                    next: 'fa fa-angle-right',
+                    previous: 'fa fa-angle-left'
+                }
+            });
+        }
 
 
         $('.editbtn').click(function() {

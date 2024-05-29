@@ -30,60 +30,62 @@ class EmployeeDetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id="")
+    public function index($id = "")
     {
         $title = 'Employee Detail';
-        if(!empty($id)){
-        $employee = Employee::with('department', 'designation','country','branch','user')->find($id);
-        $designations = Designation::get();
-        $departments = Department::get();
-        $branches = Branch::get();
-        // $employee = Employee::find($id);
-        $countries = Country::get();
-        $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
-        $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
-        $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
-        $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
-        $rlmt_documents = RLMTDocument::where('employee_id', '=', $employee->id)->latest()->get();
-        // @dd($rlmt_documents);
-        $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->orderBy('year', 'desc')->get();
-        $visa_types = Visa::get();
-        $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
-        $projects = Project::where('status', '=', 1)->get();
-        $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
-        $employees = Employee::get();
-        $employee_jobs  = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
-        return view('backend.employee-detail', compact('employee','title',
-            'departments',
-            'designations',
-            'emergency_contact',
-            'employee_addresses',
-            'employee_bank',
-            'employee_payslips',
-            'employee_documents',
-            'employee_visas',
-            'visa_types',
-            'projects', 
-            'employee_projects',
-            'employee_jobs',
-            'employees',
-            'countries',
-            'branches',
-            'rlmt_documents'
-        ));
-        }else{
-             $employee = "";
-             $employees = Employee::get();
-             $departments = Department::get();
-             $branches  = Branch::get();
-             $visa_types = Visa::get();
-             $countries = Country::get();
-             $projects = Project::where('status', '=', 1)->get();
-            return view('backend.employee-detail',compact('title','employee','employees','departments','branches','visa_types','projects','countries'));
+        if (!empty($id)) {
+            $employee = Employee::with('department', 'designation', 'country', 'branch', 'user')->find($id);
+            $designations = Designation::get();
+            $departments = Department::get();
+            $branches = Branch::get();
+            // $employee = Employee::find($id);
+            $countries = Country::get();
+            $emergency_contact = EmployeeEmergencyContact::where('employee_id', '=', $employee->id)->first();
+            $employee_addresses = EmployeeAddress::where('employee_id', '=', $employee->id)->latest()->get();
+            $employee_bank = EmployeeBank::where('employee_id', '=', $employee->id)->first();
+            $employee_documents = EmployeeDocument::where('employee_id', '=', $employee->id)->latest()->get();
+            $rlmt_documents = RLMTDocument::where('employee_id', '=', $employee->id)->latest()->get();
+            // @dd($rlmt_documents);
+            $employee_payslips = EmployeePayslip::where('employee_id', '=', $employee->id)->orderBy('year', 'desc')->get();
+            $visa_types = Visa::get();
+            $employee_visas = EmployeeVisa::where('employee_id', '=', $employee->id)->latest()->get();
+            $projects = Project::where('status', '=', 1)->get();
+            $employee_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employee->id)->get();
+            $employees = Employee::get();
+            $employee_jobs  = EmployeeJob::with('department')->where('employee_id', '=', $employee->id)->latest()->get();
+            return view('backend.employee-detail', compact(
+                'employee',
+                'title',
+                'departments',
+                'designations',
+                'emergency_contact',
+                'employee_addresses',
+                'employee_bank',
+                'employee_payslips',
+                'employee_documents',
+                'employee_visas',
+                'visa_types',
+                'projects',
+                'employee_projects',
+                'employee_jobs',
+                'employees',
+                'countries',
+                'branches',
+                'rlmt_documents'
+            ));
+        } else {
+            $employee = "";
+            $employees = Employee::get();
+            $departments = Department::get();
+            $branches  = Branch::get();
+            $visa_types = Visa::get();
+            $countries = Country::get();
+            $projects = Project::where('status', '=', 1)->get();
+            return view('backend.employee-detail', compact('title', 'employee', 'employees', 'departments', 'branches', 'visa_types', 'projects', 'countries'));
         }
     }
 
-    
+
     public function EmployeePayslipUpload(Request $request)
     {
         $this->validate($request, [
@@ -124,8 +126,8 @@ class EmployeeDetailController extends Controller
         $file_name = "";
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-           
-           // $file_name = time() . '.' . $file->extension();
+
+            // $file_name = time() . '.' . $file->extension();
             $file_name = $file->getClientOriginalName();
             $file->move(public_path('storage/documents/employee/' . $request->emp_id), $file_name);
         }
@@ -146,7 +148,6 @@ class EmployeeDetailController extends Controller
 
     public function RLMTDocumentUpload(Request $request)
     {
-        // dd($request->all());
         $this->validate($request, [
             'document_name' => 'required',
             'attachment' => 'file|max:2048',
@@ -155,14 +156,19 @@ class EmployeeDetailController extends Controller
         $file_name = "";
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
-           
-           // $file_name = time() . '.' . $file->extension();
+
+            // $file_name = time() . '.' . $file->extension();
             $file_name = $file->getClientOriginalName();
             $file->move(public_path('storage/rlmt/document/employee/' . $request->emp_id), $file_name);
         }
         $Employee_document = new RLMTDocument();
         $Employee_document->employee_id = $request->emp_id;
-        $Employee_document->name = $request->document_name;
+        if ($request->document_name == "add new") {
+            $documentName = $request->input('new_document');
+        } else {
+            $documentName = $request->input('document_name');
+        }
+        $Employee_document->name = $documentName;
         $Employee_document->attachment = $file_name;
         $Employee_document->save();
         // $getEmployeeSlips = EmployeePayslip::where('employee_id', '=', $request->emp_id)->get();
@@ -180,33 +186,35 @@ class EmployeeDetailController extends Controller
 
     public function DeleteResource(Request $request)
     {
+        // dd( $request->all());
         if ($request->data_model == "Employee Document") {
             $employee_document = EmployeeDocument::find($request->id);
             $employee_document->delete();
             $message = "Employee document has been deleted.";
-        }elseif($request->data_model == "Employee Job") {
+        } elseif ($request->data_model == "Employee Job") {
             $employee_job = EmployeeJob::find($request->id);
             $employee_job->delete();
             $message = "Employee job has been deleted.";
-        }elseif($request->data_model == "Employee Visa")
-        {
+        } elseif ($request->data_model == "Employee Visa") {
             $employee_visa = EmployeeVisa::find($request->id);
             $employee_visa->delete();
             $message = "Employee Visa has been deleted.";
-        }elseif($request->data_model == "Employee Project"){
+        } elseif ($request->data_model == "Employee Project") {
             $employee_project = EmployeeProject::find($request->id);
             $employee_project->delete();
             $message = "Employee Project has been deleted.";
-        }elseif($request->data_model == "Employee Payslip")
-        {
+        } elseif ($request->data_model == "Employee Payslip") {
             $employee_payslip = EmployeePayslip::find($request->id);
             $employee_payslip->delete();
             $message = "Employee Payslip has been deleted.";
-        }elseif($request->data_model == "Employee Address")
-        {
+        } elseif ($request->data_model == "Employee Address") {
             $employee_address = EmployeeAddress::find($request->id);
             $employee_address->delete();
-            $message = "Employee Address has been deleted.";  
+            $message = "Employee Address has been deleted.";
+        } elseif ($request->data_model == "RLMT Document") {
+            $rlmt_Document = RLMTDocument::find($request->id);
+            $rlmt_Document->delete();
+            $message = "RLMT Document has been deleted.";
         }
         return back()->with('success', $message);
     }

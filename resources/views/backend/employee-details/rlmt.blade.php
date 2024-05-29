@@ -9,14 +9,17 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label class="col-form-label">Document Name<span class="text-danger">*</span></label>
-                            <select name="document_name" id="edit_document" class="form-control select" required>
+                            <select name="document_name" id="edit_document" class="form-control select selectDocument" required>
                                 <option value="">Select document Name</option>
                                 <option value="advert1">Advert1</option>
                                 <option value="advert2">Advert 2</option>
                                 <option value="interview notes1:">Interview notes 1:</option>
                                 <option value="interview notes2:">Interview notes 2:</option>
                                 <option value="shortlisted candidates:">Shortlisted candidates:</option>
+                                <option value="add new">Add New</option>
                             </select>
+                        </div>
+                        <div class="form-group newDocument">
                         </div>
                     </div>
                 <div class="col-sm-4">
@@ -62,19 +65,24 @@
                     $extension = pathinfo(storage_path('storage/rlmt/document/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
                     @endphp
                     <td>
+                        @if(!empty($document->attachment))
                         <a href="{{asset('storage/rlmt/document/employee/'.$document->employee_id.'/'.$document->attachment)}}" target="_blank"><img src="{{ asset('assets/img/profiles/download-file-icon-small.png')}}" width="35px" height="35px"></a>
+                        @else
+                        No Document
+                        @endif
                     </td>
                     <td class="text-right">
                         <div class="dropdown dropdown-action">
                             <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a data-id="{{$document->id}}" class="dropdown-item deletebtn" href="javascript:void(0);" data-target="#deletebtn" data-resource_data="Employee Document" data-toggle="modal"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                <a data-id="{{ $document->id }}" class="btn btn-danger detail_delete"
+                                    data-resource_data="RLMT Document" href="javascript:void(0);" data-toggle="modal"><i
+                                        class="fa fa-trash-o m-r-5"></i> Delete</a>
                             </div>
                         </div>
                     </td>
                 </tr>
                 @endforeach
-                <x-modals.delete :route="'employee-document.destroy'" :title="'Employee document'" />
             </tbody>
         </table>
     </div>
