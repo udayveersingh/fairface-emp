@@ -90,6 +90,8 @@ class EmployeeLeaveController extends Controller
             }
         }
 
+        // dd($days);
+
         // echo $days." days without weekend";
 
         $start_date = new DateTime($request->from);
@@ -101,24 +103,27 @@ class EmployeeLeaveController extends Controller
             }
         }
 
-        $StartHoliday = new DateTime(current($holidays_date));
-        $EndHoliday =  new DateTime(end($holidays_date));
-
-        $interval =  $StartHoliday->diff($EndHoliday);
-
         $countHolidays = 0;
-        for ($i = 0; $i <= $interval->d; $i++) {
-             $StartHoliday->modify('+1 day');
-            $weekday =  $StartHoliday->format('w');
+        if (!empty($holidays_date) && count($holidays_date) > 0) {
+            $StartHoliday = new DateTime(current($holidays_date));
+            $EndHoliday =  new DateTime(end($holidays_date));
 
-            if ($weekday !== "0" && $weekday !== "6") { // 0 for Sunday and 6 for Saturday
-                $countHolidays++;
+            $interval =  $StartHoliday->diff($EndHoliday);
+
+            $countHolidays = 0;
+            for ($i = 0; $i <= $interval->d; $i++) {
+                $StartHoliday->modify('+1 day');
+                $weekday =  $StartHoliday->format('w');
+
+                if ($weekday !== "0" && $weekday !== "6") { // 0 for Sunday and 6 for Saturday
+                    $countHolidays++;
+                }
             }
+            $total_days = (int)$days - (int)$countHolidays;
+        } else {
+            $total_days = (int)$days;
         }
 
-        $total_days = (int)$days - (int)$countHolidays;
-        // dd($total_days);
-        
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
@@ -152,10 +157,10 @@ class EmployeeLeaveController extends Controller
             'timesheet_status' => $timesheet_status_field
         ]);
         $days = 1;
-        if($total_days != 0){
-            $days =$total_days;
+        if ($total_days != 0) {
+            $days = $total_days;
         }
-        
+
         $leave = Leave::create([
             'leave_type_id' => $request->leave_type,
             'employee_id' => $employee_id,
@@ -169,7 +174,7 @@ class EmployeeLeaveController extends Controller
             'timesheet_status_id' =>  $timesheet_status_id,
             'status_reason' => $request->status_reason,
             'approved_date_time' => $request->approved_date_time,
-          
+
         ]);
         $leave->notify(new NewLeaveNotification($leave));
         $notification = notify("Employee leave has been added.");
