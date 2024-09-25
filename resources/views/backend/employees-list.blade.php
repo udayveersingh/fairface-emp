@@ -153,13 +153,13 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-form-label">Phone Number Main </label>
-                                    <input class="form-control mask_phone_number" name="phone" type="text">
+                                    <input class="form-control mask_phone_number" name="phone" type="number">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-form-label">Alternate Phone Number</label>
-                                    <input class="form-control mask_phone_number" name="al_phone_number" type="text">
+                                    <input class="form-control mask_phone_number" name="al_phone_number" type="number">
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -303,14 +303,14 @@
                                 <div class="form-group">
                                     <label class="col-form-label">Phone Number Main </label>
                                     <input class="form-control mask_phone_number edit_phone" name="phone"
-                                        type="text">
+                                        type="number">
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-form-label">Alternate Phone Number</label>
                                     <input class="form-control mask_phone_number edit_al_phone_number"
-                                        name="al_phone_number" type="text">
+                                        name="al_phone_number" type="number">
                                 </div>
                             </div>
 

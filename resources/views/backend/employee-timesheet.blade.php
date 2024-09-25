@@ -61,7 +61,7 @@
                                     <tr>
                                         <td>{{ $timesheet->timesheet_id }}</td>
                                         <td>{{ $firstname . ' ' . $lastname }}</td>
-                                        <td>{{ $supervisor_name }}</td>
+                                        <td>{{ !empty($supervisor_name) ? $supervisor_name:'' }}</td>
                                         <td>{{ !empty($timesheet->project->name) ? $timesheet->project->name : '' }}</td>
                                         {{-- <td>{{ !empty($timesheet->projectphase->name) ? str_replace('_', ' ', ucfirst($timesheet->projectphase->name)) : '' }} --}}
                                         {{-- </td> --}}

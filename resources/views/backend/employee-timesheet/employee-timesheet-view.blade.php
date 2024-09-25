@@ -87,7 +87,7 @@
 
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label>Supervisor<span class="text-danger">*</span></label>
+                            <label>Supervisor</label>
                             <select name="supervisor_id" id="edit_supervisor_id" class="select form-control">
                                 <option value="">Select Supervisor</option>
                                 @foreach (getSupervisor() as $supervisor)

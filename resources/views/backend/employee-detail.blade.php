@@ -244,7 +244,7 @@
                                                                 class="text-danger">*</span></label>
                                                         <input class="form-control edit_phone mask_phone_number"
                                                             name="phone" required value="{{ $employee->phone }}"
-                                                            type="text">
+                                                            type="number">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
@@ -253,7 +253,7 @@
                                                         <input class="form-control edit_al_phone_number mask_phone_number"
                                                             name="al_phone_number"
                                                             value="{{ $employee->alternate_phone_number }}"
-                                                            type="text">
+                                                            type="number">
                                                     </div>
                                                 </div>
 
@@ -470,7 +470,7 @@
                         <div class="form-group">
                             <label class="col-form-label">Phone Number Main <span class="text-danger">*</span> </label>
                             <input class="form-control mask_phone_number" value="{{ old('phone') }}" name="phone"
-                                type="text">
+                                type="number">
                             @if ($errors->has('phone'))
                                 <span class="text-danger">
                                     {{ $errors->first('phone') }}
@@ -482,7 +482,7 @@
                         <div class="form-group">
                             <label class="col-form-label">Alternate Phone Number</label>
                             <input class="form-control mask_phone_number" name="al_phone_number"
-                                value="{{ old('al_phone_number') }}" type="text">
+                                value="{{ old('al_phone_number') }}" type="number">
                         </div>
                     </div>
                     <div class="col-sm-4">

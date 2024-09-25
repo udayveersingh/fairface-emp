@@ -146,7 +146,7 @@
                             </div>
                         {{-- @endif --}}
                     </div>
-                @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
+                @elseif(Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN && Auth::user()->id != $loginUserId )
                     <div class="row">
                         <div class="col-lg-12">
                             <a class="dropdown-item btn btn-primary continue-btn btn-block"

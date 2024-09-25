@@ -13,6 +13,7 @@ use App\Models\ProjectPhase;
 use App\Models\Role;
 use App\Settings\CompanySettings;
 use App\Models\TimesheetStatus;
+use App\Models\User;
 use App\Notifications\ApprovedTimesheetByAdminNotification;
 use App\Notifications\RejectedTimesheetByAdminNotification;
 use App\Notifications\SendTimesheetNotificationToAdmin;
@@ -88,13 +89,15 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
+        $userID = Employee::where('id','=',$id)->value('user_id');
+        $loginUserId = User::where('id','=',$userID)->value('id');
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy('calender_date', 'ASC')->get();
         // $timesheet_statuses = TimesheetStatus::get();
         $timesheet_statuses = TimesheetStatus::where('status', '=', TimesheetStatus::APPROVED)->Orwhere('status', '=', TimesheetStatus::REJECTED)->get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date', 'end_date', 'timesheet_statuses', 'id'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date', 'end_date', 'timesheet_statuses','id','loginUserId'));
     }
 
     /**
@@ -126,7 +129,6 @@ class EmployeeTimeSheetController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -143,7 +145,7 @@ class EmployeeTimeSheetController extends Controller
 
         // if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {
         $this->validate($request, [
-            'supervisor_id'   => 'required',
+            // 'supervisor_id'   => 'required',
             'calender_date.*' => 'required',
             'calender_day.*'  => 'required',
             'start_time.*'    => 'nullable',

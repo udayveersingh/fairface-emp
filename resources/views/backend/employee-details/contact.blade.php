@@ -115,7 +115,7 @@
                                         <label>Phone Number 1<span class="text-danger">*</span></label>
                                         <input class="form-control mask_phone_number" name="phone_number_1" required
                                             value="{{ old('phone_number_1', !empty($emergency_contact->phone_number_1) ? $emergency_contact->phone_number_1 : '' )}}"
-                                            id="edit_phone_number_1" type="text">
+                                            id="edit_phone_number_1" type="number">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -123,7 +123,7 @@
                                         <label>Phone Number 2</label>
                                         <input class="form-control mask_phone_number" name="phone_number_2" 
                                             value="{{ !empty($emergency_contact->phone_number_2) ? $emergency_contact->phone_number_2 : '' }}"
-                                            id="edit_phone_number_2" type="text">
+                                            id="edit_phone_number_2" type="number">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -155,7 +155,7 @@
                                         <label>Overseas Phone Number 1</label>
                                         <input class="form-control mask_phone_number" name="overseas_phone_number_1"
                                             value="{{ !empty($emergency_contact->overseas_phone_number_1) ? $emergency_contact->overseas_phone_number_1 : '' }}"
-                                            id="edit_overseas_phone_number_1" type="text">
+                                            id="edit_overseas_phone_number_1" type="number">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
@@ -163,7 +163,7 @@
                                         <label>Overseas Phone Number 2</label>
                                         <input class="form-control mask_phone_number" name="overseas_phone_number_2"
                                             value="{{ !empty($emergency_contact->overseas_phone_number_2) ? $emergency_contact->overseas_phone_number_2 : '' }}"
-                                            id="edit_overseas_phone_number_2" type="text">
+                                            id="edit_overseas_phone_number_2" type="number">
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
