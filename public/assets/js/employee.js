@@ -157,11 +157,49 @@ $(document).ready(function () {
         $('#edit_bank_detail').modal("show");
     });
 
+    // $(".mask_phone_number").keyup(function() {
+    //     var phone = $(this).val();
+    //     phone = phone.replace(/\D/g, '');
+    //     // var changeFormat="";
+    //     if (phone != "") {
+    //         var changeFormat = phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); // (012)345-6789
+    //     }
+    //     $(".mask_phone_number").val(changeFormat);
+    // });
+
+    // $(".mask_phone_number").on('input', function () {
+    //     // Get the current value of the input
+    //     let inputValue = $(this).val();
+        
+    //     // Check if the input is valid (only numbers)
+    //     if (/^\d*$/.test(inputValue)) {
+    //         $(".validation-message").hide(); // Hide validation message if valid
+    //     } else {
+    //         $(".validation-message").show(); // Show validation message if invalid
+    //     }
+    
+    //     // Keep only numeric characters in the input
+    //     $(this).val(inputValue.replace(/\D/g, '')); // Remove non-digit characters
+    // });
+
 
     $(".mask_phone_number").keyup(function () {
         // $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
         $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
     });
+
+    // $(".mask_phone_number").keyup(function () {
+    //     // $(this).val($(this).val().replace(/^(\d{3})(\d{4})(\d{4})$/, "$1-$2-$3"));
+    //     let length = $(this).val().length;
+    //     if (length > 17) {
+    //         $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{4})$/, "(+) $1-$2-$3"));
+    //     } else if (length < 17) {
+    //         $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{6})$/, "(+) $1-$2-$3"));
+    //     }else{
+    //         $(this).val($(this).val().replace(/^(\d{3})(\d{3})(\d{15})$/, "(+) $1-$2-$3"));
+    //     }
+    // });
+
 
     // $(document).ready(function() {
     //     $('.select').select2();
