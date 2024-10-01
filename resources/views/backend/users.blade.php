@@ -83,9 +83,9 @@
                                                 data-password="{{$user->temp_password}}"
                                                 class="dropdown-item editbtn" href="javascript:void(0)"
                                                 data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
-                                            <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
+                                            <!-- <a data-id="{{ $user->id }}" class="dropdown-item deletebtn"
                                                 href="javascript:void(0)" data-toggle="modal"><i
-                                                    class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                                    class="fa fa-trash-o m-r-5"></i> Delete</a> -->
                                         </div>
                                     </div>
                                 </td>

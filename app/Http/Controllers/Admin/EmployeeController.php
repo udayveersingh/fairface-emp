@@ -40,7 +40,9 @@ class EmployeeController extends Controller
         $title = "employees";
         $branches = Branch::get();
         $countries = Country::get();
-        $employees = Employee::with('branch', 'user.role')->where('record_status', '=', $status)->orderBy('created_at', 'desc')->get();
+        $employees = Employee::with('branch', 'user.role')->where('record_status', '=', $status)->whereHas('user', function ($q) {
+            $q->whereNull('deleted_at');
+        })->orderBy('created_at', 'desc')->get();
         // return view('backend.employees.active-employee',compact('title', 'employees', 'branches', 'countries'));
 
         return view('backend.employees-list', compact('title', 'employees', 'branches', 'countries', 'status'));
@@ -60,7 +62,7 @@ class EmployeeController extends Controller
             'firstname' => 'required',
             'lastname' => 'required',
             'email' => 'required|email',
-            'phone' => 'required|max:12',
+            'phone' => 'required|max:20',
             'date_of_birth' => 'required',
             'nat_insurance_number' => 'nullable|max:25',
             'passport_number' => 'nullable|max:25',
