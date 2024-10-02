@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Captcha;
+use Stevebauman\Location\Facades\Location;
 
 class LoginController extends Controller
 {
@@ -47,6 +48,7 @@ class LoginController extends Controller
             $user_log = new UserLog();
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
+            $user_log->location_name = Location::get($request->ip());
             $user_log->date_time = Carbon::now();
             $user_log->status = '1';
             $user_log->save();
