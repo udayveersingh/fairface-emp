@@ -242,18 +242,18 @@
                                                     <div class="form-group">
                                                         <label class="col-form-label">Phone Number Main <span
                                                                 class="text-danger">*</span></label>
-                                                        <input class="form-control edit_phone mask_phone_number"
+                                                        <input class="form-control edit_phone"
                                                             name="phone" required value="{{ $employee->phone }}"
-                                                            type="text">
+                                                            type="number">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Phone Number Alternate</label>
-                                                        <input class="form-control edit_al_phone_number mask_phone_number"
+                                                        <input class="form-control edit_al_phone_number"
                                                             name="al_phone_number"
                                                             value="{{ $employee->alternate_phone_number }}"
-                                                            type="text">
+                                                            type="number">
                                                     </div>
                                                 </div>
 
@@ -469,20 +469,21 @@
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Phone Number Main <span class="text-danger">*</span> </label>
-                            <input class="form-control mask_phone_number" value="{{ old('phone') }}" name="phone"
-                                type="text">
+                            <input class="form-control" value="{{ old('phone') }}" name="phone"
+                                type="number">
                             @if ($errors->has('phone'))
                                 <span class="text-danger">
                                     {{ $errors->first('phone') }}
                                 </span>
                             @endif
+                            <div class="validation-message" style="color: red; display: none;">Please enter only numbers.</div>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Alternate Phone Number</label>
-                            <input class="form-control mask_phone_number" name="al_phone_number"
-                                value="{{ old('al_phone_number') }}" type="text">
+                            <input class="form-control" name="al_phone_number"
+                                value="{{ old('al_phone_number') }}" type="number">
                         </div>
                     </div>
                     <div class="col-sm-4">

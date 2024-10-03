@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Captcha;
+use Stevebauman\Location\Facades\Location;
 
 class LoginController extends Controller
 {
@@ -47,6 +48,19 @@ class LoginController extends Controller
             $user_log = new UserLog();
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
+            try {
+                $location = Location::get($request->ip());
+                if ($location) {
+                    $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+                } else {
+                    $user_log->location_name = 'Location not found';
+                }
+            } catch (\Exception $e) {
+                Log::error('Location lookup failed: ' . $e->getMessage());
+                $user_log->location_name = 'Location lookup failed';
+            }
+            // $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+            // $user_log->location_name = !empty($location->cityName) ? $location->cityName:'';
             $user_log->date_time = Carbon::now();
             $user_log->status = '1';
             $user_log->save();
