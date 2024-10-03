@@ -49,7 +49,7 @@ class LoginController extends Controller
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
             $location = Location::get($request->ip());
-            $user_log->location_name =  $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+            $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
             $user_log->date_time = Carbon::now();
             $user_log->status = '1';
             $user_log->save();
