@@ -12,7 +12,7 @@
         <div class="row mb-3">
             <div class="col-md-2"><img src="" alt="" /></div>
             <div class="col-md-10">
-                <h1 class="text-left">Indus Services Limited</h1>
+                <h1 class="text-left">{{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? 'Smart HR') }}</h1>
             </div>
         </div>
         @php
