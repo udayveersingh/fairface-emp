@@ -47,10 +47,9 @@ class LoginController extends Controller
             // $users = UserLog::where('user_id','=',Auth::user()->id)->where('status','=',1)->first();
             $user_log = new UserLog();
             $user_log->user_id = Auth::user()->id;
-            dd($request->ip());
             $user_log->location_ip = $request->ip();
-            $location = Location::get($request->ip());
-            // dd($location);
+            $location = Location::get('49.43.97.109');
+            dd($location);
             // $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
             $user_log->location_name = !empty($location->cityName) ? $location->cityName:'';
             $user_log->date_time = Carbon::now();
