@@ -60,7 +60,7 @@ class LoginController extends Controller
                 $user_log->location_name = 'Location lookup failed';
             }
             // $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
-            $user_log->location_name = !empty($location->cityName) ? $location->cityName:'';
+            // $user_log->location_name = !empty($location->cityName) ? $location->cityName:'';
             $user_log->date_time = Carbon::now();
             $user_log->status = '1';
             $user_log->save();
