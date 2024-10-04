@@ -489,16 +489,43 @@ class EmployeeTimeSheetController extends Controller
 
         $employee_projects = [];
 
-        // Step 4: Looping Through the Date Range
-        foreach ($date_range as $index => $date) {
-            $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
-                ->whereDate('start_date', '=', $date->format('Y-m-d'))->whereDate('end_date', '>=', $end_date)
-                ->orwhereDate('end_date','=',$end_date)->first();
+        $emp_projects = EmployeeProject::with('projects')
+            ->where('employee_id', '=', $employeeID)
+            ->where(function ($query) use ($startDate, $end_date) {
+                $query->whereBetween('start_date', [$startDate, $end_date]) // Projects starting within the range
+                    ->orWhereBetween('end_date', [$startDate, $end_date]) // Projects ending within the range
+                    ->orWhere(function ($query) use ($startDate, $end_date) {
+                        $query->where('start_date', '<=',$startDate)
+                            ->where('end_date', '>=', $end_date); // Projects that encompass the entire range
+                    });
+            })
+            ->get();
 
-            if (!empty($emp_projects)) {
-                $employee_projects[$index] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
-            }
-        }
+             foreach ($emp_projects as $index => $Project) {
+                $employee_projects[$index] = ["id" => $Project->projects->id, "name" => !empty($Project->projects->name) ? $Project->projects->name:''];
+             }
+
+            
+
+
+            // $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
+            //    ->WhereDate('start_date','<=', $startDate)
+            //    ->whereDate('end_date', '>=', $end_date)->get();
+         
+            //     $employee_projects[] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
+
+
+        // // Step 4: Looping Through the Date Range
+        // foreach ($date_range as $index => $date) {
+        //     // dd($date->format('Y-m-d') ,$end_date);
+        //     $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
+        //         ->whereDate('start_date', '=', $date->format('Y-m-d'))->whereDate('end_date', '>=', $end_date)
+        //         ->orwhereDate('end_date','<=',$end_date)->first();
+
+        //     if (!empty($emp_projects)) {
+        //         $employee_projects[$index] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
+        //     }
+        // }
 
         return json_encode(array('data' => $holidaysData, 'employee_projects' => $employee_projects));
     }

@@ -349,6 +349,10 @@
                                     <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Salary</th>
+                                    <td>{{$job->salary}}</td>
+                                </tr>
+                                <tr>
                                     <th>Contracted Weekly Hours</th>
                                     <td>{{ $job->contracted_weekly_hours }}</td>
                                 </tr>
@@ -620,6 +624,10 @@
                     <tr>
                         <th>Job Type</th>
                         <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Salary</th>
+                        <td>{{$job->salary}}</td>
                     </tr>
                     <tr>
                         <th>Contracted Weekly Hours</th>

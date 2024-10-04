@@ -49,20 +49,20 @@ class EmployeeJobController extends Controller
         //     'department' => 'required',
         //     'work_phone_number' => 'nullable|max:20'
         // ]);
-
-        EmployeeJob::create([
-            'employee_id' => $request->emp_id,
-            'supervisor' => $request->supervisor,
-            'timesheet_approval_incharge' => $request->timesheet_approval_inch,
-            'department_id' => $request->department,
-            'job_title' => $request->job_title,
-            'work_email' =>$request->work_email,
-            'work_phone_number' => $request->work_phone_number,
-            'start_date'=>$request->start_date,
-            'end_date'=>$request->end_date,
-            'job_type' => $request->job_type,
-            'contracted_weekly_hours' => $request->contract_weekly_hours,
-        ]);
+        $employee_job = new EmployeeJob;
+        $employee_job->employee_id =  $request->emp_id;
+        $employee_job->supervisor  =  $request->supervisor;
+        $employee_job->timesheet_approval_incharge =  $request->timesheet_approval_inch;
+        $employee_job->department_id =  $request->department;
+        $employee_job->job_title  =  $request->job_title;
+        $employee_job->work_email =  $request->work_email;
+        $employee_job->work_phone_number =  $request->work_phone_number;
+        $employee_job->start_date =  $request->start_date;
+        $employee_job->end_date  = $request->end_date;
+        $employee_job->job_type =  $request->job_type;
+        $employee_job->salary = $request->salary;
+        $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
+        $employee_job->save();
         return back()->with('success', "Your record saved!");
     }
     /**
@@ -96,6 +96,7 @@ class EmployeeJobController extends Controller
         $employee_job->start_date =  $request->start_date;
         $employee_job->end_date  = $request->end_date;
         $employee_job->job_type =  $request->job_type;
+        $employee_job->salary = $request->salary;
         $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
         $employee_job->save();
         return back()->with('success', $message);

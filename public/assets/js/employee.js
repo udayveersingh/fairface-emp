@@ -51,6 +51,7 @@ $(document).ready(function () {
         var edit_start_date = $(this).data('start_date');
         var edit_end_date = $(this).data('end_date');
         var edit_job_type = $(this).data('job_type');
+        var edit_salary =  $(this).data('salary');
         var cont_weekly_hours = $(this).data('cont_weekly_hours');
         $('#edit_job_id').val(id);
         $('#employee_id').val(emp_id);
@@ -63,6 +64,7 @@ $(document).ready(function () {
         $('#edit_start_date').val(edit_start_date);
         $('#edit_end_date').val(edit_end_date);
         $('#edit_job_type').val(edit_job_type);
+        $('#salary').val(edit_salary);
         $('#contracted_weekly_hours').val(cont_weekly_hours);
         $('.select').select2('destroy').select2();
     });

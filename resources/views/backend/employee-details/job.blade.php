@@ -56,10 +56,10 @@
                             <th>Work Email</th>
                             <td>{{ !empty($job->work_email) ? $job->work_email : '' }}</td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>Work Phone Number</th>
                             <td>{{ $job->work_phone_number }}</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>Start Date</th>
                             <td>{{ !empty($job->start_date) ? date('d-m-Y', strtotime($job->start_date)) : '' }}</td>
@@ -71,6 +71,10 @@
                         <tr>
                             <th>Job Type</th>
                             <td>{{ str_replace('_', ' ', $job->job_type) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Salary</th>
+                            <td>{{$job->salary}}</td>
                         </tr>
                         <tr>
                             <th>Contracted Weekly Hours</th>
@@ -86,6 +90,7 @@
                             data-work_phone_number="{{ $job->work_phone_number }}"
                             data-start_date="{{ $job->start_date }}" data-end_date="{{ $job->end_date }}"
                             data-job_type="{{ $job->job_type }}"
+                            data-salary="{{ $job->salary}}"
                             data-cont_weekly_hours="{{ $job->contracted_weekly_hours }}" class="btn btn-primary"
                             id="edit_btn" href="javascript:void(0);"><i class="fa fa-pencil m-r-5"></i> Edit</a>
                         <a data-id="{{ $job->id }}" data-resource_data="Employee Job"
@@ -210,6 +215,12 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label>Salary</label>
+                                <input class="form-control" name="salary" id="" type="number">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <label>Contracted Weekly Hours<span class="text-danger">*</span></label>
                                 <input class="form-control" required name="contract_weekly_hours" id=""
                                     type="text">
@@ -317,6 +328,12 @@
                                     <option value="full_time">Full Time</option>
                                     <option value="part_time">Part Time</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Salary</label>
+                                <input class="form-control" name="salary" id="salary" type="number">
                             </div>
                         </div>
                         <div class="col-sm-12">
