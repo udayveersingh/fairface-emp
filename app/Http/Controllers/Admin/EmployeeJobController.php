@@ -50,6 +50,7 @@ class EmployeeJobController extends Controller
         //     'work_phone_number' => 'nullable|max:20'
         // ]);
         $employee_job = new EmployeeJob;
+        
         $employee_job->employee_id =  $request->emp_id;
         $employee_job->supervisor  =  $request->supervisor;
         $employee_job->timesheet_approval_incharge =  $request->timesheet_approval_inch;
