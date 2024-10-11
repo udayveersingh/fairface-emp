@@ -1,4 +1,4 @@
-@if (!empty($messages))
+@if (!empty($messages) && !empty($user))
     @foreach ($messages as $message)
         @if ($message->to_id == Auth::id() && $message->from_id == $user->id)
             <div class="message left">

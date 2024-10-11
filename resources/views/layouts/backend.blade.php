@@ -59,11 +59,11 @@
         <!-- /Header -->
 
         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::ADMIN)
-            <!-- Sidebar -->
-            @include('includes.backend.admin-sidebar')
-            <!-- /Sidebar -->
+        <!-- Sidebar -->
+        @include('includes.backend.admin-sidebar')
+        <!-- /Sidebar -->
         @else
-            @include('includes.backend.sidebar')
+        @include('includes.backend.sidebar')
         @endif
 
         <!-- Page Wrapper -->
@@ -76,53 +76,53 @@
                     @yield('page-header')
                 </div>
                 <!-- /Page Header -->
-{{-- 
+                {{--
                 @if ($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         @foreach ($errors->all() as $error)
                             <strong>Error!</strong> {{ $error }}.
-                        @endforeach
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                @endforeach
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif --}}
+            @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success! </strong>{{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+
+            @if (session('danger'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Warning! </strong>{{ session('danger') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+
+
+
+
+            <!-- chat notification model -->
+            <div class="modal custom-modal fade" id="chat_message_notification" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" width="900px">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
-                @endif --}}
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Success! </strong>{{ session('success') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
-
-                @if (session('danger'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Warning! </strong>{{ session('danger') }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                @endif
-
-                
-
-
-                <!-- chat notification model -->
-                <div class="modal custom-modal fade" id="chat_message_notification" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered" width="900px">
-                        <div class="modal-content">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <div class="form-header">
-                                <h3 class="mt-2"> <i class="fa fa-comments m-r-5"></i>Chat Notifications</h3>
-                            </div>
-                            <div class="card flex-fill">
-                                <div class="card-body">
-                                    <div class="card-scroll p-1">
-                                        <div class="chat-info-box">
-                                            {{-- <div class="media align-items-center">
+                        <div class="form-header">
+                            <h3 class="mt-2"> <i class="fa fa-comments m-r-5"></i>Chat Notifications</h3>
+                        </div>
+                        <div class="card flex-fill">
+                            <div class="card-body">
+                                <div class="card-scroll p-1">
+                                    <div class="chat-info-box">
+                                        {{-- <div class="media align-items-center">
                                                 <a href="" class="avatar">
                                                 </a>
                                                 <div class="media-body">
@@ -130,23 +130,23 @@
                                                         <span class="noti-title">tested</span>
                                                     </p>
                                                 </div> --}}
-                                            {{-- </div> --}}
-                                        </div>
+                                        {{-- </div> --}}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Content Starts -->
-                @yield('content')
-                <!-- /Content End -->
-
             </div>
-            <!-- /Page Content -->
+
+            <!-- Content Starts -->
+            @yield('content')
+            <!-- /Content End -->
+
         </div>
-        <!-- /Page Wrapper -->
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Wrapper -->
     </div>
     <!-- /Main Wrapper -->
 
@@ -191,30 +191,30 @@
         });
 
         // $('.alert').delay(10000).fadeOut();
-        @if (Session::has('message'))
-            var type = "{{ Session::get('alert-type', '') }}";
-            switch (type) {
-                case 'info':
-                    toastr.info("{{ Session::get('message') }}");
-                    break;
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', '') }}";
+        switch (type) {
+            case 'info':
+                toastr.info("{{ Session::get('message') }}");
+                break;
 
-                case 'success':
-                    toastr.success("{{ Session::get('message') }}");
-                    break;
+            case 'success':
+                toastr.success("{{ Session::get('message') }}");
+                break;
 
-                case 'warning':
-                    toastr.warning("{{ Session::get('message') }}");
-                    break;
+            case 'warning':
+                toastr.warning("{{ Session::get('message') }}");
+                break;
 
-                case 'error':
-                    toastr.error("{{ Session::get('message') }}");
-                    break;
+            case 'error':
+                toastr.error("{{ Session::get('message') }}");
+                break;
 
-                case 'danger':
-                    toastr.error("{{ Session::get('message') }}");
-                    break;
+            case 'danger':
+                toastr.error("{{ Session::get('message') }}");
+                break;
 
-            }
+        }
         @endif
     });
 </script>
@@ -271,15 +271,14 @@
     // });
 
     // Function to handle sending messages
-    setInterval(function() {
-    // setTimeout(function() {
+    // setInterval(function() {
+        setTimeout(function() {
         $.ajax({
             url: "/show-chat-message",
             dataType: 'json',
             success: function(data) {
                 $('.countNewMsg').html(data.count);
-                if(data.count > 0)
-                {
+                if (data.count > 0) {
                     $('.CheckMessage').addClass('bell');
                 }
                 // console.log(data ,"data message");
@@ -288,11 +287,10 @@
                     var UserID = row.from_user.id;
                     var url = "/chat-view/" + UserID;
                     var avatarImg = row.from_user.avatar;
-                    html += `<li class="notification-message"><a href="${url}"><div class="media"><span class="avatar">
-                            <img src="{{ asset('storage/employees/${avatarImg}') }}"></span><div class="media-body"><p class="noti-details"><span class="noti-title">Added new message from ${row.from_user.name} </span>
-                            </p><p class="noti-time"><span class="notification-time"></span></p></div></div></a></li>`;
+                    $('.message_chat_view').attr('href',url);
                 });
-                $('.getChatMessage').html(html);
+
+                // $('.getChatMessage').html(html);
             }
         });
     }, 3000);

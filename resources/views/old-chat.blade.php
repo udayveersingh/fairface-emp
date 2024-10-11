@@ -65,13 +65,14 @@
                     </div>
                 </div>
                 <div class="chat">
+
                     <div class="chat-section">
                         <!-- Header -->
                         <div class="top">
                             <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
                                 alt="Avatar">
                             <div>
-                                <p>{{ ucFirst($user->name) }}test</p>
+                                <p>{{ ucFirst($user->name) }}</p>
                                 <small>Online</small>
                             </div>
                         </div>
@@ -168,9 +169,7 @@
                         </div>
                     </div>
                     <div class="chat">
-                    <div class="chat-section">
                         <!-- Header -->
-                         @if(!empty($user))
                         <div class="top">
                             @if(!empty($user->avatar))
                             <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
@@ -184,7 +183,6 @@
                                 <small>Online</small>
                             </div>
                         </div>
-                        @endif
                         <!-- End Header -->
                         <div class="card-scroll p-1">
 
@@ -193,9 +191,8 @@
                                 @include('receive', ['message' => "Hey! What's up!  👋"])
                             </div>
                             <!-- End Chat -->
-                          </div>
-                        </div>
 
+                        </div>
                         <!-- Footer -->
                         <div class="bottom">
                             {{-- @dd($from_id); --}}
@@ -203,7 +200,7 @@
                                 <input type="text" id="message" name="message" placeholder="Enter message..."
                                     autocomplete="off">
                                 <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
-                                <input type="hidden" id="to_id" value="{{ !empty($user->id) ?  $user->id:'' }}">
+                                <input type="hidden" id="to_id" value="{{ $user->id }}">
                                 {{-- <input type="hidden" id="receiver_user"
                         value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
                                 <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
@@ -220,7 +217,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-                userID = $('#to_id').val();
+            var userID = $('#to_id').val();
             // const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             //     cluster: 'ap2'
             // });
@@ -240,20 +237,21 @@
                 $.post("/receive", {
                         _token: '{{ csrf_token() }}',
                         message: data.message,
-                        userID: data.from_id,
-                    }).done(function(res) {
+                        userID: userID,
+                    })
+                    .done(function(res) {
                         var ToID = userID;
-                       var userID = data.from_id;
                         var LoginUser = '{{ Auth::user()->id }}';
-                        console.log(data.to_id,LoginUser, data.from_id,userID,"testestesetst");
                         if (LoginUser == data.to_id && userID == data.from_id) {
                             var html ='<div class="message left">@if (file_exists(public_path().'storage/employees/'. $user->avatar))'+
-                            '<img src="{{ asset('storage/employees/'. $user->avatar) }}" alt="Avatar">'+'@else<img src="{{ asset('assets/img/user.jpg')}}" alt="Avatar">@endif<p>' 
-                            + data.message + '</p></div>';
-                        }
+                            '<img src="{{ asset('storage/employees/'. $user->avatar) }}" alt="Avatar">'+
+                            '@else<img src="{{ asset('assets/img/user.jpg')}}" alt="Avatar">@endif<p>' +
+                                data.message + '</p></div>';
+                        };
                         MessageCounter();
                         $('.messages').append(html);
                     });
+
             });
 
 
@@ -319,10 +317,14 @@
                             alt="Avatar"><div><p>${username}</p><small>Online</small></div></div><div class="card-scroll p-1">`;
                         chatHtml += `<div class="messages">`;
                         $.each(data.messages, function(index, row) {
-                            if (row.to_id == data.loginUser && row.from_id == data.user.id) {
-                                chatHtml +=`<div class="message left"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`;
-                            } else if (row.from_id == data.loginUser && row.to_id == data.user.id) {
-                                chatHtml +=`<div class="message right"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`
+                            if (row.to_id == data.loginUser && row.from_id == data.user
+                                .id) {
+                                chatHtml +=
+                                    `<div class="message left"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`;
+                            } else if (row.from_id == data.loginUser && row.to_id ==
+                                data.user.id) {
+                                chatHtml +=
+                                    `<div class="message right"><img src="{{ asset('storage/employees/${row.from_user.avatar}') }}" alt="Avatar"><p>${row.body}</p></div>`
                             }
                         });
                         chatHtml += `<div class="left message"></div></div></div></div>`;
