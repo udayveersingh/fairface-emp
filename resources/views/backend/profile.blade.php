@@ -511,9 +511,6 @@
                 </thead>
                 <tbody>
                     @foreach ($employee_documents as $index => $document)
-                        @if ($index > 5)
-                        @break;
-                    @endif
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $document->name }}</td>
