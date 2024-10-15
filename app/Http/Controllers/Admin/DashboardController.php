@@ -64,6 +64,22 @@ class DashboardController extends Controller
             $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
         })->groupBy('end_date')->latest()->get();
 
+        // $timesheet_pending_app_count = EmployeeTimesheet::select(
+        //     DB::raw("COUNT(DISTINCT employee_id) as employee_count"),
+        //     DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as start_date"),
+        //     DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as end_date")
+        // )
+        // ->whereYear('created_at', date('Y'))
+        // ->whereHas('timesheet_status', function ($q) {
+        //     $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
+        // })
+        // ->groupBy('end_date')
+        // ->latest()
+        // ->get();
+
+        // dd($timesheet_pending_app_count);
+
+
         $timesheet_rejected_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::REJECTED);
         })->groupBy('end_date')->latest()->get();

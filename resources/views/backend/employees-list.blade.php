@@ -62,7 +62,7 @@
                                             {{ $employee->lastname }}</a>
                                     </h2>
                                 </td>
-                                <td>{{ $employee->uuid }}</td>
+                                <td>{{ $employee->employee_id }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->phone }}</td>
                                 <td>{{ !empty($employee->user->role->name) ? $employee->user->role->name : '' }}</td>
