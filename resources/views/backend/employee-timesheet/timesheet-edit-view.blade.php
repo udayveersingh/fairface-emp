@@ -12,7 +12,7 @@
         <div class="row mb-3">
             <div class="col-md-2"><img src="" alt="" /></div>
             <div class="col-md-10">
-                <h1 class="text-center indus_service">Indus Services Limited</h1>
+                <h1 class="text-center indus_service">{{ ucwords(app(App\Settings\CompanySettings::class)->company_name ?? 'Smart HR') }}</h1>
                 <a href="@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN) {{route('employee-timesheet')}} @else  {{route('employee-timesheet-list')}}  @endif" class="btn add-btn mr-2">Back</a>
             </div>
         </div>
