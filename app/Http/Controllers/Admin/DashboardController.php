@@ -54,7 +54,7 @@ class DashboardController extends Controller
 
         $timesheet_approval_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::APPROVED);
-        })->groupBy('end_date')->latest()->get();
+        })->groupBy('end_date','employee_id')->latest()->get();
 
         // $timesheet_pending_app_count = EmployeeTimesheet::whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])->whereHas('timesheet_status', function ($q) {
         //     $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
@@ -62,34 +62,18 @@ class DashboardController extends Controller
 
         $timesheet_pending_app_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
-        })->groupBy('end_date')->latest()->get();
-
-        // $timesheet_pending_app_count = EmployeeTimesheet::select(
-        //     DB::raw("COUNT(DISTINCT employee_id) as employee_count"),
-        //     DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as start_date"),
-        //     DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as end_date")
-        // )
-        // ->whereYear('created_at', date('Y'))
-        // ->whereHas('timesheet_status', function ($q) {
-        //     $q->where('status', '=', TimesheetStatus::PENDING_APPROVED);
-        // })
-        // ->groupBy('end_date')
-        // ->latest()
-        // ->get();
-
-        // dd($timesheet_pending_app_count);
-
+        })->groupBy('end_date','employee_id')->latest()->get();
 
         $timesheet_rejected_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->whereHas('timesheet_status', function ($q) {
             $q->where('status', '=', TimesheetStatus::REJECTED);
-        })->groupBy('end_date')->latest()->get();
+        })->groupBy('end_date','employee_id')->latest()->get();
 
         // $timesheet_submitted_count = EmployeeTimesheet::join('timesheet_statuses', 'timesheet_statuses.id', '=', 'employee_timesheets.timesheet_status_id')
         //     ->whereBetween('employee_timesheets.created_at', [$firstDayLastMonth, $lastDayLastMonth])
         //     ->where('timesheet_statuses.status', '=', 'submitted')
         //     ->count();
 
-        $timesheet_submitted_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->groupBy('end_date')->latest()->get();
+        $timesheet_submitted_count = EmployeeTimesheet::select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->whereYear('created_at', date('Y'))->groupBy('end_date','employee_id')->latest()->get();
 
         // Leaves
 
