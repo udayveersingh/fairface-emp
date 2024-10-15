@@ -49,6 +49,13 @@ class EmployeeJobController extends Controller
         //     'department' => 'required',
         //     'work_phone_number' => 'nullable|max:20'
         // ]);
+        if($request->input('salary') == null)
+        {
+            $salary=0.00;
+        }else{
+            $salary = $request->input('salary');
+        }
+
         $employee_job = new EmployeeJob;
         
         $employee_job->employee_id =  $request->emp_id;
@@ -61,7 +68,7 @@ class EmployeeJobController extends Controller
         $employee_job->start_date =  $request->start_date;
         $employee_job->end_date  = $request->end_date;
         $employee_job->job_type =  $request->job_type;
-        $employee_job->salary = $request->salary;
+        $employee_job->salary = $salary;
         $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
         $employee_job->save();
         return back()->with('success', "Your record saved!");
@@ -87,6 +94,13 @@ class EmployeeJobController extends Controller
             $employee_job = new EmployeeJob;
             $message = "Employee Job has been added successfully.";
         }
+
+        if($request->input('salary') == null)
+        {
+            $salary=0.00;
+        }else{
+            $salary = $request->input('salary');
+        }
         $employee_job->employee_id =  $request->emp_id;
         $employee_job->supervisor  =  $request->supervisor;
         $employee_job->timesheet_approval_incharge =  $request->timesheet_approval_inch;
@@ -97,7 +111,7 @@ class EmployeeJobController extends Controller
         $employee_job->start_date =  $request->start_date;
         $employee_job->end_date  = $request->end_date;
         $employee_job->job_type =  $request->job_type;
-        $employee_job->salary = $request->salary;
+        $employee_job->salary =  $salary;
         $employee_job->contracted_weekly_hours =  $request->contract_weekly_hours;
         $employee_job->save();
         return back()->with('success', $message);
