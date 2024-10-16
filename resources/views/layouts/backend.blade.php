@@ -271,8 +271,8 @@
     // });
 
     // Function to handle sending messages
-    // setInterval(function() {
-        setTimeout(function() {
+    setInterval(function() {
+        // setTimeout(function() {
         $.ajax({
             url: "/show-chat-message",
             dataType: 'json',

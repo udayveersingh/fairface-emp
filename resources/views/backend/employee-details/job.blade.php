@@ -145,6 +145,20 @@
                                 <label>Supervisor<span class="text-danger">*</span></label>
                                 <select name="supervisor" id="supervisor" required class="form-control select">
                                     <option value="">Select Supervisor</option>
+                                        @foreach ($employees as $employee)
+                                            <option value="{{ $employee->id }}">
+                                                {{ $employee->firstname . ' ' . $employee->lastname }}</option>
+                                        @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>TimeSheet Approval Incharge</label>
+                                <select name="timesheet_approval_inch" id="" class="form-control select">
+                                    <option value="">Select Approval Incharge</option>
                                     @foreach (getSupervisor() as $supervisor)
                                         @php
                                             $supervisor = App\Models\Employee::where(
@@ -159,21 +173,7 @@
                                         <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
                                             {{ $fullname }}
                                         </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label>TimeSheet Approval Incharge</label>
-                                <select name="timesheet_approval_inch" id="" class="form-control select">
-                                    <option value="">Select Approval Incharge</option>
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}">
-                                            {{ $employee->firstname . ' ' . $employee->lastname }}</option>
-                                    @endforeach
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
@@ -289,10 +289,21 @@
                                 <select name="timesheet_approval_inch" id="timesheet_approval_inch"
                                     class="form-control select">
                                     <option value="">Select Approval Incharge</option>
-                                    @foreach ($employees as $employee)
-                                        <option value="{{ $employee->id }}">
-                                            {{ $employee->firstname . ' ' . $employee->lastname }}</option>
-                                    @endforeach
+                                    @foreach (getSupervisor() as $supervisor)
+                                        @php
+                                            $supervisor = App\Models\Employee::where(
+                                                'user_id',
+                                                '=',
+                                                $supervisor->id,
+                                            )->first();
+                                            $firstname = !empty($supervisor->firstname) ? $supervisor->firstname : '';
+                                            $lastname = !empty($supervisor->lastname) ? $supervisor->lastname : '';
+                                            $fullname = $firstname . ' ' . $lastname;
+                                        @endphp
+                                        <option value="{{ !empty($supervisor->id) ? $supervisor->id : '' }}">
+                                            {{ $fullname }}
+                                        </option>
+                                        @endforeach
                                 </select>
                             </div>
                         </div>

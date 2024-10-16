@@ -93,7 +93,7 @@
                             <input type="text" id="message" name="message" placeholder="Enter message..."
                                 autocomplete="off">
                             <input type="hidden" id="from_id" value="{{ Auth::user()->id }}">
-                            <input type="hidden" id="to_id" value="{{ $user->id }}">
+                            <input type="hidden" id="to_id" value="{{ !empty($user->id) ?  $user->id:'' }}">
                             {{-- <input type="hidden" id="receiver_user"
                     value="{{ !empty($from_id->from_id) ? $from_id->from_id : '' }}"> --}}
                             <button id="send-message" class="btn btn-sm btn-primary" type="submit"><i
@@ -105,7 +105,7 @@
                 </div>
             </div>
         @else
-            <div class="row">
+        <div class="row">
             <div class="col-md-3">
                 <div class="card flex-fill" style="height: 35rem;">
                     <div class="card-body">
@@ -220,7 +220,21 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-                userID = $('#to_id').val();
+
+            userID = $('#to_id').val();
+
+            //Get the to_id from the button's data attribute
+            // var userID = $('.user-chat-btn').data('to_id');
+
+            // Function to set the value of an input with id 'to_id'
+            // function userID(to_id) {
+            //     $('#to_id').val(to_id);
+            // }
+
+            // // // Call the function with the retrieved to_id
+            // console.log(userID(to_id));
+
+
             // const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
             //     cluster: 'ap2'
             // });
@@ -242,9 +256,10 @@
                         message: data.message,
                         userID: data.from_id,
                     }).done(function(res) {
-                        var ToID = userID;
-                       var userID = data.from_id;
+                        var ToID = data.userID;
                         var LoginUser = '{{ Auth::user()->id }}';
+                        userID = $('#to_id').val();
+                        console.log(userID,"test userID 12")
                         console.log(data.to_id,LoginUser, data.from_id,userID,"testestesetst");
                         if (LoginUser == data.to_id && userID == data.from_id) {
                             var html ='<div class="message left">@if (file_exists(public_path().'storage/employees/'. $user->avatar))'+
@@ -302,6 +317,7 @@
             $(".user-chat-btn").on("click", function() {
                 var from_id = $(this).data('from_id');
                 var to_id = $(this).data('to_id');
+
                 $('#from_id').val(from_id);
                 $('#to_id').val(to_id);
                 console.log(from_id, to_id, "from_id", "to_id");
