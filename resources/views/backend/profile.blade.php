@@ -34,10 +34,12 @@
                                         <h3 class="user-name m-t-0 mb-0">{{ ucfirst(auth()->user()->name) }}</h3>
                                         @if (Auth::check() && Auth::user()->role->name != App\Models\Role::SUPERADMIN)
                                             <h5 class="user-name m-t-0 mb-0">Employee ID: {{ $employee->employee_id }}</h5>
+                                            @if(!empty($employee->date_of_join))
                                             <div class="text">Date of Join
                                                 :
-                                                {{ !empty($employee->created_at) ? date_format(date_create($employee->created_at), 'd-m-Y') : '' }}
+                                                {{ !empty($employee->date_of_join) ? date_format(date_create($employee->date_of_join), 'd-m-Y') : '' }}
                                             </div>
+                                            @endif
                                             <div class="text">Job Title
                                                 : {{ ucfirst($job_title) }}</div>
                                         @endif
@@ -502,7 +504,6 @@
                             <tr>
                                 <th style="width: 30px;">Sr No.</th>
                                 <th>Document Name</th>
-                                <th>Created</th>
                                 <th>Attachment</th>
                                 <th>Action</th>
                             </tr>
@@ -514,8 +515,6 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $document->name }}</td>
-                        <td>{{ !empty($document->created_at) ? date('d-m-Y', strtotime($document->created_at)) : '' }}
-                        </td>
                         @php
                             $extension = pathinfo(storage_path('storage/documents/employee/' . $document->employee_id . '/' . $document->attachment), PATHINFO_EXTENSION);
                         @endphp
@@ -762,7 +761,6 @@
                 <th style="width: 30px;">Sr No.</th>
                 <th>Month</th>
                 <th>Year</th>
-                <th>Created</th>
                 <th>Attachment</th>
                 <th>Action</th>
                 {{-- <th class="text-right">Action</th> --}}
@@ -775,8 +773,6 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ !empty($employee_payslip->month) ? $employee_payslip->month : '' }}</td>
                         <td>{{ !empty($employee_payslip->year) ? $employee_payslip->year : '' }}</td>
-                        <td>{{ !empty(date('Y-m-d', strtotime($employee_payslip->created_at))) ? date('Y-m-d', strtotime($employee_payslip->created_at)) : '' }}
-                        </td>
                         @php
                             $extension = pathinfo(storage_path('storage/payslips/' . $employee_payslip->attachment), PATHINFO_EXTENSION);
                         @endphp

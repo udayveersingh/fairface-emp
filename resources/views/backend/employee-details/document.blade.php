@@ -37,7 +37,7 @@
                         <tr>
                             <th style="width: 30px;">Sr No.</th>
                             <th>Document Name</th>
-                            <th>Created</th>
+                            <!-- <th>Created</th> -->
                             <th>Attachment</th>
                             <th class="text-right">Action</th>
                         </tr>
@@ -49,7 +49,7 @@
                 <tr>
                     <td>{{$index+1}}</td>
                     <td>{{$document->name}}</td>
-                    <td>{{!empty($document->created_at) ? date("d-m-Y", strtotime($document->created_at)):''}}</td>
+                    <!-- <td>{{!empty($document->created_at) ? date("d-m-Y", strtotime($document->created_at)):''}}</td> -->
                     @php
                     $extension = pathinfo(storage_path('storage/documents/employee/'.$document->employee_id.'/'.$document->attachment), PATHINFO_EXTENSION);
                     @endphp

@@ -119,6 +119,10 @@
                                     <th>Record Status </th>
                                     <td>{{ $employee->record_status }}</td>
                                 </tr>
+                                <tr>
+                                    <th>Join Of Date</th>
+                                    <td>{{ !empty($employee->date_of_join) ? date('d-m-Y', strtotime($employee->date_of_join)) :'' }}</td>
+                                </tr>
 
                                 @if ($employee->record_status == 'archieve')
                                     <tr>
@@ -149,6 +153,7 @@
                                     data-marital_status="{{ $employee->marital_status }}"
                                     data-record_status="{{ $employee->record_status }}"
                                     data-date_of_birth="{{ $employee->date_of_birth }}"
+                                    data-join_of_date="{{$employee->date_of_join}}"
                                     data-passport_issue_date="{{ $employee->passport_issue_date }}"
                                     data-passport_expiry_date="{{ $employee->passport_expiry_date }}"
                                     data-toggle="modal"><i class="fa fa-pencil m-r-5"></i> Edit</a>
@@ -330,13 +335,20 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
+                                                        <label class="col-form-label">Date Of Join</label>
+                                                        <input class="form-control datetimepicker edit_date_of_join" name="date_of_join"
+                                                            value="{{ $employee->date_of_join }}" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
                                                         <label class="col-form-label">Passport Issue Date</label>
                                                         <input class="form-control edit_pass_issue_date"
                                                             name="pass_issue_date"
                                                             value="{{ $employee->passport_issue_date }}" type="date">
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-6">
                                                     <div class="form-group">
                                                         <label class="col-form-label">Passport Expire Date</label>
                                                         <input class="form-control edit_pass_expire_date"
@@ -344,7 +356,7 @@
                                                             value="{{ $employee->passport_expiry_date }}" type="date">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Marital Status <span class="text-danger">*</span></label>
                                                         <select name="marital_status" required id="marital_status"
@@ -359,7 +371,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Record Status <span class="text-danger">*</span></label>
                                                         <select name="record_status" required id="record_status"
@@ -559,14 +571,21 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Passport Number</label>
                             <input class="form-control edit_passport_number" value="{{ old('passport_number') }}"
                                 name="passport_number" type="text">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Date Of Join</label>
+                            <input class="form-control datetimepicker edit_date_of_join" name="date_of_join"
+                                value="{{ old('date_of_join') }}" type="text">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label class="col-form-label">Passport Issue Date</label>
                             <input class="form-control datetimepicker edit_pass_issue_date" name="pass_issue_date"
