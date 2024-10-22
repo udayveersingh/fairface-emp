@@ -35,9 +35,9 @@ class EmployeeLeaveController extends Controller
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)->orderBy('id', 'desc')->get();
         } else if (Auth::user()->role->name == Role::ADMIN) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
-            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)
-                ->orWhere('supervisor_id', '=', $employee->id)->orderBy('id', 'desc')->get();
-            // $projects = EmployeeProject::with('projects')->where('employee_id', $employee->id)->get();
+            // $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->where('employee_id', '=', $employee->id)
+            //     ->orWhere('supervisor_id', '=', $employee->id)->orderBy('id', 'desc')->get();
+            $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->orderBy('id', 'desc')->get();
         } else {
             $leaves = Leave::with('leaveType', 'employee', 'time_sheet_status')->orderBy('id', 'desc')->get();
         }
