@@ -130,12 +130,7 @@
                                         <td>{{ !empty($employee->status_change_date) ? date('d-m-Y', strtotime($employee->status_change_date)) : '' }}
                                         </td>
                                     </tr>
-                                @else
-                                    <tr>
-                                        <th>Created date</th>
-                                        <td>{{ !empty($employee->created_at) ? date_format(date_create($employee->created_at), 'd-m-Y') : '' }}
-                                        </td>
-                                    </tr>
+                              
                                 @endif
                             </table>
                             <div class="btn-group text-center mx-auto mt-auto" style="max-width: 200px;">
