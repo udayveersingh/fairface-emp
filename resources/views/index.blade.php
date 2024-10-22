@@ -176,7 +176,7 @@
                             <img src="{{ asset('storage/employees/' . $user->avatar) }}" width="50px;" height="50px;"
                                 alt="Avatar">
                                 @else
-                                <img src="{{ asset('assets/img/placeholder_image.jpg') }}" width="50px;" height="50px;"
+                                <img src="{{ asset('assets/img/user.jpg') }}" width="50px;" height="50px;"
                                 alt="Avatar">
                                 @endif
                             <div>
