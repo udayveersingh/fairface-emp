@@ -133,7 +133,7 @@ class DashboardController extends Controller
         $annoucement_list = Annoucement::where('start_date', '<=', $todayDate)
             ->where('end_date', '>=', $todayDate)
             ->where('status', '=', 'active')->get();
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::SUPERVISOR) {
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::with('department', 'designation', 'country', 'branch')->where('user_id', '=', Auth::user()->id)->first();
             // Leaves List Latest 4
             $leaves_list = Leave::leftJoin('leave_types', 'leaves.leave_type_id', '=', 'leave_types.id')
@@ -156,16 +156,16 @@ class DashboardController extends Controller
             $employee_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::APPROVED);
             })->whereHas('leaveType', function ($q) {
-                $q->where('type', '=', 'Annual Holiday');
+                $q->where('type', '=', 'Annual Leave');
             })->whereYear('created_at', $currentYear)->count();
 
             $employee_others_leaves = Leave::where('employee_id', '=', $employee->id)->whereHas('time_sheet_status', function ($q) {
                 $q->where('status', '=', TimesheetStatus::APPROVED);
             })->whereHas('leaveType', function ($q) {
-                $q->where('type', '!=', 'Annual Holiday');
+                $q->where('type', '!=', 'Annual Leave');
             })->whereYear('created_at', $currentYear)->count();
 
-            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Holiday')->value('days');
+            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Leave')->value('days');
             $remaining_leaves = $total_annual_leaves -  $employee_leaves;
 
             $timesheet_submitted_count = EmployeeTimesheet::where('employee_id', '=', $employee->id)->where('created_at', '>=', Carbon::now()->startOfMonth()->subMonth()->toDateString())->whereHas('timesheet_status', function ($q) {

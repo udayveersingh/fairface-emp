@@ -49,7 +49,7 @@ class LoginController extends Controller
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
             try {
-                $location = Location::get($request->ip());
+                $location = Location::get();
                 if ($location) {
                     $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
                 } else {
