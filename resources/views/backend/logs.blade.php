@@ -70,18 +70,18 @@
                             </td>
                             <td>
                                 <?php
-                                try {
-                                    $location = \Location::get(); // or specific IP
-                                    if ($location) {
-                                        echo $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
-                                    } else {
-                                        echo 'Location not found.';
-                                    }
-                                } catch (\Exception $e) {
-                                    echo 'Error: ' . $e->getMessage();
-                                }
+                                // try {
+                                //     $location = \Location::get(); // or specific IP
+                                //     if ($location) {
+                                //         echo $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+                                //     } else {
+                                //         echo 'Location not found.';
+                                //     }
+                                // } catch (\Exception $e) {
+                                //     echo 'Error: ' . $e->getMessage();
+                                // }
                                 ?>
-                               <!-- {{ $log->location_name }} -->
+                               {{ $log->location_name }}
                             </td>
                             <td>{{ $log->location_ip }}</td>
                             <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
