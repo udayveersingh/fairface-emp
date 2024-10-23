@@ -73,24 +73,23 @@ class EmployeeLeaveController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
 
-
-        $interval = $start->diff($end_date);
+        // If you want to include the end date, you should add 1 day to it
+        $end_date->modify('+1 day');
 
         $days = 0;
-        for ($i = 0; $i <= $interval->d; $i++) {
-            $start->modify('+1 day');
+
+        while ($start < $end_date) {
             $weekday = $start->format('w');
 
             if ($weekday !== "0" && $weekday !== "6") { // 0 for Sunday and 6 for Saturday
                 $days++;
             }
-        }
 
-        // dd($days);
+            $start->modify('+1 day');
+        }
 
         // echo $days." days without weekend";
 
@@ -124,18 +123,31 @@ class EmployeeLeaveController extends Controller
             $total_days = (int)$days;
         }
 
-        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
-            $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
+        if ($request->employee) {
+            $employee_id = $request->employee;
+        } else {
             $employee_id = $employee->id;
-            $company_total_leaves = LeaveType::where('id', '=', $request->leave_type)->value('days');
+        }
+        if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE || Auth::user()->role->name == Role::ADMIN) {
+            $comp_total_leaves = LeaveType::where('id', '=', $request->leave_type)->value('days');
+            $company_total_leaves = (int)$comp_total_leaves;
             $old_leaves = Leave::with('time_sheet_status')->where('leave_type_id', '=', $request->leave_type)->where('employee_id', '=', $employee_id)->whereHas('time_sheet_status', function ($query) {
                 $query->where('status', '!=', TimeSheetStatus::REJECTED);
             })->sum('no_of_days');
             // $pending_leave = (int)$total_leaves - (int)$old_leaves;
             $comp_leave_type = LeaveType::where('id', '=', $request->leave_type)->value('type');
             $new_leaves = (int)$old_leaves + (int) $total_days;
-            if ($new_leaves >= $company_total_leaves) {
-                return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves");
+            $remainingLeave = (int)$company_total_leaves - (int)$old_leaves;
+            if($remainingLeave == 0)
+            {
+               $message ="";
+            }else{
+                $message ="please apply only for $remainingLeave leave.";
+            }
+            if ($new_leaves > $company_total_leaves) {
+                return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves . You have remaining  $remainingLeave Leave.
+               $message");
             }
 
             $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
@@ -143,7 +155,26 @@ class EmployeeLeaveController extends Controller
             $employee_field = 'nullable';
             $timesheet_status_field = 'nullable';
         } else {
-            $employee_id = $request->employee;
+            $comp_total_leaves = LeaveType::where('id', '=', $request->leave_type)->value('days');
+            $company_total_leaves = (int)$comp_total_leaves;
+            $old_leaves = Leave::with('time_sheet_status')->where('leave_type_id', '=', $request->leave_type)->where('employee_id', '=', $employee_id)->whereHas('time_sheet_status', function ($query) {
+                $query->where('status', '!=', TimeSheetStatus::REJECTED);
+            })->sum('no_of_days');
+            // $pending_leave = (int)$total_leaves - (int)$old_leaves;
+            $comp_leave_type = LeaveType::where('id', '=', $request->leave_type)->value('type');
+            $new_leaves = (int)$old_leaves + (int) $total_days;
+            $remainingLeave = (int)$company_total_leaves - (int)$old_leaves;
+            if($remainingLeave == 0)
+            {
+               $message ="";
+            }else{
+                $message ="please apply only for $remainingLeave leave.";
+            }
+            if ($new_leaves >= $company_total_leaves) {
+                return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves . You have remaining  $remainingLeave Leave.
+                 $message");
+            }
+
             $employee_field = 'required';
             $timesheet_status_id = $request->timesheet_status;
             $timesheet_status_field = 'required';
@@ -156,10 +187,10 @@ class EmployeeLeaveController extends Controller
             'reason' => 'required',
             'timesheet_status' => $timesheet_status_field
         ]);
-        $days = 1;
-        if ($total_days != 0) {
-            $days = $total_days;
-        }
+        $days = $total_days;
+        // if ($total_days != 0) {
+        //     $days = $total_days;
+        // }
 
         $leave = Leave::create([
             'leave_type_id' => $request->leave_type,
