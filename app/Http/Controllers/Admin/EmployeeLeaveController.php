@@ -170,7 +170,7 @@ class EmployeeLeaveController extends Controller
             }else{
                 $message ="please apply only for $remainingLeave leave.";
             }
-            if ($new_leaves >= $company_total_leaves) {
+            if ($new_leaves > $company_total_leaves) {
                 return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves . You have remaining  $remainingLeave Leave.
                  $message");
             }
