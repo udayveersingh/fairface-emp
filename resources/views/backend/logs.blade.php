@@ -70,19 +70,19 @@ $tabs = [
                             </td>
                             <td>
                                 <?php
-                                try {
-                                    $response = file_get_contents('http://ip-api.com/json/49.43.98.25');
-                                    $data = json_decode($response, true);
-                                    if ($data && $data['status'] === 'success') {
-                                        echo $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
-                                    } else {
-                                        echo 'Location not found.';
-                                    }
-                                } catch (\Exception $e) {
-                                    echo 'Error: ' . $e->getMessage();
-                                }
+                                // try {
+                                //     $response = file_get_contents('http://ip-api.com/json/49.43.98.25');
+                                //     $data = json_decode($response, true);
+                                //     if ($data && $data['status'] === 'success') {
+                                //         echo $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
+                                //     } else {
+                                //         echo 'Location not found.';
+                                //     }
+                                // } catch (\Exception $e) {
+                                //     echo 'Error: ' . $e->getMessage();
+                                // }
                                 ?>
-                                <!-- {{ $log->location_name }} -->
+                                {{ $log->location_name }}
                             </td>
                             <td>{{ $log->location_ip }}</td>
                             <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>
