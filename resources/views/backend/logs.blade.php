@@ -71,7 +71,7 @@
                             <td>
                                 <?php
                                 try {
-                                    $location = \Location::get(); // or specific IP
+                                    $location = \Location::get('8.8.8.8'); // or specific IP
                                     if ($location) {
                                         echo $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
                                     } else {
