@@ -48,17 +48,32 @@ class LoginController extends Controller
             $user_log = new UserLog();
             $user_log->user_id = Auth::user()->id;
             $user_log->location_ip = $request->ip();
+            // try {
+            //     $location = Location::get();
+            //     if ($location) {
+            //         $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+            //     } else {
+            //         $user_log->location_name = 'Location not found';
+            //     }
+            // } catch (\Exception $e) {
+            //     Log::error('Location lookup failed: ' . $e->getMessage());
+            //     $user_log->location_name = 'Location lookup failed';
+            // }
+
             try {
-                $location = Location::get();
-                if ($location) {
-                    $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
+                $response = file_get_contents('http://ip-api.com/json/'.$request->ip());
+                $data = json_decode($response, true);
+                if ($data && $data['status'] === 'success') {
+                    $user_log->location_name = $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
                 } else {
-                    $user_log->location_name = 'Location not found';
+                    $user_log->location_name = 'Location not found.';
                 }
             } catch (\Exception $e) {
-                Log::error('Location lookup failed: ' . $e->getMessage());
-                $user_log->location_name = 'Location lookup failed';
+                echo 'Error: ' . $e->getMessage();
             }
+
+
+
             // $user_log->location_name = $location->cityName . ', ' . $location->countryCode . ' (' . $location->zipCode . ')';
             // $user_log->location_name = !empty($location->cityName) ? $location->cityName:'';
             $user_log->date_time = Carbon::now();
