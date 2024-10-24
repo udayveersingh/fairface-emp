@@ -249,7 +249,7 @@
                         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
                             <div class="form-group">
                                 <label>Leave Status<span class="text-danger">*</span></label>
-                                <select name="timesheet_status" class="select form-control">
+                                <select name="timesheet_status" class="select form-control" required>
                                     <option value="">Select TimeSheet Status</option>
                                     @foreach ($timesheet_statuses as $time_status)
                                         <option value="{{ $time_status->id }}">

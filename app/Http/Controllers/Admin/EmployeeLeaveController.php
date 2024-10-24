@@ -139,11 +139,10 @@ class EmployeeLeaveController extends Controller
             $comp_leave_type = LeaveType::where('id', '=', $request->leave_type)->value('type');
             $new_leaves = (int)$old_leaves + (int) $total_days;
             $remainingLeave = (int)$company_total_leaves - (int)$old_leaves;
-            if($remainingLeave == 0)
-            {
-               $message ="";
-            }else{
-                $message ="please apply only for $remainingLeave leave.";
+            if ($remainingLeave == 0) {
+                $message = "";
+            } else {
+                $message = "please apply only for $remainingLeave leave.";
             }
             if ($new_leaves > $company_total_leaves) {
                 return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves . You have remaining  $remainingLeave Leave.
@@ -164,15 +163,14 @@ class EmployeeLeaveController extends Controller
             $comp_leave_type = LeaveType::where('id', '=', $request->leave_type)->value('type');
             $new_leaves = (int)$old_leaves + (int) $total_days;
             $remainingLeave = (int)$company_total_leaves - (int)$old_leaves;
-            if($remainingLeave == 0)
-            {
-               $message ="";
-            }else{
-                $message ="please apply only for $remainingLeave leave.";
+            if ($remainingLeave == 0) {
+                $message = "";
+            } else {
+                $message = "please apply only for $remainingLeave leave.";
             }
             if ($new_leaves > $company_total_leaves) {
                 return back()->with('danger', "Your leave has been completed. Therefore you cannot take any more leave. Company Total $comp_leave_type : $company_total_leaves. Your Total  $comp_leave_type: $old_leaves . You have remaining  $remainingLeave Leave.
-                 $message");
+               $message");
             }
 
             $employee_field = 'required';
@@ -222,18 +220,21 @@ class EmployeeLeaveController extends Controller
      */
     public function update(Request $request)
     {
-        // dd($request->all());
+        $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
         if (Auth::check() && Auth::user()->role->name == Role::EMPLOYEE) {
             $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
             $employee_id = $employee->id;
-            $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
             $timesheet_status_id =  $timesheet_status->id;
             $employee_field = 'nullable';
             $timesheet_status_field = 'nullable';
         } else {
             $employee_id = $request->employee;
             $employee_field = 'required';
-            $timesheet_status_id = $request->timesheet_status;
+            if (!empty($request->timesheet_status)) {
+                $timesheet_status_id = $request->timesheet_status;
+            } else {
+                $timesheet_status_id =  $timesheet_status->id;
+            }
             $timesheet_status_field = 'required';
         }
 
