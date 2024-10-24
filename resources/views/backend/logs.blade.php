@@ -71,7 +71,7 @@ $tabs = [
                             <td>
                                 <?php
                                 try {
-                                    $response = file_get_contents('http://ip-api.com/json/8.8.8.8');
+                                    $response = file_get_contents('http://ip-api.com/json/49.43.98.25');
                                     $data = json_decode($response, true);
                                     if ($data && $data['status'] === 'success') {
                                         echo $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
