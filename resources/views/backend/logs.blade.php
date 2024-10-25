@@ -142,12 +142,13 @@ $tabs = [
                     </td>
                     <td>
                         <?php
-                        try {
-                            $location = \Location::get($log->location_ip); // or specific IP
-                            echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
-                        } catch (\Exception $e) {
-                        }
+                        // try {
+                        //     $location = \Location::get($log->location_ip); // or specific IP
+                        //     echo $location->cityName . ',' . $location->countryCode . ' (' . $location->zipCode . ')';
+                        // } catch (\Exception $e) {
+                        // }
                         ?>
+                         {{ $log->location_name }}
                     </td>
                     <td>{{ $log->location_ip }}</td>
                     <td>{{ date('d-m-Y  H:i', strtotime($log->date_time)) }}</td>

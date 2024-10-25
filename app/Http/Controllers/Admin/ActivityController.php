@@ -124,9 +124,12 @@ class ActivityController extends Controller
         $user_log = UserLog::find($request->id);
         $user_log->user_id = $request->name;
         $user_log->location_ip = $request->ip_address;
-        //    $user_log->location_name = $request->employee_location;
+        $user_log->location_name = $request->employee_location;
         $user_log->date_time = $request->date_time;
         $user_log->out_time = $request->out_time;
+        if(!empty($request->out_time)){
+            $user_log->status = 0;
+        }
         $user_log->save();
         return back()->with('success', "User Logs Data Updated Successfully.");
     }
