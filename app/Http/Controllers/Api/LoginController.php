@@ -114,6 +114,7 @@ class LoginController extends Controller
             return response()->json([
                 'message' => 'User Login Successfully.',
                 'success' => true,
+                'id' => $user->id,
                 'name' => $user->name,
                 'image' => $userImagePath,
                 'latest_announcements' => $annoucements,
