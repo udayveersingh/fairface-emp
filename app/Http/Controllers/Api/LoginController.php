@@ -105,8 +105,10 @@ class LoginController extends Controller
                 }
                 $jsonData = json_decode($notification->data);
                 $message = isset($jsonData->message) ? $jsonData->message : 'No message';
-                
-                $latest_notifications[$index] = [$message];
+                if($message != 'No message')
+                {
+                    $latest_notifications[$index] = [$message];
+                }
             }
 
             $token = JWTAuth::fromUser($user);
