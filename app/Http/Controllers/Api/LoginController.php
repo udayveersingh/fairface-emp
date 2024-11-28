@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Annoucement;
 use App\Models\Employee;
@@ -9,7 +10,6 @@ use App\Models\EmployeeTimesheet;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\TimesheetStatus;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -103,7 +103,10 @@ class LoginController extends Controller
                 if ($index > 2) {
                     break;
                 }
-                $latest_notifications[$index] = [json_decode($notification->data)->message];
+                $jsonData = json_decode($notification->data);
+                $message = isset($jsonData->message) ? $jsonData->message : 'No message';
+                
+                $latest_notifications[$index] = [$message];
             }
 
             $token = JWTAuth::fromUser($user);
