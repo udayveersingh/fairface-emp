@@ -101,16 +101,18 @@ class LoginController extends Controller
             // $message ='';
             $all_latest_notifications =  DB::table('notifications')->select('data')->whereNull('read_at')->where('data->to', $employeeID)->latest()->get();
             foreach ($all_latest_notifications as $index => $notification) {
-                if ($index > 2) {
+                if ($index > 4) {
                     break;
                 }
                 $jsonData = json_decode($notification->data);
                 $message = isset($jsonData->message) ? $jsonData->message : 'No message';
                 $created_at = isset($jsonData->created_at) ? $jsonData->created_at : 'No Date';
-                if($message != 'No message')
-                {
-                    $latest_notifications[$index] = [$message];
-                    $created_date[$index] = [$created_at];
+                // If message exists, add it to the notifications array
+                if ($message != 'No message') {
+                    $latest_notifications[] = [  // Append to the array instead of overwriting
+                        'message' => $message,
+                        'date' => $created_at,  // Add date as well
+                    ];
                 }
             }
 
@@ -130,7 +132,6 @@ class LoginController extends Controller
                 'recent_leaves_details' => $recent_leaves_details,
                 'recent_timesheet_details' => $recent_timesheet_details,
                 'latest_notifications' => $latest_notifications,
-                'notification_date' => $created_date,
                 'access_token' => $token,
             ], 201);
         } else {
