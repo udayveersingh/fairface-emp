@@ -60,7 +60,7 @@ class LoginController extends Controller
                 ->where('end_date', '>=', $todayDate)
                 ->where('status', '=', 'active')->get();
 
-            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Holiday')->value('days');
+            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Leave')->value('days');
 
 
             $currentYear = date('Y');
