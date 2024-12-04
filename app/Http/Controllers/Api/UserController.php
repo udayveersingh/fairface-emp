@@ -247,8 +247,27 @@ class UserController extends Controller
             return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
-            $employee_projects = EmployeeProject::where('employee_id', '=', $employeeID)->latest()->get();
-            return response()->json(['success' => true, 'data' => $employee_projects], 201);
+            $all_employee_projects = [];
+            $i = 0;
+            $projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)->latest()->get();
+             
+            foreach($projects as $project)
+            {
+                $status="";
+                if(!empty($project->projects->status) && $project->projects->status == 1 ){
+                    $status = 'active';
+                }
+                $employee_projects = [
+                    'project' => !empty($project->projects->name) ? $project->projects->name:'',
+                    'start_date' =>  $project->start_date,
+                    'end_date' => $project->end_date,
+                    'status' => $status,
+                ];
+                $all_employee_projects[] =  $employee_projects;
+                $i++;
+            }
+
+            return response()->json(['success' => true, 'data' => $all_employee_projects], 201);
         }
     }
 
