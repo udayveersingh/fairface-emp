@@ -32,7 +32,7 @@ Route::get('/user-job',[UserController::class,'Job']);
 Route::get('/user-visa',[UserController::class,'Visa']);
 Route::get('/user-project',[UserController::class,'Project']);
 Route::get('/user-payslip',[UserController::class,'Payslip']);
-Route::get('/leave-types',[LeaveController::class,'getDataLeaves']);
+Route::get('/get-data-leaves',[LeaveController::class,'getDataLeaves']);
 
 Route::post('/send-message', [MessageController::class, 'sendMessage']);
 Route::get('/messages', [MessageController::class, 'getMessages']);
