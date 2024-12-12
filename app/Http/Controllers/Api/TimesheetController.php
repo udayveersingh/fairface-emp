@@ -51,8 +51,11 @@ class TimesheetController extends Controller
         // Decode the JSON string into a PHP associative array
         $jsonData = $request->weeklyData;
         // Decode the JSON string into a PHP associative array
-       return  $jsonData[0]->calender_date;
+        $weeklyData = json_decode($jsonData[0], true);
 
+        foreach ($weeklyData as $data) {
+            return $data[0]['calender_date'];
+        }
 
         $calender_date = $request->input('calender_date');
         $calender_day = $request->input('calender_day');
