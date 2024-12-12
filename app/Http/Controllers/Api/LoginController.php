@@ -10,6 +10,7 @@ use App\Models\EmployeeTimesheet;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\TimesheetStatus;
+use App\Models\UserLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -47,6 +48,24 @@ class LoginController extends Controller
             $user = Auth::user();
             $userImagePath = "";
             $userImage = $user->avatar;
+            $user_log = new UserLog();
+            $user_log->user_id = Auth::user()->id;
+            $user_log->location_ip = $request->ip();
+            try {
+                $response = file_get_contents('http://ip-api.com/json/' . $request->ip());
+                $data = json_decode($response, true);
+                if ($data && $data['status'] === 'success') {
+                    $user_log->location_name = $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
+                } else {
+                    $user_log->location_name = 'Location not found.';
+                }
+            } catch (\Exception $e) {
+                echo 'Error: ' . $e->getMessage();
+            }
+            $user_log->date_time = Carbon::now();
+            $user_log->status = '1';
+            $user_log->save();
+
             if (!empty($userImage)) {
                 if (file_exists(public_path() . '/storage/employees/' . $userImage)) {
                     $userImagePath = asset('/storage/employees/' . $userImage);
@@ -142,6 +161,17 @@ class LoginController extends Controller
 
     public function logout()
     {
+
+        $userId = Auth::user()->id;
+        $user_logs = UserLog::where('user_id', '=', $userId)->where('status', '=', '1')->get();
+        if (!empty($user_logs)) {
+            foreach ($user_logs as $user_log) {
+                $user_log->update([
+                    'out_time' => Carbon::now(),
+                    'status' => "0",
+                ]);
+            }
+        }
         auth()->logout();
         return response()->json([
             'success' => true,
