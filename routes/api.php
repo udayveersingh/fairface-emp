@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\TimesheetController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,9 @@ Route::get('/user-visa',[UserController::class,'Visa']);
 Route::get('/user-project',[UserController::class,'Project']);
 Route::get('/user-payslip',[UserController::class,'Payslip']);
 Route::get('/get-data-leaves',[LeaveController::class,'getDataLeaves']);
+Route::post('leaves',[LeaveController::class,'store']);
+Route::resource('/employee-timesheet', TimesheetController::class);
+
 
 Route::post('/send-message', [MessageController::class, 'sendMessage']);
 Route::get('/messages', [MessageController::class, 'getMessages']);
