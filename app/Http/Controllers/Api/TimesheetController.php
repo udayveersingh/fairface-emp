@@ -18,9 +18,9 @@ class TimesheetController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
-    
-    public function store(Request $request) 
+
+
+    public function store(Request $request)
     {
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
@@ -45,16 +45,17 @@ class TimesheetController extends Controller
         //     'end_time.*'      => 'nullable',
         //     'hours.*'         => 'nullable',
         // ]);
-        
+
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
 
-       // Decode the JSON string into a PHP associative array
-        $weeklyData = json_decode($request->weeklyData, true);
+        // Decode the JSON string into a PHP associative array
+        $jsonData = $request->weeklyData;
+        // Decode the JSON string into a PHP associative array
+        $weeklyData = json_decode($jsonData, true);
 
-       foreach( $weeklyData as $data)
-       {
-          return $data;
-       }       
+        foreach ($weeklyData as $data) {
+            return $data[0]['calender_date'];
+        }
 
         $calender_date = $request->input('calender_date');
         $calender_day = $request->input('calender_day');
@@ -83,7 +84,7 @@ class TimesheetController extends Controller
                 $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
                 $message = "Employee TimeSheet Data has been updated successfully!!.";
             }
-            
+
             $emp_timesheet->timesheet_id = $timesheet_id;
             $emp_timesheet->employee_id = $request->input('employee_id');
             $emp_timesheet->supervisor_id = $request->input('supervisor_id');
@@ -111,6 +112,5 @@ class TimesheetController extends Controller
             $emp_timesheet->end_date = $end_date;
             $emp_timesheet->save();
         }
-
     }
 }
