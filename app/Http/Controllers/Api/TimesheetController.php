@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\EmployeeTimesheet;
 use App\Models\TimesheetStatus;
 use App\Notifications\SendTimesheetNotificationToAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class TimesheetController extends Controller
@@ -24,6 +26,7 @@ class TimesheetController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request->all());
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -53,6 +56,7 @@ class TimesheetController extends Controller
         // Decode the JSON string into a PHP associative array
         $weeklyData = $request->weeklyData;
         $timesheet_id = "ISL-TM-" . Str::random(6);
+        $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         foreach ($weeklyData as $data) {
             if (!empty($data['hours']) && $data['hours'] == "full_day") {
                 $total_hours_worked = "8 hours";
@@ -72,7 +76,7 @@ class TimesheetController extends Controller
             }
 
             $emp_timesheet->timesheet_id = $timesheet_id;
-            $emp_timesheet->employee_id = $request->input('employee_id');
+            $emp_timesheet->employee_id = $employee->id;
             $emp_timesheet->supervisor_id = $request->input('supervisor_id');
             $emp_timesheet->project_id = $data['project_id'];
             $emp_timesheet->project_phase_id  = $data['project_phase_id'];
