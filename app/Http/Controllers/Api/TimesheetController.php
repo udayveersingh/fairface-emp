@@ -55,5 +55,7 @@ class TimesheetController extends Controller
         $project_phase_id = $request->input('project_phase_id');
         $notes = $request->input('notes');
         $timesheet_id = "ISL-TM-" . Str::random(6);
+
+        return response()->json(['success' => true, 'data' => $request->all()], 201);
     }
 }
