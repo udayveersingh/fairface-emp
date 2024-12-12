@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\EmployeeTimesheet;
 use App\Models\TimesheetStatus;
+use App\Notifications\SendTimesheetNotificationToAdmin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class TimesheetController extends Controller
 {
@@ -18,9 +20,9 @@ class TimesheetController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
-    
-    public function store(Request $request) 
+
+
+    public function store(Request $request)
     {
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
@@ -45,55 +47,22 @@ class TimesheetController extends Controller
         //     'end_time.*'      => 'nullable',
         //     'hours.*'         => 'nullable',
         // ]);
-        
+
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
 
-                // Regular expression to find dates where the month (DD-MM) is out of range (greater than 12)
-            $pattern = '/(\d{4})-(1[3-9])-(\d{1,2})/'; // Match dates like "2024-13-5" (Invalid month > 12)
-
-            // Replace invalid month dates with a valid format (adjust as needed)
-            $jsonData = preg_replace_callback($pattern, function($matches) {
-                // $matches[1] = year, $matches[2] = invalid month, $matches[3] = day
-                // Replace invalid month (e.g., 13) with a valid one (e.g., 05)
-                $validMonth = '05';  // Default to "05" (May), or calculate based on logic
-                return $matches[1] . '-' . $validMonth . '-' . $matches[3];
-            }, $jsonData);
-
-            // Output the updated JSON string
-            echo $jsonData;
-
-            // Decode the fixed JSON string into a PHP associative array
-            $weeklyData = json_decode($jsonData, true);
-
-            // Check for JSON errors
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                error_log("JSON Decode Error: " . json_last_error_msg());
-            } else {
-                // Print the resulting array (for debugging)
-                return $weeklyData;
-            }
- 
-
-        $calender_date = $request->input('calender_date');
-        $calender_day = $request->input('calender_day');
-        $start_time = $request->input('start_time');
-        $end_time = $request->input('end_time');
-        $hours = $request->input('hours');
-        $project_id = $request->input('project_id');
-        $project_phase_id = $request->input('project_phase_id');
-        $notes = $request->input('notes');
+        // Decode the JSON string into a PHP associative array
+        $weeklyData = $request->weeklyData;
         $timesheet_id = "ISL-TM-" . Str::random(6);
-
-        foreach ($start_time as $key => $value) {
-            if (!empty($hours[$key]) && $hours[$key] == "full_day") {
+        foreach ($weeklyData as $data) {
+            if (!empty($data['hours']) && $data['hours'] == "full_day") {
                 $total_hours_worked = "8 hours";
-            } elseif (!empty($hours[$key]) && $hours[$key] == "half_day") {
+            } elseif (!empty($data['hours']) && $data['hours'] == "half_day") {
                 $total_hours_worked = "4 hours";
             } else {
                 $total_hours_worked = "";
             }
 
-            $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $calender_date[$key])->first();
+            $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $data['calender_date'])->first();
             if (empty($employee_timesheet)) {
                 $emp_timesheet = new EmployeeTimesheet();
                 $message = "Employee TimeSheet Data has been added successfully!!.";
@@ -101,28 +70,28 @@ class TimesheetController extends Controller
                 $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
                 $message = "Employee TimeSheet Data has been updated successfully!!.";
             }
-            
+
             $emp_timesheet->timesheet_id = $timesheet_id;
             $emp_timesheet->employee_id = $request->input('employee_id');
             $emp_timesheet->supervisor_id = $request->input('supervisor_id');
-            $emp_timesheet->project_id = $project_id[$key];
-            $emp_timesheet->project_phase_id  = $project_phase_id[$key];
-            $emp_timesheet->calender_day = $calender_day[$key];
-            $emp_timesheet->calender_date = $calender_date[$key];
-            if ($value == Null && !empty($hours[$key]) && $hours[$key] == "full_day" ||  $hours[$key] == "half_day") {
+            $emp_timesheet->project_id = $data['project_id'];
+            $emp_timesheet->project_phase_id  = $data['project_phase_id'];
+            $emp_timesheet->calender_day = $data['calender_day'];
+            $emp_timesheet->calender_date = $data['calender_date'];
+            if ($data['start_time'] == Null && !empty($data['hours']) && $data['hours'] == "full_day" ||  $data['hours'] == "half_day") {
                 $emp_timesheet->from_time = "9:00";
             } else {
-                $emp_timesheet->from_time = $value;
+                $emp_timesheet->from_time = $data['start_time'];
             }
 
-            if ($end_time[$key] == Null && !empty($hours[$key]) && $hours[$key] == "full_day") {
+            if ($data['end_time'] == Null && !empty($data['hours']) && $data['hours'] == "full_day") {
                 $emp_timesheet->to_time = "17:00";
-            } else if ($end_time[$key] == Null && !empty($hours[$key]) && $hours[$key] == "half_day") {
+            } else if ($data['end_time'] == Null && !empty($data['hours']) && $data['hours'] == "half_day") {
                 $emp_timesheet->to_time = "13:00";
             } else {
-                $emp_timesheet->to_time = $end_time[$key];
+                $emp_timesheet->to_time = $data['end_time'];
             }
-            $emp_timesheet->notes =  $notes[$key];
+            $emp_timesheet->notes = $data['notes'];
             $emp_timesheet->total_hours_worked = $total_hours_worked;
             $emp_timesheet->timesheet_status_id = $timesheet_status->id;
             $emp_timesheet->start_date = $start_date;
@@ -130,5 +99,8 @@ class TimesheetController extends Controller
             $emp_timesheet->save();
         }
 
+        $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
+
+        return response()->json(['success' => true, 'data' => $message], 201);
     }
 }
