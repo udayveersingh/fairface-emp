@@ -18,9 +18,9 @@ class TimesheetController extends Controller
     {
         $this->middleware('auth:api');
     }
-
-
-    public function store(Request $request)
+    
+    
+    public function store(Request $request) 
     {
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
@@ -45,17 +45,34 @@ class TimesheetController extends Controller
         //     'end_time.*'      => 'nullable',
         //     'hours.*'         => 'nullable',
         // ]);
-
+        
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
 
-        // Decode the JSON string into a PHP associative array
-        $jsonData = $request->weeklyData;
-        // Decode the JSON string into a PHP associative array
-        $weeklyData = json_decode($jsonData[0], true);
+                // Regular expression to find dates where the month (DD-MM) is out of range (greater than 12)
+            $pattern = '/(\d{4})-(1[3-9])-(\d{1,2})/'; // Match dates like "2024-13-5" (Invalid month > 12)
 
-        foreach ($weeklyData as $data) {
-            return $data[0]['calender_date'];
-        }
+            // Replace invalid month dates with a valid format (adjust as needed)
+            $jsonData = preg_replace_callback($pattern, function($matches) {
+                // $matches[1] = year, $matches[2] = invalid month, $matches[3] = day
+                // Replace invalid month (e.g., 13) with a valid one (e.g., 05)
+                $validMonth = '05';  // Default to "05" (May), or calculate based on logic
+                return $matches[1] . '-' . $validMonth . '-' . $matches[3];
+            }, $jsonData);
+
+            // Output the updated JSON string
+            echo $jsonData;
+
+            // Decode the fixed JSON string into a PHP associative array
+            $weeklyData = json_decode($jsonData, true);
+
+            // Check for JSON errors
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                error_log("JSON Decode Error: " . json_last_error_msg());
+            } else {
+                // Print the resulting array (for debugging)
+                return $weeklyData;
+            }
+ 
 
         $calender_date = $request->input('calender_date');
         $calender_day = $request->input('calender_day');
@@ -84,7 +101,7 @@ class TimesheetController extends Controller
                 $emp_timesheet = EmployeeTimesheet::find($employee_timesheet->id);
                 $message = "Employee TimeSheet Data has been updated successfully!!.";
             }
-
+            
             $emp_timesheet->timesheet_id = $timesheet_id;
             $emp_timesheet->employee_id = $request->input('employee_id');
             $emp_timesheet->supervisor_id = $request->input('supervisor_id');
@@ -112,5 +129,6 @@ class TimesheetController extends Controller
             $emp_timesheet->end_date = $end_date;
             $emp_timesheet->save();
         }
+
     }
 }
