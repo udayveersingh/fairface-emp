@@ -21,7 +21,8 @@ class TimesheetController extends Controller
     
     public function store(Request $request) 
     {
-        return response()->json(['success' => true, 'data' => $request->all()], 201);
+
+        return response()->json(['success' => true, 'data' => $request->weeklyData], 201);
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
