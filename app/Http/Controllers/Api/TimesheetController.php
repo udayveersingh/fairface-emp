@@ -49,9 +49,9 @@ class TimesheetController extends Controller
         $timesheet_status = TimesheetStatus::where('status', TimesheetStatus::PENDING_APPROVED)->first();
 
        // Decode the JSON string into a PHP associative array
-        $weeklyData = json_decode($request->weeklyData, true);
+        // $weeklyData = json_decode($request->weeklyData, true);
 
-        return $weeklyData;
+        return $request->weeklyData;
 
 
         $calender_date = $request->input('calender_date');
