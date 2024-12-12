@@ -17,10 +17,11 @@ class TimesheetController extends Controller
     {
         $this->middleware('auth:api');
     }
-
-
+    
+    
     public function store(Request $request) 
     {
+        return response()->json(['success' => true, 'data' => $request->all()], 201);
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -56,6 +57,5 @@ class TimesheetController extends Controller
         $notes = $request->input('notes');
         $timesheet_id = "ISL-TM-" . Str::random(6);
 
-        return response()->json(['success' => true, 'data' => $request->all()], 201);
     }
 }
