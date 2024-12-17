@@ -154,9 +154,10 @@ class LeaveController extends Controller
             $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
             $recent_leaves_details = Leave::leftJoin('leave_types', 'leaves.leave_type_id', '=', 'leave_types.id')
                 ->leftJoin('timesheet_statuses', 'leaves.timesheet_status_id', '=', 'timesheet_statuses.id')
+                ->leftJoin('employees','employees.id','=','leaves.supervisor_id')
                 ->where('leaves.employee_id', '=', $employeeID)
                 ->orderBy('leaves.updated_at', 'DESC')
-                ->select(['leave_types.type', 'timesheet_statuses.status', 'leaves.created_at as submitted', 'leaves.from', 'leaves.to','leaves.no_of_days'])
+                ->select(['leave_types.type', 'timesheet_statuses.status', 'leaves.created_at as submitted', 'leaves.from', 'leaves.to','leaves.no_of_days','employees.firstname','employees.lastname'])
                 ->limit(4)
                 ->get();
 
