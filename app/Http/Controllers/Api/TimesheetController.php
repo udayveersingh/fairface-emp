@@ -26,7 +26,6 @@ class TimesheetController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
         $year = $request->year;
         $month = ($request->month >= 10) ? $request->month : '0' . $request->month;
         $first_date = $year . "-" . $month . "-01";
@@ -66,7 +65,13 @@ class TimesheetController extends Controller
                 $total_hours_worked = "";
             }
 
-            $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $request->employee_id)->where('calender_date', '=', $data['calender_date'])->first();
+            if (!empty($request->employee_id)) {
+                $employee_id = $request->employee_id;
+            } else {
+                $employee_id =  $employee->id;
+            }
+
+            $employee_timesheet = EmployeeTimesheet::where('employee_id', '=', $employee_id)->where('calender_date', '=', $data['calender_date'])->first();
             if (empty($employee_timesheet)) {
                 $emp_timesheet = new EmployeeTimesheet();
                 $message = "Employee TimeSheet Data has been added successfully!!.";
