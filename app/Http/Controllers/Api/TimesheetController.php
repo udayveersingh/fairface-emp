@@ -112,4 +112,24 @@ class TimesheetController extends Controller
 
         return response()->json(['success' => true, 'data' => $message], 201);
     }
+
+
+    public function timesheetDetails()
+    {
+        $user = auth()->user();
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
+        } else {
+            $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
+            $recent_timesheet_details = EmployeeTimesheet::leftJoin('timesheet_statuses', 'employee_timesheets.timesheet_status_id', '=', 'timesheet_statuses.id')
+                ->where('employee_timesheets.employee_id', '=', $employeeID)
+                ->groupBy('employee_timesheets.timesheet_id')
+                ->orderBy('employee_timesheets.updated_at', 'DESC')
+                ->select(['employee_timesheets.timesheet_id', 'timesheet_statuses.status', 'employee_timesheets.start_date', 'employee_timesheets.end_date', 'employee_timesheets.created_at as submitted'])
+                ->limit(4)
+                ->get();
+
+            return response()->json(['success' => true, 'data' => $recent_timesheet_details], 201);
+        }
+    }
 }

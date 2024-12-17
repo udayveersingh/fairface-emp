@@ -94,7 +94,7 @@ class LeaveController extends Controller
         } else {
             $total_days = (int)$days;
         }
-        
+
         $employee = Employee::where('user_id', '=', Auth::user()->id)->first();
         if ($request->employee) {
             $employee_id = $request->employee;
@@ -117,7 +117,7 @@ class LeaveController extends Controller
             $message = "please apply only for $remainingLeave leave.";
         }
         if ($new_leaves > $company_total_leaves) {
-         return response()->json(['success' => true, 'data' => "'Your leave has been completed. Therefore you cannot take any more leave. Company Total' .$comp_leave_type. ':'. $company_total_leaves'.'.'Your Total'.  $comp_leave_type.':'. $old_leaves . 'You have remaining'.$remainingLeave .'Leave.'.$message"], 201);
+            return response()->json(['success' => true, 'data' => "'Your leave has been completed. Therefore you cannot take any more leave. Company Total' .$comp_leave_type. ':'. $company_total_leaves'.'.'Your Total'.  $comp_leave_type.':'. $old_leaves . 'You have remaining'.$remainingLeave .'Leave.'.$message"], 201);
         }
 
         $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
@@ -143,5 +143,24 @@ class LeaveController extends Controller
         $notification = notify("Employee leave has been added.");
 
         return response()->json(['success' => true, 'data' => 'Employee leave has been added.'], 201);
+    }
+
+    public function leaveDetails()
+    {
+        $user = auth()->user();
+        if (is_null($user)) {
+            return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
+        } else {
+            $employeeID = Employee::where('user_id', '=', $user->id)->value('id');
+            $recent_leaves_details = Leave::leftJoin('leave_types', 'leaves.leave_type_id', '=', 'leave_types.id')
+                ->leftJoin('timesheet_statuses', 'leaves.timesheet_status_id', '=', 'timesheet_statuses.id')
+                ->where('leaves.employee_id', '=', $employeeID)
+                ->orderBy('leaves.updated_at', 'DESC')
+                ->select(['leave_types.type', 'timesheet_statuses.status', 'leaves.created_at as submitted', 'leaves.from', 'leaves.to','leaves.no_of_days'])
+                ->limit(4)
+                ->get();
+
+            return response()->json(['success' => true, 'data' => $recent_leaves_details], 201);
+        }
     }
 }

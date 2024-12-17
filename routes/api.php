@@ -35,7 +35,9 @@ Route::get('/user-project',[UserController::class,'Project']);
 Route::get('/user-payslip',[UserController::class,'Payslip']);
 Route::get('/get-data-leaves',[LeaveController::class,'getDataLeaves']);
 Route::post('leaves',[LeaveController::class,'store']);
+Route::get('leave-details',[LeaveController::class,'leaveDetails']);
 Route::resource('/employee-timesheet', TimesheetController::class);
+Route::get('timesheet-details',[TimesheetController::class,'timesheetDetails']);
 
 
 Route::post('/send-message', [MessageController::class, 'sendMessage']);
