@@ -20,4 +20,14 @@ class EmployeeJob extends Model
     public function employee(){
         return $this->belongsTo(Employee::class);
     }
+
+    public function supervisors()
+    {
+        return $this->belongsTo(Employee::class, 'supervisor');
+    }
+
+    public function timesheet_approval_incharges()
+    {
+        return $this->belongsTo(Employee::class,'timesheet_approval_incharge');
+    }
 }

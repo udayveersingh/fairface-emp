@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Annoucement;
 use App\Models\Employee;
@@ -9,7 +10,7 @@ use App\Models\EmployeeTimesheet;
 use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\TimesheetStatus;
-use Illuminate\Http\Request;
+use App\Models\UserLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
@@ -47,6 +48,24 @@ class LoginController extends Controller
             $user = Auth::user();
             $userImagePath = "";
             $userImage = $user->avatar;
+            $user_log = new UserLog();
+            $user_log->user_id = Auth::user()->id;
+            $user_log->location_ip = $request->ip();
+            try {
+                $response = file_get_contents('http://ip-api.com/json/' . $request->ip());
+                $data = json_decode($response, true);
+                if ($data && $data['status'] === 'success') {
+                    $user_log->location_name = $data['city'] . ', ' . $data['country'] . ' (' . $data['zip'] . ')';
+                } else {
+                    $user_log->location_name = 'Location not found.';
+                }
+            } catch (\Exception $e) {
+                echo 'Error: ' . $e->getMessage();
+            }
+            $user_log->date_time = Carbon::now();
+            $user_log->status = '1';
+            $user_log->save();
+
             if (!empty($userImage)) {
                 if (file_exists(public_path() . '/storage/employees/' . $userImage)) {
                     $userImagePath = asset('/storage/employees/' . $userImage);
@@ -60,7 +79,7 @@ class LoginController extends Controller
                 ->where('end_date', '>=', $todayDate)
                 ->where('status', '=', 'active')->get();
 
-            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Holiday')->value('days');
+            $total_annual_leaves = LeaveType::where('type', '=', 'Annual Leave')->value('days');
 
 
             $currentYear = date('Y');
@@ -97,13 +116,23 @@ class LoginController extends Controller
                 ->get();
 
             $latest_notifications = [];
+            $created_date = [];
             // $message ='';
             $all_latest_notifications =  DB::table('notifications')->select('data')->whereNull('read_at')->where('data->to', $employeeID)->latest()->get();
             foreach ($all_latest_notifications as $index => $notification) {
-                if ($index > 2) {
+                if ($index > 4) {
                     break;
                 }
-                $latest_notifications[$index] = [json_decode($notification->data)->message];
+                $jsonData = json_decode($notification->data);
+                $message = isset($jsonData->message) ? $jsonData->message : 'No message';
+                $created_at = isset($jsonData->created_at) ? $jsonData->created_at : 'No Date';
+                // If message exists, add it to the notifications array
+                if ($message != 'No message') {
+                    $latest_notifications[] = [  // Append to the array instead of overwriting
+                        'message' => $message,
+                        'date' => $created_at,  // Add date as well
+                    ];
+                }
             }
 
             $token = JWTAuth::fromUser($user);
@@ -111,6 +140,7 @@ class LoginController extends Controller
             return response()->json([
                 'message' => 'User Login Successfully.',
                 'success' => true,
+                'id' => $user->id,
                 'name' => $user->name,
                 'image' => $userImagePath,
                 'latest_announcements' => $annoucements,
@@ -131,6 +161,17 @@ class LoginController extends Controller
 
     public function logout()
     {
+
+        $userId = Auth::user()->id;
+        $user_logs = UserLog::where('user_id', '=', $userId)->where('status', '=', '1')->get();
+        if (!empty($user_logs)) {
+            foreach ($user_logs as $user_log) {
+                $user_log->update([
+                    'out_time' => Carbon::now(),
+                    'status' => "0",
+                ]);
+            }
+        }
         auth()->logout();
         return response()->json([
             'success' => true,
