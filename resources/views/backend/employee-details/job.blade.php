@@ -145,9 +145,9 @@
                                 <label>Supervisor<span class="text-danger">*</span></label>
                                 <select name="supervisor" id="supervisor" required class="form-control select">
                                     <option value="">Select Supervisor</option>
-                                        @foreach ($employees as $employee)
-                                            <option value="{{ $employee->id }}">
-                                                {{ $employee->firstname . ' ' . $employee->lastname }}</option>
+                                        @foreach ($employees as $emp)
+                                            <option value="{{ $emp->id }}">
+                                                {{ $emp->firstname . ' ' . $emp->lastname }}</option>
                                         @endforeach
                                 </select>
                             </div>
