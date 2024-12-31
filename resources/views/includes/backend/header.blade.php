@@ -359,27 +359,3 @@
 </div>
 <!-- /Mobile Menu -->
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Get the elements for the dropdown toggle and menu
-    var dropdownToggle = document.getElementById('userDropdown');
-    var dropdownMenu = document.getElementById('dropdownMenu');
-
-    // Add click event to toggle the dropdown
-    dropdownToggle.addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent default behavior (e.g., link navigation)
-        
-        // Toggle the visibility of the dropdown menu
-        dropdownMenu.style.display = (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') ? 'block' : 'none';
-    });
-
-    // Close the dropdown if clicked outside the dropdown area
-    document.addEventListener('click', function (e) {
-        // Check if the clicked element is outside the dropdown area
-        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.style.display = 'none'; // Hide the dropdown
-        }
-    });
-});
-
-</script>

@@ -222,24 +222,3 @@
     </div>
 </div>
 <!-- /Sidebar -->
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Get all the submenu toggle elements (all <a> tags with class "submenu")
-    var submenuToggles = document.querySelectorAll('.submenu > a');
-    
-    // Loop through each toggle and add an event listener
-    submenuToggles.forEach(function(submenuToggle) {
-        submenuToggle.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent the default link behavior
-            
-            // Get the next <ul> element, which is the submenu
-            var submenu = submenuToggle.nextElementSibling;
-            
-            // Toggle the display of the submenu (open/close)
-            submenu.style.display = (submenu.style.display === 'none' || submenu.style.display === '') ? 'block' : 'none';
-        });
-    });
-});
-
-
-</script>
