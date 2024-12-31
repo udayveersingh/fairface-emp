@@ -323,14 +323,14 @@
 <!-- /Notifications -->
 
 <li class="nav-item dropdown has-arrow main-drop">
-    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+    <a href="#" class="dropdown-toggle nav-link" id="userDropdown" data-toggle="dropdown">
         <span class="user-img"><img
                 src="{{ !empty(auth()->user()->avatar) ? asset('storage/employees/' . auth()->user()->avatar) : asset('assets/img/user.jpg') }}"
                 alt="user">
             <span class="status online"></span></span>
         <span>{{ auth()->user()->username }}</span>
     </a>
-    <div class="dropdown-menu">
+    <div class="dropdown-menu" id="dropdownMenu">
         <a class="dropdown-item" href="{{ route('profile') }}">My Profile</a>
         @if (Auth::check() && Auth::user()->role->name != App\Models\Role::EMPLOYEE)
         <a class="dropdown-item" href="{{ route('settings.theme') }}">Settings</a>
@@ -359,3 +359,27 @@
 </div>
 <!-- /Mobile Menu -->
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Get the elements for the dropdown toggle and menu
+    var dropdownToggle = document.getElementById('userDropdown');
+    var dropdownMenu = document.getElementById('dropdownMenu');
+
+    // Add click event to toggle the dropdown
+    dropdownToggle.addEventListener('click', function (e) {
+        e.preventDefault(); // Prevent default behavior (e.g., link navigation)
+        
+        // Toggle the visibility of the dropdown menu
+        dropdownMenu.style.display = (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') ? 'block' : 'none';
+    });
+
+    // Close the dropdown if clicked outside the dropdown area
+    document.addEventListener('click', function (e) {
+        // Check if the clicked element is outside the dropdown area
+        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.style.display = 'none'; // Hide the dropdown
+        }
+    });
+});
+
+</script>

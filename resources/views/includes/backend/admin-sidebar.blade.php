@@ -11,11 +11,13 @@
                 </li>
                 
                 <li class="submenu">
-                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
-                            class="la la-user"></i><span>Employees</span> <span class="menu-arrow"></span></a>
-                    <ul style="display: none;">
-                        <li><a class="{{ route_is('employee-detail') ? 'active' : '' }}"
-                                href="{{ route('employee-detail') }}">Add New Employee</a>
+                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot">
+                        <i class="la la-user"></i><span>Employees</span> <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="submenu-list" style="display: none;">
+                        <li>
+                            <a class="{{ route_is('employee-detail') ? 'active' : '' }}"
+                               href="{{ route('employee-detail') }}">Add New Employee</a>
                         </li>
                         <li>
                             @php
@@ -29,21 +31,22 @@
                                 }
                             @endphp
                             <a class="{{ !empty($active_class) ? $active_class : '' }} "
-                                href="{{ route('employees-list', ['status' => 'active']) }}">Active Employee</a>
+                               href="{{ route('employees-list', ['status' => 'active']) }}">Active Employee</a>
                         </li>
-                        <li><a class="{{ !empty($archeive_class) ? $archeive_class : '' }}"
-                                href="{{ route('employees-list', ['status' => 'archieve']) }}">Archived
-                                Employee</a>
+                        <li>
+                            <a class="{{ !empty($archeive_class) ? $archeive_class : '' }}"
+                               href="{{ route('employees-list', ['status' => 'archieve']) }}">Archived Employee</a>
                         </li>
                     </ul>
                 </li>
                 <li class="submenu">
-                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot"><i
-                            class="la la-calendar"></i><span>Timesheet</span> <span class="menu-arrow"></span></a>
-                    <ul style="display: none;">
+                    <a href="#" class="{{ route_is('settings.theme') ? 'active' : '' }} noti-dot">
+                        <i class="la la-calendar"></i><span>Timesheet</span> <span class="menu-arrow"></span>
+                    </a>
+                    <ul class="submenu-list" style="display: none;">
                         <li>
                             <a class="{{ route_is('employee-timesheet') ? 'active' : '' }}"
-                                href="{{ route('employee-timesheet') }}">Employee Timesheet List</a>
+                               href="{{ route('employee-timesheet') }}">Employee Timesheet List</a>
                         </li>
                     </ul>
                 </li>
@@ -69,3 +72,24 @@
     </div>
 </div>
 <!-- /Sidebar -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Get all the submenu toggle elements (all <a> tags with class "submenu")
+    var submenuToggles = document.querySelectorAll('.submenu > a');
+    
+    // Loop through each toggle and add an event listener
+    submenuToggles.forEach(function(submenuToggle) {
+        submenuToggle.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevent the default link behavior
+            
+            // Get the next <ul> element, which is the submenu
+            var submenu = submenuToggle.nextElementSibling;
+            
+            // Toggle the display of the submenu (open/close)
+            submenu.style.display = (submenu.style.display === 'none' || submenu.style.display === '') ? 'block' : 'none';
+        });
+    });
+});
+
+
+</script>
