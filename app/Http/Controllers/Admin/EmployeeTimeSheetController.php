@@ -45,6 +45,7 @@ class EmployeeTimeSheetController extends Controller
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->orderBy('id', 'desc')->get();
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date','employee_id')->latest()->get();
         return view('backend.employee-timesheet', compact('title', 'employee_timesheets', 'employees', 'projects', 'project_phases', 'timesheet_statuses'));
+        
     }
 
 
@@ -67,7 +68,7 @@ class EmployeeTimeSheetController extends Controller
     public function TimesheetView(CompanySettings $settings)
     {
         $title = "Employee TimeSheet";
-        // dd(getEmployeeRole());
+        // dd(getEmployeeRole()); 
         $employee_project = EmployeeProject::with('projects')->get();
         return view('backend.employee-timesheet.timesheet-view', compact('title', 'settings', 'employee_project'));
     }
