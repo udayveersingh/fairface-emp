@@ -43,9 +43,8 @@ class EmployeeTimeSheetController extends Controller
         $project_phases = ProjectPhase::get();
         $timesheet_statuses = TimesheetStatus::get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->orderBy('id', 'desc')->get();
-        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date','employee_id')->latest()->get();
+        $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase', 'timesheet_status')->select('*', DB::raw("GROUP_CONCAT(start_date SEPARATOR ',') as `start_date`"), DB::raw("GROUP_CONCAT(end_date SEPARATOR ',') as `end_date`"))->groupBy('end_date', 'employee_id')->latest()->get();
         return view('backend.employee-timesheet', compact('title', 'employee_timesheets', 'employees', 'projects', 'project_phases', 'timesheet_statuses'));
-        
     }
 
 
@@ -90,15 +89,15 @@ class EmployeeTimeSheetController extends Controller
     public function employeeTimeSheetDetail($id, $start_date, $end_date)
     {
         $title = "Employee TimeSheet";
-        $userID = Employee::where('id','=',$id)->value('user_id');
-        $loginUserId = User::where('id','=',$userID)->value('id');
+        $userID = Employee::where('id', '=', $id)->value('user_id');
+        $loginUserId = User::where('id', '=', $userID)->value('id');
         $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->where('employee_id', '=', $id)->where('start_date', '=', $start_date)->where('end_date', '=', $end_date)->orderBy('calender_date', 'ASC')->get();
         // $timesheet_statuses = TimesheetStatus::get();
         $timesheet_statuses = TimesheetStatus::where('status', '=', TimesheetStatus::APPROVED)->Orwhere('status', '=', TimesheetStatus::REJECTED)->get();
         // $employee_timesheets = EmployeeTimesheet::with('employee', 'project', 'projectphase')->get();
         // dd($employee_timesheets);
 
-        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date', 'end_date', 'timesheet_statuses','id','loginUserId'));
+        return view('backend.employee-timesheet.timesheet-detail', compact('employee_timesheets', 'title', 'start_date', 'end_date', 'timesheet_statuses', 'id', 'loginUserId'));
     }
 
     /**
@@ -302,10 +301,10 @@ class EmployeeTimeSheetController extends Controller
 
     public function getWeekDays(Request $request)
     {
-        // $date_days = "";
         $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         $month = $request->month;
-        $year = date('Y');
+        $year = date('Y'); // Current year
+        // $year = '2026';
         $start_date = "01-" . $month . "-$year";
         $start_date_day = date("l", strtotime($start_date));
         $start_day_index = array_search($start_date_day, $days);
@@ -316,7 +315,19 @@ class EmployeeTimeSheetController extends Controller
             $weekStartDate = date("d-m-Y", strtotime($start_date));
         }
 
-        $weeksData = [];
+        // Get the previous week's data (yesterday's week)
+        $previousWeekStartDate = date("d-m-Y", strtotime($weekStartDate . "-1 week"));
+        $previousWeekEndDate = date("d-m-Y", strtotime($previousWeekStartDate . "+6 days"));
+
+        // Store the previous week's data
+        $weeksData = [
+            [
+                'week_start_date' => $previousWeekStartDate,
+                'week_end_date' => $previousWeekEndDate
+            ]
+        ];
+
+        // Generate the current month's weeks data
         for ($weeks = 0; $weeks <= 5; $weeks++) {
             $week_end_date = date("d-m-Y", strtotime($weekStartDate . "+ 6 days"));
             $weeksData[] = [
@@ -325,11 +336,11 @@ class EmployeeTimeSheetController extends Controller
             ];
             $weekStartDate = date("d-m-Y", strtotime($week_end_date . "+1 day"));
 
-
             if (date("m", strtotime($weekStartDate)) != $month) {
                 break;
             }
         }
+
 
         // $holidays = [];
         // foreach(getHoliday() as $value)
@@ -496,24 +507,24 @@ class EmployeeTimeSheetController extends Controller
                 $query->whereBetween('start_date', [$startDate, $end_date]) // Projects starting within the range
                     ->orWhereBetween('end_date', [$startDate, $end_date]) // Projects ending within the range
                     ->orWhere(function ($query) use ($startDate, $end_date) {
-                        $query->where('start_date', '<=',$startDate)
+                        $query->where('start_date', '<=', $startDate)
                             ->where('end_date', '>=', $end_date); // Projects that encompass the entire range
                     });
             })
             ->get();
 
-             foreach ($emp_projects as $index => $Project) {
-                $employee_projects[$index] = ["id" => $Project->projects->id, "name" => !empty($Project->projects->name) ? $Project->projects->name:''];
-             }
-
-            
+        foreach ($emp_projects as $index => $Project) {
+            $employee_projects[$index] = ["id" => $Project->projects->id, "name" => !empty($Project->projects->name) ? $Project->projects->name : ''];
+        }
 
 
-            // $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
-            //    ->WhereDate('start_date','<=', $startDate)
-            //    ->whereDate('end_date', '>=', $end_date)->get();
-         
-            //     $employee_projects[] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
+
+
+        // $emp_projects = EmployeeProject::with('projects')->where('employee_id', '=', $employeeID)
+        //    ->WhereDate('start_date','<=', $startDate)
+        //    ->whereDate('end_date', '>=', $end_date)->get();
+
+        //     $employee_projects[] = ["id" => $emp_projects->id, "name" => !empty($emp_projects->projects->name) ? $emp_projects->projects->name:''];
 
 
         // // Step 4: Looping Through the Date Range
