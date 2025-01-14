@@ -34,8 +34,10 @@
         </div>
         <div class="row">
             <div class="col-md-6 mb-2"><strong>Employee Name:-</strong><span>
-                    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-                        {{ ucfirst($employee_name) }} @else{{ ucfirst(Auth::user()->name) }}
+                    @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN || Auth::user()->role->name == App\Models\Role::ADMIN)
+                        {{ ucfirst($employee_name) }} 
+                        @else
+                        {{ ucfirst(Auth::user()->name) }}
                     @endif
                 </span></div>
             <div class="col-md-6 mt-2">
