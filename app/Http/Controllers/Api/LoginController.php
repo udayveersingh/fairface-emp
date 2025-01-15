@@ -46,6 +46,8 @@ class LoginController extends Controller
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
+            // $user->fcm_token = '123345';
+            // $user->save();
             $userImagePath = "";
             $userImage = $user->avatar;
             $user_log = new UserLog();

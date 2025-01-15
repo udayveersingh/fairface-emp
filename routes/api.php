@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FcmController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\MessageController;
@@ -42,3 +43,6 @@ Route::get('timesheet-details',[TimesheetController::class,'timesheetDetails']);
 
 Route::post('/send-message', [MessageController::class, 'sendMessage']);
 Route::get('/messages', [MessageController::class, 'getMessages']);
+
+Route::post('update-device-token', [FcmController::class, 'updateDeviceToken']);
+Route::post('send-fcm-notification', [FcmController::class, 'sendFcmNotification']);

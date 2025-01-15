@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Models\ExpenseType;
 use App\Models\Holiday;
 use App\Models\Leave;
 use App\Models\LeaveType;
@@ -38,6 +39,7 @@ class LeaveController extends Controller
             $all_data_for_leaves['supervisors'] = getSupervisor();
             $all_data_for_leaves['projects'] = Project::get();
             $all_data_for_leaves['project_phases'] = ProjectPhase::get();
+            $all_data_for_leaves['expense_types'] = ExpenseType::get();
 
             return response()->json(['success' => true, 'data' => $all_data_for_leaves], 201);
         }
