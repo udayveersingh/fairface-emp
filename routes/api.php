@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\EmpExpenseController;
 use App\Http\Controllers\Api\FcmController;
 use App\Http\Controllers\Api\LeaveController;
 use App\Http\Controllers\Api\LoginController;
@@ -37,6 +38,7 @@ Route::get('/user-payslip',[UserController::class,'Payslip']);
 Route::get('/get-data-leaves',[LeaveController::class,'getDataLeaves']);
 Route::post('leaves',[LeaveController::class,'store']);
 Route::get('leave-details',[LeaveController::class,'leaveDetails']);
+Route::post('expenses',[EmpExpenseController::class,'store']);
 Route::resource('/employee-timesheet', TimesheetController::class);
 Route::get('timesheet-details',[TimesheetController::class,'timesheetDetails']);
 
