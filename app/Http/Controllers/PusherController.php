@@ -51,7 +51,6 @@ class PusherController extends Controller
         $messages->to_id = $request->get('to_id');
         $messages->body = $request->get('message');
         $messages->save();
-
         sendFcmNotification($request);
         $chat_messages = ChMessage::latest()->first();
         return view('broadcast', ['messages' => $chat_messages]);

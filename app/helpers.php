@@ -315,7 +315,8 @@ if (!function_exists('getNewAnnouncementNotification')) {
             if (!$fcm) {
                 return response()->json(['message' => 'User does not have a device token'], 400);
             }
-            $title = $request->title;
+            $from_user = User::find($request->from_id);
+            $title = $from_user->name;
             $description = $request->message;
             // $projectId = config('services.fcm.project_id'); # INSERT COPIED PROJECT ID
             $projectId = 'ukvicks-staging'; # INSERT COPIED PROJECT ID

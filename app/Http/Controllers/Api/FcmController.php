@@ -55,7 +55,7 @@ class FcmController extends Controller
             if (!$fcm) {
                 return response()->json(['message' => 'User does not have a device token'], 400);
             }
-            $title = $request->title;
+            $title =  $user->name;
             $description = $request->body;
             // $projectId = config('services.fcm.project_id'); # INSERT COPIED PROJECT ID
             $projectId = 'ukvicks-staging'; # INSERT COPIED PROJECT ID
