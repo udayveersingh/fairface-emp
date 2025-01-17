@@ -30,7 +30,6 @@
         {{-- <li class="chat-notification-message">
             testestest         
         </li> --}}
-
         {{-- @dd(sendNewTimeSheetNotifiaction()); --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getExpiredNotification()); --}}
@@ -109,7 +108,33 @@
         </li>
         @endforeach --}}
         @if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-        @foreach (getNewLeaveNotifiaction() as $notification)
+        @foreach(getNewNotifiactionAdminSide() as $notification)
+        @php 
+         $employee = App\Models\Employee::find($notification->from);
+        @endphp
+        @if(!empty($notification->message))
+        <li class="notification-message">
+            <a href="{{ route('activity') }}">
+                <div class="media">
+                    <span class="avatar">
+                        <img src="{{ !empty($employee->avatar) ? asset('storage/employees/' . $employee->avatar) : asset('assets/img/user.jpg') }}">
+                    </span>
+                    <div class="media-body">
+                        <p class="noti-details"><span
+                                class="noti-title"></span>
+                            <span class="noti-title">{{$notification->message}}</span>
+                        </p>
+                        <p class="noti-time">
+                            <span
+                                class="notification-time">{{Carbon\Carbon::parse($notification->created_at)->diffForHumans()}}</span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        @endif
+        @endforeach
+        <!-- @foreach (getNewLeaveNotifiaction() as $notification)
         @php
         $leave = App\Models\Leave::with('leaveType', 'employee', 'time_sheet_status')->find(
         $notification->leave,
@@ -172,7 +197,7 @@
                 </div>
             </a>
         </li>
-        @endforeach
+        @endforeach -->
         @else
         @if (!empty(getAllEmployeeNewNotification()) && count(getAllEmployeeNewNotification()) > 0)
         @foreach (getAllEmployeeNewNotification() as $notification)

@@ -138,7 +138,7 @@ if (!function_exists('getNewNotification')) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
         if (!empty($user)) {
-            return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->latest()->get();
+            return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->whereNotNull('data->message')->latest()->get();
         }
     }
 }
