@@ -32,7 +32,7 @@ class NewLeaveNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail','database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -44,9 +44,9 @@ class NewLeaveNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->leave['reason'])
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line($this->leave['reason'])
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -61,11 +61,12 @@ class NewLeaveNotification extends Notification
             'leave' => $this->leave['id'],
             'from' => $this->leave['employee_id'],
             'to' => $this->leave['supervisor_id'],
-            'subject' => $this->leave['reason'],
+            'message' => $this->leave['from_name'] . " " . "added new" . " " . $this->leave['leave_type'] . " " . "on date from"." ".$this->leave['from'] . " " . "to" . " " . $this->leave['to'],
             'from_date' => $this->leave['from'],
             'to_date' => $this->leave['to'],
             'user_id' => Auth::user()->id,
-            'created_at' =>date('Y-m-d H:i:s'),
+            'created_at' => date('Y-m-d H:i:s'),
+            'subject' => $this->leave['reason']
         ];
     }
 }

@@ -138,8 +138,28 @@ if (!function_exists('getNewNotification')) {
             $q->where('name', '=', Role::SUPERADMIN);
         })->first();
         if (!empty($user)) {
-            return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->get();
+            return DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->latest()->get();
         }
+    }
+}
+
+
+//new notifictaion admin side
+if (!function_exists('getNewNotifiactionAdminSide')) {
+    function getNewNotifiactionAdminSide()
+    {
+        $new_notifi_admin_side = [];
+        $user = User::where('id', '=', Auth::user()->id)->whereHas('role', function ($q) {
+            $q->where('name', '=', Role::SUPERADMIN);
+        })->first();
+        if (!empty($user)) {
+            $new_notifiactions_admin_side = DB::table('notifications')->whereNull('read_at')->where('data->user_id', '!=', $user->id)->latest()->get();
+        }
+
+        foreach ($new_notifiactions_admin_side as $index => $notification) {
+            $new_notifi_admin_side[$index] = json_decode($notification->data);
+        }
+        return $new_notifi_admin_side;
     }
 }
 
@@ -307,7 +327,7 @@ if (!function_exists('getNewAnnouncementNotification')) {
     }
 
 
-    if(!function_exists('sendFcmNotification')){
+    if (!function_exists('sendFcmNotification')) {
         function sendFcmNotification($request)
         {
             $user = User::find($request->to_id);

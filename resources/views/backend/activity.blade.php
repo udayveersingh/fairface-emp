@@ -1,7 +1,7 @@
 @extends('layouts.backend')
 
 @section('styles')
-	
+
 @endsection
 
 @section('page-header')
@@ -16,6 +16,8 @@
 </div>
 @endsection
 
+
+
 @section('content')
 <div class="row">
 	<div class="col-md-12">
@@ -23,9 +25,27 @@
 			<div class="activity-box">
 
 				<ul class="activity-list">
-                    {{-- @dd(getNewLeaveNotifiaction()); --}}
 					@if (Auth::check() && Auth::user()->role->name == App\Models\Role::SUPERADMIN)
-					@foreach(getNewLeaveNotifiaction() as $notification)
+					@foreach(getNewNotifiactionAdminSide() as $notification)
+					@if(!empty($notification->message))
+					<li>
+						<div class="activity-user">
+							<a href="profile.html" title="Lesley Grauer" data-toggle="tooltip" class="avatar">
+								<img src="{{!empty($leave->employee->avatar) ? asset('storage/employees/' . $leave->employee->avatar) : asset('assets/img/user.jpg') }}" alt="">
+							</a>
+						</div>
+						<div class="activity-content">
+							<div class="timeline-content">
+								<!-- <a href="" class="name"> -->
+								{{$notification->message}}
+								<span class="time">{{Carbon\Carbon::parse($notification->created_at)->diffForHumans()}}</span>
+							</div>
+						</div>
+					</li>
+					@endif
+					@endforeach
+					@endif
+					<!-- @foreach(getNewLeaveNotifiaction() as $notification)
 					@php
 						$leave = App\Models\Leave::with('leaveType','employee', 'time_sheet_status')->find($notification->leave);
 						$emp_first_name = !empty($leave->employee->firstname) ? $leave->employee->firstname:'';
@@ -41,12 +61,11 @@
 						<div class="activity-content">
 							<div class="timeline-content">
 								<a href="" class="name">{{ucfirst($emp_full_name)}}</a> added new {{!empty($leave->leaveType->type) ? $leave->leaveType->type:''}} on date from {{$notification->from_date}} to {{$notification->to_date}}
-								<span class="time">{{$leave->created_at->diffForHumans()}}</span>
+								<span class="time">{{Carbon\Carbon::parse($notification->created_at)->diffForHumans()}}</span>
 							</div>
 						</div>
 					</li>
-					@endforeach
-					@endif
+					@endforeach -->
 					{{-- <li>
 						<div class="activity-user">
 							<a href="profile.html" class="avatar" title="Jeffery Lalor" data-toggle="tooltip">
@@ -121,5 +140,5 @@
 
 
 @section('scripts')
-	
+
 @endsection

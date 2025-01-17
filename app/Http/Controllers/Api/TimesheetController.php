@@ -108,11 +108,12 @@ class TimesheetController extends Controller
             $emp_timesheet->save();
         }
 
+        $employee = Employee::find($employee_id);
+        $emp_timesheet['from_name'] = $employee->firstname . " " . $employee->lastname;
         $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
 
         return response()->json(['success' => true, 'data' => $message], 201);
     }
-
 
     public function timesheetDetails()
     {

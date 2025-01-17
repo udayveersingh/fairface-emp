@@ -65,6 +65,7 @@ class SendTimesheetNotificationToAdmin extends Notification
             'timesheet_id' => $this->emp_timesheet['timesheet_id'],
             'user_id' => Auth::user()->id,
             'created_at' => date('Y-m-d H:i:s'),
+            'message' => $this->emp_timesheet['from_name']." "."added new Timesheet.", 
         ];
     }
 }

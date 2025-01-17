@@ -47,7 +47,6 @@ class LeaveController extends Controller
 
     public function store(Request $request)
     {
-
         $start = new DateTime($request->from);
         $end_date = new DateTime($request->to);
 
@@ -119,7 +118,7 @@ class LeaveController extends Controller
             $message = "please apply only for $remainingLeave leave.";
         }
         if ($new_leaves > $company_total_leaves) {
-            return response()->json(['success' => true, 'data' => "'Your leave has been completed. Therefore you cannot take any more leave. Company Total' .$comp_leave_type. ':'. $company_total_leaves'.'.'Your Total'.  $comp_leave_type.':'. $old_leaves . 'You have remaining'.$remainingLeave .'Leave.'.$message"], 201);
+            return response()->json(['success' => false, 'data' => "'Your leave has been completed. Therefore you cannot take any more leave. Company Total' .$comp_leave_type. ':'. $company_total_leaves'.'.'Your Total'.  $comp_leave_type.':'. $old_leaves . 'You have remaining'.$remainingLeave .'Leave.'.$message"], 401);
         }
 
         $timesheet_status = TimesheetStatus::where('status', 'pending approval')->first();
@@ -141,6 +140,10 @@ class LeaveController extends Controller
             'approved_date_time' => $request->approved_date_time,
 
         ]);
+        $leaveType = LeaveType::find($request->leave_type);
+        $employee = Employee::find($employee_id);
+        $leave['leave_type'] = $leaveType->type;
+        $leave['from_name'] =  $employee->firstname." ". $employee->lastname; 
         $leave->notify(new NewLeaveNotification($leave));
         $notification = notify("Employee leave has been added.");
 

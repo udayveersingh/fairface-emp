@@ -205,6 +205,10 @@ class EmployeeLeaveController extends Controller
             'approved_date_time' => $request->approved_date_time,
 
         ]);
+        $leaveType = LeaveType::find($request->leave_type);
+        $employee = Employee::find($employee_id);
+        $leave['leave_type'] = $leaveType->type;
+        $leave['from_name'] =  $employee->firstname." ". $employee->lastname; 
         $leave->notify(new NewLeaveNotification($leave));
         $notification = notify("Employee leave has been added.");
         return back()->with($notification);

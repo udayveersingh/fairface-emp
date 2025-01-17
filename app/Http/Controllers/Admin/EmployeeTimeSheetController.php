@@ -209,6 +209,8 @@ class EmployeeTimeSheetController extends Controller
             $emp_timesheet->end_date = $end_date;
             $emp_timesheet->save();
         }
+        $employee = Employee::find( $request->input('employee_id'));
+        $emp_timesheet['from_name'] = $employee->firstname ." ". $employee->lastname;
         $emp_timesheet->notify(new SendTimesheetNotificationToAdmin($emp_timesheet));
         //  $emp_timesheet->notify(new SendTimeSheetToSupervisorNotification($emp_timesheet));
         if (Auth::check() && Auth::user()->role->name != Role::SUPERADMIN) {

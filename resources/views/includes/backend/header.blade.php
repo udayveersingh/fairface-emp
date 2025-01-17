@@ -30,6 +30,8 @@
         {{-- <li class="chat-notification-message">
             testestest         
         </li> --}}
+
+        {{-- @dd(sendNewTimeSheetNotifiaction()); --}}
         {{-- @dd(getNewNotification()); --}}
         {{-- @dd(getExpiredNotification()); --}}
         {{-- @dd(getNewLeaveNotifiaction()); --}}
@@ -164,15 +166,7 @@
                             <span class="noti-title">added new TimeSheet.</span>
                         </p>
                         <p class="noti-time">
-                            {{-- @php
-                                                        $created_at=""
-                                                        if(!empty($notification->created_at)){
-                                                            $created_at = Carbon\Carbon::parse($notification->created_at)->diffForHumans();
-                                                        }else{
-                                                            $created_at="";
-                                                        }
-                                                    @endphp --}}
-                            <span class="notification-time"></span>
+                            <span class="notification-time"> {{Carbon\Carbon::parse($notification->created_at)->diffForHumans()}}</span>
                         </p>
                     </div>
                 </div>
