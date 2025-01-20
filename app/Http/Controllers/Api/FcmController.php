@@ -23,9 +23,6 @@ class FcmController extends Controller
         if (is_null($user)) {
             return response()->json(['success' => false, 'message' => "Invalid Request"], 401);
         } else {
-            $request->validate([
-                'fcm_token' => 'required|string',
-            ]);
             $user = User::find($user->id);
             $user->fcm_token =  $request->fcm_token;
             $user->save();
