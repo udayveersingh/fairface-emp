@@ -9,12 +9,14 @@ use App\Models\Employee;
 use App\Models\EmployeeTimesheet;
 use App\Models\Leave;
 use App\Models\LeaveType;
+use App\Models\Master;
 use App\Models\TimesheetStatus;
 use App\Models\UserLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
@@ -27,7 +29,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login', 'userLogin']]);
     }
 
     public function login(Request $request)
@@ -179,5 +181,56 @@ class LoginController extends Controller
             'success' => true,
             'message' => 'User logout successfully.'
         ], 201);
+    }
+
+
+    public function userLogin(Request $request)
+    {
+        // Validate incoming request
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',  // email validation
+            'password' => 'required',     // password validation
+        ]);
+
+        if ($validator->fails()) {
+            $error = $validator->errors()->first();
+            return response()->json([
+                'success' => false,
+                'message' =>  $error
+            ], 400);
+        }
+
+        // Check if user exists in the database
+        $user = Master::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No user found with this email.'
+            ], 404);
+        }
+
+        // Verify the password
+        if (Hash::check($request->password, $user->password)) {
+
+            // Parse the URL and extract the host part
+            $parsedUrl = parse_url($user->sub_domain);
+            $host = $parsedUrl['host'];
+            // Split the host into parts (subdomain.domain.tld)
+            $parts = explode('.', $host);
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged in successfully.',
+                'id' => $user->user_id,
+                'name' => $user->name,
+                'sub_domain' =>  $parts['0'],
+                'com_domain' => $user->sub_domain,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid credentials.'
+            ], 401);
+        }
     }
 }
