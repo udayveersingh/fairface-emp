@@ -12,6 +12,7 @@ use App\Models\Country;
 use App\Models\User;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
@@ -113,6 +114,26 @@ class EmployeeController extends Controller
             'branch_id' => $request->input('branch_id'),
             'user_id' => $user->id,
         ]);
+
+        $currentUrl = url()->current();
+        // Parse the URL and extract the host part
+        $parsedUrl = parse_url($currentUrl);
+        $host = $parsedUrl['host'];
+
+        $response = Http::post('https://emp.ukvics.com/api/save-data', [
+            'user_id' => 25,
+            'name' => $request->firstname . " " . $request->lastname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'sub_domain' => $host,
+        ]);
+
+        // if ($response->successful()) {
+        //     return back()->with('success', 'New user has been added!');
+        // } else {
+        //     return back()->with('error', 'Failed to submit data.');
+        // }
         return redirect()->route('employee-detail', $employee->id)->with('success', "Employee has been added");
     }
 
