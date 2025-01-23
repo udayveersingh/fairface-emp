@@ -13,6 +13,8 @@ use App\Notifications\NewUserNotification;
 use Haruncpi\LaravelIdGenerator\IdGenerator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
@@ -76,6 +78,28 @@ class UserController extends Controller
             'employee_id' => $request->input('employee_id'),
             'user_id' => $user->id,
         ]);
+
+
+        $currentUrl = url()->current();
+        // Parse the URL and extract the host part
+        $parsedUrl = parse_url($currentUrl);
+        $host = $parsedUrl['host'];
+
+        $response = Http::post('https://emp.ukvics.com/api/save-data', [
+            'user_id' => 25,
+            'name' => $request->firstname . " " . $request->lastname,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'sub_domain' => $host,
+        ]);
+
+        if ($response->successful()) {
+            return back()->with('success', 'New user has been added!');
+        } else {
+            return back()->with('error', 'Failed to submit data.');
+        }
+
         // $user->notify(new NewUserNotification($user));
         return back()->with('success', "New user has been added");
     }
@@ -104,7 +128,7 @@ class UserController extends Controller
             'firstname' => 'required|max:100',
             'lastname' => 'required|max:100',
             'username' => 'required|max:50',
-            'email' => 'required|email|unique:users,email,'.$request->id,
+            'email' => 'required|email|unique:users,email,' . $request->id,
             'password' => 'nullable|confirmed|max:200|min:5',
             'avatar' => 'nullable|file|image|mimes:jpg,jpeg,png,gif',
         ]);
@@ -114,7 +138,7 @@ class UserController extends Controller
             $imageName = time() . '.' . $request->avatar->extension();
             $request->avatar->move(public_path('storage/employees'), $imageName);
         }
-        $temp_pass="";
+        $temp_pass = "";
         $password = $user->password;
         if ($request->password) {
             $password = Hash::make($request->password);
@@ -136,9 +160,9 @@ class UserController extends Controller
 
         $uuid = IdGenerator::generate(['table' => 'employees', 'field' => 'uuid', 'length' => 7, 'prefix' => 'EMP-']);
 
-        if(!empty($request->emp_id)){
+        if (!empty($request->emp_id)) {
             $employee = Employee::find($request->emp_id);
-        }else{
+        } else {
             $employee = new Employee;
             $employee->uuid = $uuid;
         }

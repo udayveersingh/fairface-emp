@@ -11,6 +11,7 @@ use App\Models\Leave;
 use App\Models\LeaveType;
 use App\Models\Master;
 use App\Models\TimesheetStatus;
+use App\Models\User;
 use App\Models\UserLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'userLogin']]);
+        $this->middleware('auth:api', ['except' => ['login', 'userLogin', 'save']]);
     }
 
     public function login(Request $request)
@@ -232,5 +233,30 @@ class LoginController extends Controller
                 'message' => 'Invalid credentials.'
             ], 401);
         }
+    }
+
+    public function save(Request $request)
+    {
+        // Validate the incoming data
+        $validated = $request->validate([
+            'user_id' => 'required',
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'username' => 'required',
+            'password' => 'required',
+            'sub_domain' => 'required'
+        ]);
+
+        // Save the data to the database (example with User model)
+        Master::create([
+            'user_id' => $validated['user_id'],
+            'name' =>  $validated['name'],
+            'email' => $validated['email'],
+            'username' => $validated['username'],
+            'password' => bcrypt($validated['password']),
+            'sub_domain' => $validated['sub_domain']
+        ]);
+
+        return response()->json(['message' => 'Data saved successfully!'], 200);
     }
 }

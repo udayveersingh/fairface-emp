@@ -25,9 +25,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login']); 
 Route::post('/user-login',[LoginController::class, 'userLogin']);
 Route::post('/logout', [LoginController::class, 'logout']);
+Route::post('/save-data', [LoginController::class, 'save']);
 
 Route::resource('/user-profile', UserController::class);
 Route::get('/user-address', [UserController::class,'Address']);
