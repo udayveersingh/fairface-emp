@@ -253,7 +253,7 @@ class LoginController extends Controller
             'name' =>  $validated['name'],
             'email' => $validated['email'],
             'username' => $validated['username'],
-            'password' => bcrypt($validated['password']),
+            'password' => $validated['password'],
             'sub_domain' => $validated['sub_domain']
         ]);
 
