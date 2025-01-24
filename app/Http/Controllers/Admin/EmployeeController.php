@@ -126,7 +126,7 @@ class EmployeeController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'sub_domain' => $host,
+            'sub_domain' => 'https://'.$host,
         ]);
 
         // if ($response->successful()) {

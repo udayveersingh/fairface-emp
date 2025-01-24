@@ -81,6 +81,7 @@ class UserController extends Controller
 
 
         $currentUrl = url()->current();
+
         // Parse the URL and extract the host part
         $parsedUrl = parse_url($currentUrl);
         $host = $parsedUrl['host'];
@@ -91,7 +92,7 @@ class UserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'sub_domain' => $host,
+            'sub_domain' => 'https://'.$host,
         ]);
 
         if ($response->successful()) {
