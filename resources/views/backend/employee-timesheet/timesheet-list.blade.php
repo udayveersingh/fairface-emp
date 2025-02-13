@@ -63,7 +63,7 @@
                             {{-- <td>{{ !empty($timesheet->timesheet_status->status) ? str_replace('_', ' ', ucfirst($timesheet->timesheet_status->status)) : '' }}</td> --}}
                             <td class="text-right">
                                 @if($start_date[0] != null && $end_date[0] != null)
-                                <div class="dropdown dropdown-action">
+                                <!-- <div class="dropdown dropdown-action">
                                     <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown"
                                         aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                     <div class="dropdown-menu dropdown-menu-right">
@@ -72,7 +72,10 @@
                                         <a class="dropdown-item editbtn" href="{{route('employee-timesheet-edit',['id' => $timesheet->employee_id,'start_date'=> $start_date[0],'end_date' => $end_date[0]])}}"><i class="fa fa-pencil m-r-5"></i>Edit</a>
                                         @endif
                                     </div>
-                                </div>
+                                </div> -->
+                                <a class="btn-sm btn-primary"
+                                    href="{{ route('employee-timesheet-detail', ['id' => $timesheet->employee_id, 'start_date' => $start_date[0], 'end_date' => $end_date[0]]) }}"><i
+                                        class="fa fa-eye" aria-hidden="true"></i>View</a>
                                 @endif
                             </td>
                         </tr>
