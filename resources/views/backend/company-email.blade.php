@@ -128,6 +128,16 @@
     .email_header .avatar {
         border-radius: 4px;
     }
+
+    .flatpickr-calendar {
+        z-index: 9999 !important;
+        /* Ensure it's on top */
+    }
+
+    .flatpickr-calendar.open {
+        position: absolute !important;
+        /* Force absolute positioning */
+    }
 </style>
 @endsection
 @section('page-header')
@@ -1265,12 +1275,13 @@
         });
     });
 
-     flatpickr("#time", {
+    flatpickr("#time", {
         enableTime: true,
         noCalendar: true,
         dateFormat: "H:i:S", // 24-hour format with seconds
         time_24hr: true,
-        enableSeconds: true
+        enableSeconds: true,
+        appendTo: document.body // Ensures it's appended to body and not clipped
     });
 
     $('.edit').on('click', function() {
@@ -1482,8 +1493,8 @@
                 previous: 'fa fa-angle-left'
             }
         });
-        
-            
+
+
     }
 </script>
 @endsection
